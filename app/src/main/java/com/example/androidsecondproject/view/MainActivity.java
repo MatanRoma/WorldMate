@@ -25,17 +25,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private  final  String LOGIN_FRAGMENT="login_fragment";
     private  final  String REGISTER_FRAGMENT="register_fragment";
 
-
-    LoginFragment loginFragment;
-    RegisterFragment registerFragment;
-
-
+    private LoginFragment loginFragment;
+    private RegisterFragment registerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         loginFragment = loginFragment.newInstance();
         FragmentManager fragmentManager=getSupportFragmentManager();
@@ -44,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.addToBackStack(null);
         transaction.commit();
         loginFragment.setCancelable(false);
-
 
     }
 

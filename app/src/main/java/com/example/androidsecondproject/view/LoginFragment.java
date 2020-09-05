@@ -12,41 +12,59 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 
 import com.example.androidsecondproject.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.androidsecondproject.model.eViewModels;
+import com.example.androidsecondproject.viewmodel.LoginViewModel;
+import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
 public class LoginFragment extends androidx.fragment.app.DialogFragment {
 
-        public static LoginFragment newInstance()
-        {
-            LoginFragment loginFragment = new LoginFragment();
-            /*Bundle bundle = new Bundle();
-            bundle.putString("user_name",username);
-            loginFragment.setArguments(bundle);*/
-            return loginFragment;
-        }
-        private FirebaseAuth mAuth;
-        private LoginFragmentInterface listener;
+        private LoginViewModel mViewModel;
+        private LoginFragmentInterface mListener;
+        private EditText mEmailEt, mPasswordEt;
+
         interface LoginFragmentInterface{
             void onClickMoveToRegister();
+    }
+
+    public static LoginFragment newInstance()
+    {
+        LoginFragment loginFragment = new LoginFragment();
+        return loginFragment;
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        listener=(LoginFragmentInterface)getActivity();
+        mListener =(LoginFragmentInterface)getActivity();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
+
+        mViewModel=new ViewModelProvider(this,new ViewModelFactory(getContext(), eViewModels.Login)).get(LoginViewModel.class);
+        final Observer<String> loginObserverSuccess = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable final String uid) {
+                Toast.makeText(getActivity(), uid, Toast.LENGTH_SHORT).show();
+                setLoginFields();
+            }
+        };
+        final Observer<String> loginObserverFailed = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable final String error) {
+                Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                setLoginFields();
+            }
+        };
+
+        mViewModel.getLoginDataSuccess().observe(this, loginObserverSuccess);
+        mViewModel.getLoginDataFailed().observe(this, loginObserverFailed);
     }
 
     @Nullable
@@ -56,48 +74,30 @@ public class LoginFragment extends androidx.fragment.app.DialogFragment {
 
         Button loginButton=rootView.findViewById(R.id.login_btn);
         Button signUpButton=rootView.findViewById(R.id.sign_up_button);
-        final EditText emailEt=rootView.findViewById(R.id.email_et_signin);
-        final EditText passwordEt=rootView.findViewById(R.id.password_et_singin);
+        mEmailEt =rootView.findViewById(R.id.email_et_signin);
+        mPasswordEt =rootView.findViewById(R.id.password_et_singin);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailEt.getText().toString();
-                String password = passwordEt.getText().toString();
-
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    Toast.makeText(getContext(), ""+user.getUid(), Toast.LENGTH_SHORT).show();
-                                    ;
-
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(getContext(), "fail", Toast.LENGTH_SHORT).show();
-
-                                }
-                            }
-                        });
-
+                setLoginFields();
+                mViewModel.loginUser();
             }
         });
-
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickMoveToRegister();
+                mListener.onClickMoveToRegister();
             }
         });
-
 
         setCancelable(false);
         return rootView;
     }
-
+    private void setLoginFields(){
+        mViewModel.setEmail(mEmailEt.getText().toString());
+        mViewModel.setPassword(mPasswordEt.getText().toString());
+    }
 
 }

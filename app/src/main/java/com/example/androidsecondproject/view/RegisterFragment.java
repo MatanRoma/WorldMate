@@ -11,16 +11,24 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 
 import com.example.androidsecondproject.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.androidsecondproject.model.eViewModels;
+import com.example.androidsecondproject.viewmodel.RegisterViewModel;
+import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
 public class RegisterFragment extends androidx.fragment.app.DialogFragment {
+
+    private RegisterFragmentInterface listener;
+    private RegisterViewModel mViewModel;
+    private EditText mNicknameEt,mEmailEt,mPasswordEt;
+
+    interface RegisterFragmentInterface{
+        void onClickMoveToLogin();
+    }
 
     public static RegisterFragment newInstance()
     {
@@ -29,11 +37,6 @@ public class RegisterFragment extends androidx.fragment.app.DialogFragment {
             bundle.putString("user_name",username);
             loginFragment.setArguments(bundle);*/
         return registerFragment;
-    }
-    private FirebaseAuth mAuth;
-    private RegisterFragmentInterface listener;
-    interface RegisterFragmentInterface{
-        void onClickMoveToLogin();
     }
 
     @Override
@@ -45,7 +48,25 @@ public class RegisterFragment extends androidx.fragment.app.DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
+
+        mViewModel=new ViewModelProvider(this,new ViewModelFactory(getContext(), eViewModels.Register)).get(RegisterViewModel.class);
+        final Observer<String> registerObserverSuccess = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable final String uid) {
+                Toast.makeText(getActivity(), uid, Toast.LENGTH_SHORT).show();
+                setRegisterFields();
+            }
+        };
+        final Observer<String> registerObserverFailed = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable final String error) {
+                Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                setRegisterFields();
+            }
+        };
+
+        mViewModel.getRegisterResultSuccess().observe(this, registerObserverSuccess);
+        mViewModel.getRegisterResultFailed().observe(this, registerObserverFailed);
     }
 
     @Nullable
@@ -55,45 +76,34 @@ public class RegisterFragment extends androidx.fragment.app.DialogFragment {
 
         Button registerButton=rootView.findViewById(R.id.register_btn_signup);
         Button signInButton=rootView.findViewById(R.id.sign_in_button);
-        final EditText nicknameEt=rootView.findViewById(R.id.nickname_et_signup);
-        final EditText emailEt=rootView.findViewById(R.id.email_et_signup);
-        final EditText passwordEt=rootView.findViewById(R.id.password_et_signup);
+        mNicknameEt=rootView.findViewById(R.id.nickname_et_signup);
+        mEmailEt=rootView.findViewById(R.id.email_et_signup);
+        mPasswordEt=rootView.findViewById(R.id.password_et_signup);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email=emailEt.getText().toString();
-                String password=passwordEt.getText().toString();
-                final String nickname=nicknameEt.getText().toString();
-
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    FirebaseUser user = mAuth.getCurrentUser();
-
-                                    Toast.makeText(getContext(), user.getUid(), Toast.LENGTH_SHORT).show();
-
-                                } else {
-                                    // If sign in fails, display a message to the user.
-
-
-                                }
-
-                                // ...
-                            }
-                        });
+                setRegisterFields();
+                mViewModel.registerUser();
             }
         });
+
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClickMoveToLogin();
             }
         });
+        return rootView;
+    }
 
-        return  rootView;
+    public void setRegisterFields(){
+        String email=mEmailEt.getText().toString();
+        String password=mPasswordEt.getText().toString();
+        String nickname=mNicknameEt.getText().toString();
+
+        mViewModel.setEmail(email);
+        mViewModel.setPassword(password);
+        mViewModel.setNickname(nickname);
     }
 }
