@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_centerInParent="true"
+    android:background="@drawable/background_sign"
+    android:layout_height="match_parent">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/firstname_info"
+        android:textColorHint="#000"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:textColor="#000"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:hint="First name"
+            android:inputType="textPersonName"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lastname_info"
+        android:textColorHint="#000"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/firstname_info"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:textColor="#000"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:hint="Last name"
+            android:inputType="textPersonName"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="I am"
+        android:layout_margin="20dp"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:layout_below="@id/lastname_info"
+        android:id="@+id/i_am_tv"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/i_am_tv"
+        android:gravity="center"
+        android:id="@+id/gender_pick_layout">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Men"
+            android:textSize="20sp"
+            android:background="@drawable/gender_btn_selector"
+            android:textColor="#000"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/men_btn"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Women"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:background="@drawable/gender_btn_selector"
+            android:id="@+id/women_btn"
+            android:layout_toEndOf="@id/men_btn"/>
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My birthday is"
+        android:gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:textColor="#000"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_below="@id/gender_pick_layout"
+        android:layout_marginTop="25dp"
+        android:id="@+id/birthday_tv"/>
+
+    <DatePicker android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+        android:layout_centerHorizontal="true"
+        android:maxDate="31/12/2001"
+        android:minDate="1/1/1921"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/birthday_tv"
+        android:id="@+id/date_picked"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_shape"
+        android:layout_below="@id/date_picked"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="Continue"
+        android:padding="5dp"/>
+
+</RelativeLayout>

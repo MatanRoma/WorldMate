@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "24608948706",
+    "firebase_url": "https://friendzone-a51c8.firebaseio.com",
+    "project_id": "friendzone-a51c8",
+    "storage_bucket": "friendzone-a51c8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24608948706:android:c1f584c2d1bf9884a439bb",
+        "android_client_info": {
+          "package_name": "com.example.androidsecondproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24608948706-qe0h6kltm72sftiuf11jhbl9l4j77io2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAprS_n2f3b_EOu-U4nxazK1phxpJ7byc4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24608948706-qe0h6kltm72sftiuf11jhbl9l4j77io2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
