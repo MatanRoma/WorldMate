@@ -1,9 +1,11 @@
 package com.example.androidsecondproject.model;
 
-public class Person {
+public class Profile {
 
     private String uid;
-    private String nickname;
+    private String fullName;
+
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -18,7 +19,6 @@ public class RegisterViewModel extends ViewModel {
     public RegisterViewModel(Context context) {
         mRepository=new AuthRepository(context);
     }
-
 
     public MutableLiveData<String> getRegisterResultSuccess(){
         if (mRegisterDataSuccess == null) {
@@ -50,6 +50,7 @@ public class RegisterViewModel extends ViewModel {
         });
     }
     public void registerUser(){
+
         mRepository.registerUser(mEmail, mPassword, mNickname);
     }
 
@@ -59,7 +60,7 @@ public class RegisterViewModel extends ViewModel {
 
     public void setEmail(String email) {
         if(!email.equals(""))
-            this.mEmail = mPassword;
+            this.mEmail = email;
         else
             this.mEmail =" ";
     }

@@ -2,6 +2,7 @@ package com.example.androidsecondproject.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     private  final  String LOGIN_FRAGMENT="login_fragment";
     private  final  String REGISTER_FRAGMENT="register_fragment";
+    private  final  String ACCOUNT_SETUP_FRAGMENT="account_setup_fragment";
 
     private LoginFragment loginFragment;
     private RegisterFragment registerFragment;
@@ -39,7 +41,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.add(R.id.main_activity_id,loginFragment,LOGIN_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
-        loginFragment.setCancelable(false);
+     //   loginFragment.setCancelable(false);
+
+       /* loginFragment=loginFragment.newInstance();
+        loginFragment.show(getSupportFragmentManager(),null);
+        loginFragment.setStyle(DialogFragment.STYLE_NORMAL,R.style.DialogFragmentTheme);*/
 
     }
 
@@ -53,7 +59,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.add(R.id.main_activity_id,registerFragment,REGISTER_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
-     //   registerFragment.setCancelable(false);
+
+    /*    loginFragment.dismiss();
+        registerFragment=registerFragment.newInstance();
+        registerFragment.show(getSupportFragmentManager(),null);
+        registerFragment.setStyle(DialogFragment.STYLE_NORMAL,R.style.DialogFragmentTheme);*/
     }
 
     @Override
@@ -66,5 +76,20 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.addToBackStack(null);
         transaction.commit();
 
+        /*registerFragment.dismiss();
+        loginFragment=loginFragment.newInstance();
+        loginFragment.show(getSupportFragmentManager(),null);
+        loginFragment.setStyle(DialogFragment.STYLE_NORMAL,R.style.DialogFragmentTheme);*/
+    }
+
+    @Override
+    public void onMoveToNameSetup(String uid) {
+        Fragment accountSetupFragment=AccountSetupFragment.newInstance();
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        fragmentManager.popBackStack();
+        FragmentTransaction transaction=fragmentManager.beginTransaction();
+        transaction.add(R.id.main_activity_id,accountSetupFragment,ACCOUNT_SETUP_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

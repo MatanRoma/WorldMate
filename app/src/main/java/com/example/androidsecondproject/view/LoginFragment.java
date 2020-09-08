@@ -1,6 +1,5 @@
 package com.example.androidsecondproject.view;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,19 +8,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.LoginViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
-public class LoginFragment extends androidx.fragment.app.DialogFragment {
+public class LoginFragment extends Fragment {
 
         private LoginViewModel mViewModel;
         private LoginFragmentInterface mListener;
@@ -89,10 +86,11 @@ public class LoginFragment extends androidx.fragment.app.DialogFragment {
             @Override
             public void onClick(View v) {
                 mListener.onClickMoveToRegister();
+               // dismiss();
             }
         });
 
-        setCancelable(false);
+        //setCancelable(false);
         return rootView;
     }
     private void setLoginFields(){

@@ -58,15 +58,21 @@ public class LoginViewModel extends ViewModel {
         return mEmail;
     }
 
-    public void setEmail(String mEmail) {
-        this.mEmail = mEmail;
+    public void setEmail(String email) {
+        if(!email.equals(""))
+            this.mEmail = email;
+        else
+            this.mEmail=" ";
     }
 
     public String getPassword() {
         return mPassword;
     }
 
-    public void setPassword(String mPassword) {
-        this.mPassword = mPassword;
+    public void setPassword(String password) {
+        if(!password.equals(""))
+            this.mPassword = password;
+        else
+            this.mPassword=" ";
     }
 }

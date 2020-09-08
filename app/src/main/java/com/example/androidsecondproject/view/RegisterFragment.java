@@ -8,19 +8,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.RegisterViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
-public class RegisterFragment extends androidx.fragment.app.DialogFragment {
+public class RegisterFragment extends Fragment {
 
     private RegisterFragmentInterface listener;
     private RegisterViewModel mViewModel;
@@ -28,6 +26,7 @@ public class RegisterFragment extends androidx.fragment.app.DialogFragment {
 
     interface RegisterFragmentInterface{
         void onClickMoveToLogin();
+        void onMoveToNameSetup(String uid);
     }
 
     public static RegisterFragment newInstance()
@@ -53,15 +52,15 @@ public class RegisterFragment extends androidx.fragment.app.DialogFragment {
         final Observer<String> registerObserverSuccess = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String uid) {
-                Toast.makeText(getActivity(), uid, Toast.LENGTH_SHORT).show();
-                setRegisterFields();
+                listener.onMoveToNameSetup(uid);
+              //  setRegisterFields();
             }
         };
         final Observer<String> registerObserverFailed = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String error) {
                 Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-                setRegisterFields();
+              //  setRegisterFields();
             }
         };
 
@@ -94,6 +93,8 @@ public class RegisterFragment extends androidx.fragment.app.DialogFragment {
                 listener.onClickMoveToLogin();
             }
         });
+
+        //setCancelable(false);
         return rootView;
     }
 
