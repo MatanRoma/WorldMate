@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_2"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:background="@color/transparent">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="10dp"
+                app:cardCornerRadius="10dp"
+                android:paddingHorizontal="10dp"
+                android:background="@color/transparent"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+                android:id="@+id/description_card_view">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_marginBottom="20dp"
+                        android:text="About myself"
+                        android:textSize="30sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/about_myself_tv"/>
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="?android:attr/listDivider"
+                        android:layout_below="@+id/about_myself_tv"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_below="@id/divider"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:id="@+id/description_tv"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_below="@id/divider"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:visibility="gone"
+                        android:id="@+id/description_et"/>
+
+
+                </RelativeLayout>
+
+
+
+
+
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/description_card_view"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="20dp"
+                android:text="Edit"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:background="@drawable/button_selector"
+                android:id="@+id/edit_btn"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginBottom="30dp"
+                android:visibility="gone"
+                android:layout_below="@id/description_card_view"
+                android:layout_marginTop="20dp"
+                android:text="Save"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:background="@drawable/button_selector"
+                android:id="@+id/save_btn"/>
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+
+
+
+
+
+</RelativeLayout>

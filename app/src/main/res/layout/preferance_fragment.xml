@@ -179,12 +179,12 @@
         android:id="@+id/distance_card_view">
 
         <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
-            android:id="@+id/rangeSeekbar3"
+            android:id="@+id/distance_seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:corner_radius="10"
             app:min_value="0"
-            app:max_value="100"
+            app:max_value="200"
             app:steps="5"
             app:bar_color="@color/colorPrimaryDark"
             app:bar_highlight_color="@color/colorAccent"
@@ -232,7 +232,7 @@
         android:id="@+id/age_card_view">
 
         <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
-            android:id="@+id/rangeSeekbar1"
+            android:id="@+id/age_range_seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:left_thumb_image="@drawable/thumb_range"
