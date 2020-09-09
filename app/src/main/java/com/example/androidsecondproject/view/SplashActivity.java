@@ -26,7 +26,20 @@ public class SplashActivity extends AppCompatActivity {
         mViewModel = new ViewModelProvider(this,new ViewModelFactory(getApplication(), eViewModels.Splash)).get(SplashViewModel.class);
         mIntent = new Intent(SplashActivity.this,MainActivity.class);
 
-        final Observer<Boolean> authObserver = new Observer<Boolean>() {
+        if(mViewModel.checkIfAuth()){
+            String uid=mViewModel.getUserUid();
+            mIntent.putExtra("uid",uid);
+            Toast.makeText(SplashActivity.this, uid, Toast.LENGTH_SHORT).show();
+        }
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                startActivity(mIntent);
+                finish();
+            }
+        }, 1000);
+
+        /*final Observer<Boolean> authObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable final Boolean isAuth) {
                 if(isAuth){
@@ -45,6 +58,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
 
-        mViewModel.getIsAuth().observe(this, authObserver);
+        mViewModel.getIsAuth().observe(this, authObserver);*/
+
     }
 }
