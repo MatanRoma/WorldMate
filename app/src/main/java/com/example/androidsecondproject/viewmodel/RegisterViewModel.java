@@ -16,7 +16,7 @@ public class RegisterViewModel extends ViewModel {
     private String mNickname;
 
     public RegisterViewModel(Context context) {
-        mRepository=new AuthRepository(context);
+        mRepository=AuthRepository.getInstance(context);
     }
 
     public MutableLiveData<String> getRegisterResultSuccess(){
