@@ -104,7 +104,7 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
                 lookingFor[0] = manCb.isChecked();
                 lookingFor[1] =womanCb.isChecked();
                 bundle.putBooleanArray("looking_for",lookingFor);
-                bundle.putInt("distance",(int)distanceSb.getMinValue());
+                bundle.putInt("distance",(int)distanceSb.getSelectedMinValue());
                 bundle.putInt("min_age", minAge);
                 bundle.putInt("max_age", maxAge);
 

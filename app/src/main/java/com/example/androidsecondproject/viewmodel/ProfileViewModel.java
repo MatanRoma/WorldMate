@@ -34,7 +34,7 @@ public class ProfileViewModel extends AndroidViewModel {
     }
 
     public void writeProfile(String uid ,Profile profile){
-        repository.writeProfile(uid,profile);
+        repository.writeProfile(profile);
     }
     private void loadProfileData() {
         repository.setProfileListener(new Repository.ProfileListener() {

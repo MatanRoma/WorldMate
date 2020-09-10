@@ -89,20 +89,20 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     }
 
     @Override
-    public void OnClickContinueToPreferences(String firstName, String lastName, String gender, ArrayList<Integer> date) {
-        PreferencesFragment preferencesFragment = PreferencesFragment.newInstance();
+    public void OnClickContinueToPreferences() {
+        ProfilePhotoFragment profilePhotoFragment = ProfilePhotoFragment.newInstance();
 
-        Bundle bundle = new Bundle();
+      /*  Bundle bundle = new Bundle();
         bundle.putString("first_name",firstName);
         bundle.putString("last_name",lastName);
         bundle.putString("gender",gender);
         bundle.putIntegerArrayList("date",date);
-        preferencesFragment.setArguments(bundle);
+        preferencesFragment.setArguments(bundle);*/
 
         FragmentManager fragmentManager=getSupportFragmentManager();
         fragmentManager.popBackStack();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.add(R.id.main_activity_id,preferencesFragment,ACCOUNT_PREFERENCES_FRAGMENT);
+        transaction.add(R.id.main_activity_id,profilePhotoFragment,ACCOUNT_PHOTO_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
 

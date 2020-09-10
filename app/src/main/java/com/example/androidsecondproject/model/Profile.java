@@ -1,58 +1,67 @@
 package com.example.androidsecondproject.model;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Profile implements Serializable {
 
-    private String uid;
-    private String fullName;
-    private Uri imageUri;
+
+    private String firstName;
+    private String lastName;
     private String description;
     private float age;
-    private boolean gender;  // male=true
+    private String birthday;
+    private String gender;
     private String hobbies;
 
-    public Profile(String uid, String fullName, Uri imageUri, String description, float age, boolean gender, String hobbies) {
-        this.uid = uid;
-        this.fullName = fullName;
-        this.imageUri = imageUri;
-        this.description = description;
+    public Profile(String firstName, String lastName, float age, String gender) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.description = " ";
+        this.hobbies=" ";
         this.age = age;
         this.gender = gender;
-        this.hobbies = hobbies;
     }
 
     public Profile() {
     }
-    @Exclude
-    public String getUid() {
-        return uid;
+
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setBirthday(GregorianCalendar date) {
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int birthYear=date.get(Calendar.YEAR);
+        this.age=currentYear-birthYear;
+
+        int birthMonth=date.get(Calendar.MONTH);
+        int birthDay=date.get(Calendar.DAY_OF_MONTH);
+        this.birthday=birthDay+"/"+birthMonth+"/"+birthYear;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public Uri getImageUri() {
-        return imageUri;
+    public String getLastName() {
+        return lastName;
     }
 
-    @Exclude
-    public void setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getDescription() {
@@ -71,20 +80,17 @@ public class Profile implements Serializable {
         this.age = age;
     }
 
-    public boolean isGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
     public String getHobbies() {
         return hobbies;
     }
-
-
-
 
     public void setHobbies(String hobbies) {
         this.hobbies = hobbies;
