@@ -1,31 +1,26 @@
 package com.example.androidsecondproject.view;
 
-import androidx.annotation.NonNull;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
 import com.example.androidsecondproject.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface, AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface {
 
     private  final  String LOGIN_FRAGMENT="login_fragment";
     private  final  String REGISTER_FRAGMENT="register_fragment";
     private  final  String ACCOUNT_SETUP_FRAGMENT="account_setup_fragment";
+    private  final  String ACCOUNT_PREFERENCES_FRAGMENT="account_preferences_fragment";
+    private  final  String ACCOUNT_PHOTO_FRAGMENT="account_photo_fragment";
 
     private LoginFragment loginFragment;
     private RegisterFragment registerFragment;
@@ -91,5 +86,47 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.add(R.id.main_activity_id,accountSetupFragment,ACCOUNT_SETUP_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void OnClickContinueToPreferences(String firstName, String lastName, String gender, ArrayList<Integer> date) {
+        PreferencesFragment preferencesFragment = PreferencesFragment.newInstance();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("first_name",firstName);
+        bundle.putString("last_name",lastName);
+        bundle.putString("gender",gender);
+        bundle.putIntegerArrayList("date",date);
+        preferencesFragment.setArguments(bundle);
+
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        fragmentManager.popBackStack();
+        FragmentTransaction transaction=fragmentManager.beginTransaction();
+        transaction.add(R.id.main_activity_id,preferencesFragment,ACCOUNT_PREFERENCES_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+
+
+    }
+
+    @Override
+    public void OnClickContinueToPhoto(Bundle bundle) {
+        ProfilePhotoFragment profilePhotoFragment = ProfilePhotoFragment.newInstance();
+        profilePhotoFragment.setArguments(bundle);
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        fragmentManager.popBackStack();
+        FragmentTransaction transaction=fragmentManager.beginTransaction();
+        transaction.add(R.id.main_activity_id,profilePhotoFragment,ACCOUNT_PHOTO_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String result = getIntent().getStringExtra("activity_result");
+        Toast.makeText(this, "result in main activity", Toast.LENGTH_SHORT).show();
     }
 }

@@ -83,7 +83,11 @@ public class Profile implements Serializable {
         return hobbies;
     }
 
+
+
+
     public void setHobbies(String hobbies) {
         this.hobbies = hobbies;
     }
 }
+

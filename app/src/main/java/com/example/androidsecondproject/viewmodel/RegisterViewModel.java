@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -10,9 +11,9 @@ public class RegisterViewModel extends ViewModel {
     private MutableLiveData<String> mRegisterDataSuccess;
     private MutableLiveData<String> mRegisterDataFailed;
     private AuthRepository mRepository;
-    private String mEmail=" ";
-    private String mPassword=" ";
-    private String mNickname=" ";
+    private String mEmail;
+    private String mPassword;
+    private String mNickname;
 
     public RegisterViewModel(Context context) {
         mRepository=AuthRepository.getInstance(context);
