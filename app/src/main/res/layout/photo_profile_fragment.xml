@@ -5,78 +5,97 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_sign">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/gallery_layout"
-        android:layout_centerHorizontal="true">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <ImageButton
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginStart="50dp"
-            android:id="@+id/from_gallery"
-            android:background="@drawable/ic_baseline_add_photo_alternate_24"
-            android:layout_marginTop="40dp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="From Gallery"
-            android:padding="5dp"
-            android:layout_below="@id/from_gallery"
-            android:layout_centerHorizontal="true"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gallery_layout"
+                android:layout_centerHorizontal="true">
 
-    </RelativeLayout>
+                <ImageButton
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginStart="50dp"
+                    android:id="@+id/from_gallery"
+                    android:src="@drawable/galery_icon"
+                    android:background="@color/transparent"
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="40dp"/>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/camera_layout"
-        android:layout_below="@id/gallery_layout"
-        android:layout_centerHorizontal="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="From Gallery"
+                    android:padding="5dp"
+                    android:layout_below="@id/from_gallery"
+                    android:layout_centerHorizontal="true"
+                    android:textStyle="bold"
+                    android:textSize="25sp"/>
 
-        <ImageButton
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/take_picture"
-            android:layout_marginEnd="50dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/ic_baseline_add_a_photo_24" />
+            </RelativeLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Take Picture"
-            android:layout_below="@id/take_picture"
-            android:layout_centerHorizontal="true"
-            android:textStyle="bold"
-            android:padding="5dp"
-            android:textSize="25sp"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/camera_layout"
+                android:layout_below="@id/gallery_layout"
+                android:layout_centerHorizontal="true">
 
-    </RelativeLayout>
+                <ImageButton
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/take_picture"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/camera_icon"
+                    android:background="@color/transparent"
+                    android:scaleType="fitXY"/>
 
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:id="@+id/selected_iv"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/camera_layout"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Take Picture"
+                    android:layout_below="@id/take_picture"
+                    android:layout_centerHorizontal="true"
+                    android:textStyle="bold"
+                    android:padding="5dp"
+                    android:textSize="25sp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_shape"
-        android:layout_below="@id/selected_iv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:text="Continue"
-        android:padding="5dp"/>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:id="@+id/selected_iv"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                android:layout_below="@id/camera_layout"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_shape"
+                android:layout_below="@id/selected_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:text="Continue"
+                android:padding="5dp"/>
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+
 
 
 </RelativeLayout>

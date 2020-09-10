@@ -1,6 +1,5 @@
 package com.example.androidsecondproject.viewmodel;
 
-
 import android.content.Context;
 
 

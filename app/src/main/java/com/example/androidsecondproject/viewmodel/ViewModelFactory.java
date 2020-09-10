@@ -8,13 +8,12 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidsecondproject.model.eViewModels;
-import com.example.androidsecondproject.view.LoginFragment;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private Application mApplication;
-    private eViewModels mEViewModel;
     private Context activityContext;
+    private eViewModels mEViewModel;
 
     public ViewModelFactory(@NonNull Application Application,eViewModels eViewModels) {
         this.mApplication = Application;

@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.RegisterViewModel;
@@ -53,14 +55,14 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onChanged(@Nullable final String uid) {
                 listener.onMoveToNameSetup(uid);
-              //  setRegisterFields();
+                //  setRegisterFields();
             }
         };
         final Observer<String> registerObserverFailed = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String error) {
                 Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-              //  setRegisterFields();
+                //  setRegisterFields();
             }
         };
 

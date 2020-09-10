@@ -5,7 +5,11 @@
     android:layout_centerInParent="true"
     android:background="@drawable/background_sign"
     android:layout_height="match_parent">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -19,12 +23,13 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="First name"
+            android:inputType="textPersonName"
             android:padding="15dp"
             android:textColor="#000"
             android:textSize="25sp"
-            android:gravity="center"
-            android:hint="First name"
-            android:inputType="textPersonName"/>
+            android:id="@+id/first_name_et"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,7 +52,8 @@
             android:textSize="25sp"
             android:gravity="center"
             android:hint="Last name"
-            android:inputType="textPersonName"/>
+            android:inputType="textPersonName"
+            android:id="@+id/last_name_et"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,16 +122,23 @@
         android:minDate="1/1/1921"
         android:layout_marginTop="15dp"
         android:layout_below="@id/birthday_tv"
-        android:id="@+id/date_picked"/>
+        android:id="@+id/date_picker"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_shape"
-        android:layout_below="@id/date_picked"
+        android:layout_below="@id/date_picker"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:text="Continue"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:id="@+id/continue_btn"/>
+</RelativeLayout>
+
+    </ScrollView>
+
+
+
 
 </RelativeLayout>

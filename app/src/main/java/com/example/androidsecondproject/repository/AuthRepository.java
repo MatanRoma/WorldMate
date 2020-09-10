@@ -28,11 +28,11 @@ public class AuthRepository {
     public boolean checkIfAuth(){
         FirebaseUser firebaseUser= mAuth.getCurrentUser();
         if(firebaseUser!=null) {
-           // Toast.makeText(mContext, firebaseUser.getUid(), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(mContext, firebaseUser.getUid(), Toast.LENGTH_SHORT).show();
             return true;
         }
         else{
-          //  Toast.makeText(mContext, "User NOT!! EXISTS", Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(mContext, "User NOT!! EXISTS", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
