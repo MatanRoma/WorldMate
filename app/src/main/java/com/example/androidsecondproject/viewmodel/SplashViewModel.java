@@ -16,7 +16,7 @@ public class SplashViewModel extends AndroidViewModel {
 
     public SplashViewModel(@NonNull Application application) {
         super(application);
-        mRepository=new AuthRepository(application.getApplicationContext());
+        mRepository=AuthRepository.getInstance(application.getApplicationContext());
     }
 
     public String getUserUid(){

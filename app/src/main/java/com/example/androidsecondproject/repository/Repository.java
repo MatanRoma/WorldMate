@@ -1,5 +1,7 @@
 package com.example.androidsecondproject.repository;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.example.androidsecondproject.model.Profile;
@@ -9,16 +11,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Database {
-    private final String profileTable = "profiles";
+public class Repository {
+
+    private final String PROFILE_TABLE = "profiles";
     private FirebaseDatabase database;
+    private AuthRepository authRepository;
     private DatabaseReference profilesTable;
     private ProfileListener profileListener;
+    private static Repository repository;
 
 
-    public Database() {
+    private Repository(Context context) {
         database=FirebaseDatabase.getInstance();
-        profilesTable=database.getReference(profileTable);
+        profilesTable=database.getReference(PROFILE_TABLE);
+        authRepository=AuthRepository.getInstance(context);
+
+    }
+    public static Repository getInstance(Context context){
+        if(repository!=null){
+            repository=new Repository(context);
+        }
+        return repository;
     }
 
     public void readProfile(String uid){

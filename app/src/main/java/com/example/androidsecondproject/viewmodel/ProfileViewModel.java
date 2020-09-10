@@ -1,26 +1,25 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
-import android.app.Person;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.androidsecondproject.model.Profile;
-import com.example.androidsecondproject.repository.AuthRepository;
-import com.example.androidsecondproject.repository.Database;
+import com.example.androidsecondproject.repository.Repository;
 
-public class ProfileViewModel extends ViewModel {
+public class ProfileViewModel extends AndroidViewModel {
 
     private MutableLiveData<Profile> profileLiveData;
-    private Database database;
+    private Repository repository;
 
-    public ProfileViewModel() {
-        database=new Database();
+    public ProfileViewModel(@NonNull Application application) {
+        super(application);
+        repository=Repository.getInstance(application.getApplicationContext());
     }
+
     public MutableLiveData<Profile> getProfileResultSuccess(){
         if (profileLiveData == null) {
             profileLiveData = new MutableLiveData<>();
@@ -31,14 +30,14 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void readProfile(String uid){
-        database.readProfile(uid);
+        repository.readProfile(uid);
     }
 
     public void writeProfile(String uid ,Profile profile){
-        database.writeProfile(uid,profile);
+        repository.writeProfile(uid,profile);
     }
     private void loadProfileData() {
-        database.setProfileListener(new Database.ProfileListener() {
+        repository.setProfileListener(new Repository.ProfileListener() {
             @Override
             public void onProfileDataChangeSuccess(Profile profile) {
                 profileLiveData.setValue(profile);
@@ -46,7 +45,7 @@ public class ProfileViewModel extends ViewModel {
 
             @Override
             public void onProfileDataChangeFail(String error) {
-
+                //TODO
             }
         });
     }
