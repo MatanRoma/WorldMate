@@ -2,6 +2,7 @@ package com.example.androidsecondproject.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,8 @@ public class RegisterFragment extends Fragment {
         final Observer<String> registerObserverFailed = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String error) {
-                Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+               Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+
               //  setRegisterFields();
             }
         };
@@ -78,6 +80,7 @@ public class RegisterFragment extends Fragment {
         mNicknameEt=rootView.findViewById(R.id.nickname_et_signup);
         mEmailEt=rootView.findViewById(R.id.email_et_signup);
         mPasswordEt=rootView.findViewById(R.id.password_et_signup);
+
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override

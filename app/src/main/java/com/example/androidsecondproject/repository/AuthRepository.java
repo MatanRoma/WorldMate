@@ -2,7 +2,7 @@ package com.example.androidsecondproject.repository;
 
 import android.app.Activity;
 import android.content.Context;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 
@@ -20,8 +20,15 @@ public class AuthRepository {
     private Context mContext;
     private RepoRegisterInterface mRegisterLister;
     private RepoLoginInterface mLoginLister;
+    private static AuthRepository authRepository;
 
-    public AuthRepository(Context context) {
+    public static AuthRepository getInstance(Context context){
+        if(authRepository==null)
+            return new AuthRepository(context);
+        return authRepository;
+    }
+
+    private AuthRepository(Context context) {
         mAuth=FirebaseAuth.getInstance();
         this.mContext=context;
     }
@@ -43,8 +50,11 @@ public class AuthRepository {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            mRegisterLister.onSuccessRegister(user.getUid());
+
+                            if(mRegisterLister!=null) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                mRegisterLister.onSuccessRegister(user.getUid());
+                            }
 
                         } else {
                             userRegisterFailed(task);
@@ -54,16 +64,18 @@ public class AuthRepository {
     }
 
     private void userRegisterFailed(Task<AuthResult> task){
-        try {
-            throw task.getException();
-        } catch(FirebaseAuthWeakPasswordException e) {
-            mRegisterLister.onFailedRegister("Password must be at least 8 letters");
-        } catch(FirebaseAuthInvalidCredentialsException e) {
-            mRegisterLister.onFailedRegister("Invalid Credentials");
-        } catch(FirebaseAuthUserCollisionException e) {
-            mRegisterLister.onFailedRegister("User already exists");
-        } catch(Exception e) {
-            mRegisterLister.onFailedRegister("Error");
+        if(mRegisterLister!=null) {
+            try {
+                throw task.getException();
+            } catch (FirebaseAuthWeakPasswordException e) {
+                mRegisterLister.onFailedRegister("Password must be at least 8 letters");
+            } catch (FirebaseAuthInvalidCredentialsException e) {
+                mRegisterLister.onFailedRegister("Invalid Credentials");
+            } catch (FirebaseAuthUserCollisionException e) {
+                mRegisterLister.onFailedRegister("User already exists");
+            } catch (Exception e) {
+                mRegisterLister.onFailedRegister("Error");
+            }
         }
 
     }
@@ -74,14 +86,19 @@ public class AuthRepository {
                 .addOnCompleteListener((Activity)mContext, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            mLoginLister.onSuccessLogin(user.getUid());
-                        } else {
-                            mLoginLister.onFailedLogin("Incorrect credentials");
+                        if (mRegisterLister != null) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                mLoginLister.onSuccessLogin(user.getUid());
+                            } else {
+                                mLoginLister.onFailedLogin("Incorrect credentials");
+                            }
                         }
                     }
                 });
+    }
+    public void logoutUser(){
+        mAuth.signOut();
     }
 
     public void setRegisterLister(RepoRegisterInterface repoRegisterInterface){

@@ -18,7 +18,7 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<String> mLoginDataFailed;
 
     public LoginViewModel(Context context) {
-        mRepository=new AuthRepository(context);
+        mRepository=AuthRepository.getInstance(context);
     }
 
     public MutableLiveData<String> getLoginDataSuccess(){
