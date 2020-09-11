@@ -14,7 +14,9 @@ import com.example.androidsecondproject.R;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface, AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface {
+public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface, AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface,
+                                                     ProfilePhotoFragment.PhotoFragmentInterface
+{
 
     private  final  String LOGIN_FRAGMENT="login_fragment";
     private  final  String REGISTER_FRAGMENT="register_fragment";
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     @Override
     public void OnClickContinueToPreferences() {
-        ProfilePhotoFragment profilePhotoFragment = ProfilePhotoFragment.newInstance();
+        PreferencesFragment preferencesFragment = PreferencesFragment.newInstance();
 
       /*  Bundle bundle = new Bundle();
         bundle.putString("first_name",firstName);
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         FragmentManager fragmentManager=getSupportFragmentManager();
         fragmentManager.popBackStack();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.add(R.id.main_activity_id,profilePhotoFragment,ACCOUNT_PHOTO_FRAGMENT);
+        transaction.add(R.id.main_activity_id,preferencesFragment,ACCOUNT_PREFERENCES_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
 

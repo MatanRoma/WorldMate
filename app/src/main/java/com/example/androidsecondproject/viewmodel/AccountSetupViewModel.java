@@ -25,7 +25,7 @@ public class AccountSetupViewModel extends AndroidViewModel {
     }
 
     public void setDate(GregorianCalendar date) {
-        profile.setBirthday(date);
+        profile.calculateBirthday(date);
     }
 
     public void setGender(String gender) {

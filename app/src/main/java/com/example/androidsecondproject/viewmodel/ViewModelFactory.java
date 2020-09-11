@@ -53,6 +53,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                     objectToReturn= (T) (new ProfilePhotoViewModel(mApplication));
                 }
                 break;
+            case Preferences:
+                if (modelClass.isAssignableFrom(PreferencesViewModel.class)) {
+                    objectToReturn= (T) (new PreferencesViewModel(mApplication));
+                }
+                break;
 
 
         }

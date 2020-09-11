@@ -100,8 +100,19 @@ public class AccountSetupFragment extends Fragment {
                 mViewModel.setLastName(lastName);
                 mViewModel.setDate(date);
 
-                mViewModel.writeProfileToDatabase();
-                mListener.OnClickContinueToPreferences();
+                boolean fieldsValidated=true;
+                if(firstName.trim().length()==0){
+                    fieldsValidated=false;
+                    //TODO
+                }
+                if(lastName.trim().length()==0){
+                    fieldsValidated=false;
+                    //TODO
+                }
+                if(fieldsValidated) {
+                    mViewModel.writeProfileToDatabase();
+                    mListener.OnClickContinueToPreferences();
+                }
             }
         });
         return rootView;

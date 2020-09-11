@@ -21,6 +21,8 @@ public class Profile implements Serializable {
     private String birthday;
     private String gender;
     private String hobbies;
+    private boolean discovery;
+    private Preferences preferences=new Preferences();
 
     public Profile(String firstName, String lastName, float age, String gender) {
         this.firstName = firstName;
@@ -38,7 +40,11 @@ public class Profile implements Serializable {
         return birthday;
     }
 
-    public void setBirthday(GregorianCalendar date) {
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public void calculateBirthday(GregorianCalendar date) {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         int birthYear=date.get(Calendar.YEAR);
         this.age=currentYear-birthYear;
@@ -47,6 +53,8 @@ public class Profile implements Serializable {
         int birthDay=date.get(Calendar.DAY_OF_MONTH);
         this.birthday=birthDay+"/"+birthMonth+"/"+birthYear;
     }
+
+
 
     public String getFirstName() {
         return firstName;
@@ -94,6 +102,23 @@ public class Profile implements Serializable {
 
     public void setHobbies(String hobbies) {
         this.hobbies = hobbies;
+    }
+
+    public boolean isDiscovery() {
+        return discovery;
+    }
+
+    public Preferences getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(Preferences preferences) {
+        this.preferences = preferences;
+    }
+
+
+    public void setDiscovery(boolean discovery) {
+        this.discovery = discovery;
     }
 }
 

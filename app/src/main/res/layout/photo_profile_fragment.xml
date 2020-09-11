@@ -117,7 +117,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:text="Continue"
-                android:padding="5dp"/>
+                android:padding="5dp"
+                android:id="@+id/continue_btn_photo"/>
 
 
         </RelativeLayout>

@@ -43,11 +43,9 @@ public class Repository {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
-                            for(DataSnapshot data:snapshot.getChildren()){
-                                Profile profile=data.getValue(Profile.class);
+                                Profile profile=snapshot.getValue(Profile.class);
                                 if(profileListener!=null)
                                     profileListener.onProfileDataChangeSuccess(profile);
-                            }
                         }
                     }
 
@@ -64,6 +62,9 @@ public class Repository {
         //TODO
     }
 
+    public String getCurrentUserId(){
+       return authRepository.getCurrentUserUid();
+    }
     public void setProfileListener(ProfileListener profileListener) {
         this.profileListener = profileListener;
     }

@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.view;
 
 import android.Manifest;
+import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -49,7 +51,11 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
     ImageView resultIv;
     ProfilePhotoViewModel mViewModel;
     SpinKitView loadingAnimation;
+    private PhotoFragmentInterface mListener;
 
+    interface PhotoFragmentInterface{
+        public void OnClickContinueToPreferences();
+    }
 
     public  static ProfilePhotoFragment newInstance()
     {
@@ -61,6 +67,7 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        mListener=(PhotoFragmentInterface)getActivity();
     }
 
     @Override
@@ -73,12 +80,9 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.photo_profile_fragment,container,false);
 
-     //   bundle = getArguments();
-
-    //    Toast.makeText(getContext(), bundle.getIntegerArrayList("date").get(2)+"", Toast.LENGTH_SHORT).show();
-
         resultIv = rootView.findViewById(R.id.selected_iv);
         loadingAnimation=rootView.findViewById(R.id.spin_kit);
+        Button continueButton=rootView.findViewById(R.id.continue_btn_photo);
         mViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.ProfilePhoto)).get(ProfilePhotoViewModel.class);
         final Observer<Uri> downloadObserverSuccess=new Observer<Uri>() {
             @Override
@@ -92,7 +96,6 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
                 }, 1500);
                Glide.with(ProfilePhotoFragment.this).load(uri).into(resultIv);
 
-            //    resultIv.setImageBitmap(bitmap);
             }
         };
         final Observer<Boolean> uploadObserverSuccess=new Observer<Boolean>() {
@@ -113,7 +116,6 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
 
                 file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),miliTime+".jpg");
 
-                //file = new File(Environment.getExternalStorageDirectory(),miliTime+".jpg");
                 imageUri = FileProvider.getUriForFile(
                         getContext(),
                         "com.example.androidsecondproject.provider", //(use your app signature + ".provider" )
@@ -135,20 +137,27 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
             }
         });
 
-        if(Build.VERSION.SDK_INT>=23) {
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.OnClickContinueToPreferences();
+            }
+        });
+
+       /* if(Build.VERSION.SDK_INT>=23) {
             int hasWritePermission = getContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if(hasWritePermission!= PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_PERMISSION_REQUEST);
             }
             //else takePicBtn.setVisibility(View.VISIBLE);
-        }
+        }*/
 
 
         return rootView;
     }
 
 
-    @Override
+/*    @Override
     public void onRequestPermissionsResult(int requestCode,  String[] permissions,  int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -161,15 +170,7 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
                 //takePicBtn.setVisibility(View.VISIBLE);
             }
         }
-    }
-
-
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode, @Nullable Bundle options) {
-
-        super.startActivityForResult(intent, requestCode, options);
-
-    }
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -178,34 +179,15 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
             resultIv.setVisibility(View.GONE);
             loadingAnimation.setVisibility(View.VISIBLE);
             if (requestCode == CAMERA_REQUEST ) {
-                imageUrl = file.getAbsolutePath();
-
-
                 mViewModel.uploadPicture(imageUri);
-
             }
             if (requestCode == RESULT_LOAD_IMAGE ) {
-
-                file = new File(data.toUri(Intent.URI_ALLOW_UNSAFE));
-
-                imageUrl = data.getDataString();
-
-                imageUrl = getRealPathFromURI(data.getData());
-
-
                 imageUri = data.getData();
                 mViewModel.uploadPicture(imageUri);
-
-
             }
 
         }
 
     }
 
-    public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContext().getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx); }
 }
