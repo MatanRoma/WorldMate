@@ -23,7 +23,6 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     public ViewModelFactory(Context context, eViewModels eViewModels) {
         this.activityContext=context;
         this.mEViewModel=eViewModels;
-
     }
 
     public <T extends ViewModel> T create(Class<T> modelClass) {
@@ -42,6 +41,21 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             case Login:
                 if (modelClass.isAssignableFrom(LoginViewModel.class)) {
                     objectToReturn= (T) (new LoginViewModel(activityContext));
+                }
+                break;
+            case Setup:
+                if (modelClass.isAssignableFrom(AccountSetupViewModel.class)) {
+                    objectToReturn= (T) (new AccountSetupViewModel(mApplication));
+                }
+                break;
+            case ProfilePhoto:
+                if (modelClass.isAssignableFrom(ProfilePhotoViewModel.class)) {
+                    objectToReturn= (T) (new ProfilePhotoViewModel(mApplication));
+                }
+                break;
+            case Preferences:
+                if (modelClass.isAssignableFrom(PreferencesViewModel.class)) {
+                    objectToReturn= (T) (new PreferencesViewModel(mApplication));
                 }
                 break;
 

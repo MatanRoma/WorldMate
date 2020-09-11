@@ -11,12 +11,20 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
 import com.example.androidsecondproject.R;
+import com.example.androidsecondproject.model.Preferences;
+import com.example.androidsecondproject.model.Profile;
+import com.example.androidsecondproject.model.eViewModels;
+import com.example.androidsecondproject.viewmodel.PreferencesViewModel;
+import com.example.androidsecondproject.viewmodel.RegisterViewModel;
+import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
 import java.util.ArrayList;
 
@@ -25,11 +33,10 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
     String lastName;
     String gender;
     ArrayList<Integer> date;
-
     int minAge;
     int maxAge;
-
     Bundle bundle;
+    PreferencesViewModel mViewModel;
 
 
     private PreferencesFragmentInterface mListener;
@@ -62,18 +69,40 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.preference_fragment,container,false);
 
-        bundle = getArguments();
+    /*    bundle = getArguments();
 
         firstName = bundle.getString("first_name");
         lastName = bundle.getString("last_name");
         gender = bundle.getString("gender");
-        date = bundle.getIntegerArrayList("date");
+        date = bundle.getIntegerArrayList("date");*/
 
 
 
         final CrystalSeekbar distanceSb = rootView.findViewById(R.id.distance_seekbar);
         final TextView distanceResTv = rootView.findViewById(R.id.distance_res_tv);
+        final CheckBox menCb=rootView.findViewById(R.id.men_cb);
+        final CheckBox womenCb=rootView.findViewById(R.id.women_cb);
+        final CheckBox discoveryCb=rootView.findViewById(R.id.discovery_cb);
+        mViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Preferences)).get(PreferencesViewModel.class);
 
+        Observer<Profile> profileObserver=new Observer<Profile>() {
+            @Override
+            public void onChanged(Profile profile) {
+                Preferences preferences=profile.getPreferences();
+                preferences.setLookingForMen(menCb.isChecked());
+                preferences.setLookingForWomen(womenCb.isChecked());
+                preferences.setMaxAge(maxAge);
+                preferences.setMinAge(minAge);
+                preferences.setMaxDistance(distanceSb.getSelectedMinValue().intValue());
+                profile.setDiscovery(discoveryCb.isChecked());
+
+                mViewModel.writeProfile(profile);
+
+            }
+        };
+        mViewModel.getProfileResultSuccess().observe(this, profileObserver);
+
+        distanceSb.setMinStartValue(20);
         distanceSb.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
             @Override
             public void valueChanged(Number value) {
@@ -96,19 +125,10 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CheckBox discovery = rootView.findViewById(R.id.discovery_cb);
-                bundle.putBoolean("discovery",discovery.isChecked());
-                boolean[] lookingFor = new boolean[2];
-                CheckBox manCb = rootView.findViewById(R.id.men_cb);
-                CheckBox womanCb = rootView.findViewById(R.id.women_cb);
-                lookingFor[0] = manCb.isChecked();
-                lookingFor[1] =womanCb.isChecked();
-                bundle.putBooleanArray("looking_for",lookingFor);
-                bundle.putInt("distance",(int)distanceSb.getMinValue());
-                bundle.putInt("min_age", minAge);
-                bundle.putInt("max_age", maxAge);
+                if(menCb.isChecked()||womenCb.isChecked()){
+                    mViewModel.readProfile();
+                }
 
-                mListener.OnClickContinueToPhoto(bundle);
             }
         });
 

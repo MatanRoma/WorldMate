@@ -1,53 +1,51 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
+import android.app.Person;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
 
-public class ProfileViewModel extends AndroidViewModel {
+public class PreferencesViewModel extends AndroidViewModel {
 
-    private MutableLiveData<Profile> profileLiveData;
+    private MutableLiveData<Profile> profileMutableLiveData;
     private Repository repository;
 
-    public ProfileViewModel(@NonNull Application application) {
+    public PreferencesViewModel(@NonNull Application application) {
         super(application);
         repository=Repository.getInstance(application.getApplicationContext());
     }
 
     public MutableLiveData<Profile> getProfileResultSuccess(){
-        if (profileLiveData == null) {
-            profileLiveData = new MutableLiveData<>();
+        if (profileMutableLiveData == null) {
+            profileMutableLiveData = new MutableLiveData<>();
             loadProfileData();
-      //      database.readProfileFrom();
         }
-        return profileLiveData;
+        return profileMutableLiveData;
     }
 
-    public void readProfile(String uid){
-        repository.readProfile(uid);
-    }
-
-    public void writeProfile(String uid ,Profile profile){
-        repository.writeProfile(profile);
-    }
-    private void loadProfileData() {
+    private void loadProfileData(){
         repository.setProfileListener(new Repository.ProfileListener() {
             @Override
             public void onProfileDataChangeSuccess(Profile profile) {
-                profileLiveData.setValue(profile);
+                profileMutableLiveData.setValue(profile);
             }
 
             @Override
             public void onProfileDataChangeFail(String error) {
-                //TODO
+
             }
         });
     }
 
+    public void readProfile() {
+        repository.readProfile(repository.getCurrentUserId());
+    }
+    public void writeProfile(Profile profile){
+        repository.writeProfile(profile);
+    }
 }

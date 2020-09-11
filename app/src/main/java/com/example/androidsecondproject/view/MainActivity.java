@@ -14,7 +14,9 @@ import com.example.androidsecondproject.R;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface, AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface {
+public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface, AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface,
+                                                     ProfilePhotoFragment.PhotoFragmentInterface
+{
 
     private  final  String LOGIN_FRAGMENT="login_fragment";
     private  final  String REGISTER_FRAGMENT="register_fragment";
@@ -89,15 +91,15 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     }
 
     @Override
-    public void OnClickContinueToPreferences(String firstName, String lastName, String gender, ArrayList<Integer> date) {
+    public void OnClickContinueToPreferences() {
         PreferencesFragment preferencesFragment = PreferencesFragment.newInstance();
 
-        Bundle bundle = new Bundle();
+      /*  Bundle bundle = new Bundle();
         bundle.putString("first_name",firstName);
         bundle.putString("last_name",lastName);
         bundle.putString("gender",gender);
         bundle.putIntegerArrayList("date",date);
-        preferencesFragment.setArguments(bundle);
+        preferencesFragment.setArguments(bundle);*/
 
         FragmentManager fragmentManager=getSupportFragmentManager();
         fragmentManager.popBackStack();

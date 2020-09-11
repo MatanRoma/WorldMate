@@ -4,7 +4,10 @@ public enum eViewModels {
 
         Splash,
         Register,
-        Login
+        Login,
+        Setup,
+        ProfilePhoto,
+        Preferences
 
 
 }

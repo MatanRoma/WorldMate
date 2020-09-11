@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.repository;
 
 import android.content.Context;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
@@ -16,8 +17,10 @@ public class Repository {
     private final String PROFILE_TABLE = "profiles";
     private FirebaseDatabase database;
     private AuthRepository authRepository;
+    private StorageRepository storageRepository;
     private DatabaseReference profilesTable;
     private ProfileListener profileListener;
+
     private static Repository repository;
 
 
@@ -25,10 +28,11 @@ public class Repository {
         database=FirebaseDatabase.getInstance();
         profilesTable=database.getReference(PROFILE_TABLE);
         authRepository=AuthRepository.getInstance(context);
+        storageRepository=StorageRepository.getInstance();
 
     }
     public static Repository getInstance(Context context){
-        if(repository!=null){
+        if(repository==null){
             repository=new Repository(context);
         }
         return repository;
@@ -39,11 +43,9 @@ public class Repository {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
-                            for(DataSnapshot data:snapshot.getChildren()){
-                                Profile profile=data.getValue(Profile.class);
+                                Profile profile=snapshot.getValue(Profile.class);
                                 if(profileListener!=null)
                                     profileListener.onProfileDataChangeSuccess(profile);
-                            }
                         }
                     }
 
@@ -55,15 +57,31 @@ public class Repository {
             }
         });
     }
-    public void writeProfile(String uid,Profile profile){
-        profilesTable.child(uid).setValue(profile);
+    public void writeProfile(Profile profile){
+        profilesTable.child(authRepository.getCurrentUserUid()).setValue(profile);
         //TODO
     }
 
-
-
+    public String getCurrentUserId(){
+       return authRepository.getCurrentUserUid();
+    }
     public void setProfileListener(ProfileListener profileListener) {
         this.profileListener = profileListener;
+    }
+    public void setDownloadListener(StorageRepository.StorageDownloadPicListener downloadListener){
+        storageRepository.setDownloadListener(downloadListener);
+    }
+    public void setUploadListener(StorageRepository.StorageUploadPicListener uploadListener){
+        storageRepository.setUploadListener(uploadListener);
+    }
+    public void writePictureToStorage(Uri imageUri){
+        storageRepository.writePictureToStorage(imageUri,authRepository.getCurrentUserUid());
+    }
+    public void readMyProfilePictureFromStorage(){
+        storageRepository.readPictureFromStorage(authRepository.getCurrentUserUid());
+    }
+    public void readPictureFromStorage(String uid){
+        storageRepository.readPictureFromStorage(uid);
     }
 
     public interface ProfileListener {
