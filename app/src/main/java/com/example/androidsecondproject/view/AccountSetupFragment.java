@@ -17,8 +17,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.AccountSetupViewModel;
-import com.example.androidsecondproject.viewmodel.ProfileViewModel;
-import com.example.androidsecondproject.viewmodel.RegisterViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
 import java.util.ArrayList;
@@ -31,7 +29,7 @@ public class AccountSetupFragment extends Fragment {
 
     interface AccountSetupFragmentInterface
     {
-        void OnClickContinueToPreferences();
+        void OnClickContinueToPhoto();
     }
 
 
@@ -111,7 +109,7 @@ public class AccountSetupFragment extends Fragment {
                 }
                 if(fieldsValidated) {
                     mViewModel.writeProfileToDatabase();
-                    mListener.OnClickContinueToPreferences();
+                    mListener.OnClickContinueToPhoto();
                 }
             }
         });

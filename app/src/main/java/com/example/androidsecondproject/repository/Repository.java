@@ -2,6 +2,7 @@ package com.example.androidsecondproject.repository;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -44,7 +45,9 @@ public class Repository {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
                                 Profile profile=snapshot.getValue(Profile.class);
+                            Log.d("prof","tst2");
                                 if(profileListener!=null)
+                                    Log.d("prof","tst3");
                                     profileListener.onProfileDataChangeSuccess(profile);
                         }
                     }
@@ -87,6 +90,9 @@ public class Repository {
     public interface ProfileListener {
         void onProfileDataChangeSuccess(Profile profile);
         void onProfileDataChangeFail(String error);
+    }
+    public void logout(){
+        authRepository.logoutUser();
     }
 
 }
