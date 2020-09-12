@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.repository;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 
@@ -77,8 +78,8 @@ public class Repository {
     public void setUploadListener(StorageRepository.StorageUploadPicListener uploadListener){
         storageRepository.setUploadListener(uploadListener);
     }
-    public void writePictureToStorage(Uri imageUri){
-        storageRepository.writePictureToStorage(imageUri,authRepository.getCurrentUserUid());
+    public void writePictureToStorage(Bitmap bitmap){
+        storageRepository.writePictureToStorage(bitmap,authRepository.getCurrentUserUid());
     }
     public void readMyProfilePictureFromStorage(){
         storageRepository.readPictureFromStorage(authRepository.getCurrentUserUid());

@@ -15,6 +15,7 @@ import com.example.androidsecondproject.repository.StorageRepository;
 public class MainViewModel extends AndroidViewModel {
     Repository mRepository;
     private MutableLiveData<Uri> mPictureDownloadSuccess;
+    private MutableLiveData<String> mPictureDownloadFailed;
     private MutableLiveData<Profile> mProfileLiveData;
 
     public MainViewModel(@NonNull Application application) {
@@ -51,6 +52,13 @@ public class MainViewModel extends AndroidViewModel {
         }
         return mPictureDownloadSuccess;
     }
+    public MutableLiveData<String> getDownloadResultFailed(){
+        if (mPictureDownloadFailed == null) {
+            mPictureDownloadFailed = new MutableLiveData<>();
+            setDownloadListener();
+        }
+        return mPictureDownloadFailed;
+    }
     public void setDownloadListener(){
         mRepository.setDownloadListener(new StorageRepository.StorageDownloadPicListener() {
             @Override
@@ -60,7 +68,7 @@ public class MainViewModel extends AndroidViewModel {
 
             @Override
             public void onFailedDownloadPic(String error) {
-
+                mPictureDownloadFailed.setValue(error);
             }
         });
     }
@@ -69,11 +77,12 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void getNavigationHeaderProfile() {
-        Log.d("prof","tst1");
+        loadProfileData();
         mRepository.readProfile(mRepository.getCurrentUserId());
     }
 
     public void getNavigationHeaderImage() {
+        setDownloadListener();
         mRepository.readMyProfilePictureFromStorage();
     }
 

@@ -100,6 +100,7 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
                 mViewModel.writeProfile(profile);
                 mListener.OnClickContinueToApp();
 
+
             }
         };
         mViewModel.getProfileResultSuccess().observe(this, profileObserver);

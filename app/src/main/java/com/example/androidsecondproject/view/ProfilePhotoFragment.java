@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -37,6 +39,7 @@ import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -53,21 +56,20 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
     SpinKitView loadingAnimation;
     private PhotoFragmentInterface mListener;
 
-    interface PhotoFragmentInterface{
+    interface PhotoFragmentInterface {
         public void OnClickContinueToPreferences();
     }
 
-    public  static ProfilePhotoFragment newInstance()
-    {
+    public static ProfilePhotoFragment newInstance() {
 
         ProfilePhotoFragment profilePhotoFragment = new ProfilePhotoFragment();
-        return  profilePhotoFragment;
+        return profilePhotoFragment;
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mListener=(PhotoFragmentInterface)getActivity();
+        mListener = (PhotoFragmentInterface) getActivity();
     }
 
     @Override
@@ -78,27 +80,27 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.photo_profile_fragment,container,false);
+        View rootView = inflater.inflate(R.layout.photo_profile_fragment, container, false);
 
         resultIv = rootView.findViewById(R.id.selected_iv);
-        loadingAnimation=rootView.findViewById(R.id.spin_kit);
-        Button continueButton=rootView.findViewById(R.id.continue_btn_photo);
-        mViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.ProfilePhoto)).get(ProfilePhotoViewModel.class);
-        final Observer<Uri> downloadObserverSuccess=new Observer<Uri>() {
+        loadingAnimation = rootView.findViewById(R.id.spin_kit);
+        Button continueButton = rootView.findViewById(R.id.continue_btn_photo);
+        mViewModel = new ViewModelProvider(this, new ViewModelFactory(getActivity().getApplication(), eViewModels.ProfilePhoto)).get(ProfilePhotoViewModel.class);
+        final Observer<Uri> downloadObserverSuccess = new Observer<Uri>() {
             @Override
             public void onChanged(Uri uri) {
-                new Handler().postDelayed(new Runnable(){
+                new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         loadingAnimation.setVisibility(View.GONE);
                         resultIv.setVisibility(View.VISIBLE);
                     }
                 }, 1500);
-               Glide.with(ProfilePhotoFragment.this).load(uri).into(resultIv);
+                Glide.with(ProfilePhotoFragment.this).load(uri).into(resultIv);
 
             }
         };
-        final Observer<Boolean> uploadObserverSuccess=new Observer<Boolean>() {
+        final Observer<Boolean> uploadObserverSuccess = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 mViewModel.downloadPicture();
@@ -114,7 +116,7 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
                 Date currentTime = Calendar.getInstance().getTime();
                 Long miliTime = currentTime.getTime();
 
-                file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),miliTime+".jpg");
+                file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), miliTime + ".jpg");
 
                 imageUri = FileProvider.getUriForFile(
                         getContext(),
@@ -122,8 +124,8 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
                         file);
 
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-                startActivityForResult(intent,CAMERA_REQUEST);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                startActivityForResult(intent, CAMERA_REQUEST);
             }
         });
 
@@ -144,50 +146,53 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
             }
         });
 
-       /* if(Build.VERSION.SDK_INT>=23) {
-            int hasWritePermission = getContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if(hasWritePermission!= PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_PERMISSION_REQUEST);
-            }
-            //else takePicBtn.setVisibility(View.VISIBLE);
-        }*/
+
 
 
         return rootView;
     }
 
 
-/*    @Override
-    public void onRequestPermissionsResult(int requestCode,  String[] permissions,  int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if(requestCode == WRITE_PERMISSION_REQUEST) {
-            if(grantResults[0]!=PackageManager.PERMISSION_GRANTED) {
-                //Toast.makeText(this, "Can't take picture", Toast.LENGTH_SHORT).show();
-
-            }
-            else {
-                //takePicBtn.setVisibility(View.VISIBLE);
-            }
-        }
-    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==getActivity().RESULT_OK) {
+        if (resultCode == getActivity().RESULT_OK) {
             resultIv.setVisibility(View.GONE);
             loadingAnimation.setVisibility(View.VISIBLE);
-            if (requestCode == CAMERA_REQUEST ) {
-                mViewModel.uploadPicture(imageUri);
+            if (requestCode == CAMERA_REQUEST) {
+                // mViewModel.uploadPicture(imageUri);
             }
-            if (requestCode == RESULT_LOAD_IMAGE ) {
+            if (requestCode == RESULT_LOAD_IMAGE) {
                 imageUri = data.getData();
-                mViewModel.uploadPicture(imageUri);
+                //     mViewModel.uploadPicture(imageUri);
             }
-
+            uploadBitmap();
         }
 
-    }
 
+    }
+    private void uploadBitmap(){
+        Bitmap bitmap=null;
+        if(Build.VERSION.SDK_INT<28){
+            try {
+                bitmap= MediaStore.Images.Media.getBitmap(
+                        getActivity().getContentResolver(),
+                        imageUri
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            ImageDecoder.Source source = ImageDecoder.createSource(getActivity().getContentResolver(), imageUri);
+            try {
+                bitmap = ImageDecoder.decodeBitmap(source);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        mViewModel.uploadPicture(bitmap);
+    }
 }
+
