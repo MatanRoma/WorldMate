@@ -2,10 +2,36 @@
 <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_activity_id">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hey world"
-        android:layout_gravity="center"
-        />
+
+
+    <androidx.drawerlayout.widget.DrawerLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/drawer_layout"
+        >
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:id="@+id/toolbar"
+                android:background="@color/black"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+
+        </RelativeLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:id="@+id/navigation_view"
+            app:headerLayout="@layout/header_of_navigation"
+            app:menu="@menu/navigation_menu"/>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 </RelativeLayout>

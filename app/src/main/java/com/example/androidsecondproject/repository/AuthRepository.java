@@ -2,6 +2,7 @@ package com.example.androidsecondproject.repository;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 
 import androidx.annotation.NonNull;
@@ -81,16 +82,18 @@ public class AuthRepository {
     }
 
     public void loginUser(String email,String password){
-
+        Log.d("test","loginuser2");
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener((Activity)mContext, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (mRegisterLister != null) {
+                        if (mLoginLister != null) {
                             if (task.isSuccessful()) {
+                                Log.d("test","loginuser3");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 mLoginLister.onSuccessLogin(user.getUid());
                             } else {
+                                Log.d("test","loginuser4");
                                 mLoginLister.onFailedLogin("Incorrect credentials");
                             }
                         }

@@ -64,8 +64,8 @@ public class ProfilePhotoViewModel extends AndroidViewModel {
             }
         });
     }
-    public void uploadPicture(Uri imageUri){
-        mRepository.writePictureToStorage(imageUri);
+    public void uploadPicture(Bitmap bitmap){
+        mRepository.writePictureToStorage(bitmap);
     }
     public void downloadPicture(){
         mRepository.readMyProfilePictureFromStorage();

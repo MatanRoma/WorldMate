@@ -28,6 +28,7 @@ public class LoginFragment extends Fragment {
 
     interface LoginFragmentInterface{
         void onClickMoveToRegister();
+        void onLoginToApp();
     }
 
     public static LoginFragment newInstance()
@@ -50,15 +51,16 @@ public class LoginFragment extends Fragment {
         final Observer<String> loginObserverSuccess = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String uid) {
-                Toast.makeText(getActivity(), uid, Toast.LENGTH_SHORT).show();
-                setLoginFields();
+
+           //     setLoginFields();
+                mListener.onLoginToApp();
             }
         };
         final Observer<String> loginObserverFailed = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String error) {
                 Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-                setLoginFields();
+             //   setLoginFields();
             }
         };
 
@@ -81,6 +83,8 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 setLoginFields();
                 mViewModel.loginUser();
+
+
             }
         });
 

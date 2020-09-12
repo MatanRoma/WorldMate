@@ -1,6 +1,8 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 
 import androidx.lifecycle.MutableLiveData;
@@ -50,6 +52,7 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void loginUser(){
+        Log.d("test","loginuser");
         mRepository.loginUser(mEmail,mPassword);
     }
 

@@ -58,6 +58,12 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                     objectToReturn= (T) (new PreferencesViewModel(mApplication));
                 }
                 break;
+            case Main:
+                if (modelClass.isAssignableFrom(MainViewModel.class)) {
+                    objectToReturn= (T) (new MainViewModel(mApplication));
+                }
+                break;
+
 
 
         }

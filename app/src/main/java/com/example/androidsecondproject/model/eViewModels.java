@@ -7,7 +7,8 @@ public enum eViewModels {
         Login,
         Setup,
         ProfilePhoto,
-        Preferences
+        Preferences,
+        Main;
 
 
 }

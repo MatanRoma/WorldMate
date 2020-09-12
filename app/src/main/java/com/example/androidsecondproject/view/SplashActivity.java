@@ -29,9 +29,8 @@ public class SplashActivity extends AppCompatActivity {
         mIntent = new Intent(SplashActivity.this,MainActivity.class);
 
         if(mViewModel.checkIfAuth()){
-            String uid=mViewModel.getUserUid();
-            mIntent.putExtra("uid",uid);
-            Toast.makeText(SplashActivity.this, uid, Toast.LENGTH_SHORT).show();
+           // String uid=mViewModel.getUserUid();
+            mIntent.putExtra("is_logged_in",true);
         }
         new Handler().postDelayed(new Runnable(){
             @Override
