@@ -25,6 +25,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:hint="First name"
+
+
             android:inputType="textPersonName"
             android:padding="15dp"
             android:textColor="#000"
@@ -98,7 +100,19 @@
             android:layout_toEndOf="@id/men_btn"/>
 
     </RelativeLayout>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You must pick a gender"
+        android:gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:textColor="@color/red_stroke"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:layout_below="@id/gender_pick_layout"
+        android:layout_marginTop="25dp"
+        android:id="@+id/gender_error_tv"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -109,7 +123,7 @@
         android:textColor="#000"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:layout_below="@id/gender_pick_layout"
+        android:layout_below="@id/gender_error_tv"
         android:layout_marginTop="25dp"
         android:id="@+id/birthday_tv"/>
 

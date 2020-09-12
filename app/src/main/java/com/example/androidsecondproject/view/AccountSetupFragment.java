@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.view;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +20,8 @@ import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.AccountSetupViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
+import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class AccountSetupFragment extends Fragment {
@@ -99,13 +101,34 @@ public class AccountSetupFragment extends Fragment {
                 mViewModel.setDate(date);
 
                 boolean fieldsValidated=true;
+
+                TextInputLayout firstNameInputLayout = rootView.findViewById(R.id.firstname_info);
+                TextInputLayout lastNameInputLayout = rootView.findViewById(R.id.lastname_info);
+
                 if(firstName.trim().length()==0){
                     fieldsValidated=false;
-                    //TODO
+                    firstNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+                }
+                else
+                {
+                    firstNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
                 }
                 if(lastName.trim().length()==0){
                     fieldsValidated=false;
-                    //TODO
+                    lastNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+                }
+                else
+                {
+                    lastNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+                }
+                TextView genderErrorTv = rootView.findViewById(R.id.gender_error_tv);
+                if(!manBtn.isSelected()&& !womanBtn.isSelected())
+                {
+                    genderErrorTv.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    genderErrorTv.setVisibility(View.GONE);
                 }
                 if(fieldsValidated) {
                     mViewModel.writeProfileToDatabase();

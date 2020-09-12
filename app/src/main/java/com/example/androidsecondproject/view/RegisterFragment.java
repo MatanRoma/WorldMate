@@ -1,8 +1,8 @@
 package com.example.androidsecondproject.view;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +20,14 @@ import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.RegisterViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class RegisterFragment extends Fragment {
 
     private RegisterFragmentInterface listener;
     private RegisterViewModel mViewModel;
     private EditText mNicknameEt,mEmailEt,mPasswordEt;
+    private View rootView;
 
     interface RegisterFragmentInterface{
         void onClickMoveToLogin();
@@ -80,7 +82,7 @@ public class RegisterFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.signup_fragment,container,false);
+        rootView = inflater.inflate(R.layout.signup_fragment,container,false);
 
         Button registerButton=rootView.findViewById(R.id.register_btn_signup);
         Button signInButton=rootView.findViewById(R.id.sign_in_button);
@@ -92,6 +94,7 @@ public class RegisterFragment extends Fragment {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                validayeFields();
                 setRegisterFields();
                 mViewModel.registerUser();
             }
@@ -106,6 +109,33 @@ public class RegisterFragment extends Fragment {
 
         //setCancelable(false);
         return rootView;
+    }
+
+    void validayeFields(){
+        TextInputLayout nicknameInputLayout = rootView.findViewById(R.id.nickname_signup);
+        if(mNicknameEt.getText().toString().trim().length() == 0)
+        {
+            nicknameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+        }
+        else {
+            nicknameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+        }
+        TextInputLayout emailInputLayout = rootView.findViewById(R.id.email_signup);
+        if(mEmailEt.getText().toString().trim().length() == 0)
+        {
+            emailInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+        }
+        else {
+            emailInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+        }
+        TextInputLayout passwordInputLayout = rootView.findViewById(R.id.password_signup);
+        if(mPasswordEt.getText().toString().trim().length() == 0)
+        {
+            passwordInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+        }
+        else {
+            passwordInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+        }
     }
 
     public void setRegisterFields(){
