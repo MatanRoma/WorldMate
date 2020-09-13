@@ -39,9 +39,6 @@ public class AccountSetupFragment extends Fragment {
     public static AccountSetupFragment newInstance()
     {
         AccountSetupFragment accountSetupFragment=new AccountSetupFragment();
-            /*Bundle bundle = new Bundle();
-            bundle.putString("user_name",username);
-            loginFragment.setArguments(bundle);*/
         return accountSetupFragment;
     }
 
@@ -107,23 +104,28 @@ public class AccountSetupFragment extends Fragment {
 
                 if(firstName.trim().length()==0){
                     fieldsValidated=false;
-                    firstNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+                //    firstNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+                    firstNameEt.setError("Please enter First Name");
                 }
                 else
                 {
-                    firstNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+       //             firstNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+               //     firstNameEt.setError(null);
                 }
                 if(lastName.trim().length()==0){
                     fieldsValidated=false;
-                    lastNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+          //          lastNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+                    lastNameEt.setError("Please enter Last Name");
                 }
                 else
                 {
-                    lastNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+//                  lastNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+ //                   lastNameEt.setError(null);
                 }
                 TextView genderErrorTv = rootView.findViewById(R.id.gender_error_tv);
                 if(!manBtn.isSelected()&& !womanBtn.isSelected())
                 {
+                    fieldsValidated=false;
                     genderErrorTv.setVisibility(View.VISIBLE);
                 }
                 else

@@ -2,7 +2,7 @@ package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
 import android.net.Uri;
-import android.util.Log;
+
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -16,31 +16,41 @@ public class MainViewModel extends AndroidViewModel {
     Repository mRepository;
     private MutableLiveData<Uri> mPictureDownloadSuccess;
     private MutableLiveData<String> mPictureDownloadFailed;
-    private MutableLiveData<Profile> mProfileLiveData;
+    private MutableLiveData<Profile> mProfileSuccessLiveData;
+    private MutableLiveData<String> mProfileFailedLiveData;
+
 
     public MainViewModel(@NonNull Application application) {
         super(application);
         mRepository=Repository.getInstance(application.getApplicationContext());
     }
     public MutableLiveData<Profile> getProfileResultSuccess(){
-        if (mProfileLiveData == null) {
-            mProfileLiveData = new MutableLiveData<>();
+        if (mProfileSuccessLiveData == null) {
+            mProfileSuccessLiveData = new MutableLiveData<>();
             loadProfileData();
             //      database.readProfileFrom();
         }
-        return mProfileLiveData;
+        return mProfileSuccessLiveData;
+    }
+    public MutableLiveData<String> getProfileResultFailed(){
+        if (mProfileFailedLiveData == null) {
+            mProfileFailedLiveData = new MutableLiveData<>();
+            loadProfileData();
+            //      database.readProfileFrom();
+        }
+        return mProfileFailedLiveData;
     }
 
     private void loadProfileData() {
         mRepository.setProfileListener(new Repository.ProfileListener() {
             @Override
             public void onProfileDataChangeSuccess(Profile profile) {
-                mProfileLiveData.setValue(profile);
+                mProfileSuccessLiveData.setValue(profile);
             }
 
             @Override
             public void onProfileDataChangeFail(String error) {
-
+                mProfileFailedLiveData.setValue(error);
             }
         });
     }

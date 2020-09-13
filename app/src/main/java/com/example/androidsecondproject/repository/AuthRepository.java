@@ -44,7 +44,7 @@ public class AuthRepository {
             return false;
         }
     }
-    public void registerUser(String email,String password,String nickname){
+    public void registerUser(String email,String password){
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener((Activity)mContext, new OnCompleteListener<AuthResult>() {

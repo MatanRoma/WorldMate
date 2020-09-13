@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,12 +26,13 @@ public class RegisterFragment extends Fragment {
 
     private RegisterFragmentInterface listener;
     private RegisterViewModel mViewModel;
-    private EditText mNicknameEt,mEmailEt,mPasswordEt;
+    private EditText mEmailEt,mPasswordEt;
+    private TextView mErrorTv;
     private View rootView;
 
     interface RegisterFragmentInterface{
         void onClickMoveToLogin();
-        void onMoveToNameSetup(String uid);
+        void onMoveToAccountSetup();
     }
 
     public static RegisterFragment newInstance()
@@ -57,21 +58,16 @@ public class RegisterFragment extends Fragment {
         final Observer<String> registerObserverSuccess = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String uid) {
-                listener.onMoveToNameSetup(uid);
+        //        mErrorTv.setVisibility(View.INVISIBLE);
+                listener.onMoveToAccountSetup();
                 //  setRegisterFields();
             }
         };
         final Observer<String> registerObserverFailed = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String error) {
-
-                Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-                //  setRegisterFields();
-
-               Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-
-              //  setRegisterFields();
-
+                mErrorTv.setText(error);
+                mErrorTv.setVisibility(View.VISIBLE);
             }
         };
 
@@ -86,15 +82,16 @@ public class RegisterFragment extends Fragment {
 
         Button registerButton=rootView.findViewById(R.id.register_btn_signup);
         Button signInButton=rootView.findViewById(R.id.sign_in_button);
-        mNicknameEt=rootView.findViewById(R.id.nickname_et_signup);
         mEmailEt=rootView.findViewById(R.id.email_et_signup);
         mPasswordEt=rootView.findViewById(R.id.password_et_signup);
+        mErrorTv=rootView.findViewById(R.id.error_et_signup);
+
 
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validayeFields();
+              //  validateFields();
                 setRegisterFields();
                 mViewModel.registerUser();
             }
@@ -111,15 +108,8 @@ public class RegisterFragment extends Fragment {
         return rootView;
     }
 
-    void validayeFields(){
-        TextInputLayout nicknameInputLayout = rootView.findViewById(R.id.nickname_signup);
-        if(mNicknameEt.getText().toString().trim().length() == 0)
-        {
-            nicknameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
-        }
-        else {
-            nicknameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
-        }
+    void validateFields(){
+
         TextInputLayout emailInputLayout = rootView.findViewById(R.id.email_signup);
         if(mEmailEt.getText().toString().trim().length() == 0)
         {
@@ -132,6 +122,7 @@ public class RegisterFragment extends Fragment {
         if(mPasswordEt.getText().toString().trim().length() == 0)
         {
             passwordInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+            mPasswordEt.setError("pw is empty");
         }
         else {
             passwordInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
@@ -141,10 +132,8 @@ public class RegisterFragment extends Fragment {
     public void setRegisterFields(){
         String email=mEmailEt.getText().toString();
         String password=mPasswordEt.getText().toString();
-        String nickname=mNicknameEt.getText().toString();
 
         mViewModel.setEmail(email);
         mViewModel.setPassword(password);
-        mViewModel.setNickname(nickname);
     }
 }

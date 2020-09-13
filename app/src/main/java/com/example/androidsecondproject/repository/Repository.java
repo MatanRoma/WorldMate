@@ -51,10 +51,15 @@ public class Repository {
                                     Log.d("prof","tst3");
                                     profileListener.onProfileDataChangeSuccess(profile);
                         }
+                        else {
+                            if(profileListener!=null)
+                                profileListener.onProfileDataChangeFail("not_exist");
+                        }
                     }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d("err","cancel");
                 if(profileListener!=null)
                     profileListener.onProfileDataChangeFail(error.getMessage());
                 //TODO
@@ -86,6 +91,10 @@ public class Repository {
     }
     public void readPictureFromStorage(String uid){
         storageRepository.readPictureFromStorage(uid);
+    }
+
+    public boolean checkIfAuth() {
+        return authRepository.checkIfAuth();
     }
 
     public interface ProfileListener {

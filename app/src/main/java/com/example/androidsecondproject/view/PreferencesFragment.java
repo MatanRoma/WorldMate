@@ -30,14 +30,10 @@ import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 import java.util.ArrayList;
 
 public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
-    String firstName;
-    String lastName;
-    String gender;
-    ArrayList<Integer> date;
-    int minAge;
-    int maxAge;
-    Bundle bundle;
-    PreferencesViewModel mViewModel;
+
+    private int minAge;
+    private int maxAge;
+    private PreferencesViewModel mViewModel;
 
 
     private PreferencesFragmentInterface mListener;
@@ -70,15 +66,6 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.preference_fragment,container,false);
 
-    /*    bundle = getArguments();
-
-        firstName = bundle.getString("first_name");
-        lastName = bundle.getString("last_name");
-        gender = bundle.getString("gender");
-        date = bundle.getIntegerArrayList("date");*/
-
-
-
         final CrystalSeekbar distanceSb = rootView.findViewById(R.id.distance_seekbar);
         final TextView distanceResTv = rootView.findViewById(R.id.distance_res_tv);
         final CheckBox menCb=rootView.findViewById(R.id.men_cb);
@@ -89,12 +76,13 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
         Observer<Profile> profileObserver=new Observer<Profile>() {
             @Override
             public void onChanged(Profile profile) {
-                Preferences preferences=profile.getPreferences();
+                Preferences preferences=new Preferences();
                 preferences.setLookingForMen(menCb.isChecked());
                 preferences.setLookingForWomen(womenCb.isChecked());
                 preferences.setMaxAge(maxAge);
                 preferences.setMinAge(minAge);
                 preferences.setMaxDistance(distanceSb.getSelectedMinValue().intValue());
+                profile.setPreferences(preferences);
                 profile.setDiscovery(discoveryCb.isChecked());
                 Log.d("prof","pref");
                 mViewModel.writeProfile(profile);

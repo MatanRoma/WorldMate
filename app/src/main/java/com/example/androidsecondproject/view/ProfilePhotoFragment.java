@@ -145,10 +145,6 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
                 mListener.OnClickContinueToPreferences();
             }
         });
-
-
-
-
         return rootView;
     }
 
