@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private  final  String ACCOUNT_SETUP_FRAGMENT="account_setup_fragment";
     private  final  String ACCOUNT_PREFERENCES_FRAGMENT="account_preferences_fragment";
     private  final  String ACCOUNT_PHOTO_FRAGMENT="account_photo_fragment";
+    private  final  String ACCOUNT_PROFILE_FRAGMENT = "account_profile_fragment";
 
     private LoginFragment loginFragment;
     private RegisterFragment registerFragment;
@@ -153,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             case "Home":
                 break;
             case "My Profile":
+                moveToProfileFragment();
                 break;
             case "Your Matches":
                 break;
@@ -267,5 +269,15 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             drawerLayout.openDrawer(Gravity.START);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void moveToProfileFragment()
+    {
+        ProfileFragment profileFragment = ProfileFragment.newInstance();
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction transaction=fragmentManager.beginTransaction();
+        transaction.add(R.id.main_activity_id,profileFragment,ACCOUNT_PROFILE_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
