@@ -14,14 +14,15 @@ public class Profile implements Serializable {
 
     private String firstName;
     private String lastName;
-    private String description;
+    private String description="";
     private float age;
     private String birthday;
     private String gender;
-    private String hobbies;
+    private String hobbies="";
+    private String lookingFor="";
     private boolean discovery;
     private Preferences preferences;
-
+/*
     public Profile(String firstName, String lastName, float age, String gender) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,9 +31,12 @@ public class Profile implements Serializable {
         this.age = age;
         this.gender = gender;
     }
+    */
+
 
     public Profile() {
     }
+
 
     public String getBirthday() {
         return birthday;

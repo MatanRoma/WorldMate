@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.view;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +18,30 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidsecondproject.R;
+import com.example.androidsecondproject.model.Profile;
+import com.example.androidsecondproject.model.eViewModels;
+import com.example.androidsecondproject.viewmodel.ProfileViewModel;
+import com.example.androidsecondproject.viewmodel.RegisterViewModel;
+import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
 import java.util.ArrayList;
 
 public class ProfileFragment extends androidx.fragment.app.DialogFragment {
 
-    public  static ProfileFragment newInstance()
+    private ProfileViewModel mProfileViewModel;
+
+
+
+    public static ProfileFragment newInstance(Profile profile,String uri)
     {
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("profile",profile);
+        bundle.putString("profile_picture",uri);
         ProfileFragment profileFragment = new ProfileFragment();
+        profileFragment.setArguments(bundle);
         return profileFragment;
     }
 
@@ -56,6 +71,11 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
         final TextView nameTv = rootView.findViewById(R.id.username_tv);
         final ImageButton confirmNameBtn = rootView.findViewById(R.id.name_confirm_iv);
         final EditText nameEt = rootView.findViewById(R.id.username_et);
+
+        mProfileViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.ProfileFragment)).get(ProfileViewModel.class);
+        Bundle bundle=getArguments();
+        mProfileViewModel.setProfile((Profile)bundle.getSerializable("profile"));
+        mProfileViewModel.setImageUri(Uri.parse(bundle.getString("profile_picture")));
         
         editNameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +148,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
                             descriptionTv.setText(descriptionEt.getText().toString());
                             editDescriptionBtn.setVisibility(View.VISIBLE);
                             saveBtn.setVisibility(View.GONE);
+
 
                         }
                     });

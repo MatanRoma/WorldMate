@@ -103,7 +103,11 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
         final Observer<Boolean> uploadObserverSuccess = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                mViewModel.downloadPicture();
+
+                loadingAnimation.setVisibility(View.GONE);
+                resultIv.setVisibility(View.VISIBLE);
+                Glide.with(ProfilePhotoFragment.this).load(imageUri).into(resultIv);
+
             }
         };
         mViewModel.getUploadResultSuccess().observe(this, uploadObserverSuccess);

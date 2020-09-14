@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,42 +13,29 @@ import com.example.androidsecondproject.repository.Repository;
 
 public class ProfileViewModel extends AndroidViewModel {
 
-    private MutableLiveData<Profile> profileLiveData;
     private Repository repository;
+    private Profile profile;
+    private Uri imageUri;
 
     public ProfileViewModel(@NonNull Application application) {
         super(application);
         repository=Repository.getInstance(application.getApplicationContext());
     }
 
-    public MutableLiveData<Profile> getProfileResultSuccess(){
-        if (profileLiveData == null) {
-            profileLiveData = new MutableLiveData<>();
-            loadProfileData();
-      //      database.readProfileFrom();
-        }
-        return profileLiveData;
-    }
 
-    public void readProfile(String uid){
-        repository.readProfile(uid);
-    }
-
-    public void writeProfile(String uid ,Profile profile){
+    public void writeProfile(){
         repository.writeProfile(profile);
     }
-    private void loadProfileData() {
-        repository.setProfileListener(new Repository.ProfileListener() {
-            @Override
-            public void onProfileDataChangeSuccess(Profile profile) {
-                profileLiveData.setValue(profile);
-            }
 
-            @Override
-            public void onProfileDataChangeFail(String error) {
-                //TODO
-            }
-        });
+    public void writePicture(){
+     //   repository.
     }
 
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public void setImageUri(Uri imageUri) {
+        this.imageUri = imageUri;
+    }
 }

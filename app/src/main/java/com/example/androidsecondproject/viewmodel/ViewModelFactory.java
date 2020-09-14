@@ -63,6 +63,12 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                     objectToReturn= (T) (new MainViewModel(mApplication));
                 }
                 break;
+            case ProfileFragment:
+                if (modelClass.isAssignableFrom(ProfileViewModel.class)) {
+                    objectToReturn= (T) (new ProfileViewModel(mApplication));
+                }
+                break;
+
 
 
 

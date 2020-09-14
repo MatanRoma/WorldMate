@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDefaultDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_launcher_background);
     }
 
     private void setObservers() {
@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 }
                 else {
                     mNameTv.setText(profile.getFirstName());
-                    mViewModel.getNavigationHeaderImage();
                 }
             }
         };
@@ -140,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     private void fetchProfileData() {
         mViewModel.getNavigationHeaderProfile();
+        mViewModel.getNavigationHeaderImage();
     }
 
     private void handleNavigationItemSelected(String title) {
@@ -168,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.add(R.id.main_activity_id,loginFragment,LOGIN_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
-        transaction.replace()
     }
     @Override
     public void onClickMoveToRegister() {
@@ -236,10 +235,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     public void OnClickContinueToApp() {
         //TODO
         FragmentManager fragmentManager=getSupportFragmentManager();
-        Fragment prefernceFragment=fragmentManager.findFragmentByTag(ACCOUNT_PREFERENCES_FRAGMENT);
+        Fragment preferenceFragment=fragmentManager.findFragmentByTag(ACCOUNT_PREFERENCES_FRAGMENT);
         fragmentManager.popBackStack();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.remove(prefernceFragment);
+        transaction.remove(preferenceFragment);
         transaction.commit();
         fetchProfileData();
     }
@@ -267,10 +266,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     public void moveToProfileFragment()
     {
-        ProfileFragment profileFragment = ProfileFragment.newInstance();
+        ProfileFragment profileFragment = ProfileFragment.newInstance(mViewModel.getProfile(),mViewModel.getPictureUri().toString());
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.add(R.id.main_activity_id,profileFragment,ACCOUNT_PROFILE_FRAGMENT);
+        transaction.add(R.id.drawer_layout,profileFragment,ACCOUNT_PROFILE_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
     }
