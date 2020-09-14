@@ -1,10 +1,5 @@
 package com.example.androidsecondproject.model;
 
-import android.net.Uri;
-import android.util.Log;
-
-import com.google.firebase.database.Exclude;
-
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -14,14 +9,15 @@ public class Profile implements Serializable {
 
     private String firstName;
     private String lastName;
-    private String description;
+    private String description="about myself";
     private float age;
     private String birthday;
     private String gender;
-    private String hobbies;
+    private String hobbies="my hobbies";
+    private String lookingFor="looking for";
     private boolean discovery;
     private Preferences preferences;
-
+/*
     public Profile(String firstName, String lastName, float age, String gender) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,9 +26,12 @@ public class Profile implements Serializable {
         this.age = age;
         this.gender = gender;
     }
+    */
+
 
     public Profile() {
     }
+
 
     public String getBirthday() {
         return birthday;
@@ -119,5 +118,12 @@ public class Profile implements Serializable {
         this.discovery = discovery;
     }
 
+    public String getLookingFor() {
+        return lookingFor;
+    }
+
+    public void setLookingFor(String lookingFor) {
+        this.lookingFor = lookingFor;
+    }
 }
 

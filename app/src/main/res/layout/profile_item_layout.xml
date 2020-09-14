@@ -90,29 +90,33 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_below="@id/description_card_view"
-        android:layout_marginHorizontal="50dp"
+        android:padding="10dp"
         android:layout_marginBottom="30dp"
         android:layout_marginTop="20dp"
         android:text="Edit"
+        android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:background="@drawable/button_selector"
         android:id="@+id/edit_btn"/>
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
         android:visibility="gone"
         android:layout_below="@id/description_card_view"
-        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:layout_marginTop="15dp"
         android:text="Save"
+        android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:background="@drawable/button_selector"
         android:id="@+id/save_btn"/>
 </RelativeLayout>

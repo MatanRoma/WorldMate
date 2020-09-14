@@ -2,6 +2,7 @@ package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
 import android.net.Uri;
+import android.util.Log;
 
 
 import androidx.annotation.NonNull;
@@ -101,6 +102,20 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public String getGender() {
-       return mProfileSuccessLiveData.getValue().getGender();
+       return mProfileSuccessLiveData.getValue()!=null?mProfileSuccessLiveData.getValue().getGender():"male";
+    }
+    public Uri getPictureUri(){
+        return mPictureDownloadSuccess.getValue()!=null? mPictureDownloadSuccess.getValue():Uri.parse("no_picture");
+    }
+    public Profile getProfile(){
+        return mProfileSuccessLiveData.getValue();
+    }
+
+    public void setProfile(Profile profile)
+    {
+        mProfileSuccessLiveData.setValue(profile);
+    }
+    public void setPicture(Uri uri){
+        mPictureDownloadSuccess.setValue(uri);
     }
 }

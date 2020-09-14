@@ -3,11 +3,11 @@ package com.example.androidsecondproject.view;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -32,7 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface,
-        AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface
+        AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface, ProfileFragment.UpdateDrawerFromProfileFragment
 {
 
     private  final  String LOGIN_FRAGMENT="login_fragment";
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDefaultDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_launcher_background);
     }
 
     private void setObservers() {
@@ -98,12 +98,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         Observer<Profile> profileObserverSuccess=new Observer<Profile>() {
             @Override
             public void onChanged(Profile profile) {
+                Toast.makeText(MainActivity.this, "observer", Toast.LENGTH_SHORT).show();
                 if(profile.getPreferences()==null){
                     moveToPreferences();
                 }
                 else {
                     mNameTv.setText(profile.getFirstName());
-                    mViewModel.getNavigationHeaderImage();
                 }
             }
         };
@@ -124,12 +124,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         Observer<String> pictureFailedObserver=new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                String gender=mViewModel.getGender();
-                if(gender.equals("male"))
-                    Glide.with(MainActivity.this).load(R.drawable.man_profile).into(mProfileIv);
-                else if(gender.equals("female"))
-                    Glide.with(MainActivity.this).load(R.drawable.woman_profile).into(mProfileIv);
-
+                Glide.with(MainActivity.this).load(R.drawable.man_profile).into(mProfileIv);
             }
         };
         mViewModel.getDownloadResultFailed().observe(this,pictureFailedObserver);
@@ -140,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     private void fetchProfileData() {
         mViewModel.getNavigationHeaderProfile();
+        mViewModel.getNavigationHeaderImage();
     }
 
     private void handleNavigationItemSelected(String title) {
@@ -168,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.add(R.id.main_activity_id,loginFragment,LOGIN_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
-        transaction.replace()
     }
     @Override
     public void onClickMoveToRegister() {
@@ -236,10 +231,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     public void OnClickContinueToApp() {
         //TODO
         FragmentManager fragmentManager=getSupportFragmentManager();
-        Fragment prefernceFragment=fragmentManager.findFragmentByTag(ACCOUNT_PREFERENCES_FRAGMENT);
+        Fragment preferenceFragment=fragmentManager.findFragmentByTag(ACCOUNT_PREFERENCES_FRAGMENT);
         fragmentManager.popBackStack();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.remove(prefernceFragment);
+        transaction.remove(preferenceFragment);
         transaction.commit();
         fetchProfileData();
     }
@@ -267,11 +262,17 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     public void moveToProfileFragment()
     {
-        ProfileFragment profileFragment = ProfileFragment.newInstance();
+        ProfileFragment profileFragment = ProfileFragment.newInstance(mViewModel.getProfile(),mViewModel.getPictureUri().toString());
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.add(R.id.main_activity_id,profileFragment,ACCOUNT_PROFILE_FRAGMENT);
+        transaction.add(R.id.drawer_layout,profileFragment,ACCOUNT_PROFILE_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+
+    @Override
+    public void onUpdatePicture(Uri uri) {
+        mViewModel.setPicture(uri);
     }
 }

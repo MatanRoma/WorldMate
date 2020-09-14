@@ -8,7 +8,8 @@ public enum eViewModels {
         Setup,
         ProfilePhoto,
         Preferences,
-        Main;
+        Main,
+        ProfileFragment
 
 
 }

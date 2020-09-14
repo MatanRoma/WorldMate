@@ -1,6 +1,8 @@
 package com.example.androidsecondproject.model;
 
-public class Preferences {
+import java.io.Serializable;
+
+public class Preferences implements Serializable {
 
     private boolean lookingForMen;
     private boolean lookingForWomen;

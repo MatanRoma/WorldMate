@@ -1,11 +1,7 @@
 package com.example.androidsecondproject.view;
 
-import android.Manifest;
-import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
@@ -20,11 +16,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -32,16 +26,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.eViewModels;
-import com.example.androidsecondproject.repository.StorageRepository;
 import com.example.androidsecondproject.viewmodel.ProfilePhotoViewModel;
-import com.example.androidsecondproject.viewmodel.RegisterViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
 
 public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
     final int CAMERA_REQUEST = 1;
@@ -98,12 +88,16 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
                 }, 1500);
                 Glide.with(ProfilePhotoFragment.this).load(uri).into(resultIv);
 
+
             }
         };
         final Observer<Boolean> uploadObserverSuccess = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
+                file.delete();
                 mViewModel.downloadPicture();
+
+
             }
         };
         mViewModel.getUploadResultSuccess().observe(this, uploadObserverSuccess);
@@ -113,10 +107,8 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
         cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date currentTime = Calendar.getInstance().getTime();
-                Long miliTime = currentTime.getTime();
 
-                file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), miliTime + ".jpg");
+                file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),    System.nanoTime()+"profile.jpg");
 
                 imageUri = FileProvider.getUriForFile(
                         getContext(),
@@ -142,6 +134,8 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(file!=null)
+                    file.delete();
                 mListener.OnClickContinueToPreferences();
             }
         });
