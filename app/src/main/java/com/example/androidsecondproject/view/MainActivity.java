@@ -124,12 +124,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         Observer<String> pictureFailedObserver=new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                String gender=mViewModel.getGender();
-                if(gender.equals("male"))
-                    Glide.with(MainActivity.this).load(R.drawable.man_profile).into(mProfileIv);
-                else if(gender.equals("female"))
-                    Glide.with(MainActivity.this).load(R.drawable.woman_profile).into(mProfileIv);
-
+                Glide.with(MainActivity.this).load(R.drawable.man_profile).into(mProfileIv);
             }
         };
         mViewModel.getDownloadResultFailed().observe(this,pictureFailedObserver);
@@ -277,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
 
     @Override
-    public void onUpdateProfile(Profile profile) {
-        mViewModel.setProfile(profile);
+    public void onUpdatePicture(Uri uri) {
+        mViewModel.setPicture(uri);
     }
 }

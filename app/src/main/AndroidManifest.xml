@@ -3,6 +3,7 @@
     package="com.example.androidsecondproject">
     <uses-permission android:name="android.permission.INTERNET" />
 
+
     <application
         android:allowBackup="true"
         android:usesCleartextTraffic="true"

@@ -88,15 +88,15 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
                 }, 1500);
                 Glide.with(ProfilePhotoFragment.this).load(uri).into(resultIv);
 
+
             }
         };
         final Observer<Boolean> uploadObserverSuccess = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
+                file.delete();
+                mViewModel.downloadPicture();
 
-                loadingAnimation.setVisibility(View.GONE);
-                resultIv.setVisibility(View.VISIBLE);
-                Glide.with(ProfilePhotoFragment.this).load(imageUri).into(resultIv);
 
             }
         };
@@ -108,7 +108,7 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
             @Override
             public void onClick(View v) {
 
-                file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),   "profile.jpg");
+                file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),    System.nanoTime()+"profile.jpg");
 
                 imageUri = FileProvider.getUriForFile(
                         getContext(),

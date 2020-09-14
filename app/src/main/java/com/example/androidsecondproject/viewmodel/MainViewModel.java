@@ -105,7 +105,6 @@ public class MainViewModel extends AndroidViewModel {
        return mProfileSuccessLiveData.getValue()!=null?mProfileSuccessLiveData.getValue().getGender():"male";
     }
     public Uri getPictureUri(){
-        Log.d("tstt", String.valueOf(mPictureDownloadSuccess!=null? mPictureDownloadSuccess.getValue(): Uri.parse("no_picture")));
         return mPictureDownloadSuccess.getValue()!=null? mPictureDownloadSuccess.getValue():Uri.parse("no_picture");
     }
     public Profile getProfile(){
@@ -115,5 +114,8 @@ public class MainViewModel extends AndroidViewModel {
     public void setProfile(Profile profile)
     {
         mProfileSuccessLiveData.setValue(profile);
+    }
+    public void setPicture(Uri uri){
+        mPictureDownloadSuccess.setValue(uri);
     }
 }

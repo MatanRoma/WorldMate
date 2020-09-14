@@ -3,9 +3,13 @@ package com.example.androidsecondproject.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
@@ -33,6 +38,7 @@ import com.example.androidsecondproject.viewmodel.ProfileViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -41,15 +47,16 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
 
     final int GALLERY_PICTURE = 1;
     final int CAMERA_REQUEST = 2;
-
+    CircleImageView profilePicture;
     Uri imageUri;
     File file;
 
-    private ProfileViewModel mProfileViewModel;
+
+    private ProfileViewModel mViewModel;
 
     public interface UpdateDrawerFromProfileFragment
     {
-        public void onUpdateProfile(Profile profile);
+        public void onUpdatePicture(Uri Uri);
     }
 
     private UpdateDrawerFromProfileFragment mUpdateDrawerListener;
@@ -94,16 +101,35 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
         final ImageButton confirmNameBtn = rootView.findViewById(R.id.name_confirm_iv);
         final EditText firstNameEt = rootView.findViewById(R.id.first_name_et);
         final EditText lastNameEt = rootView.findViewById(R.id.last_name_et);
-        final CircleImageView profilePicture = rootView.findViewById(R.id.profile_image);
+        profilePicture = rootView.findViewById(R.id.profile_image);
 
-        mProfileViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.ProfileFragment)).get(ProfileViewModel.class);
+
+        mViewModel =new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.ProfileFragment)).get(ProfileViewModel.class);
+
+        final Observer<Boolean> uploadObserverSuccess = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                file.delete();
+                mViewModel.downloadPicture();
+            }
+        };
+        final Observer<Uri> downloadObserverSuccess = new Observer<Uri>() {
+            @Override
+            public void onChanged(Uri uri) {
+                Glide.with(getContext()).load(uri).into(profilePicture);
+                mUpdateDrawerListener.onUpdatePicture(uri);
+            }
+        };
+        mViewModel.getUploadResultSuccess().observe(this, uploadObserverSuccess);
+        mViewModel.getDownloadResultSuccess().observe(this, downloadObserverSuccess);
+
         Bundle bundle=getArguments();
-        mProfileViewModel.setProfile((Profile)bundle.getSerializable("profile"));
-        mProfileViewModel.setImageUri(Uri.parse(bundle.getString("profile_picture")));
+        mViewModel.setProfile((Profile)bundle.getSerializable("profile"));
+        mViewModel.setImageUri(Uri.parse(bundle.getString("profile_picture")));
 
-        firstNameTv.setText(mProfileViewModel.getProfile().getFirstName());
-        lastNameTv.setText(mProfileViewModel.getProfile().getLastName());
-        Glide.with(this).load(mProfileViewModel.getImageUri()).into(profilePicture);
+        firstNameTv.setText(mViewModel.getProfile().getFirstName());
+        lastNameTv.setText(mViewModel.getProfile().getLastName());
+        Glide.with(this).load(mViewModel.getImageUri()).error(R.drawable.man_profile).into(profilePicture);
 
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +153,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
                             public void onClick(DialogInterface arg0, int arg1) {
 
 
-                                file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),   "profile.jpg");
+                                file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),    System.nanoTime()+"profile.jpg");
 
                                 imageUri = FileProvider.getUriForFile(
                                         getContext(),
@@ -172,10 +198,9 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
                 lastNameEt.setVisibility(View.GONE);
                 lastNameTv.setText(lastNameEt.getText().toString());
 
-                mProfileViewModel.getProfile().setFirstName(firstNameEt.getText().toString());
-                mProfileViewModel.getProfile().setLastName(lastNameEt.getText().toString());
-                mUpdateDrawerListener.onUpdateProfile(mProfileViewModel.getProfile());
-                mProfileViewModel.writeProfile();
+                mViewModel.getProfile().setFirstName(firstNameEt.getText().toString());
+                mViewModel.getProfile().setLastName(lastNameEt.getText().toString());
+                mViewModel.writeProfile();
             }
         });
 
@@ -275,13 +300,13 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
         {
         switch (title){
             case "About myself":
-                descriptionTv.setText(mProfileViewModel.getProfile().getFirstName());
+                descriptionTv.setText(mViewModel.getProfile().getFirstName());
                 break;
             case "Looking for":
-                descriptionTv.setText(mProfileViewModel.getProfile().getLookingFor());
+                descriptionTv.setText(mViewModel.getProfile().getLookingFor());
                 break;
             case "My hobbies":
-                descriptionTv.setText(mProfileViewModel.getProfile().getHobbies());
+                descriptionTv.setText(mViewModel.getProfile().getHobbies());
                 break;
         }
 
@@ -291,16 +316,16 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
     {
         switch (title){
             case "About myself":
-                mProfileViewModel.getProfile().setDescription(descriptionEt.getText().toString());
-                mProfileViewModel.writeProfile();
+                mViewModel.getProfile().setDescription(descriptionEt.getText().toString());
+                mViewModel.writeProfile();
                 break;
             case "Looking for":
-                mProfileViewModel.getProfile().setLookingFor(descriptionEt.getText().toString());
-                mProfileViewModel.writeProfile();
+                mViewModel.getProfile().setLookingFor(descriptionEt.getText().toString());
+                mViewModel.writeProfile();
                 break;
             case "My hobbies":
-                mProfileViewModel.getProfile().setHobbies(descriptionEt.getText().toString());
-                mProfileViewModel.writeProfile();
+                mViewModel.getProfile().setHobbies(descriptionEt.getText().toString());
+                mViewModel.writeProfile();
                 break;
         }
     }
@@ -313,11 +338,36 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
 
             if (requestCode == CAMERA_REQUEST) {
                 // mViewModel.uploadPicture(imageUri);
+
             }
             if (requestCode == GALLERY_PICTURE) {
                 imageUri = data.getData();
             }
 
+            uploadBitmap();
+
         }
+    }
+    private void uploadBitmap(){
+        Bitmap bitmap=null;
+        if(Build.VERSION.SDK_INT<28){
+            try {
+                bitmap= MediaStore.Images.Media.getBitmap(
+                        getActivity().getContentResolver(),
+                        imageUri
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            ImageDecoder.Source source = ImageDecoder.createSource(getActivity().getContentResolver(), imageUri);
+            try {
+                bitmap = ImageDecoder.decodeBitmap(source);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        mViewModel.uploadPicture(bitmap);
     }
 }

@@ -41,15 +41,16 @@ public class Repository {
     }
 
     public void readProfile(String uid){
-                profilesTable.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+               /* profilesTable.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
                                 Profile profile=snapshot.getValue(Profile.class);
                             Log.d("prof","tst2");
-                                if(profileListener!=null)
-                                    Log.d("prof","tst3");
+                                if(profileListener!=null) {
+                                    Log.d("prof", "tst3");
                                     profileListener.onProfileDataChangeSuccess(profile);
+                                }
                         }
                         else {
                             if(profileListener!=null)
@@ -59,14 +60,38 @@ public class Repository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                        Log.d("err","cancel");
-                if(profileListener!=null)
-                    profileListener.onProfileDataChangeFail(error.getMessage());
-                //TODO
-            }
-        });
+                        if(profileListener!=null)
+                            profileListener.onProfileDataChangeFail(error.getMessage());
+                        //TODO
+                    }
+        });*/
+                profilesTable.child(uid).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            Profile profile=snapshot.getValue(Profile.class);
+                            Log.d("prof","tst2");
+                            if(profileListener!=null) {
+                                Log.d("prof", "tst3");
+                                profileListener.onProfileDataChangeSuccess(profile);
+                            }
+                        }
+                        else {
+                            if(profileListener!=null)
+                                profileListener.onProfileDataChangeFail("not_exist");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        if(profileListener!=null)
+                            profileListener.onProfileDataChangeFail(error.getMessage());
+                        //TODO
+                    }
+                });
     }
     public void writeProfile(Profile profile){
+        Log.d("prof","tst1");
         profilesTable.child(authRepository.getCurrentUserUid()).setValue(profile);
         //TODO
     }
