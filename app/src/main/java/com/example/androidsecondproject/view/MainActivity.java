@@ -51,11 +51,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private NavigationView navigationView;
     private View headerView;
 
-    private String gender="male";
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,13 +97,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         Observer<Profile> profileObserverSuccess=new Observer<Profile>() {
             @Override
             public void onChanged(Profile profile) {
-
                 if(profile.getPreferences()==null){
                     moveToPreferences();
                 }
                 else {
                     mNameTv.setText(profile.getFirstName());
-                    gender = profile.getGender();
                     mViewModel.getNavigationHeaderImage();
                 }
             }
@@ -117,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         Observer<String> profileObserverFail=new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Log.d("err",s);
                 moveToAccountSetup();
             }
         };
@@ -131,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         Observer<String> pictureFailedObserver=new Observer<String>() {
             @Override
             public void onChanged(String s) {
+                String gender=mViewModel.getGender();
                 if(gender.equals("male"))
                     Glide.with(MainActivity.this).load(R.drawable.man_profile).into(mProfileIv);
                 else if(gender.equals("female"))
@@ -173,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.add(R.id.main_activity_id,loginFragment,LOGIN_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
+        transaction.replace()
     }
     @Override
     public void onClickMoveToRegister() {

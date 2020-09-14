@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ public class LoginFragment extends Fragment {
     private LoginViewModel mViewModel;
     private LoginFragmentInterface mListener;
     private EditText mEmailEt, mPasswordEt;
+    private TextView mErrorTv;
 
     interface LoginFragmentInterface{
         void onClickMoveToRegister();
@@ -51,16 +53,13 @@ public class LoginFragment extends Fragment {
         final Observer<String> loginObserverSuccess = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String uid) {
-
-           //     setLoginFields();
                 mListener.onLoginToApp();
             }
         };
         final Observer<String> loginObserverFailed = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String error) {
-                Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-             //   setLoginFields();
+               mErrorTv.setVisibility(View.VISIBLE);
             }
         };
 
@@ -77,6 +76,7 @@ public class LoginFragment extends Fragment {
         Button signUpButton=rootView.findViewById(R.id.sign_up_button);
         mEmailEt =rootView.findViewById(R.id.email_et_signin);
         mPasswordEt =rootView.findViewById(R.id.password_et_singin);
+        mErrorTv=rootView.findViewById(R.id.error_et_signin);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

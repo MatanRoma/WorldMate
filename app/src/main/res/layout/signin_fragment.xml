@@ -72,6 +72,18 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="15dp"
+            android:visibility="gone"
+            android:text="Invalid Credentials"
+            android:textStyle="bold"
+            android:textColor="@color/red_stroke"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/password_signin"
+            android:id="@+id/error_et_signin"/>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,7 +93,7 @@
             android:padding="15dp"
             android:paddingEnd="25dp"
             android:paddingStart="25dp"
-            android:layout_below="@id/password_signin"
+            android:layout_below="@id/error_et_signin"
             android:layout_centerHorizontal="true"
             android:textAllCaps="false"
             android:layout_marginTop="20dp"

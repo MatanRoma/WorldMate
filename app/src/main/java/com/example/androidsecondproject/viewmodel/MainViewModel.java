@@ -99,4 +99,8 @@ public class MainViewModel extends AndroidViewModel {
     public String getuser() {
         return mRepository.getCurrentUserId();
     }
+
+    public String getGender() {
+       return mProfileSuccessLiveData.getValue().getGender();
+    }
 }

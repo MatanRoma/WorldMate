@@ -89,12 +89,10 @@ public class AuthRepository {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (mLoginLister != null) {
                             if (task.isSuccessful()) {
-                                Log.d("test","loginuser3");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 mLoginLister.onSuccessLogin(user.getUid());
                             } else {
-                                Log.d("test","loginuser4");
-                                mLoginLister.onFailedLogin("Incorrect credentials");
+                                mLoginLister.onFailedLogin("Incorrect Credentials");
                             }
                         }
                     }
