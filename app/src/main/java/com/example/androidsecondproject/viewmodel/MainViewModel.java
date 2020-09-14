@@ -111,4 +111,9 @@ public class MainViewModel extends AndroidViewModel {
     public Profile getProfile(){
         return mProfileSuccessLiveData.getValue();
     }
+
+    public void setProfile(Profile profile)
+    {
+        mProfileSuccessLiveData.setValue(profile);
+    }
 }

@@ -3,11 +3,11 @@ package com.example.androidsecondproject.view;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -32,7 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface,
-        AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface
+        AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface, ProfileFragment.UpdateDrawerFromProfileFragment
 {
 
     private  final  String LOGIN_FRAGMENT="login_fragment";
@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         Observer<Profile> profileObserverSuccess=new Observer<Profile>() {
             @Override
             public void onChanged(Profile profile) {
+                Toast.makeText(MainActivity.this, "observer", Toast.LENGTH_SHORT).show();
                 if(profile.getPreferences()==null){
                     moveToPreferences();
                 }
@@ -272,5 +273,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.add(R.id.drawer_layout,profileFragment,ACCOUNT_PROFILE_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+
+    @Override
+    public void onUpdateProfile(Profile profile) {
+        mViewModel.setProfile(profile);
     }
 }

@@ -1,12 +1,11 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
@@ -27,9 +26,11 @@ public class ProfileViewModel extends AndroidViewModel {
         repository.writeProfile(profile);
     }
 
-    public void writePicture(){
+    public void writePicture(Bitmap bitmap){
      //   repository.
+        repository.writePictureToStorage(bitmap);
     }
+
 
     public void setProfile(Profile profile) {
         this.profile = profile;
@@ -38,4 +39,16 @@ public class ProfileViewModel extends AndroidViewModel {
     public void setImageUri(Uri imageUri) {
         this.imageUri = imageUri;
     }
+
+    public Profile getProfile()
+    {
+        return profile;
+    }
+
+    public Uri getImageUri()
+    {
+        return imageUri;
+    }
+
+
 }
