@@ -6,9 +6,7 @@ import android.util.Log;
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class Profile implements Serializable {
@@ -22,7 +20,7 @@ public class Profile implements Serializable {
     private String gender;
     private String hobbies;
     private boolean discovery;
-    private Preferences preferences=new Preferences();
+    private Preferences preferences;
 
     public Profile(String firstName, String lastName, float age, String gender) {
         this.firstName = firstName;
@@ -120,5 +118,6 @@ public class Profile implements Serializable {
     public void setDiscovery(boolean discovery) {
         this.discovery = discovery;
     }
+
 }
 

@@ -3,11 +3,11 @@ package com.example.androidsecondproject.view;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -30,6 +30,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+
 public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface,
         AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface
 {
@@ -49,11 +50,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private View headerView;
-
-    private String gender="male";
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,14 +94,26 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     private void setObservers() {
         mViewModel=new ViewModelProvider(this,new ViewModelFactory(getApplication(), eViewModels.Main)).get(MainViewModel.class);
-        Observer<Profile> profileObserver=new Observer<Profile>() {
+        Observer<Profile> profileObserverSuccess=new Observer<Profile>() {
             @Override
             public void onChanged(Profile profile) {
-                mNameTv.setText(profile.getFirstName());
-                gender=profile.getGender();
-                mViewModel.getNavigationHeaderImage();
+                if(profile.getPreferences()==null){
+                    moveToPreferences();
+                }
+                else {
+                    mNameTv.setText(profile.getFirstName());
+                    mViewModel.getNavigationHeaderImage();
+                }
             }
         };
+
+        Observer<String> profileObserverFail=new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                moveToAccountSetup();
+            }
+        };
+
         Observer<Uri> pictureSuccessObserver=new Observer<Uri>() {
             @Override
             public void onChanged(Uri uri) {
@@ -115,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         Observer<String> pictureFailedObserver=new Observer<String>() {
             @Override
             public void onChanged(String s) {
+                String gender=mViewModel.getGender();
                 if(gender.equals("male"))
                     Glide.with(MainActivity.this).load(R.drawable.man_profile).into(mProfileIv);
                 else if(gender.equals("female"))
@@ -124,12 +133,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         };
         mViewModel.getDownloadResultFailed().observe(this,pictureFailedObserver);
         mViewModel.getDownloadResultSuccess().observe(this, pictureSuccessObserver);
-        mViewModel.getProfileResultSuccess().observe(this, profileObserver);
+        mViewModel.getProfileResultSuccess().observe(this, profileObserverSuccess);
+        mViewModel.getProfileResultFailed().observe(this,profileObserverFail);
     }
 
     private void fetchProfileData() {
         mViewModel.getNavigationHeaderProfile();
-
     }
 
     private void handleNavigationItemSelected(String title) {
@@ -157,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.add(R.id.main_activity_id,loginFragment,LOGIN_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
+        transaction.replace()
     }
     @Override
     public void onClickMoveToRegister() {
@@ -179,9 +189,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
-    @Override
-    public void onMoveToNameSetup(String uid) {
+    private void moveToAccountSetup(){
         Fragment accountSetupFragment=AccountSetupFragment.newInstance();
         FragmentManager fragmentManager=getSupportFragmentManager();
         fragmentManager.popBackStack();
@@ -192,7 +200,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     }
 
     @Override
-    public void OnClickContinueToPreferences() {
+    public void onMoveToAccountSetup() {
+       moveToAccountSetup();
+    }
+
+    private void moveToPreferences(){
         PreferencesFragment preferencesFragment = PreferencesFragment.newInstance();
         FragmentManager fragmentManager=getSupportFragmentManager();
         fragmentManager.popBackStack();
@@ -200,6 +212,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.add(R.id.main_activity_id,preferencesFragment,ACCOUNT_PREFERENCES_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void OnClickContinueToPreferences() {
+        moveToPreferences();
     }
 
     @Override

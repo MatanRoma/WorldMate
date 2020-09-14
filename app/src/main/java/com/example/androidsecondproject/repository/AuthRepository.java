@@ -44,7 +44,7 @@ public class AuthRepository {
             return false;
         }
     }
-    public void registerUser(String email,String password,String nickname){
+    public void registerUser(String email,String password){
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener((Activity)mContext, new OnCompleteListener<AuthResult>() {
@@ -89,12 +89,10 @@ public class AuthRepository {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (mLoginLister != null) {
                             if (task.isSuccessful()) {
-                                Log.d("test","loginuser3");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 mLoginLister.onSuccessLogin(user.getUid());
                             } else {
-                                Log.d("test","loginuser4");
-                                mLoginLister.onFailedLogin("Incorrect credentials");
+                                mLoginLister.onFailedLogin("Incorrect Credentials");
                             }
                         }
                     }

@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.view;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +20,8 @@ import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.AccountSetupViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
+import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class AccountSetupFragment extends Fragment {
@@ -37,9 +39,6 @@ public class AccountSetupFragment extends Fragment {
     public static AccountSetupFragment newInstance()
     {
         AccountSetupFragment accountSetupFragment=new AccountSetupFragment();
-            /*Bundle bundle = new Bundle();
-            bundle.putString("user_name",username);
-            loginFragment.setArguments(bundle);*/
         return accountSetupFragment;
     }
 
@@ -99,13 +98,39 @@ public class AccountSetupFragment extends Fragment {
                 mViewModel.setDate(date);
 
                 boolean fieldsValidated=true;
+
+                TextInputLayout firstNameInputLayout = rootView.findViewById(R.id.firstname_info);
+                TextInputLayout lastNameInputLayout = rootView.findViewById(R.id.lastname_info);
+
                 if(firstName.trim().length()==0){
                     fieldsValidated=false;
-                    //TODO
+                //    firstNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+                    firstNameEt.setError("Please enter First Name");
+                }
+                else
+                {
+       //             firstNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+               //     firstNameEt.setError(null);
                 }
                 if(lastName.trim().length()==0){
                     fieldsValidated=false;
-                    //TODO
+          //          lastNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+                    lastNameEt.setError("Please enter Last Name");
+                }
+                else
+                {
+//                  lastNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+ //                   lastNameEt.setError(null);
+                }
+                TextView genderErrorTv = rootView.findViewById(R.id.gender_error_tv);
+                if(!manBtn.isSelected()&& !womanBtn.isSelected())
+                {
+                    fieldsValidated=false;
+                    genderErrorTv.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    genderErrorTv.setVisibility(View.GONE);
                 }
                 if(fieldsValidated) {
                     mViewModel.writeProfileToDatabase();

@@ -10,14 +10,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose your profile picture"
+                android:gravity="center_horizontal"
+                android:layout_marginHorizontal="40dp"
+                android:layout_centerHorizontal ="true"
+                android:textColor="#000"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:layout_marginTop="25dp"
+                android:id="@+id/choose_photo_tv"/>
+
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/gallery_layout"
+                android:layout_below="@id/choose_photo_tv"
                 android:layout_centerHorizontal="true">
 
                 <ImageButton

@@ -13,7 +13,6 @@ public class RegisterViewModel extends ViewModel {
     private AuthRepository mRepository;
     private String mEmail;
     private String mPassword;
-    private String mNickname;
 
     public RegisterViewModel(Context context) {
         mRepository=AuthRepository.getInstance(context);
@@ -50,7 +49,7 @@ public class RegisterViewModel extends ViewModel {
     }
     public void registerUser(){
 
-        mRepository.registerUser(mEmail, mPassword, mNickname);
+        mRepository.registerUser(mEmail, mPassword);
     }
 
     public String getEmail() {
@@ -73,14 +72,6 @@ public class RegisterViewModel extends ViewModel {
             this.mPassword = password;
         else
             this.mPassword =" ";
-    }
-
-    public String getNickname() {
-        return mNickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.mNickname = nickname;
     }
 
 }

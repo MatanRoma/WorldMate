@@ -6,30 +6,24 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.AuthRepository;
+import com.example.androidsecondproject.repository.Repository;
 
 public class SplashViewModel extends AndroidViewModel {
 
     // Create a LiveData with a String
  //   private MutableLiveData<Boolean> mIsAuth;
-    private AuthRepository mRepository;
+    private Repository mRepository;
+
 
     public SplashViewModel(@NonNull Application application) {
         super(application);
-        mRepository=AuthRepository.getInstance(application.getApplicationContext());
+        mRepository=Repository.getInstance(application.getApplicationContext());
     }
 
-    public String getUserUid(){
-        return mRepository.getCurrentUserUid();
-    }
 
-   /* public MutableLiveData<Boolean> getIsAuth() {
-        if (mIsAuth == null) {
-            mIsAuth = new MutableLiveData<>();
-            mIsAuth.setValue(mRepository.checkIfAuth());
-        }
-        return mIsAuth;
-    }*/
+
     public boolean checkIfAuth(){
         return mRepository.checkIfAuth();
     }

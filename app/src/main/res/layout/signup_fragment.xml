@@ -26,27 +26,6 @@
         android:layout_centerInParent="true"
         android:padding="15dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
-            android:layout_marginStart="50dp"
-            android:textColorHint="#000"
-            android:layout_marginTop="10dp"
-            android:id="@+id/nickname_signup">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:textColor="#000"
-                android:textSize="30sp"
-                android:gravity="center"
-                android:id="@+id/nickname_et_signup"
-                android:hint="Nickname"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -54,7 +33,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/email_signup"
             android:textColorHint="#000"
-            android:layout_below="@id/nickname_signup"
             android:layout_marginEnd="50dp"
             android:layout_marginStart="50dp">
 
@@ -95,6 +73,17 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="15dp"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:textColor="@color/red_stroke"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/password_signup"
+            android:id="@+id/error_et_signup"/>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,7 +93,7 @@
             android:padding="15dp"
             android:paddingEnd="25dp"
             android:paddingStart="25dp"
-            android:layout_below="@id/password_signup"
+            android:layout_below="@id/error_et_signup"
             android:layout_centerHorizontal="true"
             android:id="@+id/register_btn_signup"
             android:textAllCaps="false"

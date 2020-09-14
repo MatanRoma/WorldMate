@@ -1,14 +1,14 @@
 package com.example.androidsecondproject.view;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,16 +20,19 @@ import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.RegisterViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class RegisterFragment extends Fragment {
 
     private RegisterFragmentInterface listener;
     private RegisterViewModel mViewModel;
-    private EditText mNicknameEt,mEmailEt,mPasswordEt;
+    private EditText mEmailEt,mPasswordEt;
+    private TextView mErrorTv;
+    private View rootView;
 
     interface RegisterFragmentInterface{
         void onClickMoveToLogin();
-        void onMoveToNameSetup(String uid);
+        void onMoveToAccountSetup();
     }
 
     public static RegisterFragment newInstance()
@@ -55,21 +58,16 @@ public class RegisterFragment extends Fragment {
         final Observer<String> registerObserverSuccess = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String uid) {
-                listener.onMoveToNameSetup(uid);
+        //        mErrorTv.setVisibility(View.INVISIBLE);
+                listener.onMoveToAccountSetup();
                 //  setRegisterFields();
             }
         };
         final Observer<String> registerObserverFailed = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String error) {
-
-                Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-                //  setRegisterFields();
-
-               Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-
-              //  setRegisterFields();
-
+                mErrorTv.setText(error);
+                mErrorTv.setVisibility(View.VISIBLE);
             }
         };
 
@@ -80,18 +78,20 @@ public class RegisterFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.signup_fragment,container,false);
+        rootView = inflater.inflate(R.layout.signup_fragment,container,false);
 
         Button registerButton=rootView.findViewById(R.id.register_btn_signup);
         Button signInButton=rootView.findViewById(R.id.sign_in_button);
-        mNicknameEt=rootView.findViewById(R.id.nickname_et_signup);
         mEmailEt=rootView.findViewById(R.id.email_et_signup);
         mPasswordEt=rootView.findViewById(R.id.password_et_signup);
+        mErrorTv=rootView.findViewById(R.id.error_et_signup);
+
 
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+              //  validateFields();
                 setRegisterFields();
                 mViewModel.registerUser();
             }
@@ -108,13 +108,32 @@ public class RegisterFragment extends Fragment {
         return rootView;
     }
 
+    void validateFields(){
+
+        TextInputLayout emailInputLayout = rootView.findViewById(R.id.email_signup);
+        if(mEmailEt.getText().toString().trim().length() == 0)
+        {
+            emailInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+        }
+        else {
+            emailInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+        }
+        TextInputLayout passwordInputLayout = rootView.findViewById(R.id.password_signup);
+        if(mPasswordEt.getText().toString().trim().length() == 0)
+        {
+            passwordInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
+            mPasswordEt.setError("pw is empty");
+        }
+        else {
+            passwordInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+        }
+    }
+
     public void setRegisterFields(){
         String email=mEmailEt.getText().toString();
         String password=mPasswordEt.getText().toString();
-        String nickname=mNicknameEt.getText().toString();
 
         mViewModel.setEmail(email);
         mViewModel.setPassword(password);
-        mViewModel.setNickname(nickname);
     }
 }
