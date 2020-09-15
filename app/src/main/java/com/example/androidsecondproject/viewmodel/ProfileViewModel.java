@@ -16,7 +16,6 @@ public class ProfileViewModel extends AndroidViewModel {
 
     private Repository mRepository;
     private Profile profile;
-    private Uri imageUri;
     private MutableLiveData<Boolean> mPictureUploadSuccess;
     private MutableLiveData<Uri> mPictureDownloadSuccess;
 
