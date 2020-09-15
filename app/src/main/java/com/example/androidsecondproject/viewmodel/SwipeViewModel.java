@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -49,4 +50,36 @@ public class SwipeViewModel extends AndroidViewModel {
         });
     }
 
+    public void addLikedProfile(int position) {
+         mProfile.getLikes().add((mProfilesMutableLiveData.getValue().get(position).getEmail()));
+    }
+
+    public void removeProfile(int position) {
+        mProfilesMutableLiveData.getValue().remove(position);
+    }
+
+    public boolean checkIfMatch(int position) {
+        String myEmail=mProfile.getEmail();
+        List<String> likeEmails=mProfilesMutableLiveData.getValue().get(position).getLikes();
+        return likeEmails.contains(myEmail);
+    }
+
+    public void updateMatch(int position) {
+        Profile otherPofile=mProfilesMutableLiveData.getValue().get(position);
+        mProfile.getMatches().add(otherPofile.getEmail());
+        otherPofile.getMatches().add(mProfile.getEmail());
+    }
+    public void test(){
+        for(String str:mProfile.getLikes()){
+            Log.d("like",str);
+        }
+    }
+
+    public void writeMyProfile() {
+        mRepository.writeMyProfile(mProfile);
+    }
+
+    public void writeOtherProfile(int position) {
+        mRepository.writeOtherProfile(mProfilesMutableLiveData.getValue().get(position));
+    }
 }

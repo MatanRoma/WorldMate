@@ -1,7 +1,6 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
-import android.app.Person;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -46,6 +45,6 @@ public class PreferencesViewModel extends AndroidViewModel {
         repository.readProfile(repository.getCurrentUserId());
     }
     public void writeProfile(Profile profile){
-        repository.writeProfile(profile);
+        repository.writeMyProfile(profile);
     }
 }

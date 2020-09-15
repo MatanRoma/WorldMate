@@ -27,7 +27,7 @@ public class ProfileViewModel extends AndroidViewModel {
 
 
     public void writeProfile(){
-        mRepository.writeProfile(profile);
+        mRepository.writeMyProfile(profile);
     }
 
     public void writePicture(Bitmap bitmap){

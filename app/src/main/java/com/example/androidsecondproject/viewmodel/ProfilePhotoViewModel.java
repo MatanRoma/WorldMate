@@ -7,7 +7,6 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
@@ -82,6 +81,6 @@ public class ProfilePhotoViewModel extends AndroidViewModel {
     }
 
     public void writeProfile() {
-        mRepository.writeProfile(profile);
+        mRepository.writeMyProfile(profile);
     }
 }

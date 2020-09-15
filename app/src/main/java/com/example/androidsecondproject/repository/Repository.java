@@ -120,10 +120,14 @@ public class Repository {
         });
     }
 
-    public void writeProfile(Profile profile){
+    public void writeMyProfile(Profile profile){
         Log.d("prof","tst1");
         profilesTable.child(authRepository.getCurrentUserUid()).setValue(profile);
         //TODO
+    }
+    public void writeOtherProfile(Profile profile){
+        profilesTable.child((profile.getUid())).setValue(profile);
+
     }
 
     public String getCurrentUserId(){
@@ -152,6 +156,7 @@ public class Repository {
     public String getCurrenUserEmail() {
         return authRepository.getCurrentUserEmail();
     }
+
 
     public interface ProfileListener {
         void onProfileDataChangeSuccess(Profile profile);

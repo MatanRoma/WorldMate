@@ -98,6 +98,7 @@ public class AccountSetupFragment extends Fragment {
                 mViewModel.setLastName(lastName);
                 mViewModel.setDate(date);
                 mViewModel.setEmail();
+                mViewModel.setUid();
 
                 boolean fieldsValidated=true;
 

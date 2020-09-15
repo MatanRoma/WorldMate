@@ -21,7 +21,7 @@ public class AccountSetupViewModel extends AndroidViewModel {
     }
 
     public void writeProfileToDatabase (){
-        repository.writeProfile(profile);
+        repository.writeMyProfile(profile);
     }
     public Profile getProfile(){
         return profile;
@@ -45,5 +45,9 @@ public class AccountSetupViewModel extends AndroidViewModel {
 
     public void setEmail() {
         profile.setEmail(repository.getCurrenUserEmail());
+    }
+
+    public void setUid() {
+       profile.setUid(repository.getCurrentUserId());
     }
 }
