@@ -21,7 +21,10 @@ public class AccountSetupViewModel extends AndroidViewModel {
     }
 
     public void writeProfileToDatabase (){
-        repository.writeProfile(profile);
+        repository.writeMyProfile(profile);
+    }
+    public Profile getProfile(){
+        return profile;
     }
 
     public void setDate(GregorianCalendar date) {
@@ -38,5 +41,13 @@ public class AccountSetupViewModel extends AndroidViewModel {
 
     public void setLastName(String lastName) {
         profile.setLastName(lastName);
+    }
+
+    public void setEmail() {
+        profile.setEmail(repository.getCurrenUserEmail());
+    }
+
+    public void setUid() {
+       profile.setUid(repository.getCurrentUserId());
     }
 }

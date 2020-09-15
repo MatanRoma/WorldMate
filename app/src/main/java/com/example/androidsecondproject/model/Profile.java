@@ -1,35 +1,41 @@
 package com.example.androidsecondproject.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class Profile implements Serializable {
 
 
     private String firstName;
     private String lastName;
-    private String description="about myself";
+    private String description;
     private float age;
     private String birthday;
     private String gender;
-    private String hobbies="my hobbies";
-    private String lookingFor="looking for";
+    private String hobbies;
+    private String lookingFor;
     private boolean discovery;
+    private String profilePictureUri;
+    private String email;
     private Preferences preferences;
-/*
-    public Profile(String firstName, String lastName, float age, String gender) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.description = " ";
-        this.hobbies=" ";
-        this.age = age;
-        this.gender = gender;
-    }
-    */
+    private List<String> likes;
+    private List<String> disLikes;
+    private List<String> matches;
+    private String uid;
+
 
 
     public Profile() {
+        description="";
+        hobbies="";
+        profilePictureUri="";
+        lookingFor="";
+        likes=new ArrayList<>();
+        disLikes=new ArrayList<>();
+        matches=new ArrayList<>();
     }
 
 
@@ -113,6 +119,13 @@ public class Profile implements Serializable {
         this.preferences = preferences;
     }
 
+    public String getProfilePictureUri() {
+        return profilePictureUri;
+    }
+
+    public void setProfilePictureUri(String profilePictureUri) {
+        this.profilePictureUri = profilePictureUri;
+    }
 
     public void setDiscovery(boolean discovery) {
         this.discovery = discovery;
@@ -124,6 +137,46 @@ public class Profile implements Serializable {
 
     public void setLookingFor(String lookingFor) {
         this.lookingFor = lookingFor;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<String> getLikes() {
+        return likes;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public void setLikes(List<String> likes) {
+        this.likes = likes;
+    }
+
+    public List<String> getDisLikes() {
+        return disLikes;
+    }
+
+    public void setDisLikes(List<String> disLikes) {
+        this.disLikes = disLikes;
+    }
+
+    public List<String> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(List<String> matches) {
+        this.matches = matches;
     }
 }
 

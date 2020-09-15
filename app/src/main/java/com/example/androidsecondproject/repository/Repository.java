@@ -3,6 +3,7 @@ package com.example.androidsecondproject.repository;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Repository {
 
     private final String PROFILE_TABLE = "profiles";
@@ -22,6 +26,7 @@ public class Repository {
     private StorageRepository storageRepository;
     private DatabaseReference profilesTable;
     private ProfileListener profileListener;
+    private ProfilesListener profilesListener;
 
     private static Repository repository;
 
@@ -90,17 +95,43 @@ public class Repository {
                     }
                 });
     }
-    public void writeProfile(Profile profile){
+
+    public void readProfiles(){
+        profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.exists()){
+                    String myUid=getCurrentUserId();
+                    List<Profile> profiles=new ArrayList<>();
+                    for(DataSnapshot currSnapshot:snapshot.getChildren()){
+                       if(!currSnapshot.getKey().equals(myUid))
+                            profiles.add(currSnapshot.getValue(Profile.class));
+                    }
+                    profilesListener.onProfilesDataChangeSuccess(profiles);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void writeMyProfile(Profile profile){
         Log.d("prof","tst1");
         profilesTable.child(authRepository.getCurrentUserUid()).setValue(profile);
         //TODO
     }
+    public void writeOtherProfile(Profile profile){
+        profilesTable.child((profile.getUid())).setValue(profile);
+
+    }
 
     public String getCurrentUserId(){
        return authRepository.getCurrentUserUid();
-    }
-    public void setProfileListener(ProfileListener profileListener) {
-        this.profileListener = profileListener;
     }
     public void setDownloadListener(StorageRepository.StorageDownloadPicListener downloadListener){
         storageRepository.setDownloadListener(downloadListener);
@@ -122,9 +153,24 @@ public class Repository {
         return authRepository.checkIfAuth();
     }
 
+    public String getCurrenUserEmail() {
+        return authRepository.getCurrentUserEmail();
+    }
+
+
     public interface ProfileListener {
         void onProfileDataChangeSuccess(Profile profile);
         void onProfileDataChangeFail(String error);
+    }
+    public void setProfileListener(ProfileListener profileListener) {
+        this.profileListener = profileListener;
+    }
+    public interface ProfilesListener{
+        void onProfilesDataChangeSuccess(List<Profile> profiles);
+        void onProfilesDataChangeFail(String error);
+    }
+    public void setProfilesListener(ProfilesListener profilesListener) {
+        this.profilesListener = profilesListener;
     }
     public void logout(){
         authRepository.logoutUser();

@@ -7,13 +7,14 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
+import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
 import com.example.androidsecondproject.repository.StorageRepository;
 
 public class ProfilePhotoViewModel extends AndroidViewModel {
     Repository mRepository;
+    Profile profile;
     private MutableLiveData<Boolean> mPictureUploadSuccess;
     private MutableLiveData<Uri> mPictureDownloadSuccess;
 
@@ -71,4 +72,15 @@ public class ProfilePhotoViewModel extends AndroidViewModel {
         mRepository.readMyProfilePictureFromStorage();
     }
 
+    public void setProfile(Profile profile) {
+        this.profile=profile;
+    }
+
+    public void setProfileUri(Uri uri) {
+        profile.setProfilePictureUri(uri.toString());
+    }
+
+    public void writeProfile() {
+        mRepository.writeMyProfile(profile);
+    }
 }

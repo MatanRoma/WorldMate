@@ -9,7 +9,8 @@ public enum eViewModels {
         ProfilePhoto,
         Preferences,
         Main,
-        ProfileFragment
+        ProfileFragment,
+        Swipe
 
 
 }

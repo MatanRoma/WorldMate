@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
+import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.ProfilePhotoViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
@@ -50,9 +51,11 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
         public void OnClickContinueToPreferences();
     }
 
-    public static ProfilePhotoFragment newInstance() {
-
+    public static ProfilePhotoFragment newInstance(Profile profile) {
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("profile",profile);
         ProfilePhotoFragment profilePhotoFragment = new ProfilePhotoFragment();
+        profilePhotoFragment.setArguments(bundle);
         return profilePhotoFragment;
     }
 
@@ -76,6 +79,7 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
         loadingAnimation = rootView.findViewById(R.id.spin_kit);
         Button continueButton = rootView.findViewById(R.id.continue_btn_photo);
         mViewModel = new ViewModelProvider(this, new ViewModelFactory(getActivity().getApplication(), eViewModels.ProfilePhoto)).get(ProfilePhotoViewModel.class);
+        mViewModel.setProfile((Profile)getArguments().get("profile"));
         final Observer<Uri> downloadObserverSuccess = new Observer<Uri>() {
             @Override
             public void onChanged(Uri uri) {
@@ -87,6 +91,7 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
                     }
                 }, 1500);
                 Glide.with(ProfilePhotoFragment.this).load(uri).into(resultIv);
+                mViewModel.setProfileUri(uri);
 
 
             }
@@ -94,7 +99,8 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
         final Observer<Boolean> uploadObserverSuccess = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                file.delete();
+                if(file!=null)
+                    file.delete();
                 mViewModel.downloadPicture();
 
 
@@ -136,6 +142,7 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
             public void onClick(View v) {
                 if(file!=null)
                     file.delete();
+                mViewModel.writeProfile();
                 mListener.OnClickContinueToPreferences();
             }
         });

@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidsecondproject.R;
+import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.AccountSetupViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
@@ -31,7 +32,7 @@ public class AccountSetupFragment extends Fragment {
 
     interface AccountSetupFragmentInterface
     {
-        void OnClickContinueToPhoto();
+        void OnClickContinueToPhoto(Profile profile);
     }
 
 
@@ -96,6 +97,8 @@ public class AccountSetupFragment extends Fragment {
                 mViewModel.setFirstName(firstName);
                 mViewModel.setLastName(lastName);
                 mViewModel.setDate(date);
+                mViewModel.setEmail();
+                mViewModel.setUid();
 
                 boolean fieldsValidated=true;
 
@@ -134,7 +137,7 @@ public class AccountSetupFragment extends Fragment {
                 }
                 if(fieldsValidated) {
                     mViewModel.writeProfileToDatabase();
-                    mListener.OnClickContinueToPhoto();
+                    mListener.OnClickContinueToPhoto(mViewModel.getProfile());
                 }
             }
         });

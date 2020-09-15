@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private  final  String ACCOUNT_PREFERENCES_FRAGMENT="account_preferences_fragment";
     private  final  String ACCOUNT_PHOTO_FRAGMENT="account_photo_fragment";
     private  final  String ACCOUNT_PROFILE_FRAGMENT = "account_profile_fragment";
+    private  final  String SWIPE_FRAGMENT = "swipe_fragment";
 
     private LoginFragment loginFragment;
     private RegisterFragment registerFragment;
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 }
                 else {
                     mNameTv.setText(profile.getFirstName());
+                    Glide.with(MainActivity.this).load(profile.getProfilePictureUri()).error(R.drawable.man_profile).into(mProfileIv);
                 }
             }
         };
@@ -127,20 +129,21 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 Glide.with(MainActivity.this).load(R.drawable.man_profile).into(mProfileIv);
             }
         };
-        mViewModel.getDownloadResultFailed().observe(this,pictureFailedObserver);
-        mViewModel.getDownloadResultSuccess().observe(this, pictureSuccessObserver);
+      //  mViewModel.getDownloadResultFailed().observe(this,pictureFailedObserver);
+       // mViewModel.getDownloadResultSuccess().observe(this, pictureSuccessObserver);
         mViewModel.getProfileResultSuccess().observe(this, profileObserverSuccess);
         mViewModel.getProfileResultFailed().observe(this,profileObserverFail);
     }
 
     private void fetchProfileData() {
         mViewModel.getNavigationHeaderProfile();
-        mViewModel.getNavigationHeaderImage();
+    //    mViewModel.getNavigationHeaderImage();
     }
 
     private void handleNavigationItemSelected(String title) {
         switch (title) {
             case "Home":
+                moveToSwipeFragment();
                 break;
             case "My Profile":
                 moveToProfileFragment();
@@ -155,6 +158,15 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 mViewModel.logout();
                 moveToLoginFragment();
         }
+    }
+
+    private void moveToSwipeFragment() {
+        Fragment swipeFragment = SwipeFragment.newInstance(mViewModel.getProfile());
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction transaction=fragmentManager.beginTransaction();
+        transaction.add(R.id.drawer_layout,swipeFragment,SWIPE_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void moveToLoginFragment(){
@@ -217,8 +229,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     }
 
     @Override
-    public void OnClickContinueToPhoto() {
-        ProfilePhotoFragment profilePhotoFragment = ProfilePhotoFragment.newInstance();
+    public void OnClickContinueToPhoto(Profile profile) {
+        ProfilePhotoFragment profilePhotoFragment = ProfilePhotoFragment.newInstance(profile);
         FragmentManager fragmentManager=getSupportFragmentManager();
         fragmentManager.popBackStack();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
@@ -262,7 +274,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     public void moveToProfileFragment()
     {
-        ProfileFragment profileFragment = ProfileFragment.newInstance(mViewModel.getProfile(),mViewModel.getPictureUri().toString());
+//      ProfileFragment profileFragment = ProfileFragment.newInstance(mViewModel.getProfile(),mViewModel.getPictureUri().toString());
+        ProfileFragment profileFragment = ProfileFragment.newInstance(mViewModel.getProfile(),mViewModel.getProfile().getProfilePictureUri());
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
         transaction.add(R.id.drawer_layout,profileFragment,ACCOUNT_PROFILE_FRAGMENT);
@@ -272,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
 
     @Override
-    public void onUpdatePicture(Uri uri) {
-        mViewModel.setPicture(uri);
+    public void onUpdatePicture(Profile profile) {
+        mViewModel.setProfile(profile);
     }
 }
