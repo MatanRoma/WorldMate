@@ -16,6 +16,8 @@ public class Profile implements Serializable {
     private String hobbies="my hobbies";
     private String lookingFor="looking for";
     private boolean discovery;
+    private String profilePictureUri="";
+    private String email;
     private Preferences preferences;
 /*
     public Profile(String firstName, String lastName, float age, String gender) {
@@ -113,6 +115,13 @@ public class Profile implements Serializable {
         this.preferences = preferences;
     }
 
+    public String getProfilePictureUri() {
+        return profilePictureUri;
+    }
+
+    public void setProfilePictureUri(String profilePictureUri) {
+        this.profilePictureUri = profilePictureUri;
+    }
 
     public void setDiscovery(boolean discovery) {
         this.discovery = discovery;
@@ -124,6 +133,14 @@ public class Profile implements Serializable {
 
     public void setLookingFor(String lookingFor) {
         this.lookingFor = lookingFor;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
 

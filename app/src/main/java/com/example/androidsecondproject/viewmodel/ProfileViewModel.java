@@ -89,7 +89,7 @@ public class ProfileViewModel extends AndroidViewModel {
     }
 
     public void setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
+        profile.setProfilePictureUri(imageUri.toString());
     }
 
     public Profile getProfile()
@@ -99,7 +99,7 @@ public class ProfileViewModel extends AndroidViewModel {
 
     public Uri getImageUri()
     {
-        return imageUri;
+        return Uri.parse(profile.getProfilePictureUri()) ;
     }
 
 

@@ -23,6 +23,9 @@ public class AccountSetupViewModel extends AndroidViewModel {
     public void writeProfileToDatabase (){
         repository.writeProfile(profile);
     }
+    public Profile getProfile(){
+        return profile;
+    }
 
     public void setDate(GregorianCalendar date) {
         profile.calculateBirthday(date);
@@ -38,5 +41,9 @@ public class AccountSetupViewModel extends AndroidViewModel {
 
     public void setLastName(String lastName) {
         profile.setLastName(lastName);
+    }
+
+    public void setEmail() {
+        profile.setEmail(repository.getCurrenUserEmail());
     }
 }

@@ -113,6 +113,10 @@ public class AuthRepository {
         return mAuth.getCurrentUser().getUid();
     }
 
+    public String getCurrentUserEmail() {
+       return mAuth.getCurrentUser().getEmail();
+    }
+
     public interface RepoRegisterInterface{
         void onSuccessRegister(String uid);
         void onFailedRegister(String error);

@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,7 +57,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
 
     public interface UpdateDrawerFromProfileFragment
     {
-        public void onUpdatePicture(Uri Uri);
+        public void onUpdatePicture(Profile profile);
     }
 
     private UpdateDrawerFromProfileFragment mUpdateDrawerListener;
@@ -109,7 +110,8 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
         final Observer<Boolean> uploadObserverSuccess = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                file.delete();
+                if(file!=null)
+                    file.delete();
                 mViewModel.downloadPicture();
             }
         };
@@ -117,7 +119,8 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
             @Override
             public void onChanged(Uri uri) {
                 Glide.with(getContext()).load(uri).into(profilePicture);
-                mUpdateDrawerListener.onUpdatePicture(uri);
+                mViewModel.setImageUri(uri);
+                mUpdateDrawerListener.onUpdatePicture(mViewModel.getProfile());
             }
         };
         mViewModel.getUploadResultSuccess().observe(this, uploadObserverSuccess);
@@ -129,6 +132,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
 
         firstNameTv.setText(mViewModel.getProfile().getFirstName());
         lastNameTv.setText(mViewModel.getProfile().getLastName());
+        Toast.makeText(getContext(), mViewModel.getImageUri()+"", Toast.LENGTH_SHORT).show();
         Glide.with(this).load(mViewModel.getImageUri()).error(R.drawable.man_profile).into(profilePicture);
 
         profilePicture.setOnClickListener(new View.OnClickListener() {
