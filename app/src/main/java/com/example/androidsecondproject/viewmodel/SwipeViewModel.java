@@ -30,7 +30,7 @@ public class SwipeViewModel extends AndroidViewModel {
         return mProfilesMutableLiveData;
     }
     public void readProfiles(){
-        mRepository.readProfiles();
+        mRepository.readProfiles(mProfile);
     }
     public void setUserProfile(Profile profile){
         this.mProfile=profile;
