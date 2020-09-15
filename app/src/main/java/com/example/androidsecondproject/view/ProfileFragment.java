@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,18 +56,18 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
 
     public interface UpdateDrawerFromProfileFragment
     {
-        public void onUpdatePicture(Profile profile);
+        public void onUpdateProfile(Profile profile);
     }
 
     private UpdateDrawerFromProfileFragment mUpdateDrawerListener;
 
 
 
-    public static ProfileFragment newInstance(Profile profile,String uri)
+    public static ProfileFragment newInstance(Profile profile)
     {
         Bundle bundle=new Bundle();
         bundle.putSerializable("profile",profile);
-        bundle.putString("profile_picture",uri);
+        bundle.putString("profile_picture",profile.getProfilePictureUri());
         ProfileFragment profileFragment = new ProfileFragment();
         profileFragment.setArguments(bundle);
         return profileFragment;
@@ -119,8 +118,9 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
             @Override
             public void onChanged(Uri uri) {
                 Glide.with(getContext()).load(uri).into(profilePicture);
-                mViewModel.setImageUri(uri);
-                mUpdateDrawerListener.onUpdatePicture(mViewModel.getProfile());
+               // mViewModel.setImageUri(uri);
+                mViewModel.getProfile().setProfilePictureUri(uri.toString());
+                mUpdateDrawerListener.onUpdateProfile(mViewModel.getProfile());
             }
         };
         mViewModel.getUploadResultSuccess().observe(this, uploadObserverSuccess);
@@ -205,6 +205,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
                 mViewModel.getProfile().setFirstName(firstNameEt.getText().toString());
                 mViewModel.getProfile().setLastName(lastNameEt.getText().toString());
                 mViewModel.writeProfile();
+                mUpdateDrawerListener.onUpdateProfile(mViewModel.getProfile());
             }
         });
 

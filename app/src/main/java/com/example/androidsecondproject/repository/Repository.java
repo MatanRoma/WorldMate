@@ -46,7 +46,7 @@ public class Repository {
     }
 
     public void readProfile(String uid){
-               /* profilesTable.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                profilesTable.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
@@ -69,7 +69,8 @@ public class Repository {
                             profileListener.onProfileDataChangeFail(error.getMessage());
                         //TODO
                     }
-        });*/
+        });
+                /*
                 profilesTable.child(uid).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -94,6 +95,8 @@ public class Repository {
                         //TODO
                     }
                 });
+
+                 */
     }
 
     public void readProfiles(){

@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     public void moveToProfileFragment()
     {
 //      ProfileFragment profileFragment = ProfileFragment.newInstance(mViewModel.getProfile(),mViewModel.getPictureUri().toString());
-        ProfileFragment profileFragment = ProfileFragment.newInstance(mViewModel.getProfile(),mViewModel.getProfile().getProfilePictureUri());
+        ProfileFragment profileFragment = ProfileFragment.newInstance(mViewModel.getProfile());
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
         transaction.add(R.id.drawer_layout,profileFragment,ACCOUNT_PROFILE_FRAGMENT);
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
 
     @Override
-    public void onUpdatePicture(Profile profile) {
+    public void onUpdateProfile(Profile profile) {
         mViewModel.setProfile(profile);
     }
 }
