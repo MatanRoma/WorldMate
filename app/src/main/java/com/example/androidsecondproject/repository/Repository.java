@@ -2,12 +2,11 @@ package com.example.androidsecondproject.repository;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.androidsecondproject.model.Preferences;
 import com.example.androidsecondproject.model.Profile;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -99,7 +98,7 @@ public class Repository {
                  */
     }
 
-    public void readProfiles(){
+    public void readProfiles(final Profile myProfile){
         profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -108,8 +107,12 @@ public class Repository {
                     String myUid=getCurrentUserId();
                     List<Profile> profiles=new ArrayList<>();
                     for(DataSnapshot currSnapshot:snapshot.getChildren()){
-                       if(!currSnapshot.getKey().equals(myUid))
-                            profiles.add(currSnapshot.getValue(Profile.class));
+                       if(!currSnapshot.getKey().equals(myUid)) {
+                           Profile profile = currSnapshot.getValue(Profile.class);
+                           if(checkCompatibility(myProfile,profile)) {
+                               profiles.add(profile);
+                           }
+                       }
                     }
                     profilesListener.onProfilesDataChangeSuccess(profiles);
                 }
@@ -121,6 +124,28 @@ public class Repository {
 
             }
         });
+    }
+
+    private boolean checkCompatibility(Profile myProfile, Profile otherProfile) {
+        if(!otherProfile.isDiscovery()){
+            return false;
+        }
+        if(checkCompatibilityHelper(myProfile,otherProfile.getPreferences())&&checkCompatibilityHelper(otherProfile,myProfile.getPreferences())){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkCompatibilityHelper(Profile profile, Preferences preferences) {
+        float myAge=profile.getAge();
+        String myGender=profile.getGender();
+        if(myAge<preferences.getMinAge()||myAge>preferences.getMaxAge()){
+            return false;
+        }
+        else if(!((preferences.isLookingForMen()&&myGender.equals("male"))||(preferences.isLookingForWomen()&&myGender.equals("female")))){
+            return false;
+        }
+        return true;
     }
 
     public void writeMyProfile(Profile profile){
