@@ -79,7 +79,38 @@
                 android:textSize="20sp"
                 android:visibility="gone"
                 android:id="@+id/description_et"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/description_et"
+                android:padding="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Edit"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:src="@drawable/ic_edit_btn_black"
+                android:scaleType="fitCenter"
+                android:background="@color/transparent"
+                android:id="@+id/edit_btn"/>
 
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone"
+                android:layout_below="@id/description_et"
+                android:padding="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:src="@drawable/ic_baseline_save_24"
+                android:scaleType="fitCenter"
+                android:background="@color/transparent"
+                android:id="@+id/save_btn"/>
 
         </RelativeLayout>
 
@@ -89,34 +120,5 @@
 
     </androidx.cardview.widget.CardView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/description_card_view"
-        android:padding="10dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="20dp"
-        android:text="Edit"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:background="@drawable/button_selector"
-        android:id="@+id/edit_btn"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:visibility="gone"
-        android:layout_below="@id/description_card_view"
-        android:padding="10dp"
-        android:layout_marginTop="15dp"
-        android:text="Save"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:background="@drawable/button_selector"
-        android:id="@+id/save_btn"/>
 </RelativeLayout>
