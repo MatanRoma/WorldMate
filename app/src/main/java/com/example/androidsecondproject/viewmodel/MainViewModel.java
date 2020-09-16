@@ -14,11 +14,12 @@ import com.example.androidsecondproject.repository.Repository;
 import com.example.androidsecondproject.repository.StorageRepository;
 
 public class MainViewModel extends AndroidViewModel {
-    Repository mRepository;
+    private Repository mRepository;
     private MutableLiveData<Uri> mPictureDownloadSuccess;
     private MutableLiveData<String> mPictureDownloadFailed;
     private MutableLiveData<Profile> mProfileSuccessLiveData;
     private MutableLiveData<String> mProfileFailedLiveData;
+    private boolean isFirstTime=true;
 
 
     public MainViewModel(@NonNull Application application) {
@@ -117,5 +118,13 @@ public class MainViewModel extends AndroidViewModel {
     }
     public void setPicture(Uri uri){
         mPictureDownloadSuccess.setValue(uri);
+    }
+
+    public boolean isFirstTime() {
+        return isFirstTime;
+    }
+
+    public void setFirstTime(boolean firstTime) {
+        isFirstTime = firstTime;
     }
 }

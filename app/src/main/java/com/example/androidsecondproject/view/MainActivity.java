@@ -58,18 +58,20 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initializeViewComponents();
+       initializeViewComponents();
+
         setObservers();
 
         if(getIntent().hasExtra("is_logged_in")){ // from splash activity
             fetchProfileData();
+
         }
         else{
             moveToLoginFragment();
         }
     }
 
-    @SuppressLint("RestrictedApi")
+
     private void initializeViewComponents() {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
@@ -89,9 +91,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             }
         });
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_launcher_background);
+        ActionBar actionBar=getSupportActionBar();
+     //   actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
     }
 
     private void setObservers() {
@@ -102,6 +105,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 Toast.makeText(MainActivity.this, "observer", Toast.LENGTH_SHORT).show();
                 if(profile.getPreferences()==null){
                     moveToPreferences();
+                }
+                else if(mViewModel.isFirstTime()){
+                    mViewModel.setFirstTime(false);
+                    moveToSwipeFragment();
+                    mNameTv.setText(profile.getFirstName());
+                    Glide.with(MainActivity.this).load(profile.getProfilePictureUri()).error(R.drawable.man_profile).into(mProfileIv);
                 }
                 else {
                     mNameTv.setText(profile.getFirstName());
@@ -164,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         Fragment swipeFragment = SwipeFragment.newInstance(mViewModel.getProfile());
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.add(R.id.drawer_layout,swipeFragment,SWIPE_FRAGMENT);
+        transaction.add(R.id.flContent,swipeFragment,SWIPE_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -278,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         ProfileFragment profileFragment = ProfileFragment.newInstance(mViewModel.getProfile());
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.add(R.id.drawer_layout,profileFragment,ACCOUNT_PROFILE_FRAGMENT);
+        transaction.add(R.id.flContent,profileFragment,ACCOUNT_PROFILE_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
     }
