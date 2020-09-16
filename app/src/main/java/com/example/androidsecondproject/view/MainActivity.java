@@ -23,10 +23,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.Profile;
+import com.example.androidsecondproject.model.Question;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.MainViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -99,6 +102,14 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     private void setObservers() {
         mViewModel=new ViewModelProvider(this,new ViewModelFactory(getApplication(), eViewModels.Main)).get(MainViewModel.class);
+
+        Observer<List<Question>> questionsObserverSuccess=new Observer<List<Question>>() {
+            @Override
+            public void onChanged(List<Question> questions) {
+                moveToSwipeFragment();
+            }
+        };
+
         Observer<Profile> profileObserverSuccess=new Observer<Profile>() {
             @Override
             public void onChanged(Profile profile) {
@@ -108,9 +119,9 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 }
                 else if(mViewModel.isFirstTime()){
                     mViewModel.setFirstTime(false);
-                    moveToSwipeFragment();
                     mNameTv.setText(profile.getFirstName());
                     Glide.with(MainActivity.this).load(profile.getProfilePictureUri()).error(R.drawable.man_profile).into(mProfileIv);
+                    mViewModel.readQuestions();
                 }
                 else {
                     mNameTv.setText(profile.getFirstName());
@@ -158,6 +169,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 moveToProfileFragment();
                 break;
             case "Your Matches":
+                break;
+            case "Questions":
                 break;
             case "Messages":
                 break;

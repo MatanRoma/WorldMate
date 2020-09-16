@@ -17,6 +17,10 @@
             android:title="Your Matches"/>
 
         <item
+            android:id="@+id/questions_item"
+            android:title="Questions"/>
+
+        <item
             android:id="@+id/messages_item"
             android:title="Messages"/>
 
