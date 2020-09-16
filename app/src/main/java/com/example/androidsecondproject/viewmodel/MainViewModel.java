@@ -10,15 +10,17 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.androidsecondproject.model.Profile;
+import com.example.androidsecondproject.model.Question;
 import com.example.androidsecondproject.repository.Repository;
-import com.example.androidsecondproject.repository.StorageRepository;
+
+import java.util.List;
+
 
 public class MainViewModel extends AndroidViewModel {
     private Repository mRepository;
-    private MutableLiveData<Uri> mPictureDownloadSuccess;
-    private MutableLiveData<String> mPictureDownloadFailed;
     private MutableLiveData<Profile> mProfileSuccessLiveData;
     private MutableLiveData<String> mProfileFailedLiveData;
+    private MutableLiveData<List<Question>> mQuestionsSuccessLiveData;
     private boolean isFirstTime=true;
 
 
@@ -42,6 +44,28 @@ public class MainViewModel extends AndroidViewModel {
         }
         return mProfileFailedLiveData;
     }
+    public MutableLiveData<List<Question>> getQuestionsResultSuccess(){
+        if (mQuestionsSuccessLiveData == null) {
+            mQuestionsSuccessLiveData = new MutableLiveData<>();
+            loadQuestionsData();
+            //      database.readProfileFrom();
+        }
+        return mQuestionsSuccessLiveData;
+    }
+
+    private void loadQuestionsData() {
+        mRepository.setQuestionsListener(new Repository.QuestionsListener() {
+            @Override
+            public void onQuestionsDataChangeSuccess(List<Question> questions) {
+                mQuestionsSuccessLiveData.setValue(questions);
+            }
+
+            @Override
+            public void onQuestionsDataChangeFail(String error) {
+
+            }
+        });
+    }
 
     private void loadProfileData() {
         mRepository.setProfileListener(new Repository.ProfileListener() {
@@ -57,33 +81,8 @@ public class MainViewModel extends AndroidViewModel {
         });
     }
 
-    public MutableLiveData<Uri> getDownloadResultSuccess(){
-        if (mPictureDownloadSuccess == null) {
-            mPictureDownloadSuccess = new MutableLiveData<>();
-            setDownloadListener();
-        }
-        return mPictureDownloadSuccess;
-    }
-    public MutableLiveData<String> getDownloadResultFailed(){
-        if (mPictureDownloadFailed == null) {
-            mPictureDownloadFailed = new MutableLiveData<>();
-            setDownloadListener();
-        }
-        return mPictureDownloadFailed;
-    }
-    public void setDownloadListener(){
-        mRepository.setDownloadListener(new StorageRepository.StorageDownloadPicListener() {
-            @Override
-            public void onSuccessDownloadPic(Uri uri) {
-                mPictureDownloadSuccess.setValue(uri);
-            }
 
-            @Override
-            public void onFailedDownloadPic(String error) {
-                mPictureDownloadFailed.setValue(error);
-            }
-        });
-    }
+
     public void logout(){
         mRepository.logout();
     }
@@ -93,10 +92,7 @@ public class MainViewModel extends AndroidViewModel {
         mRepository.readProfile(mRepository.getCurrentUserId());
     }
 
-    public void getNavigationHeaderImage() {
-        setDownloadListener();
-        mRepository.readMyProfilePictureFromStorage();
-    }
+
 
     public String getuser() {
         return mRepository.getCurrentUserId();
@@ -105,9 +101,7 @@ public class MainViewModel extends AndroidViewModel {
     public String getGender() {
        return mProfileSuccessLiveData.getValue()!=null?mProfileSuccessLiveData.getValue().getGender():"male";
     }
-    public Uri getPictureUri(){
-        return mPictureDownloadSuccess.getValue()!=null? mPictureDownloadSuccess.getValue():Uri.parse("no_picture");
-    }
+
     public Profile getProfile(){
         return mProfileSuccessLiveData.getValue();
     }
@@ -116,9 +110,7 @@ public class MainViewModel extends AndroidViewModel {
     {
         mProfileSuccessLiveData.setValue(profile);
     }
-    public void setPicture(Uri uri){
-        mPictureDownloadSuccess.setValue(uri);
-    }
+
 
     public boolean isFirstTime() {
         return isFirstTime;
@@ -126,5 +118,9 @@ public class MainViewModel extends AndroidViewModel {
 
     public void setFirstTime(boolean firstTime) {
         isFirstTime = firstTime;
+    }
+
+    public void readQuestions() {
+        mRepository.readQuestions();
     }
 }

@@ -119,6 +119,7 @@ public class SwipeFragment extends Fragment {
         }
         private  void profileDisliked(final int position){
 
+
         }
 
 

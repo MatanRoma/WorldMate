@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.example.androidsecondproject.model.Preferences;
 import com.example.androidsecondproject.model.Profile;
+import com.example.androidsecondproject.model.Question;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,19 +21,23 @@ import java.util.List;
 public class Repository {
 
     private final String PROFILE_TABLE = "profiles";
+    private final String QUESTIONS_TABLE = "questions_table";
     private FirebaseDatabase database;
     private AuthRepository authRepository;
     private StorageRepository storageRepository;
     private DatabaseReference profilesTable;
+    private DatabaseReference questionsTable;
     private ProfileListener profileListener;
     private ProfilesListener profilesListener;
 
     private static Repository repository;
+    private QuestionsListener questionsListener;
 
 
     private Repository(Context context) {
         database=FirebaseDatabase.getInstance();
         profilesTable=database.getReference(PROFILE_TABLE);
+        questionsTable=database.getReference(QUESTIONS_TABLE);
         authRepository=AuthRepository.getInstance(context);
         storageRepository=StorageRepository.getInstance();
 
@@ -139,12 +144,12 @@ public class Repository {
     private boolean checkCompatibilityHelper(Profile profile, Preferences preferences) {
         float myAge=profile.getAge();
         String myGender=profile.getGender();
-        if(myAge<preferences.getMinAge()||myAge>preferences.getMaxAge()){
+        /*if(myAge<preferences.getMinAge()||myAge>preferences.getMaxAge()){
             return false;
         }
         else if(!((preferences.isLookingForMen()&&myGender.equals("male"))||(preferences.isLookingForWomen()&&myGender.equals("female")))){
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -197,11 +202,43 @@ public class Repository {
         void onProfilesDataChangeSuccess(List<Profile> profiles);
         void onProfilesDataChangeFail(String error);
     }
+
     public void setProfilesListener(ProfilesListener profilesListener) {
         this.profilesListener = profilesListener;
+    }
+    public interface QuestionsListener{
+        void onQuestionsDataChangeSuccess(List<Question> questions);
+        void onQuestionsDataChangeFail(String error);
+    }
+    public void setQuestionsListener(QuestionsListener questionsListener) {
+        this.questionsListener = questionsListener;
     }
     public void logout(){
         authRepository.logoutUser();
     }
+
+    public void readQuestions(){
+        questionsTable.child("english").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    List<Question> questions=new ArrayList<>();
+                    for(DataSnapshot currSnapshot:snapshot.getChildren()){
+                        Question question=currSnapshot.getValue(Question.class);
+                        questions.add(question);
+                    }
+                    if(questionsListener!=null)
+                         questionsListener.onQuestionsDataChangeSuccess(questions);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
 
 }
