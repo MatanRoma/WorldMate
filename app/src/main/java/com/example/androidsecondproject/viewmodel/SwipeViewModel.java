@@ -82,4 +82,8 @@ public class SwipeViewModel extends AndroidViewModel {
     public void writeOtherProfile(int position) {
         mRepository.writeOtherProfile(mProfilesMutableLiveData.getValue().get(position));
     }
+    public Profile getProfile()
+    {
+        return mProfile;
+    }
 }

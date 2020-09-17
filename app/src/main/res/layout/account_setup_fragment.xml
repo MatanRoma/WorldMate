@@ -83,6 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Men"
+            android:textAllCaps="false"
             android:textSize="20sp"
             android:background="@drawable/gender_btn_selector"
             android:textColor="#000"
@@ -93,6 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Women"
+            android:textAllCaps="false"
             android:textSize="20sp"
             android:textColor="#000"
             android:background="@drawable/gender_btn_selector"
@@ -145,6 +147,7 @@
         android:layout_below="@id/date_picker"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
+        android:layout_marginBottom="10dp"
         android:text="Continue"
         android:padding="5dp"
         android:id="@+id/continue_btn"/>

@@ -43,183 +43,251 @@
                 android:textStyle="bold"
                 android:id="@+id/change_pic_btn"
                 android:text="Change photo" />
-            <androidx.cardview.widget.CardView android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardUseCompatPadding="true"
-                app:cardBackgroundColor="@color/colorPrimaryDark"
-                app:contentPadding="10dp"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_below="@id/change_pic_btn"
-                android:id="@+id/account_info_card_view"
-                app:cardCornerRadius="25dp">
-                <RelativeLayout
+                android:id="@+id/name_layout">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:layout_marginStart="10dp"
+                    android:padding="5dp"
+                    android:text="First"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:id="@+id/first_name_tv"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:padding="5dp"
+                    android:breakStrategy="high_quality"
+                    android:text="Last"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:id="@+id/last_name_tv"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:layout_marginStart="10dp"
+                    android:padding="5dp"
+                    android:breakStrategy="high_quality"
+                    android:hint="First"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:id="@+id/first_name_et"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:padding="5dp"
+                    android:hint="Last"
+                    android:breakStrategy="high_quality"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:id="@+id/last_name_et"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_edit_btn_black"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/transparent"
+                    android:id="@+id/name_edit_iv"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_baseline_save_24"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    android:id="@+id/name_confirm_iv"/>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_layout">
+
+                <View
+                    android:id="@+id/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <LinearLayout
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="100dp"
+                    android:layout_marginStart="10dp"
+                    android:background="?android:attr/listDivider" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_layout"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:padding="5dp"
+                android:id="@+id/age_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:padding="5dp"
+                    android:text="Age: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:id="@+id/age_text"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:padding="5dp"
+                    android:text="26"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:id="@+id/age_tv"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:padding="5dp"
+                    android:hint="Age"
+                    android:inputType="numberDecimal"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:id="@+id/age_et"/>
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/age_layout"
+                android:id="@+id/view2">
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="100dp"
+                    android:layout_marginStart="10dp"
+                    android:background="?android:attr/listDivider" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view2"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:padding="5dp"
+                android:id="@+id/gender_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:padding="5dp"
+                    android:text="Gender: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:id="@+id/gender_text"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+                    <RadioGroup
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="5dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:id="@+id/name_layout">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4"
-                            android:layout_marginStart="10dp"
-                            android:padding="5dp"
-                            android:breakStrategy="high_quality"
-                            android:text="First"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:textColor="@color/black"
-                            android:textSize="25sp"
-                            android:textStyle="bold"
-                            android:id="@+id/first_name_tv"/>
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4"
-                            android:padding="5dp"
-                            android:breakStrategy="high_quality"
-                            android:text="Last"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:textColor="@color/black"
-                            android:textSize="25sp"
-                            android:textStyle="bold"
-                            android:id="@+id/last_name_tv"/>
-                        <EditText
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4"
-                            android:layout_marginStart="10dp"
-                            android:padding="5dp"
-                            android:breakStrategy="high_quality"
-                            android:hint="First"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:textColor="@color/black"
-                            android:textSize="25sp"
-                            android:textStyle="bold"
-                            android:visibility="gone"
-                            android:id="@+id/first_name_et"/>
+                        android:orientation="horizontal">
 
-                        <EditText
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4"
-                            android:padding="5dp"
-                            android:hint="Last"
-                            android:breakStrategy="high_quality"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:textColor="@color/black"
-                            android:textSize="25sp"
-                            android:textStyle="bold"
-                            android:visibility="gone"
-                            android:id="@+id/last_name_et"/>
-
-                        <ImageButton
-                            android:id="@+id/name_edit_iv"
+                        <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
                             android:layout_marginStart="5dp"
-                            android:background="@color/transparent"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_edit_btn_black" />
-                        <ImageButton
+                            android:textSize="15sp"
+                            android:text="Men"
+                            android:id="@+id/men_rb"/>
+
+                        <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_baseline_save_24"
-                            android:layout_gravity="center_vertical"
-                            android:background="@color/transparent"
-                            android:visibility="gone"
-                            android:id="@+id/name_confirm_iv"/>
+                            android:textSize="15sp"
+                            android:text="Women"
+                            android:id="@+id/women_rb"/>
 
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginHorizontal="20dp"
-                        android:layout_below="@id/name_layout"
-                        android:id="@+id/gender_layout">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:breakStrategy="high_quality"
-                            android:text="gender"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:textColor="@color/black"
-                            android:textSize="25sp"
-                            android:textStyle="bold"
-
-                            android:id="@+id/gender_tv"/>
-                        <Spinner
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/account_info_card_view"
-
-                            android:visibility="gone"
-
-
-                            android:popupBackground="@drawable/spinner_background"
-                            android:id="@+id/gender_spinner"/>
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginHorizontal="20dp"
-                        android:layout_below="@id/gender_layout"
-                        android:id="@+id/age_layout">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:breakStrategy="high_quality"
-                            android:text="My age"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:textColor="@color/black"
-                            android:textSize="25sp"
-                            android:textStyle="bold"
-                            android:id="@+id/age_tv"/>
-                        <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
-                            android:id="@+id/age_seekbar"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            app:corner_radius="10"
-                            app:min_value="18"
-                            app:max_value="100"
-                            app:steps="1"
-                            app:bar_highlight_color="@color/colorAccent"
-                            app:left_thumb_image="@drawable/thumb_range"
-                            app:left_thumb_image_pressed="@drawable/thumb_range_pressed"
-                            app:data_type="_integer"/>
-
-
-                    </LinearLayout>
-
-
-                </RelativeLayout>
+                    </RadioGroup>
 
 
 
+                </LinearLayout>
+            </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gender_layout"
+                android:id="@+id/view3">
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="100dp"
+                    android:layout_marginStart="10dp"
+                    android:background="?android:attr/listDivider" />
+
+            </RelativeLayout>
 
 
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_card_view"
-                android:layout_marginHorizontal="10dp"
+                android:layout_below="@+id/view3"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginBottom="30dp"
                 android:padding="5dp"
                 android:popupBackground="@drawable/spinner_background"

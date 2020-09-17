@@ -73,6 +73,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                     objectToReturn= (T) (new SwipeViewModel(mApplication));
                 }
                 break;
+            case Questions:
+                if (modelClass.isAssignableFrom(QuestionsViewModel.class)) {
+                    objectToReturn= (T) (new QuestionsViewModel(mApplication));
+                }
+                break;
 
 
 
