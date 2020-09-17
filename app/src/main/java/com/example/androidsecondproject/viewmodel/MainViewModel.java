@@ -11,14 +11,13 @@ import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.Question;
 import com.example.androidsecondproject.repository.Repository;
 
-import java.util.List;
+
 
 
 public class MainViewModel extends AndroidViewModel {
     private Repository mRepository;
     private MutableLiveData<Profile> mProfileSuccessLiveData;
     private MutableLiveData<String> mProfileFailedLiveData;
-    private MutableLiveData<List<Question>> mQuestionsSuccessLiveData;
     private boolean isFirstTime=true;
 
 
@@ -42,29 +41,8 @@ public class MainViewModel extends AndroidViewModel {
         }
         return mProfileFailedLiveData;
     }
-    public MutableLiveData<List<Question>> getQuestionsResultSuccess(){
-        Log.d("questions","set questions");
-        if (mQuestionsSuccessLiveData == null) {
-            mQuestionsSuccessLiveData = new MutableLiveData<>();
-            loadQuestionsData();
-            //      database.readProfileFrom();
-        }
-        return mQuestionsSuccessLiveData;
-    }
 
-    private void loadQuestionsData() {
-        mRepository.setQuestionsListener(new Repository.QuestionsListener() {
-            @Override
-            public void onQuestionsDataChangeSuccess(List<Question> questions) {
-                mQuestionsSuccessLiveData.setValue(questions);
-            }
 
-            @Override
-            public void onQuestionsDataChangeFail(String error) {
-
-            }
-        });
-    }
 
     private void loadProfileData() {
         mRepository.setProfileListener(new Repository.ProfileListener() {
@@ -80,8 +58,6 @@ public class MainViewModel extends AndroidViewModel {
         });
     }
 
-
-
     public void logout(){
         mRepository.logout();
     }
@@ -92,14 +68,6 @@ public class MainViewModel extends AndroidViewModel {
     }
 
 
-
-    public String getuser() {
-        return mRepository.getCurrentUserId();
-    }
-
-    public String getGender() {
-       return mProfileSuccessLiveData.getValue()!=null?mProfileSuccessLiveData.getValue().getGender():"male";
-    }
 
     public Profile getProfile(){
         return mProfileSuccessLiveData.getValue();
@@ -119,13 +87,11 @@ public class MainViewModel extends AndroidViewModel {
         isFirstTime = firstTime;
     }
 
-    public void readQuestions() {
-        mRepository.readQuestions();
+
+
+    public boolean checkIfAuth() {
+        return mRepository.checkIfAuth();
     }
 
-    public List<Question> getQuestions()
-    {
-        return mQuestionsSuccessLiveData.getValue();
 
-    }
 }

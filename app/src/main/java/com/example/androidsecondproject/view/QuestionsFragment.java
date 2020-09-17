@@ -10,12 +10,14 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidsecondproject.R;
@@ -32,11 +34,10 @@ import java.util.List;
 public class QuestionsFragment extends Fragment {
 private QuestionsViewModel mViewModel;
 private View mSportView;
-    public static QuestionsFragment newInstance(Profile profile,List<Question> questions)
+    public static QuestionsFragment newInstance(Profile profile)
     {
         Bundle bundle=new Bundle();
         bundle.putSerializable("profile",profile);
-        bundle.putSerializable("questions", (Serializable) questions);
         QuestionsFragment questionsFragment=new QuestionsFragment();
         questionsFragment.setArguments(bundle);
         return questionsFragment;
@@ -51,12 +52,21 @@ private View mSportView;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.questions_fragment,container,false);
+        final RelativeLayout relativeLayoutQuestions =rootView.findViewById(R.id.relative_questions);
 
-        final List<Question> questions = (List<Question>) getArguments().getSerializable("questions");
-        Toast.makeText(getContext(), questions.size()+"", Toast.LENGTH_SHORT).show();
 
         mViewModel =new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Questions)).get(QuestionsViewModel.class);
         mViewModel.setProfile((Profile)getArguments().getSerializable("profile"));
+
+        Observer<List<Question>> questionsObserverSuccess=new Observer<List<Question>>() {
+            @Override
+            public void onChanged(List<Question> questions) {
+                relativeLayoutQuestions.setVisibility(View.VISIBLE);
+            }
+        };
+        mViewModel.readQuestions();
+
+        mViewModel.getQuestionsResultSuccess().observe(this,questionsObserverSuccess);
 
         final CheckBox sportCb = rootView.findViewById(R.id.sport_rb);
         final CheckBox foodCb = rootView.findViewById(R.id.food_rb);
@@ -75,7 +85,7 @@ private View mSportView;
                     sportTitleTv.setVisibility(View.VISIBLE);
                     sportQuestionsLayout.removeAllViews();
                     sportQuestionsLayout.addView(sportTitleTv);
-                    for (final Question question:questions) {
+                    for (final Question question:mViewModel.getQuestions()) {
                         if(question.getCategory().equals("sport"))
                         {
                             final View child = getLayoutInflater().inflate(R.layout.question_item_layout, sportQuestionsLayout, false);
@@ -177,7 +187,7 @@ private View mSportView;
                     foodTitleTv.setVisibility(View.VISIBLE);
                     foodQuestionsLayout.removeAllViews();
                     foodQuestionsLayout.addView(foodTitleTv);
-                    for (final Question question:questions) {
+                    for (final Question question:mViewModel.getQuestions()) {
                         if(question.getCategory().equals("food"))
                         {
                             final View child = getLayoutInflater().inflate(R.layout.question_item_layout, foodQuestionsLayout, false);

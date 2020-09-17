@@ -257,6 +257,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
                 lastNameEt.setVisibility(View.VISIBLE);
                 lastNameEt.setText(lastNameTv.getText().toString());
                 ageTv.setVisibility(View.GONE);
+                ageEt.setText(ageTv.getText().toString());
                 //menRb.setVisibility(View.GONE);
                // genderSpinner.setVisibility(View.VISIBLE);
                 ageEt.setVisibility(View.VISIBLE);

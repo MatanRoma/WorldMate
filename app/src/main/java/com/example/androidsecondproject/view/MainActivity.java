@@ -63,18 +63,14 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         setContentView(R.layout.activity_main);
 
        initializeViewComponents();
-
         setObservers();
-
-        if(getIntent().hasExtra("is_logged_in")){ // from splash activity
+        if(mViewModel.checkIfAuth()){ // from splash activity
             fetchProfileData();
-
         }
         else{
             moveToLoginFragment();
         }
     }
-
 
     private void initializeViewComponents() {
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -104,12 +100,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private void setObservers() {
         mViewModel=new ViewModelProvider(this,new ViewModelFactory(getApplication(), eViewModels.Main)).get(MainViewModel.class);
 
-        Observer<List<Question>> questionsObserverSuccess=new Observer<List<Question>>() {
-            @Override
-            public void onChanged(List<Question> questions) {
-                moveToSwipeFragment();
-            }
-        };
+
 
         Observer<Profile> profileObserverSuccess=new Observer<Profile>() {
             @Override
@@ -119,10 +110,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                     moveToPreferences();
                 }
                 else if(mViewModel.isFirstTime()){
-                    mViewModel.setFirstTime(false);
                     mNameTv.setText(profile.getFirstName());
                     Glide.with(MainActivity.this).load(profile.getProfilePictureUri()).error(R.drawable.man_profile).into(mProfileIv);
-                    mViewModel.readQuestions();
+                    mViewModel.setFirstTime(false);
+                    moveToSwipeFragment();
                 }
                 else {
                     mNameTv.setText(profile.getFirstName());
@@ -138,23 +129,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             }
         };
 
-        Observer<Uri> pictureSuccessObserver=new Observer<Uri>() {
-            @Override
-            public void onChanged(Uri uri) {
-                Glide.with(MainActivity.this).load(uri).into(mProfileIv);
-            }
-        };
-        Observer<String> pictureFailedObserver=new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Glide.with(MainActivity.this).load(R.drawable.man_profile).into(mProfileIv);
-            }
-        };
-      //  mViewModel.getDownloadResultFailed().observe(this,pictureFailedObserver);
-       // mViewModel.getDownloadResultSuccess().observe(this, pictureSuccessObserver);
+
+
         mViewModel.getProfileResultSuccess().observe(this, profileObserverSuccess);
         mViewModel.getProfileResultFailed().observe(this,profileObserverFail);
-        mViewModel.getQuestionsResultSuccess().observe(this,questionsObserverSuccess);
+
+
 
 
     }
@@ -163,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     private void fetchProfileData() {
         mViewModel.getNavigationHeaderProfile();
-    //    mViewModel.getNavigationHeaderImage();
     }
 
     private void handleNavigationItemSelected(String title) {
@@ -313,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     }
 
     public void moveToQuestionsFragment() {
-        QuestionsFragment questionsFragment = QuestionsFragment.newInstance(mViewModel.getProfile(),mViewModel.getQuestions());
+        QuestionsFragment questionsFragment = QuestionsFragment.newInstance(mViewModel.getProfile());
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.flContent, questionsFragment, QUESTIONS_FRAGMENT);
