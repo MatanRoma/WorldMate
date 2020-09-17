@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,11 +22,10 @@ import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.SwipeAdapter;
 import com.example.androidsecondproject.model.eViewModels;
-import com.example.androidsecondproject.repository.Repository;
-import com.example.androidsecondproject.viewmodel.RegisterViewModel;
 import com.example.androidsecondproject.viewmodel.SwipeViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SwipeFragment extends Fragment {
@@ -33,6 +33,11 @@ public class SwipeFragment extends Fragment {
     private SwipeAdapter mSwipeAdapter;
     private SwipeViewModel mViewModel;
     RecyclerView mRecyclerView;
+
+    public SwipeViewModel getmViewModel() {
+        return mViewModel;
+    }
+
     public static SwipeFragment newInstance(Profile profile)
     {
         Bundle bundle=new Bundle();
@@ -61,7 +66,10 @@ public class SwipeFragment extends Fragment {
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
-                mSwipeAdapter=new SwipeAdapter(profiles,getContext());
+                List<String> categories = new ArrayList<>();
+                categories.add("sport");
+                categories.add("food");
+                mSwipeAdapter=new SwipeAdapter(profiles,getContext(),mViewModel.getProfile(),categories);
                 mRecyclerView.setAdapter(mSwipeAdapter);
             }
         };
@@ -70,6 +78,28 @@ public class SwipeFragment extends Fragment {
         mViewModel.setUserProfile((Profile)getArguments().getSerializable("profile"));
         setTouchHelper();
         mViewModel.readProfiles();
+
+        final CheckBox sportCb = rootView.findViewById(R.id.sport_cb);
+        final CheckBox foodCb = rootView.findViewById(R.id.food_cb);
+
+        sportCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String title = sportCb.getText().toString();
+                mSwipeAdapter.updateFilter(title,isChecked);
+                mSwipeAdapter.notifyDataSetChanged();
+            }
+        });
+
+        foodCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String title = foodCb.getText().toString();
+                mSwipeAdapter.updateFilter(title,isChecked);
+                mSwipeAdapter.notifyDataSetChanged();
+            }
+        });
+
 
 
         return rootView;
@@ -84,7 +114,10 @@ public class SwipeFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position=viewHolder.getAdapterPosition();
-
+/*                List<String> tstList = new ArrayList<>();
+                tstList.add("sport");
+                CompabilityCalculator compabilityCalculator = new CompabilityCalculator(tstList,mViewModel.getProfile().getQuestionResponds(),mSwipeAdapter.getmProfiles().get(position).getQuestionResponds());
+                Toast.makeText(getContext(), compabilityCalculator.getCompability()+"", Toast.LENGTH_SHORT).show();*/
                     if(direction==ItemTouchHelper.RIGHT)
                     {
                         Toast.makeText(getContext(), "gothere", Toast.LENGTH_SHORT).show();
@@ -93,6 +126,7 @@ public class SwipeFragment extends Fragment {
                     else if(direction==ItemTouchHelper.LEFT){
                         profileDisliked(position);
                     }
+
 
                 }
             };

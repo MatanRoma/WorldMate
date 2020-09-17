@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView android:layout_width="match_parent"
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,6 +9,7 @@
     app:contentPadding="10dp"
     android:id="@+id/card_view"
     app:cardCornerRadius="25dp">
+
     <RelativeLayout
         android:layout_margin="30dp"
         android:padding="10dp"
@@ -17,29 +19,60 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
-
+            android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             android:src="@mipmap/ic_launcher"
-            android:id="@+id/card_profile_iv"
-            />
+            android:id="@+id/card_profile_iv" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_profile_iv"
+            android:id="@+id/card_profile_info"
+            android:layout_marginTop="10dp"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Matan Romanov, "
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:id="@+id/card_name_tv"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="26"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                android:id="@+id/card_age_tv"/>
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/card_profile_iv"
-            android:text="avi bitter"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_margin="10dp"
-            android:id="@+id/card_name_tv"/>
+            android:layout_below="@id/card_profile_info"
+            android:layout_marginTop="5dp"
+            android:text="Tel Aviv"
+            android:textColor="@color/Blue"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/location_tv"/>
 
-
-
-
-
-
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/location_tv"
+            android:layout_marginTop="5dp"
+            android:text=""
+            android:textColor="@color/Blue"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/compability_tv"/>
 
     </RelativeLayout>
 

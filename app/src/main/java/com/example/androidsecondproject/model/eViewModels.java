@@ -10,7 +10,8 @@ public enum eViewModels {
         Preferences,
         Main,
         ProfileFragment,
-        Swipe
+        Swipe,
+        Questions
 
 
 }

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,8 +32,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarChangeListener;
-import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.eViewModels;
@@ -105,10 +104,10 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
         final ImageButton confirmNameBtn = rootView.findViewById(R.id.name_confirm_iv);
         final EditText firstNameEt = rootView.findViewById(R.id.first_name_et);
         final EditText lastNameEt = rootView.findViewById(R.id.last_name_et);
-        final TextView genderTv = rootView.findViewById(R.id.gender_tv);
-        final Spinner genderSpinner = rootView.findViewById(R.id.gender_spinner);
+        final RadioButton menRb = rootView.findViewById(R.id.men_rb);
+        final RadioButton womenRb = rootView.findViewById(R.id.women_rb);
         final TextView ageTv = rootView.findViewById(R.id.age_tv);
-        final CrystalSeekbar ageSb = rootView.findViewById(R.id.age_seekbar);
+        final EditText ageEt = rootView.findViewById(R.id.age_et);
         profilePicture = rootView.findViewById(R.id.profile_image);
 
 
@@ -118,13 +117,14 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
         genders.add("Male");
         genders.add("Female");
         final ArrayAdapter<String> genderArrayAdapter = new ArrayAdapter<String>(getContext(),R.layout.spinner_item,genders);
-        genderSpinner.setAdapter(genderArrayAdapter);
+        //genderSpinner.setAdapter(genderArrayAdapter);
 
 
 
 
 
         mViewModel =new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.ProfileFragment)).get(ProfileViewModel.class);
+
 
         final Observer<Boolean> uploadObserverSuccess = new Observer<Boolean>() {
             @Override
@@ -153,21 +153,56 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
         firstNameTv.setText(mViewModel.getProfile().getFirstName());
         lastNameTv.setText(mViewModel.getProfile().getLastName());
         Toast.makeText(getContext(), mViewModel.getImageUri()+"", Toast.LENGTH_SHORT).show();
+        ageTv.setText(((int)mViewModel.getProfile().getAge())+"");
         Glide.with(this).load(mViewModel.getImageUri()).error(R.drawable.man_profile).into(profilePicture);
+        if(mViewModel.getProfile().getGender().equals("male"))
+        {
+            menRb.setChecked(true);
+        }
+        else
+        {
+
+            womenRb.setChecked(true);
+        }
+
+        menRb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(menRb.isChecked())
+                {
+                    mViewModel.getProfile().setGender("male");
+                    mViewModel.writeProfile();
+                }
+
+            }
+        });
+
+        womenRb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(womenRb.isChecked())
+                {
+                    mViewModel.getProfile().setGender("female");
+                    mViewModel.writeProfile();
+                }
+
+            }
+        });
+
 
         //ageSb.setMinValue(mViewModel.getProfile().getAge()).apply();
-        ageSb.setMinStartValue(mViewModel.getProfile().getAge()).apply();
-        genderTv.setText(mViewModel.getProfile().getGender());
+        //ageSb.setMinStartValue(mViewModel.getProfile().getAge()).apply();
+        //menRb.setText(mViewModel.getProfile().getGender());
         Toast.makeText(getContext(), mViewModel.getProfile().getAge()+"", Toast.LENGTH_SHORT).show();
-        ageTv.setText("My age  "+mViewModel.getProfile().getAge());
+        //ageTv.setText("My age  "+mViewModel.getProfile().getAge());
 
-        ageSb.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
+/*        ageSb.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
             @Override
             public void valueChanged(Number value) {
                 mAge = value.floatValue();
                 ageTv.setText("My age  "+(int)mAge);
             }
-        });
+        });*/
 
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,37 +256,43 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
                 lastNameTv.setVisibility(View.GONE);
                 lastNameEt.setVisibility(View.VISIBLE);
                 lastNameEt.setText(lastNameTv.getText().toString());
-
-                genderTv.setVisibility(View.GONE);
-                genderSpinner.setVisibility(View.VISIBLE);
-                ageSb.setVisibility(View.VISIBLE);
-                genderSpinner.setSelection(genderTv.getText().toString().equals("Male")? 0:1);
+                ageTv.setVisibility(View.GONE);
+                //menRb.setVisibility(View.GONE);
+               // genderSpinner.setVisibility(View.VISIBLE);
+                ageEt.setVisibility(View.VISIBLE);
+                //genderSpinner.setSelection(menRb.getText().toString().equals("Male")? 0:1);
             }
         });
 
         confirmNameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firstNameTv.setVisibility(View.VISIBLE);
-                firstNameEt.setVisibility(View.GONE);
-                firstNameTv.setText(firstNameEt.getText().toString());
-                editNameBtn.setVisibility(View.VISIBLE);
-                confirmNameBtn.setVisibility(View.GONE);
-                lastNameTv.setVisibility(View.VISIBLE);
-                lastNameEt.setVisibility(View.GONE);
-                lastNameTv.setText(lastNameEt.getText().toString());
+                if(Integer.parseInt(ageEt.getText().toString())>=18 && Integer.parseInt(ageEt.getText().toString())<=100)
+                {
+                    firstNameTv.setVisibility(View.VISIBLE);
+                    firstNameEt.setVisibility(View.GONE);
+                    firstNameTv.setText(firstNameEt.getText().toString());
+                    editNameBtn.setVisibility(View.VISIBLE);
+                    confirmNameBtn.setVisibility(View.GONE);
+                    lastNameTv.setVisibility(View.VISIBLE);
+                    lastNameEt.setVisibility(View.GONE);
+                    lastNameTv.setText(lastNameEt.getText().toString());
 
-                genderTv.setVisibility(View.VISIBLE);
-                genderSpinner.setVisibility(View.GONE);
-                ageSb.setVisibility(View.GONE);
+                    menRb.setVisibility(View.VISIBLE);
+                    //genderSpinner.setVisibility(View.GONE);
+                    ageEt.setVisibility(View.GONE);
+                    ageTv.setVisibility(View.VISIBLE);
+                    Toast.makeText(getContext(), ageEt.getText().toString()+"", Toast.LENGTH_SHORT).show();
+                    ageTv.setText(ageEt.getText().toString());
+                    //menRb.setText(genderSpinner.getSelectedItem().toString());
+                    mViewModel.getProfile().setFirstName(firstNameEt.getText().toString());
+                    mViewModel.getProfile().setLastName(lastNameEt.getText().toString());
+                    //mViewModel.getProfile().setGender(genderSpinner.getSelectedItem().toString());
+                    mViewModel.getProfile().setAge(Float.parseFloat(ageTv.getText().toString()));
+                    mViewModel.writeProfile();
+                    mUpdateDrawerListener.onUpdateProfile(mViewModel.getProfile());
+                }
 
-                genderTv.setText(genderSpinner.getSelectedItem().toString());
-                mViewModel.getProfile().setFirstName(firstNameEt.getText().toString());
-                mViewModel.getProfile().setLastName(lastNameEt.getText().toString());
-                mViewModel.getProfile().setGender(genderSpinner.getSelectedItem().toString());
-                mViewModel.getProfile().setAge(mAge);
-                mViewModel.writeProfile();
-                mUpdateDrawerListener.onUpdateProfile(mViewModel.getProfile());
             }
         });
 
@@ -260,6 +301,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
         profileItems.add("About myself");
         profileItems.add("Looking for");
         profileItems.add("My hobbies");
+
 
         final Spinner itemSpinner = rootView.findViewById(R.id.profile_item_spinner);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(),R.layout.spinner_item,profileItems);

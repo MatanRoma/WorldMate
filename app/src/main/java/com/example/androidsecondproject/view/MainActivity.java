@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private  final  String ACCOUNT_PHOTO_FRAGMENT="account_photo_fragment";
     private  final  String ACCOUNT_PROFILE_FRAGMENT = "account_profile_fragment";
     private  final  String SWIPE_FRAGMENT = "swipe_fragment";
+    private final String QUESTIONS_FRAGMENT = "questions_fragment";
 
     private LoginFragment loginFragment;
     private RegisterFragment registerFragment;
@@ -153,7 +154,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
        // mViewModel.getDownloadResultSuccess().observe(this, pictureSuccessObserver);
         mViewModel.getProfileResultSuccess().observe(this, profileObserverSuccess);
         mViewModel.getProfileResultFailed().observe(this,profileObserverFail);
+        mViewModel.getQuestionsResultSuccess().observe(this,questionsObserverSuccess);
+
+
     }
+
+
 
     private void fetchProfileData() {
         mViewModel.getNavigationHeaderProfile();
@@ -171,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             case "Your Matches":
                 break;
             case "Questions":
+                moveToQuestionsFragment();
                 break;
             case "Messages":
                 break;
@@ -305,7 +312,15 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.commit();
     }
 
+    public void moveToQuestionsFragment() {
+        QuestionsFragment questionsFragment = QuestionsFragment.newInstance(mViewModel.getProfile(),mViewModel.getQuestions());
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.flContent, questionsFragment, QUESTIONS_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
+    }
     @Override
     public void onUpdateProfile(Profile profile) {
         mViewModel.setProfile(profile);

@@ -1,9 +1,7 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
-import android.net.Uri;
 import android.util.Log;
-
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -45,6 +43,7 @@ public class MainViewModel extends AndroidViewModel {
         return mProfileFailedLiveData;
     }
     public MutableLiveData<List<Question>> getQuestionsResultSuccess(){
+        Log.d("questions","set questions");
         if (mQuestionsSuccessLiveData == null) {
             mQuestionsSuccessLiveData = new MutableLiveData<>();
             loadQuestionsData();
@@ -122,5 +121,11 @@ public class MainViewModel extends AndroidViewModel {
 
     public void readQuestions() {
         mRepository.readQuestions();
+    }
+
+    public List<Question> getQuestions()
+    {
+        return mQuestionsSuccessLiveData.getValue();
+
     }
 }

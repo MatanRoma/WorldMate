@@ -25,6 +25,7 @@ public class Profile implements Serializable {
     private List<String> disLikes;
     private List<String> matches;
     private String uid;
+    private List<QuestionRespond> questionResponds;
 
 
 
@@ -36,6 +37,7 @@ public class Profile implements Serializable {
         likes=new ArrayList<>();
         disLikes=new ArrayList<>();
         matches=new ArrayList<>();
+        questionResponds = new ArrayList<>();
     }
 
 
@@ -177,6 +179,14 @@ public class Profile implements Serializable {
 
     public void setMatches(List<String> matches) {
         this.matches = matches;
+    }
+
+    public List<QuestionRespond> getQuestionResponds() {
+        return questionResponds;
+    }
+
+    public void setQuestionResponds(List<QuestionRespond> questionResponds) {
+        this.questionResponds = questionResponds;
     }
 }
 
