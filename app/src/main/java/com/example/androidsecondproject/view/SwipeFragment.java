@@ -34,9 +34,7 @@ public class SwipeFragment extends Fragment {
     private SwipeViewModel mViewModel;
     RecyclerView mRecyclerView;
 
-    public SwipeViewModel getmViewModel() {
-        return mViewModel;
-    }
+
 
     public static SwipeFragment newInstance(Profile profile)
     {
@@ -62,13 +60,13 @@ public class SwipeFragment extends Fragment {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 
         mViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Swipe)).get(SwipeViewModel.class);
-
+        final List<String> categories = new ArrayList<>();
+        categories.add("sport");
+        categories.add("food");
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
-                List<String> categories = new ArrayList<>();
-                categories.add("sport");
-                categories.add("food");
+
                 mSwipeAdapter=new SwipeAdapter(profiles,getContext(),mViewModel.getProfile(),categories);
                 mRecyclerView.setAdapter(mSwipeAdapter);
             }

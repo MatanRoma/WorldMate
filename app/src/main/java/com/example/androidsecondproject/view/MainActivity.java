@@ -1,7 +1,6 @@
 package com.example.androidsecondproject.view;
 
 import android.annotation.SuppressLint;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -23,13 +22,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.Profile;
-import com.example.androidsecondproject.model.Question;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.MainViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -46,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private  final  String ACCOUNT_PROFILE_FRAGMENT = "account_profile_fragment";
     private  final  String SWIPE_FRAGMENT = "swipe_fragment";
     private final String QUESTIONS_FRAGMENT = "questions_fragment";
+    private final String MATCHES_FRAGMENT = "matches_fragment";
 
     private LoginFragment loginFragment;
     private RegisterFragment registerFragment;
@@ -154,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 moveToProfileFragment();
                 break;
             case "Your Matches":
+                moveToMatchesFragment();
                 break;
             case "Questions":
                 moveToQuestionsFragment();
@@ -167,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 moveToLoginFragment();
         }
     }
+
+
 
     private void moveToSwipeFragment() {
         Fragment swipeFragment = SwipeFragment.newInstance(mViewModel.getProfile());
@@ -299,6 +299,15 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.addToBackStack(null);
         transaction.commit();
 
+    }
+
+    private void moveToMatchesFragment() {
+        MatchesFragment matchesFragment = MatchesFragment.newInstance(mViewModel.getProfile());
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.flContent, matchesFragment, MATCHES_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
     @Override
     public void onUpdateProfile(Profile profile) {

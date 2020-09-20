@@ -1,7 +1,5 @@
 package com.example.androidsecondproject.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,15 +51,8 @@ public class CompabilityCalculator {
     }
 
     private void createFilteredList() {
-        int numOfCategories = categories.size();
-/*        categoriesList = new ArrayList<>();
-        for (String category: categories) {
-            List<String> categoryHead = new ArrayList<>();
-            categoryHead.add(category);
 
-        }*/
         filteredQuestions = new ArrayList<>();
-        Log.d("compability","category "+myAnsweredQuestions.get(0).getCategory());
         for (QuestionRespond question : myAnsweredQuestions) {
             if (categories.contains(question.getCategory())) {
                 filteredQuestions.add(question);

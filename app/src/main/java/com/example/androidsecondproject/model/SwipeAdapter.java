@@ -84,9 +84,10 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         {
             CompabilityCalculator compabilityCalculator = new CompabilityCalculator(mCategories,mProfile.getQuestionResponds(),getmProfiles().get(position).getQuestionResponds());
             holder.mCompabilityTv.setText(compabilityCalculator.getCompability()+"%");
+            holder.mCompabilityTv.setVisibility(View.VISIBLE);
         }
         else {
-            holder.mCompabilityTv.setText("0%");
+            holder.mCompabilityTv.setVisibility(View.GONE);
         }
     }
 

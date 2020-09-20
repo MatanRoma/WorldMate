@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/location_tv"
             android:layout_marginTop="5dp"
-            android:text=""
+            android:text="age"
             android:textColor="@color/Blue"
             android:textSize="20sp"
             android:layout_centerHorizontal="true"
