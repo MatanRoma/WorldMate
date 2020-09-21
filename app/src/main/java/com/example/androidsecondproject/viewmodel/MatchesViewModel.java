@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.androidsecondproject.model.Chat;
+import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
 
@@ -19,8 +21,10 @@ public class MatchesViewModel extends AndroidViewModel {
     private Adapter mMatchesAdapter;
     private List<Profile> matches;
     private List<Profile> mProfiles;
+    private Chat mChat;
 
     private MutableLiveData<List<Profile>> mProfilesMutableLiveData;
+    private MutableLiveData<Chat> mChatMutableLiveData;
 
     public MatchesViewModel(@NonNull Application application) {
         super(application);
@@ -33,6 +37,14 @@ public class MatchesViewModel extends AndroidViewModel {
             loadProfilesData();
         }
         return mProfilesMutableLiveData;
+    }
+
+    public MutableLiveData<Chat> getChatResultSuccess(String chatId){
+        if (mChatMutableLiveData == null) {
+            mChatMutableLiveData = new MutableLiveData<>();
+            readChat(chatId);
+        }
+        return mChatMutableLiveData;
     }
 
     private void loadProfilesData() {
@@ -62,8 +74,8 @@ public class MatchesViewModel extends AndroidViewModel {
     }
 
     public List<Profile> getMatches() {
-        for (String email: mProfile.getMatches()) {
-        }
+/*        for (String email: mProfile.getMatches()) {
+        }*/
         return matches;
     }
 
@@ -96,13 +108,29 @@ public class MatchesViewModel extends AndroidViewModel {
     public void calculateMatches()
     {
         matches = new ArrayList<>();
-        for (String email:mProfile.getMatches()) {
+        for (Match match:mProfile.getMatches()) {
             for (Profile profile : mProfiles) {
-                if(email.equals(profile.getEmail()))
+                if(match.getEmail().equals(profile.getEmail()))
                 {
                     matches.add(profile);
                 }
             }
         }
+    }
+
+    public void readChat(String chatId)
+    {
+        mRepository.setChatListener(new Repository.ChatListener() {
+            @Override
+            public void onChatDataChangeSuccess(Chat chat) {
+                mChat = chat;
+            }
+
+            @Override
+            public void onChatDataChangeFail(String error) {
+
+            }
+        });
+        mRepository.readChat(chatId);
     }
 }

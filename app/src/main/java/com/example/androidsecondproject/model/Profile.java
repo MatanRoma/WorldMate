@@ -23,7 +23,7 @@ public class Profile implements Serializable {
     private Preferences preferences;
     private List<String> likes;
     private List<String> disLikes;
-    private List<String> matches;
+    private List<Match> matches;
     private String uid;
     private List<QuestionRespond> questionResponds;
 
@@ -173,11 +173,11 @@ public class Profile implements Serializable {
         this.disLikes = disLikes;
     }
 
-    public List<String> getMatches() {
+    public List<Match> getMatches() {
         return matches;
     }
 
-    public void setMatches(List<String> matches) {
+    public void setMatches(List<Match> matches) {
         this.matches = matches;
     }
 

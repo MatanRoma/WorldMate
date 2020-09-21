@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.Preferences;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.Question;
@@ -22,22 +23,26 @@ public class Repository {
 
     private final String PROFILE_TABLE = "profiles";
     private final String QUESTIONS_TABLE = "questions_table";
+    private final String CHATS_TABLE = "chats_table";
     private FirebaseDatabase database;
     private AuthRepository authRepository;
     private StorageRepository storageRepository;
     private DatabaseReference profilesTable;
     private DatabaseReference questionsTable;
+    private DatabaseReference chatsTable;
     private ProfileListener profileListener;
     private ProfilesListener profilesListener;
 
     private static Repository repository;
     private QuestionsListener questionsListener;
+    private ChatListener chatListener;
 
 
     private Repository(Context context) {
         database=FirebaseDatabase.getInstance();
         profilesTable=database.getReference(PROFILE_TABLE);
         questionsTable=database.getReference(QUESTIONS_TABLE);
+        chatsTable = database.getReference(CHATS_TABLE);
         authRepository=AuthRepository.getInstance(context);
         storageRepository=StorageRepository.getInstance();
 
@@ -48,6 +53,12 @@ public class Repository {
         }
         return repository;
     }
+
+/*    public void addChat()
+    {
+        String key = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
+
+    }*/
 
     public void readProfile(String uid){
                 profilesTable.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -163,6 +174,37 @@ public class Repository {
 
     }
 
+    public void writeChat(Chat chat)
+    {
+        chatsTable.child((chat.getId())).setValue(chat);
+    }
+
+    public void readChat(String chatId){
+        profilesTable.child(chatId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    Chat chat=snapshot.getValue(Chat.class);
+                    if(chatListener!=null) {
+                        chatListener.onChatDataChangeSuccess(chat);
+                    }
+                }
+                else {
+                    if(chatListener!=null)
+                        chatListener.onChatDataChangeFail("not_exist");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                if(chatListener!=null)
+                    chatListener.onChatDataChangeFail(error.getMessage());
+                //TODO
+            }
+        });
+
+    }
+
     public String getCurrentUserId(){
        return authRepository.getCurrentUserUid();
     }
@@ -188,6 +230,14 @@ public class Repository {
 
     public String getCurrenUserEmail() {
         return authRepository.getCurrentUserEmail();
+    }
+
+    public interface ChatListener{
+        void onChatDataChangeSuccess(Chat chat);
+        void onChatDataChangeFail(String error);
+    }
+    public void setChatListener(ChatListener chatListener) {
+        this.chatListener = chatListener;
     }
 
 

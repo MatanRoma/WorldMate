@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidsecondproject.R;
+import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.MatchesAdapter;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.eViewModels;
@@ -23,7 +24,7 @@ import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
 import java.util.List;
 
-public class MatchesFragment extends Fragment {
+public class MatchesFragment extends Fragment  {
     private MatchesViewModel mViewModel;
     private MatchesAdapter mMatchesAdapter;
 
@@ -45,6 +46,7 @@ public class MatchesFragment extends Fragment {
         mViewModel =new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Matches)).get(MatchesViewModel.class);
         mViewModel.setProfile((Profile) getArguments().getSerializable("profile"));
 
+
         final RecyclerView matchesRecycler = rootView.findViewById(R.id.matches_recycler);
         matchesRecycler.setHasFixedSize(true);
         matchesRecycler.setLayoutManager(new GridLayoutManager(getContext(),1));
@@ -56,7 +58,13 @@ public class MatchesFragment extends Fragment {
             public void onChanged(List<Profile> profiles) {
             mViewModel.setmProfiles(profiles);
             mViewModel.calculateMatches();
-            mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(),getContext());
+            mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(),getContext(),mViewModel.getProfile());
+            mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
+                @Override
+                public void onChatClickedListener(String chatId) {
+                    readChat(chatId);
+                }
+            });
             matchesRecycler.setAdapter(mMatchesAdapter);
             Toast.makeText(getContext(), mViewModel.getMatches().size()+"", Toast.LENGTH_SHORT).show();
             }
@@ -66,4 +74,25 @@ public class MatchesFragment extends Fragment {
 
         return rootView;
     }
+
+    public void readChat(final String chatId)
+    {
+        Observer<Chat> chatSuccessObserver = new Observer<Chat>() {
+            @Override
+            public void onChanged(Chat chat) {
+                moveToChat(chatId);
+            }
+        };
+
+        mViewModel.readChat(chatId);
+
+        Toast.makeText(getContext(), chatId, Toast.LENGTH_SHORT).show();
+    }
+
+    public void moveToChat(String chatId)
+    {
+
+    }
+
+
 }

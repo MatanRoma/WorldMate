@@ -2,11 +2,14 @@ package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.androidsecondproject.model.Chat;
+import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
 
@@ -66,8 +69,22 @@ public class SwipeViewModel extends AndroidViewModel {
 
     public void updateMatch(int position) {
         Profile otherPofile=mProfilesMutableLiveData.getValue().get(position);
-        mProfile.getMatches().add(otherPofile.getEmail());
-        otherPofile.getMatches().add(mProfile.getEmail());
+        String key = mProfile.getEmail()+otherPofile.getEmail();
+        key = key.replace('.',' ');
+        key = key.replace('#',' ');
+        key = key.replace('$',' ');
+        key = key.replace('[',' ');
+        key = key.replace(']',' ');
+        key = key.trim();
+        Log.d("chat",key);
+        Match myMatch = new Match(otherPofile.getEmail(),key);
+        //match.setEmail(otherPofile.getEmail());
+
+        mProfile.getMatches().add(myMatch);
+        Toast.makeText(getApplication(), otherPofile.getEmail()+"", Toast.LENGTH_SHORT).show();
+        Match otherMatch = new Match(mProfile.getEmail(),key);
+        otherPofile.getMatches().add(otherMatch);
+        mRepository.writeChat(new Chat(key,mProfile.getEmail(),otherPofile.getEmail()));
     }
     public void test(){
         for(String str:mProfile.getLikes()){
