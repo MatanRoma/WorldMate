@@ -68,7 +68,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         String mChatId;
         public MatchesViewHolder(@NonNull View itemView) {
             super(itemView);
-            mProfileNameTv = itemView.findViewById(R.id.profile_name_tv);
+            mProfileNameTv = itemView.findViewById(R.id.profile_name_chat_card);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
