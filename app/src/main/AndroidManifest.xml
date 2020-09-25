@@ -23,6 +23,12 @@
             </intent-filter>
         </activity>
 -->
+        <service
+            android:name=".services.FirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
         <activity android:name=".view.MainActivity" android:screenOrientation="portrait"  >
             <intent-filter>

@@ -10,8 +10,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.Question;
 import com.example.androidsecondproject.repository.Repository;
+import com.google.firebase.iid.FirebaseInstanceId;
 
-
+import java.io.IOException;
 
 
 public class MainViewModel extends AndroidViewModel {
@@ -19,6 +20,7 @@ public class MainViewModel extends AndroidViewModel {
     private MutableLiveData<Profile> mProfileSuccessLiveData;
     private MutableLiveData<String> mProfileFailedLiveData;
     private boolean isFirstTime=true;
+    private String messageToken;
 
 
     public MainViewModel(@NonNull Application application) {
@@ -58,8 +60,13 @@ public class MainViewModel extends AndroidViewModel {
         });
     }
 
-    public void logout(){
+    public void logout()  {
         mRepository.logout();
+        try {
+            FirebaseInstanceId.getInstance().deleteInstanceId();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getNavigationHeaderProfile() {
@@ -94,4 +101,21 @@ public class MainViewModel extends AndroidViewModel {
     }
 
 
+    public void setToken(String token) {
+        Profile profile=mProfileSuccessLiveData.getValue();
+        if(profile!=null){
+            profile.setMessageToken(token);
+            messageToken=null;
+            mRepository.writeMyProfile(profile);
+        }
+        else{
+            messageToken=token;
+        }
+    }
+
+    public void setToken(){
+        if(messageToken!=null){
+            setToken(messageToken);
+        }
+    }
 }

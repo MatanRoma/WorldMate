@@ -2,10 +2,15 @@ package com.example.androidsecondproject.view;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
@@ -30,17 +36,21 @@ import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.LocationViewModel;
 import com.example.androidsecondproject.viewmodel.MainViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface,
-        AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface, ProfileFragment.UpdateDrawerFromProfileFragment {
+        AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface, ProfileFragment.UpdateDrawerFromProfileFragment,MatchesFragment.OnMoveToChat {
+
 
     int LOCATION_REQUEST = 1;
 
-
+    private BroadcastReceiver tokenReceiver;
     private final String LOGIN_FRAGMENT = "login_fragment";
     private final String REGISTER_FRAGMENT = "register_fragment";
     private final String ACCOUNT_SETUP_FRAGMENT = "account_setup_fragment";
@@ -50,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private final String SWIPE_FRAGMENT = "swipe_fragment";
     private final String QUESTIONS_FRAGMENT = "questions_fragment";
     private final String MATCHES_FRAGMENT = "matches_fragment";
+    private final String CHAT_FRAGMENT = "chat_fragment";
 
     private LoginFragment loginFragment;
     private RegisterFragment registerFragment;
@@ -79,8 +90,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             }
         }
 
+
+
         initializeViewComponents();
         setObservers();
+        onMessageTokenReceived();
+        Log.d("token","main");
         if (mViewModel.checkIfAuth()) { // from splash activity
             fetchProfileData();
         } else {
@@ -121,12 +136,14 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             @Override
             public void onChanged(Profile profile) {
                 Toast.makeText(MainActivity.this, "observer", Toast.LENGTH_SHORT).show();
+                mViewModel.setToken();
                 if (profile.getPreferences() == null) {
                     moveToPreferences();
                 } else if (mViewModel.isFirstTime()) {
                     mNameTv.setText(profile.getFirstName());
                     Glide.with(MainActivity.this).load(profile.getProfilePictureUri()).error(R.drawable.man_profile).into(mProfileIv);
                     mViewModel.setFirstTime(false);
+                    getTokenWhenLogin();
                     moveToSwipeFragment();
                 } else {
                     mNameTv.setText(profile.getFirstName());
@@ -173,6 +190,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             case "Settings":
                 break;
             case "Logout":
+                mViewModel.setToken("");
+                mViewModel.setFirstTime(true);
                 mViewModel.logout();
                 moveToLoginFragment();
         }
@@ -348,5 +367,41 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             }
         }
     }
+    private void onMessageTokenReceived(){
+        tokenReceiver=new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                mViewModel.setToken(intent.getStringExtra("token"));
+            }
+        };
 
+        IntentFilter filter=new IntentFilter("token_changed");
+        LocalBroadcastManager.getInstance(this).registerReceiver(tokenReceiver,filter);
+    }
+    private void getTokenWhenLogin(){
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(MainActivity.this,new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String newToken = instanceIdResult.getToken();
+                Toast.makeText(MainActivity.this, newToken, Toast.LENGTH_SHORT).show();
+                mViewModel.setToken(newToken);
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(tokenReceiver);
+    }
+
+    @Override
+    public void OnClickMoveToChat(Profile myProfile, Profile otherProfile, String chatid) {
+        ChatFragment chatFragment = ChatFragment.newInstance(myProfile,otherProfile,chatid);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.flContent, chatFragment, CHAT_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 }

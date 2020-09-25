@@ -15,6 +15,7 @@ public class Profile implements Serializable {
     private float age;
     private String birthday;
     private String gender;
+    private String messageToken;
     private String hobbies;
     private String lookingFor;
     private boolean discovery;
@@ -187,6 +188,14 @@ public class Profile implements Serializable {
 
     public void setQuestionResponds(List<QuestionRespond> questionResponds) {
         this.questionResponds = questionResponds;
+    }
+
+    public String getMessageToken() {
+        return messageToken;
+    }
+
+    public void setMessageToken(String messageToken) {
+        this.messageToken = messageToken;
     }
 }
 

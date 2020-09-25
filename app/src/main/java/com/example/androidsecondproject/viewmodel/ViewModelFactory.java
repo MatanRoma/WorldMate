@@ -83,6 +83,12 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                     objectToReturn= (T) (new MatchesViewModel(mApplication));
                 }
                 break;
+            case Chat:
+                if (modelClass.isAssignableFrom(ChatViewModel.class)) {
+                    objectToReturn= (T) (new ChatViewModel(mApplication));
+                }
+                break;
+
 
 
 

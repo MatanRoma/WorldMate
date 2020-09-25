@@ -7,6 +7,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.androidsecondproject.model.Chat;
+import com.example.androidsecondproject.model.Match;
+import com.example.androidsecondproject.model.Message;
 import com.example.androidsecondproject.model.Preferences;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.Question;
@@ -14,6 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -40,9 +43,11 @@ public class Repository {
 
     private Repository(Context context) {
         database=FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true);
         profilesTable=database.getReference(PROFILE_TABLE);
         questionsTable=database.getReference(QUESTIONS_TABLE);
         chatsTable = database.getReference(CHATS_TABLE);
+        chatsTable.keepSynced(true);
         authRepository=AuthRepository.getInstance(context);
         storageRepository=StorageRepository.getInstance();
 
@@ -61,6 +66,7 @@ public class Repository {
     }*/
 
     public void readProfile(String uid){
+
                 profilesTable.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -115,6 +121,7 @@ public class Repository {
     }
 
     public void readProfiles(final Profile myProfile){
+
         profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -127,9 +134,45 @@ public class Repository {
                            Profile profile = currSnapshot.getValue(Profile.class);
                            if(checkCompatibility(myProfile,profile)) {
                                profiles.add(profile);
+
                            }
                        }
                     }
+                    profilesListener.onProfilesDataChangeSuccess(profiles);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void readMatches(final Profile myProfile){
+
+        profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.exists()){
+                    String myUid=getCurrentUserId();
+                    List<Profile> profiles=new ArrayList<>();
+                    List<Match> matches=myProfile.getMatches();
+                    for(DataSnapshot currSnapshot:snapshot.getChildren()){
+                        String otherUid=currSnapshot.getKey();
+                        Log.d("uid",otherUid);
+                        if(!otherUid.equals(myUid)) {
+                            Profile profile = currSnapshot.getValue(Profile.class);
+                            for(Match match:matches){
+                                if(match.getOtherUid().equals(otherUid))
+                                    profiles.add(profile);
+                            }
+                            ;
+                        }
+                    }
+                    Log.d("size",profiles.size()+"");
                     profilesListener.onProfilesDataChangeSuccess(profiles);
                 }
 
@@ -174,9 +217,10 @@ public class Repository {
 
     }
 
-    public void writeChat(Chat chat)
+    public void writeChat(String chatid)
     {
-        chatsTable.child((chat.getId())).setValue(chat);
+        Log.d("chat",chatid);
+        chatsTable.child(chatid).push().setValue(null);
     }
 
     public void readChat(String chatId){
@@ -230,6 +274,13 @@ public class Repository {
 
     public String getCurrenUserEmail() {
         return authRepository.getCurrentUserEmail();
+    }
+
+    public Query readAllMessages(String chatId) {
+        return chatsTable.child(chatId);
+    }
+    public void writeMessage(String chatId, Message message){
+        chatsTable.child(chatId).push().setValue(message);
     }
 
     public interface ChatListener{

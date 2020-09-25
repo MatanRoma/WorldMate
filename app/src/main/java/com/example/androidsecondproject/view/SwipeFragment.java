@@ -140,7 +140,7 @@ public class SwipeFragment extends Fragment {
                 mViewModel.updateMatch(position);
                 mViewModel.writeOtherProfile(position);
             }
-            mViewModel.test();
+           
             mViewModel.removeProfile(position);
             mSwipeAdapter.notifyItemRemoved(position);
             mViewModel.writeMyProfile();

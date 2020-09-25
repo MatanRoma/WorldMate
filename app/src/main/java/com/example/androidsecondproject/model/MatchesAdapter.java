@@ -17,20 +17,18 @@ import java.util.List;
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesViewHolder> {
     private List<Profile> mProfiles;
     private Context mContext;
-    private Profile mMyProfile;
+
 
     public MatchesAdapter(List<Profile> mProfiles,Context context,Profile profile) {
         this.mProfiles = mProfiles;
         this.mContext = context;
-        this.mMyProfile = profile;
-
     }
 
     private MatchInterface matchClickListener;
 
     public interface MatchInterface
     {
-        void onChatClickedListener(String chatId);
+        void onChatClickedListener(int position);
     }
     public void setListener(MatchInterface listener)
     {
@@ -49,13 +47,13 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
     public void onBindViewHolder(@NonNull MatchesViewHolder holder, int position) {
         Profile curProfile = mProfiles.get(position);
         holder.mProfileNameTv.setText(curProfile.getFirstName());
-        for (Match match: curProfile.getMatches()) {
+      /*  for (Match match: curProfile.getMatches()) {
             //Toast.makeText(mContext, mMyProfile.getEmail()+"", Toast.LENGTH_SHORT).show();
-            if(match.getEmail().equals(mMyProfile.getEmail()))
+            if(match.getOtherUid().equals(mMyProfile.getUid()))
             {
                 holder.mChatId = match.getId();
             }
-        }
+        }*/
     }
 
     @Override
@@ -65,7 +63,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
 
     public class MatchesViewHolder extends  RecyclerView.ViewHolder{
         TextView mProfileNameTv;
-        String mChatId;
         public MatchesViewHolder(@NonNull View itemView) {
             super(itemView);
             mProfileNameTv = itemView.findViewById(R.id.profile_name_chat_card);
@@ -75,7 +72,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
                     Toast.makeText(mContext, "set adapter listener", Toast.LENGTH_SHORT).show();
                     if(matchClickListener !=null)
                     {
-                        matchClickListener.onChatClickedListener(mChatId);
+                        matchClickListener.onChatClickedListener(getAdapterPosition());
                     }
 
                 }

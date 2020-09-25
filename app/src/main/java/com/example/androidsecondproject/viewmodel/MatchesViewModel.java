@@ -1,7 +1,6 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
-import android.widget.Adapter;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,18 +11,15 @@ import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MatchesViewModel extends AndroidViewModel {
     private Repository mRepository;
     private Profile mProfile;
-    private Adapter mMatchesAdapter;
-    private List<Profile> matches;
-    private List<Profile> mProfiles;
-    private Chat mChat;
+    private int currentChatPosition;
 
-    private MutableLiveData<List<Profile>> mProfilesMutableLiveData;
+
+    private MutableLiveData<List<Profile>> mMatchesMutableLiveData;
     private MutableLiveData<Chat> mChatMutableLiveData;
 
     public MatchesViewModel(@NonNull Application application) {
@@ -32,17 +28,17 @@ public class MatchesViewModel extends AndroidViewModel {
     }
 
     public MutableLiveData<List<Profile>> getProfilesResultSuccess(){
-        if (mProfilesMutableLiveData == null) {
-            mProfilesMutableLiveData = new MutableLiveData<>();
+        if (mMatchesMutableLiveData == null) {
+            mMatchesMutableLiveData = new MutableLiveData<>();
             loadProfilesData();
         }
-        return mProfilesMutableLiveData;
+        return mMatchesMutableLiveData;
     }
 
-    public MutableLiveData<Chat> getChatResultSuccess(String chatId){
+    public MutableLiveData<Chat> getChatResultSuccess(){
         if (mChatMutableLiveData == null) {
             mChatMutableLiveData = new MutableLiveData<>();
-            readChat(chatId);
+            loadChat();
         }
         return mChatMutableLiveData;
     }
@@ -51,7 +47,7 @@ public class MatchesViewModel extends AndroidViewModel {
         mRepository.setProfilesListener(new Repository.ProfilesListener() {
             @Override
             public void onProfilesDataChangeSuccess(List<Profile> profiles) {
-                mProfilesMutableLiveData.setValue(profiles);
+                mMatchesMutableLiveData.setValue(profiles);
             }
 
             @Override
@@ -61,31 +57,24 @@ public class MatchesViewModel extends AndroidViewModel {
         });
     }
 
-    public void readProfiles(){
-        mRepository.readProfiles(mProfile);
+    public void readMatches(){
+        mRepository.readMatches(mProfile);
+    }
+    public void readChat(){
+        mRepository.readChat(mChatMutableLiveData.getValue().getId());
     }
 
-    public Adapter getmMatchesAdapter() {
-        return mMatchesAdapter;
-    }
 
-    public void setmMatchesAdapter(Adapter mMatchesAdapter) {
-        this.mMatchesAdapter = mMatchesAdapter;
-    }
+
+
 
     public List<Profile> getMatches() {
 /*        for (String email: mProfile.getMatches()) {
         }*/
-        return matches;
+        return mMatchesMutableLiveData.getValue();
     }
 
-    public void setMatches(List<Profile> matches) {
-        this.matches = matches;
-    }
 
-    public void writeProfile(){
-        mRepository.writeMyProfile(mProfile);
-    }
 
     public void setProfile(Profile profile) {
         this.mProfile = profile;
@@ -96,34 +85,30 @@ public class MatchesViewModel extends AndroidViewModel {
         return mProfile;
     }
 
-    public List<Profile> getmProfiles() {
-        return mProfiles;
-    }
 
-    public void setmProfiles(List<Profile> mProfiles) {
-        this.mProfiles = mProfiles;
 
-    }
 
+/*
     public void calculateMatches()
     {
         matches = new ArrayList<>();
         for (Match match:mProfile.getMatches()) {
             for (Profile profile : mProfiles) {
-                if(match.getEmail().equals(profile.getEmail()))
+                if(match.getOtherUid().equals(profile.getUid()))
                 {
                     matches.add(profile);
                 }
             }
         }
     }
+*/
 
-    public void readChat(String chatId)
+    public void loadChat()
     {
         mRepository.setChatListener(new Repository.ChatListener() {
             @Override
             public void onChatDataChangeSuccess(Chat chat) {
-                mChat = chat;
+                mChatMutableLiveData.setValue(chat);
             }
 
             @Override
@@ -131,6 +116,22 @@ public class MatchesViewModel extends AndroidViewModel {
 
             }
         });
-        mRepository.readChat(chatId);
+    }
+
+    public int getCurrentChatPosition() {
+        return currentChatPosition;
+    }
+
+    public void setCurrentChatPosition(int currentChatPosition) {
+        this.currentChatPosition = currentChatPosition;
+    }
+
+    public String getChatId(String otherUid) {
+        for(Match match:mProfile.getMatches()){
+            if(match.getOtherUid().equals(otherUid))
+                return match.getId();
+        }
+        return "";
+
     }
 }

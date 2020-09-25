@@ -1,6 +1,8 @@
 package com.example.androidsecondproject.view;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +29,11 @@ import java.util.List;
 public class MatchesFragment extends Fragment  {
     private MatchesViewModel mViewModel;
     private MatchesAdapter mMatchesAdapter;
+    private OnMoveToChat moveToChatListener;
 
-
+    public interface OnMoveToChat{
+        public void OnClickMoveToChat(Profile myProfile,Profile otherProfile,String chatid);
+    }
 
     public static MatchesFragment newInstance(Profile profile)
     {
@@ -37,6 +42,12 @@ public class MatchesFragment extends Fragment  {
         MatchesFragment matchesFragment=new MatchesFragment();
         matchesFragment.setArguments(bundle);
         return matchesFragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        moveToChatListener=(OnMoveToChat)getActivity();
     }
 
     @Nullable
@@ -53,45 +64,42 @@ public class MatchesFragment extends Fragment  {
 
         
         //mViewModel.setmMatchesAdapter(new MatchesAdapter(mViewModel.getMatches(),getContext()));
+        Observer<Chat> chatSuccessObserver = new Observer<Chat>() {
+            @Override
+            public void onChanged(Chat chat) {
+             //   moveToChat(chatId);
+
+            }
+        };
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
-            mViewModel.setmProfiles(profiles);
-            mViewModel.calculateMatches();
             mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(),getContext(),mViewModel.getProfile());
             mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
                 @Override
-                public void onChatClickedListener(String chatId) {
-                    readChat(chatId);
+                public void onChatClickedListener(int position) {
+                    Profile otherProfile=mViewModel.getMatches().get(mViewModel.getCurrentChatPosition());
+                    String chatid=mViewModel.getChatId(otherProfile.getUid());
+                    moveToChat(mViewModel.getProfile(),otherProfile,chatid);
+
                 }
             });
             matchesRecycler.setAdapter(mMatchesAdapter);
             Toast.makeText(getContext(), mViewModel.getMatches().size()+"", Toast.LENGTH_SHORT).show();
             }
         };
+        mViewModel.getChatResultSuccess().observe(this,chatSuccessObserver);
         mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
-        mViewModel.readProfiles();
+        mViewModel.readMatches();
 
         return rootView;
     }
 
-    public void readChat(final String chatId)
+
+
+    public void moveToChat(Profile myProfile,Profile otherProfile,String chatid)
     {
-        Observer<Chat> chatSuccessObserver = new Observer<Chat>() {
-            @Override
-            public void onChanged(Chat chat) {
-                moveToChat(chatId);
-            }
-        };
-
-        mViewModel.readChat(chatId);
-
-        Toast.makeText(getContext(), chatId, Toast.LENGTH_SHORT).show();
-    }
-
-    public void moveToChat(String chatId)
-    {
-
+        moveToChatListener.OnClickMoveToChat(myProfile,otherProfile,chatid);
     }
 
 

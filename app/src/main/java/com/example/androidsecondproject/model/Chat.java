@@ -5,14 +5,14 @@ import java.util.List;
 
 public class Chat {
     private String id;
-    private String firstEmail;
-    private String secondEmail;
+    private String firstUid;
+    private String secondUid;
     private List<Message> messages = new ArrayList<>();
 
-    public Chat(String id, String firstEmail, String secondEmail) {
+    public Chat(String id, String firstUid, String secondEmail) {
         this.id = id;
-        this.firstEmail = firstEmail;
-        this.secondEmail = secondEmail;
+        this.firstUid = firstUid;
+        this.secondUid = secondEmail;
     }
 
     public String getId() {
@@ -23,20 +23,20 @@ public class Chat {
         this.id = id;
     }
 
-    public String getFirstEmail() {
-        return firstEmail;
+    public String getFirstUid() {
+        return firstUid;
     }
 
-    public void setFirstEmail(String firstEmail) {
-        this.firstEmail = firstEmail;
+    public void setFirstUid(String firstUid) {
+        this.firstUid = firstUid;
     }
 
-    public String getSecondEmail() {
-        return secondEmail;
+    public String getSecondUid() {
+        return secondUid;
     }
 
-    public void setSecondEmail(String secondEmail) {
-        this.secondEmail = secondEmail;
+    public void setSecondUid(String secondUid) {
+        this.secondUid = secondUid;
     }
 
     public List<Message> getMessages() {

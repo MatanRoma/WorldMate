@@ -54,7 +54,7 @@ public class SwipeViewModel extends AndroidViewModel {
     }
 
     public void addLikedProfile(int position) {
-         mProfile.getLikes().add((mProfilesMutableLiveData.getValue().get(position).getEmail()));
+         mProfile.getLikes().add((mProfilesMutableLiveData.getValue().get(position).getUid()));
     }
 
     public void removeProfile(int position) {
@@ -62,34 +62,29 @@ public class SwipeViewModel extends AndroidViewModel {
     }
 
     public boolean checkIfMatch(int position) {
-        String myEmail=mProfile.getEmail();
-        List<String> likeEmails=mProfilesMutableLiveData.getValue().get(position).getLikes();
-        return likeEmails.contains(myEmail);
+        String myUid=mProfile.getUid();
+        List<String> likeUids=mProfilesMutableLiveData.getValue().get(position).getLikes();
+        return likeUids.contains(myUid);
     }
 
     public void updateMatch(int position) {
         Profile otherPofile=mProfilesMutableLiveData.getValue().get(position);
-        String key = mProfile.getEmail()+otherPofile.getEmail();
-        key = key.replace('.',' ');
+        String key = mProfile.getUid()+otherPofile.getUid();
+        /*key = key.replace('.',' ');
         key = key.replace('#',' ');
         key = key.replace('$',' ');
         key = key.replace('[',' ');
         key = key.replace(']',' ');
         key = key.trim();
-        Log.d("chat",key);
-        Match myMatch = new Match(otherPofile.getEmail(),key);
+        Log.d("chat",key);*/
+        Match myMatch = new Match(otherPofile.getUid(),key);
         //match.setEmail(otherPofile.getEmail());
 
         mProfile.getMatches().add(myMatch);
-        Toast.makeText(getApplication(), otherPofile.getEmail()+"", Toast.LENGTH_SHORT).show();
-        Match otherMatch = new Match(mProfile.getEmail(),key);
+        Toast.makeText(getApplication(), otherPofile.getUid()+"", Toast.LENGTH_SHORT).show();
+        Match otherMatch = new Match(mProfile.getUid(),key);
         otherPofile.getMatches().add(otherMatch);
-        mRepository.writeChat(new Chat(key,mProfile.getEmail(),otherPofile.getEmail()));
-    }
-    public void test(){
-        for(String str:mProfile.getLikes()){
-            Log.d("like",str);
-        }
+      //  mRepository.writeChat(mProfile.getUid()+otherPofile.getUid());
     }
 
     public void writeMyProfile() {
