@@ -120,6 +120,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter< Message, ChatAdapter.C
         holder.dateTv.setText(message.getFormattedDate());
     }
 
+
     @Override
     public int getItemCount() {
         return super.getItemCount();

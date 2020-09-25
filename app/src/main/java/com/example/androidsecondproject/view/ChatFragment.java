@@ -32,6 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ChatFragment extends Fragment {
     private ChatAdapter mChatAdapter;
     private ChatViewModel mViewModel;
+    private LinearLayoutManager mLinearLayoutManager;
 
     RecyclerView mRecyclerView;
     public static ChatFragment newInstance(Profile profile, Profile otherProfile, String chatId)
@@ -53,7 +54,8 @@ public class ChatFragment extends Fragment {
 
         mRecyclerView=rootView.findViewById(R.id.messaging_recycler);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mLinearLayoutManager=new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
 
 
@@ -74,14 +76,15 @@ public class ChatFragment extends Fragment {
                     //sendMessage(text);
                     mViewModel.writeMessage(text);
                     chatEt.setText("");
-                    Handler handler = new Handler();
+                    /*Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             mRecyclerView.scrollToPosition(mChatAdapter.getItemCount()-1);
+                            mChatAdapter.onDataChanged();
                         }
                     },500);
-
+*/
                 }
             }
         });
@@ -89,7 +92,7 @@ public class ChatFragment extends Fragment {
         mChatAdapter=new ChatAdapter(recyclerOptions,mViewModel.getMyUid());
         mRecyclerView.setAdapter(mChatAdapter);
         mRecyclerView.scrollToPosition(mChatAdapter.getItemCount());
-        Handler handler = new Handler();
+        /*Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -99,7 +102,32 @@ public class ChatFragment extends Fragment {
                     Toast.makeText(getContext(), "got to handler", Toast.LENGTH_SHORT).show();
                 }
             }
-        },200);
+        },200);*/
+
+        mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if(oldBottom>bottom){
+                    mRecyclerView.smoothScrollToPosition(mChatAdapter.getItemCount());
+                    mLinearLayoutManager.setStackFromEnd(true);
+                    mRecyclerView.setLayoutManager(mLinearLayoutManager);
+                }
+                mLinearLayoutManager.setStackFromEnd(false);
+                mRecyclerView.setLayoutManager(mLinearLayoutManager);
+            }
+        });
+
+        mChatAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                int messagesCount = mChatAdapter.getItemCount();
+                int lastVisiblePosition = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
+                if (lastVisiblePosition == -1 || (positionStart >= (messagesCount - 1)) && lastVisiblePosition == (positionStart - 1)) {
+                    mRecyclerView.scrollToPosition(positionStart);
+                }
+            }
+        });
 
         Profile otherProfile =(Profile)getArguments().getSerializable("other_profile");
         nameTv.setText(otherProfile.getFirstName() + " " + otherProfile.getLastName());
