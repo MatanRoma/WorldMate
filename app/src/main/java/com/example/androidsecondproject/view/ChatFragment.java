@@ -1,13 +1,14 @@
 package com.example.androidsecondproject.view;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,15 +17,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
-import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.ChatAdapter;
 import com.example.androidsecondproject.model.Message;
 import com.example.androidsecondproject.model.Profile;
@@ -32,12 +26,6 @@ import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.ChatViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -67,6 +55,8 @@ public class ChatFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
+
         ImageButton sendButton=rootView.findViewById(R.id.send_message);
         final EditText chatEt=rootView.findViewById(R.id.text_chat_et);
         TextView nameTv=rootView.findViewById(R.id.profile_name_chat);
@@ -83,12 +73,38 @@ public class ChatFragment extends Fragment {
                 if(text.length()>0){
                     //sendMessage(text);
                     mViewModel.writeMessage(text);
+                    chatEt.setText("");
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRecyclerView.scrollToPosition(mChatAdapter.getItemCount()-1);
+                        }
+                    },500);
+
                 }
             }
         });
 
         mChatAdapter=new ChatAdapter(recyclerOptions,mViewModel.getMyUid());
         mRecyclerView.setAdapter(mChatAdapter);
+        mRecyclerView.scrollToPosition(mChatAdapter.getItemCount());
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(mChatAdapter.getItemCount() > 0)
+                {
+                    mRecyclerView.scrollToPosition(mChatAdapter.getItemCount()-1);
+                    Toast.makeText(getContext(), "got to handler", Toast.LENGTH_SHORT).show();
+                }
+            }
+        },200);
+
+        Profile otherProfile =(Profile)getArguments().getSerializable("other_profile");
+        nameTv.setText(otherProfile.getFirstName() + " " + otherProfile.getLastName());
+        Glide.with(getContext()).load(otherProfile.getProfilePictureUri()).into(profileImage);
+
         return rootView;
     }
 

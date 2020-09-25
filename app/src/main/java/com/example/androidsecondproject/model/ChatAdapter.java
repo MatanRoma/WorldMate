@@ -12,8 +12,6 @@ import com.example.androidsecondproject.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class ChatAdapter extends FirebaseRecyclerAdapter< Message, ChatAdapter.ChatViewHolder> {
    /* List<Profile> mProfiles;
     Profile mProfile;
@@ -30,6 +28,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter< Message, ChatAdapter.C
     public ChatAdapter(@NonNull FirebaseRecyclerOptions<Message> options, String myUid) {
         super(options);
         this.myUid = myUid;
+
     }
 
     private ChatListener chatListener;
