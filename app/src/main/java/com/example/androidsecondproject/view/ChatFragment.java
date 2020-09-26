@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,8 @@ import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.ChatViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -58,7 +61,7 @@ public class ChatFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
 
-
+        ImageButton backToAllChats = rootView.findViewById(R.id.back_to_chats_ib);
         ImageButton sendButton=rootView.findViewById(R.id.send_message);
         final EditText chatEt=rootView.findViewById(R.id.text_chat_et);
         TextView nameTv=rootView.findViewById(R.id.profile_name_chat);
@@ -66,6 +69,14 @@ public class ChatFragment extends Fragment {
 
         mViewModel.setChatId(getArguments().getString("chat_id"));
         FirebaseRecyclerOptions<Message> recyclerOptions=new FirebaseRecyclerOptions.Builder<Message>().setQuery(mViewModel.readAllMessages(),Message.class).build();
+
+        backToAllChats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Objects.requireNonNull(getActivity()).onBackPressed();
+            }
+        });
+
 
 
         sendButton.setOnClickListener(new View.OnClickListener() {

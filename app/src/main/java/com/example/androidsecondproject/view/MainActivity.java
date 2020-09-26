@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
+import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.Profile;
+import com.example.androidsecondproject.model.SwipeAdapter;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.LocationViewModel;
 import com.example.androidsecondproject.viewmodel.MainViewModel;
@@ -40,6 +43,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -71,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private View headerView;
+
+    SwipeFlingAdapterView swipeProfile;
+    SwipeAdapter swipeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,8 +169,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
         mViewModel.getProfileResultSuccess().observe(this, profileObserverSuccess);
         mViewModel.getProfileResultFailed().observe(this, profileObserverFail);
-
-
     }
 
 
@@ -199,12 +204,48 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
 
     private void moveToSwipeFragment() {
-        Fragment swipeFragment = SwipeFragment.newInstance(mViewModel.getProfile());
+        final Fragment swipeFragment = SwipeFragment.newInstance(mViewModel.getProfile());
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.flContent, swipeFragment, SWIPE_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
+
+
+        /*swipeProfile.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
+            @Override
+            public void removeFirstObjectInAdapter() {
+
+            }
+
+            @Override
+            public void onLeftCardExit(Object o) {
+
+            }
+
+            @Override
+            public void onRightCardExit(Object o) {
+
+            }
+
+            @Override
+            public void onAdapterAboutToEmpty(int i) {
+
+            }
+
+            @Override
+            public void onScroll(float v) {
+
+            }
+        });
+
+        swipeProfile.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int i, Object o) {
+
+            }
+        });*/
+
     }
 
     private void moveToLoginFragment() {
