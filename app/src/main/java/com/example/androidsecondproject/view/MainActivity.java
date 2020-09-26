@@ -96,7 +96,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 getUserLocation();
             }
         }
-
+        Bundle b = getIntent().getExtras();// add these lines of code to get data from notification
+        if(b!=null) {
+            String chatId = b.getString("chat_id");
+            Log.d("chatbundle",chatId);
+        }
 
 
         initializeViewComponents();

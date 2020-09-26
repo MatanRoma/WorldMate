@@ -1,8 +1,10 @@
 package com.example.androidsecondproject.services;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
@@ -17,6 +19,7 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.List;
 import java.util.Map;
 
 public class FirebaseInstanceIDService extends FirebaseMessagingService {
@@ -49,9 +52,9 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
             builder.setSmallIcon(R.drawable.ic_messages_icon);
             notificationManager.notify(1,builder.build());
 
-
-
         }
 
+
     }
+
 }

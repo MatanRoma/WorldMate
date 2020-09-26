@@ -45,7 +45,7 @@ public class Repository {
 
     private Repository(Context context) {
         database=FirebaseDatabase.getInstance();
-        database.setPersistenceEnabled(true);
+        database.setPersistenceEnabled(false);
         profilesTable=database.getReference(PROFILE_TABLE);
         questionsTable=database.getReference(QUESTIONS_TABLE);
         chatsTable = database.getReference(CHATS_TABLE);

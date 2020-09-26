@@ -3,6 +3,7 @@ package com.example.androidsecondproject.viewmodel;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -14,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.Message;
 import com.example.androidsecondproject.model.Profile;
@@ -72,12 +74,19 @@ public class ChatViewModel extends AndroidViewModel {
 
                 String text=message.getText();
                 final JSONObject rootObject=new JSONObject();
+                JSONObject notificationObject=new JSONObject();
                 JSONObject dataObject=new JSONObject();
 
                 try {
-                    rootObject.put("to",myProfile.getMessageToken());
-                    dataObject.put("message",text);
-                    dataObject.put("a","a");
+                    rootObject.put("to",otherProfile.getMessageToken());
+                    Log.d("token",otherProfile.getMessageToken());
+                    notificationObject.put("title",myProfile.getFirstName()+" "+myProfile.getLastName());
+                    notificationObject.put("body",text);
+                    notificationObject.put("tag",myProfile.getEmail());
+                    notificationObject.put("icon", R.drawable.ic_messages_icon);
+                 //   notificationObject.put("image",myProfile.getProfilePictureUri());
+                    dataObject.put("chat_id",chatId);
+                    rootObject.put("notification",notificationObject);
                     rootObject.put("data",dataObject);
 
                 } catch (JSONException e) {

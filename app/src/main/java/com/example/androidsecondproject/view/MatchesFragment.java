@@ -78,7 +78,7 @@ public class MatchesFragment extends Fragment  {
             mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
                 @Override
                 public void onChatClickedListener(int position) {
-                    Profile otherProfile=mViewModel.getMatches().get(mViewModel.getCurrentChatPosition());
+                    Profile otherProfile=mViewModel.getMatches().get(position);
                     String chatid=mViewModel.getChatId(otherProfile.getUid());
                     moveToChat(mViewModel.getProfile(),otherProfile,chatid);
 
