@@ -12,6 +12,7 @@ import com.example.androidsecondproject.model.Message;
 import com.example.androidsecondproject.model.Preferences;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.Question;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +36,7 @@ public class Repository {
     private DatabaseReference chatsTable;
     private ProfileListener profileListener;
     private ProfilesListener profilesListener;
+    private  MessageListener messageListener;
 
     private static Repository repository;
     private QuestionsListener questionsListener;
@@ -279,8 +281,17 @@ public class Repository {
     public Query readAllMessages(String chatId) {
         return chatsTable.child(chatId);
     }
-    public void writeMessage(String chatId, Message message){
-        chatsTable.child(chatId).push().setValue(message);
+    public void writeMessage(String chatId, final Message message){
+        chatsTable.child(chatId).push().setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                if(messageListener!=null)
+                        messageListener.onMessageSentSuccess(message);
+            }
+        });
+    }
+    public interface MessageListener{
+        void onMessageSentSuccess(Message message);
     }
 
     public interface ChatListener{
@@ -336,10 +347,17 @@ public class Repository {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+
+
             }
         });
     }
 
+    public MessageListener getMessageListener() {
+        return messageListener;
+    }
 
-
+    public void setMessageListener(MessageListener messageListener) {
+        this.messageListener = messageListener;
+    }
 }

@@ -68,6 +68,9 @@ public class ChatFragment extends Fragment {
         CircleImageView profileImage=rootView.findViewById(R.id.profile_image_chat);
 
         mViewModel.setChatId(getArguments().getString("chat_id"));
+        mViewModel.setMyProfile((Profile)getArguments().getSerializable("profile"));
+        mViewModel.setOtherProfile((Profile)getArguments().getSerializable("other_profile"));
+        mViewModel.setContext(getContext());
         FirebaseRecyclerOptions<Message> recyclerOptions=new FirebaseRecyclerOptions.Builder<Message>().setQuery(mViewModel.readAllMessages(),Message.class).build();
 
         backToAllChats.setOnClickListener(new View.OnClickListener() {
@@ -84,18 +87,10 @@ public class ChatFragment extends Fragment {
             public void onClick(View v) {
                 String text=chatEt.getText().toString();
                 if(text.length()>0){
-                    //sendMessage(text);
+
                     mViewModel.writeMessage(text);
                     chatEt.setText("");
-                    /*Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mRecyclerView.scrollToPosition(mChatAdapter.getItemCount()-1);
-                            mChatAdapter.onDataChanged();
-                        }
-                    },500);
-*/
+
                 }
             }
         });
@@ -103,17 +98,7 @@ public class ChatFragment extends Fragment {
         mChatAdapter=new ChatAdapter(recyclerOptions,mViewModel.getMyUid());
         mRecyclerView.setAdapter(mChatAdapter);
         mRecyclerView.scrollToPosition(mChatAdapter.getItemCount());
-        /*Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(mChatAdapter.getItemCount() > 0)
-                {
-                    mRecyclerView.scrollToPosition(mChatAdapter.getItemCount()-1);
-                    Toast.makeText(getContext(), "got to handler", Toast.LENGTH_SHORT).show();
-                }
-            }
-        },200);*/
+
 
         mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -142,7 +127,7 @@ public class ChatFragment extends Fragment {
 
         Profile otherProfile =(Profile)getArguments().getSerializable("other_profile");
         nameTv.setText(otherProfile.getFirstName() + " " + otherProfile.getLastName());
-        Glide.with(getContext()).load(otherProfile.getProfilePictureUri()).into(profileImage);
+        Glide.with(getContext()).load(otherProfile.getProfilePictureUri()).error(R.drawable.man_profile).into(profileImage);
 
         return rootView;
     }
