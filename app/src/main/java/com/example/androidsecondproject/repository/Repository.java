@@ -41,6 +41,7 @@ public class Repository {
     private static Repository repository;
     private QuestionsListener questionsListener;
     private ChatListener chatListener;
+    private ReadOtherProfileListener readOtherProfileListener;
 
 
     private Repository(Context context) {
@@ -61,11 +62,7 @@ public class Repository {
         return repository;
     }
 
-/*    public void addChat()
-    {
-        String key = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
 
-    }*/
 
     public void readProfile(String uid){
 
@@ -196,6 +193,10 @@ public class Repository {
         }
         return false;
     }
+
+
+
+
 
     private boolean checkCompatibilityHelper(Profile profile, Preferences preferences) {
         float myAge=profile.getAge();
@@ -359,5 +360,32 @@ public class Repository {
 
     public void setMessageListener(MessageListener messageListener) {
         this.messageListener = messageListener;
+    }
+
+    public interface ReadOtherProfileListener{
+        void onOtherProfileChange(Profile profile);
+    }
+    public void setOtherProfileListener(ReadOtherProfileListener readOtherProfileListener){
+        this.readOtherProfileListener=readOtherProfileListener;
+    }
+    public void readOtherProfile(String uid) {
+
+        profilesTable.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Profile profile = snapshot.getValue(Profile.class);
+                    if (profileListener != null) {
+                        readOtherProfileListener.onOtherProfileChange(profile);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                if (profileListener != null)
+                    profileListener.onProfileDataChangeFail(error.getMessage());
+            }
+        });
     }
 }

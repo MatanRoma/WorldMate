@@ -55,42 +55,41 @@ public class MatchesFragment extends Fragment  {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.matches_fragment,container,false);
         mViewModel =new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Matches)).get(MatchesViewModel.class);
-        mViewModel.setProfile((Profile) getArguments().getSerializable("profile"));
+      //  mViewModel.setProfile((Profile) getArguments().getSerializable("profile"));
 
 
         final RecyclerView matchesRecycler = rootView.findViewById(R.id.matches_recycler);
         matchesRecycler.setHasFixedSize(true);
         matchesRecycler.setLayoutManager(new GridLayoutManager(getContext(),1));
 
-        
-        //mViewModel.setmMatchesAdapter(new MatchesAdapter(mViewModel.getMatches(),getContext()));
-        Observer<Chat> chatSuccessObserver = new Observer<Chat>() {
-            @Override
-            public void onChanged(Chat chat) {
-             //   moveToChat(chatId);
 
+        Observer<Profile> myProfileSuccessObserver=new Observer<Profile>() {
+            @Override
+            public void onChanged(Profile profile) {
+                mViewModel.readMatches();
             }
         };
+
+
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
-            mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(),getContext(),mViewModel.getProfile());
+            mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(),getContext(),mViewModel.getMyProfile());
             mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
                 @Override
                 public void onChatClickedListener(int position) {
                     Profile otherProfile=mViewModel.getMatches().get(position);
                     String chatid=mViewModel.getChatId(otherProfile.getUid());
-                    moveToChat(mViewModel.getProfile(),otherProfile,chatid);
+                    moveToChat(mViewModel.getMyProfile(),otherProfile,chatid);
 
                 }
             });
             matchesRecycler.setAdapter(mMatchesAdapter);
-            Toast.makeText(getContext(), mViewModel.getMatches().size()+"", Toast.LENGTH_SHORT).show();
             }
         };
-        mViewModel.getChatResultSuccess().observe(this,chatSuccessObserver);
+        mViewModel.getMyProfileResultSuccess().observe(this,myProfileSuccessObserver);
         mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
-        mViewModel.readMatches();
+        mViewModel.readMyProfile();
 
         return rootView;
     }

@@ -26,6 +26,8 @@ public class Profile implements Serializable {
     private List<String> disLikes;
     private List<Match> matches;
     private String uid;
+    private String city;
+    private LocationPoint location;
     private List<QuestionRespond> questionResponds;
 
 
@@ -196,6 +198,22 @@ public class Profile implements Serializable {
 
     public void setMessageToken(String messageToken) {
         this.messageToken = messageToken;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public LocationPoint getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationPoint location) {
+        this.location = location;
     }
 }
 

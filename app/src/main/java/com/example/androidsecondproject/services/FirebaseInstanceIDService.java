@@ -32,7 +32,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    @Override
+    /*@Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         Map<String,String> messageDataMap=remoteMessage.getData();
@@ -55,6 +55,6 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
         }
 
 
-    }
+    }*/
 
 }

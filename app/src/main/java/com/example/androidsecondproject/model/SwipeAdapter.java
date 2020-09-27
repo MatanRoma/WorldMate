@@ -36,12 +36,16 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         TextView mNameTv;
         CircleImageView mProfileIv;
         TextView mCompabilityTv;
+        TextView mCityTv;
+        TextView mAgeTv;
 
         public SwipeViewHolder(@NonNull View itemView) {
             super(itemView);
             mNameTv=itemView.findViewById(R.id.card_name_tv);
             mProfileIv=itemView.findViewById(R.id.card_profile_iv);
             mCompabilityTv = itemView.findViewById(R.id.compability_tv);
+            mCityTv=itemView.findViewById(R.id.location_tv);
+            mAgeTv=itemView.findViewById(R.id.card_age_tv);
 
         }
     }
@@ -78,8 +82,12 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
     public void onBindViewHolder(@NonNull SwipeViewHolder holder, int position) {
         Profile currentProfile=mProfiles.get(position);
         Glide.with(mContext).load(currentProfile.getProfilePictureUri()).error(R.drawable.man_profile).into(holder.mProfileIv);
-        holder.mNameTv.setText(currentProfile.getFirstName()+" "+currentProfile.getLastName());
-        Toast.makeText(mContext, "categories size "+mCategories.size(), Toast.LENGTH_SHORT).show();
+        holder.mNameTv.setText(currentProfile.getFirstName()+",");
+        holder.mAgeTv.setText((int)currentProfile.getAge()+"");
+        if(currentProfile.getCity()!=null)
+            holder.mCityTv.setText(currentProfile.getCity());
+
+
         if(mCategories.size() != 0)
         {
             CompabilityCalculator compabilityCalculator = new CompabilityCalculator(mCategories,mProfile.getQuestionResponds(),getmProfiles().get(position).getQuestionResponds());
@@ -89,6 +97,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         else {
             holder.mCompabilityTv.setVisibility(View.GONE);
         }
+
     }
 
     @Override

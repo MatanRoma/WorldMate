@@ -6,10 +6,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -19,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -32,6 +40,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
+import com.example.androidsecondproject.model.LocationPoint;
 import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.SwipeAdapter;
@@ -39,18 +48,38 @@ import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.LocationViewModel;
 import com.example.androidsecondproject.viewmodel.MainViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface,
         AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface, ProfileFragment.UpdateDrawerFromProfileFragment,MatchesFragment.OnMoveToChat {
-
+    private final int REQUEST_CHECK_SETTINGS =2 ;
+    private Geocoder mGeoCoder;
+    private String mCityName;
+    private LocationCallback mLocationCallback;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    Handler mHandler;
 
     int LOCATION_REQUEST = 1;
 
@@ -84,29 +113,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final int permissionLocation1;
-        final int permissionLocation2;
-        if (Build.VERSION.SDK_INT >= 23) {
-            permissionLocation1 = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            permissionLocation2 = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-
-            if ((permissionLocation1 != PackageManager.PERMISSION_GRANTED) && (permissionLocation2 != PackageManager.PERMISSION_GRANTED)) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_REQUEST);
-            } else {
-                getUserLocation();
-            }
-        }
-        Bundle b = getIntent().getExtras();// add these lines of code to get data from notification
-        if(b!=null) {
-            String chatId = b.getString("chat_id");
-            Log.d("chatbundle",chatId);
-        }
-
 
         initializeViewComponents();
         setObservers();
         onMessageTokenReceived();
-        Log.d("token","main");
+
+
+
         if (mViewModel.checkIfAuth()) { // from splash activity
             fetchProfileData();
         } else {
@@ -153,9 +166,9 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 } else if (mViewModel.isFirstTime()) {
                     mNameTv.setText(profile.getFirstName());
                     Glide.with(MainActivity.this).load(profile.getProfilePictureUri()).error(R.drawable.man_profile).into(mProfileIv);
-                    mViewModel.setFirstTime(false);
                     getTokenWhenLogin();
-                    moveToSwipeFragment();
+                    mViewModel.setFirstTime(false);
+                    checkIfReturnFromNotif();
                 } else {
                     mNameTv.setText(profile.getFirstName());
                     Glide.with(MainActivity.this).load(profile.getProfilePictureUri()).error(R.drawable.man_profile).into(mProfileIv);
@@ -169,8 +182,17 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 moveToAccountSetup();
             }
         };
+        Observer<Profile> otherProfileObserverSuccess = new Observer<Profile>() {
+            @Override
+            public void onChanged(Profile profile) {
+                String chatId = getIntent().getExtras().getString("chat_id");
+                Log.d("buuug", "bug");
+                moveToSwipeFragment();
+                moveToChat(mViewModel.getProfile(), profile, chatId); // get  here only from notification
+            }
+        };
 
-
+        mViewModel.getOtherProfileResultSuccess().observe(this, otherProfileObserverSuccess);
         mViewModel.getProfileResultSuccess().observe(this, profileObserverSuccess);
         mViewModel.getProfileResultFailed().observe(this, profileObserverFail);
     }
@@ -391,40 +413,62 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     }
 
     private void getUserLocation() {
+        //   startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        turnGPSOn();
         LocationViewModel.getInstance(getApplicationContext()).observe(this, new Observer<Location>() {
             @Override
             public void onChanged(Location location) {
                 if (location != null) {
                     Toast.makeText(MainActivity.this, "User Location: Lat = " + location.getLatitude() + ", Lon =" + location.getLongitude(), Toast.LENGTH_SHORT).show();
                 }
+                if (mViewModel.isFirstTime()) {
+                    moveToSwipeFragment();
+                    mViewModel.setFirstTime(false);
+                }
             }
+
         });
 
-
     }
+
+    private void turnGPSOn() {
+        Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
+        intent.putExtra("enabled", true);
+        sendBroadcast(intent);
+    }
+
     @Override
-    public void onRequestPermissionsResult ( int requestCode, @NonNull String[] permissions,
-                                             @NonNull int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_REQUEST) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                getUserLocation();
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
+              //  getUserLocation();
+                startLocation();
+            }
+            else{
+                moveToSwipeFragment();
+             //   startLocation();
+            //    requestLocationPermissions();
+
             }
         }
     }
-    private void onMessageTokenReceived(){
-        tokenReceiver=new BroadcastReceiver() {
+
+    private void onMessageTokenReceived() {
+        tokenReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 mViewModel.setToken(intent.getStringExtra("token"));
             }
         };
 
-        IntentFilter filter=new IntentFilter("token_changed");
-        LocalBroadcastManager.getInstance(this).registerReceiver(tokenReceiver,filter);
+        IntentFilter filter = new IntentFilter("token_changed");
+        LocalBroadcastManager.getInstance(this).registerReceiver(tokenReceiver, filter);
     }
-    private void getTokenWhenLogin(){
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(MainActivity.this,new OnSuccessListener<InstanceIdResult>() {
+
+    private void getTokenWhenLogin() {
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(MainActivity.this, new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 String newToken = instanceIdResult.getToken();
@@ -440,13 +484,143 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         LocalBroadcastManager.getInstance(this).unregisterReceiver(tokenReceiver);
     }
 
-    @Override
-    public void OnClickMoveToChat(Profile myProfile, Profile otherProfile, String chatid) {
-        ChatFragment chatFragment = ChatFragment.newInstance(myProfile,otherProfile,chatid);
+    public void moveToChat(Profile myProfile, Profile otherProfile, String chatid) {
+        ChatFragment chatFragment = ChatFragment.newInstance(myProfile, otherProfile, chatid);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.flContent, chatFragment, CHAT_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+    @Override
+    public void OnClickMoveToChat(Profile myProfile, Profile otherProfile, String chatid) {
+        moveToChat(myProfile, otherProfile, chatid);
+    }
+
+    public void checkIfReturnFromNotif() {
+        Bundle bundle = getIntent().getExtras();// add these lines of code to get data from notification
+        if (bundle != null) {
+            String chatId = bundle.getString("chat_id");
+            if (chatId != null) {
+                Log.d("chatbundle", chatId);
+                mViewModel.getOtherProfile(chatId);
+            }
+            else {
+                requestLocationPermissions();
+            }
+        }
+        else
+            requestLocationPermissions();
+
+    }
+
+    public void requestLocationPermissions() {
+        mGeoCoder = new Geocoder(this, Locale.getDefault());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasLocationPremission = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            if (hasLocationPremission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
+            } else {
+                startLocation();
+            }
+        } else {
+            startLocation();
+        }
+    }
+
+    private void startLocation() {
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mLocationCallback = new LocationCallback() ;
+        }
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(final LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                mHandler = new Handler();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            List<Address> addressList = mGeoCoder.getFromLocation(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude(), 1);
+                            mCityName = addressList.get(0).getLocality();
+                            if (mCityName != null) {
+                                    mHandler.removeCallbacks(this);
+                                    mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
+                                    mViewModel.getProfile().setCity(mCityName);
+                                    mViewModel.getProfile().setLocation(new LocationPoint(locationResult.getLastLocation().getLatitude(),locationResult.getLastLocation().getLongitude()));
+                                    moveToSwipeFragment();
+                                    mViewModel.writeProfile();
+
+                                    Log.d("loc",mCityName);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        };
+        final LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(500);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+
+        builder.setAlwaysShow(true);
+
+
+        SettingsClient client = LocationServices.getSettingsClient(this);
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+
+
+        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    mFusedLocationProviderClient.requestLocationUpdates(locationRequest, mLocationCallback, null);
+                }
+            }
+        });
+        task.addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                if (e instanceof ResolvableApiException) {
+                    // Location settings are not satisfied, but this can be fixed
+                    // by showing the user a dialog.
+                    try {
+                        //TODO:make a custom window.
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in onActivityResult().
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        resolvable.startResolutionForResult(MainActivity.this,
+                                REQUEST_CHECK_SETTINGS);
+                    } catch (IntentSender.SendIntentException sendEx) {
+                        // Ignore the error.
+                    }
+                }
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            if (resultCode == RESULT_OK)
+                startLocation();
+            else
+                moveToSwipeFragment();
+        }
+    }
 }
+
+
+
+
