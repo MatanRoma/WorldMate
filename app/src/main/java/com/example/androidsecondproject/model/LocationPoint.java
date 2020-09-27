@@ -33,6 +33,16 @@ public class LocationPoint implements Serializable {
         double x2,y2;
         x2=otherLocation.x;
         y2=otherLocation.y;
-        return (int)Math.sqrt(Math.pow(x2-x,2)+Math.pow(y2-y,2));
+        return calculateDistance(x,y,x2,y2);
+    }
+        private int calculateDistance(double latA, double longA, double latB, double longB) {
+
+        double theDistance = (Math.sin(Math.toRadians(latA)) *
+                Math.sin(Math.toRadians(latB)) +
+                Math.cos(Math.toRadians(latA)) *
+                  Math.cos(Math.toRadians(latB)) *
+                        Math.cos(Math.toRadians(longA - longB)));
+
+        return (int)(Math.toDegrees(Math.acos(theDistance) * 69.09)*1.6);
     }
 }

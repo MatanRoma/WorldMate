@@ -186,6 +186,7 @@ public class Repository {
             return false;
         }
         else if(profile.getLocation()!=null&&otherProfile.getLocation()!=null){
+            Log.d("dist",profile.getLocation().calculateDistance(otherProfile.getLocation())+"");
             if(profile.getLocation().calculateDistance(otherProfile.getLocation())>myPreferences.getMaxDistance())
                 return false;
         }
