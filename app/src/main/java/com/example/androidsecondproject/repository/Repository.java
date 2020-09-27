@@ -90,33 +90,7 @@ public class Repository {
                         //TODO
                     }
         });
-                /*
-                profilesTable.child(uid).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            Profile profile=snapshot.getValue(Profile.class);
-                            Log.d("prof","tst2");
-                            if(profileListener!=null) {
-                                Log.d("prof", "tst3");
-                                profileListener.onProfileDataChangeSuccess(profile);
-                            }
-                        }
-                        else {
-                            if(profileListener!=null)
-                                profileListener.onProfileDataChangeFail("not_exist");
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        if(profileListener!=null)
-                            profileListener.onProfileDataChangeFail(error.getMessage());
-                        //TODO
-                    }
-                });
-
-                 */
     }
 
     public void readProfiles(final Profile myProfile){
@@ -188,7 +162,7 @@ public class Repository {
         if(!otherProfile.isDiscovery()){
             return false;
         }
-        if(checkCompatibilityHelper(myProfile,otherProfile.getPreferences())&&checkCompatibilityHelper(otherProfile,myProfile.getPreferences())){
+        if(checkCompatibilityHelper(myProfile,otherProfile)&&checkCompatibilityHelper(otherProfile,myProfile)){
             return true;
         }
         return false;
@@ -198,15 +172,23 @@ public class Repository {
 
 
 
-    private boolean checkCompatibilityHelper(Profile profile, Preferences preferences) {
-        float myAge=profile.getAge();
-        String myGender=profile.getGender();
-        /*if(myAge<preferences.getMinAge()||myAge>preferences.getMaxAge()){
+    private boolean checkCompatibilityHelper(Profile profile, Profile otherProfile) {
+        float myAge = profile.getAge();
+        String myGender = profile.getGender();
+        Preferences otherPrefences = otherProfile.getPreferences();
+        Preferences myPreferences=profile.getPreferences();
+
+        if (myAge < otherPrefences.getMinAge() || myAge > otherPrefences.getMaxAge()) {
+            return false;
+        } else if (!((otherPrefences.isLookingForMen() && myGender.equals("male")) || (otherPrefences.isLookingForWomen() && myGender.equals("female")))) {
+            return false;
+        } else if (profile.getCity() == null && otherProfile.getCity() != null) {
             return false;
         }
-        else if(!((preferences.isLookingForMen()&&myGender.equals("male"))||(preferences.isLookingForWomen()&&myGender.equals("female")))){
-            return false;
-        }*/
+        else if(profile.getLocation()!=null&&otherProfile.getLocation()!=null){
+            if(profile.getLocation().calculateDistance(otherProfile.getLocation())>myPreferences.getMaxDistance())
+                return false;
+        }
         return true;
     }
 
