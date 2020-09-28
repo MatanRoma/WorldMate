@@ -24,13 +24,13 @@
         </activity>
 -->
         <service
-            android:name=".services.FirebaseInstanceIDService">
+            android:name=".services.FirebaseInstanceIDService" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
-        <activity android:name=".view.MainActivity" android:screenOrientation="portrait"  >
+        <activity android:name=".view.MainActivity" android:screenOrientation="portrait" android:launchMode="singleTask"  >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER"/>

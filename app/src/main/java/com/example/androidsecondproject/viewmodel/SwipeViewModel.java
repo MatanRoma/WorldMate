@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,15 +11,21 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.Match;
+import com.example.androidsecondproject.model.NotificationManager;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
 public class SwipeViewModel extends AndroidViewModel {
 
+    private Context context;
     private Repository mRepository;
     private Profile mProfile;
+    private boolean isFirstTime=true;
     MutableLiveData<List<Profile>> mProfilesMutableLiveData;
 
     public SwipeViewModel(@NonNull Application application) {
@@ -84,6 +91,8 @@ public class SwipeViewModel extends AndroidViewModel {
         Toast.makeText(getApplication(), otherPofile.getUid()+"", Toast.LENGTH_SHORT).show();
         Match otherMatch = new Match(mProfile.getUid(),key);
         otherPofile.getMatches().add(otherMatch);
+     //   notifyOtherProfile(otherPofile.getMessageToken());
+        notifyOtherProfile(mProfile.getMessageToken()); // only for test
       //  mRepository.writeChat(mProfile.getUid()+otherPofile.getUid());
     }
 
@@ -97,5 +106,33 @@ public class SwipeViewModel extends AndroidViewModel {
     public Profile getProfile()
     {
         return mProfile;
+    }
+
+    public void notifyOtherProfile(String to) {
+        JSONObject rootObject=new JSONObject();
+        JSONObject dataObject=new JSONObject();
+        try {
+            rootObject.put("to",to);
+            dataObject.put("match_uid",mProfile.getUid());
+            dataObject.put("sender",mProfile.getFirstName());
+            rootObject.put("data",dataObject);
+            NotificationManager.sendNotification(context,rootObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void setContext(Context context) {
+        this.context=context;
+    }
+
+    public boolean isFirstTime() {
+        return isFirstTime;
+    }
+
+    public void setFirstTime(boolean firstTime) {
+        isFirstTime = firstTime;
     }
 }

@@ -2,6 +2,7 @@ package com.example.androidsecondproject.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,22 +61,34 @@ public class SwipeFragment extends Fragment {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 
         mViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Swipe)).get(SwipeViewModel.class);
+        mViewModel.setContext(getContext());
         final List<String> categories = new ArrayList<>();
         categories.add("sport");
         categories.add("food");
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
+                Log.d("testtt","testt");
+                if (mSwipeAdapter == null) {
+                    mSwipeAdapter=new SwipeAdapter(profiles,getContext(),mViewModel.getProfile(),categories);
+                    mRecyclerView.setAdapter(mSwipeAdapter);
+                }
+                else {
+                    mSwipeAdapter.setmProfiles(profiles);
+                    mSwipeAdapter.notifyDataSetChanged();
+                }
 
-                mSwipeAdapter=new SwipeAdapter(profiles,getContext(),mViewModel.getProfile(),categories);
-                mRecyclerView.setAdapter(mSwipeAdapter);
             }
         };
 
         mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
         mViewModel.setUserProfile((Profile)getArguments().getSerializable("profile"));
         setTouchHelper();
+
         mViewModel.readProfiles();
+
+
+
 
         final CheckBox sportCb = rootView.findViewById(R.id.sport_cb);
         final CheckBox foodCb = rootView.findViewById(R.id.food_cb);

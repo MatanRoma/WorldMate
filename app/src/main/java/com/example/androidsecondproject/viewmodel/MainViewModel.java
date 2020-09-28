@@ -23,6 +23,7 @@ public class MainViewModel extends AndroidViewModel {
     private MutableLiveData<Profile> mOtherProfileSuccessLiveData;
     private boolean isFirstTime=true;
     private String messageToken;
+    private boolean isFirstLocation=true;
 
 
     public MainViewModel(@NonNull Application application) {
@@ -149,5 +150,13 @@ public class MainViewModel extends AndroidViewModel {
 
     public void writeProfile() {
         mRepository.writeMyProfile(mProfileSuccessLiveData.getValue());
+    }
+
+    public boolean isFirstLocation() {
+        return isFirstLocation;
+    }
+
+    public void setFirstLocation(boolean firstLocation) {
+        isFirstLocation = firstLocation;
     }
 }

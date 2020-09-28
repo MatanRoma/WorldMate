@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.model;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,13 @@ import java.util.List;
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesViewHolder> {
     private List<Profile> mProfiles;
     private Context mContext;
+    private String newMatchUid;
 
 
-    public MatchesAdapter(List<Profile> mProfiles,Context context,Profile profile) {
+    public MatchesAdapter(List<Profile> mProfiles,Context context,Profile profile,String newMatchUid) {
         this.mProfiles = mProfiles;
         this.mContext = context;
+        this.newMatchUid=newMatchUid;
     }
 
     private MatchInterface matchClickListener;
@@ -47,6 +50,9 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
     public void onBindViewHolder(@NonNull MatchesViewHolder holder, int position) {
         Profile curProfile = mProfiles.get(position);
         holder.mProfileNameTv.setText(curProfile.getFirstName());
+        if(newMatchUid!=null){
+            holder.mProfileNameTv.setTextColor(Color.RED);
+        }
       /*  for (Match match: curProfile.getMatches()) {
             //Toast.makeText(mContext, mMyProfile.getEmail()+"", Toast.LENGTH_SHORT).show();
             if(match.getOtherUid().equals(mMyProfile.getUid()))

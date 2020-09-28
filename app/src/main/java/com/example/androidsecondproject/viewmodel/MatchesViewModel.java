@@ -17,6 +17,7 @@ public class MatchesViewModel extends AndroidViewModel {
     private Repository mRepository;
     private Profile mProfile;
     private int currentChatPosition;
+    private String newMatchUid;
 
 
     private MutableLiveData<List<Profile>> mMatchesMutableLiveData;
@@ -109,7 +110,7 @@ public class MatchesViewModel extends AndroidViewModel {
     }
 
     public String getChatId(String otherUid) {
-        for(Match match:mProfile.getMatches()){
+        for(Match match:mMyProfileMutableLiveData.getValue().getMatches()){
             if(match.getOtherUid().equals(otherUid))
                 return match.getId();
         }
@@ -123,5 +124,13 @@ public class MatchesViewModel extends AndroidViewModel {
 
     public void readMyProfile() {
         mRepository.readProfile(mRepository.getCurrentUserId());
+    }
+
+    public void setNewMatchUid(String newMatchUid) {
+        this.newMatchUid=newMatchUid;
+    }
+
+    public String getNewMatchUid() {
+        return newMatchUid;
     }
 }

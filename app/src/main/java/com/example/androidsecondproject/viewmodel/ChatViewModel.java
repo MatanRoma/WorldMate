@@ -18,6 +18,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.Message;
+import com.example.androidsecondproject.model.NotificationManager;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
 import com.google.firebase.database.Query;
@@ -61,24 +62,13 @@ public class ChatViewModel extends AndroidViewModel {
             @Override
             public void onMessageSentSuccess(Message message) {
 
-                      /*{
-            "message":{
-            "token":"bk3RNwTe3H0:CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1...",
-                    "data":{
-                "Nick" : "Mario",
-                        "body" : "great match!",
-                        "Room" : "PortugalVSDenmark"
-            }
-        }
-        }*/
-
                 String text=message.getText();
                 final JSONObject rootObject=new JSONObject();
                 JSONObject notificationObject=new JSONObject();
                 JSONObject dataObject=new JSONObject();
 
                 try {
-                    rootObject.put("to",otherProfile.getMessageToken());
+                    rootObject.put("to",otherProfile.getMessageToken());// for test
                     Log.d("token",otherProfile.getMessageToken());
                     notificationObject.put("title",myProfile.getFirstName()+" "+myProfile.getLastName());
                     notificationObject.put("body",text);
@@ -88,41 +78,11 @@ public class ChatViewModel extends AndroidViewModel {
                     dataObject.put("chat_id",chatId);
                     rootObject.put("notification",notificationObject);
                     rootObject.put("data",dataObject);
+                    NotificationManager.sendNotification(context,rootObject);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                final String url = "https://fcm.googleapis.com/fcm/send";
-                final String kkk="AAAABbrOweI:APA91bEnV1kmFrDiPTZrN_tGxxi8H8rbwiohInI2qa1WUyqHR_MSxZOMSeZ_DQ5zwJS6HZiSDjM-j_14zgeXdDI7FfTdgqYLCpc3HKohtRMRIFhQafmJ19X_znhIkcRkZ9fq4x4YGI41";
-
-                RequestQueue queue= Volley.newRequestQueue(context);
-                StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }){
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String,String> headers=new HashMap<>();
-                        headers.put("Content-Type","application/json");
-                        headers.put("Authorization","key="+kkk);
-                        return headers;
-                     }
-
-                    @Override
-                    public byte[] getBody() throws AuthFailureError {
-                        return rootObject.toString().getBytes();
-                    }
-                };
-                queue.add(request);
-                queue.start();
-
 
             }
         });

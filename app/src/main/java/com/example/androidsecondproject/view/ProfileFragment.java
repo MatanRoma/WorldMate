@@ -189,6 +189,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
                     mViewModel.getProfile().setGender("female");
                 }
                 mViewModel.writeProfile();
+                mViewModel.readProfiles();
                 mUpdateDrawerListener.onUpdateProfile(mViewModel.getProfile());
             }
         });

@@ -102,4 +102,7 @@ public class ProfileViewModel extends AndroidViewModel {
     }
 
 
+    public void readProfiles() {
+        mRepository.readProfiles(profile);
+    }
 }

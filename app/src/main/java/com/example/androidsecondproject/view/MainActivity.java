@@ -11,16 +11,16 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,13 +41,13 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.LocationPoint;
-import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.SwipeAdapter;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.LocationViewModel;
 import com.example.androidsecondproject.viewmodel.MainViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -95,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private final String MATCHES_FRAGMENT = "matches_fragment";
     private final String CHAT_FRAGMENT = "chat_fragment";
 
+    private final String STACK ="secondary_stack";
+
     private LoginFragment loginFragment;
     private RegisterFragment registerFragment;
     private MainViewModel mViewModel;
@@ -104,19 +106,28 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private View headerView;
+    Observer<Location> mLocationObserver;
+
 
     SwipeFlingAdapterView swipeProfile;
     SwipeAdapter swipeAdapter;
+
+  //  private ImageView loaderIv;
+    private SpinKitView loadingAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+     //   loaderIv=findViewById(R.id.main_loader);
+        loadingAnimation=findViewById(R.id.spin_kit);
+        Log.d("notifi2",savedInstanceState+"");
 
         initializeViewComponents();
         setObservers();
         onMessageTokenReceived();
+        navigationView.getMenu().getItem(0).setChecked(true);
 
 
 
@@ -163,17 +174,24 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 mViewModel.setToken();
                 if (profile.getPreferences() == null) {
                     moveToPreferences();
+                   // loaderIv.setVisibility(View.GONE);
+                    loadingAnimation.setVisibility(View.GONE);
                 } else if (mViewModel.isFirstTime()) {
                     mNameTv.setText(profile.getFirstName());
                     Glide.with(MainActivity.this).load(profile.getProfilePictureUri()).error(R.drawable.man_profile).into(mProfileIv);
                     getTokenWhenLogin();
                     mViewModel.setFirstTime(false);
-                    checkIfReturnFromNotif();
+                    handleReturnFromNotif();
+                  // loaderIv.setVisibility(View.GONE);
+                    loadingAnimation.setVisibility(View.GONE);
+
                 } else {
                     mNameTv.setText(profile.getFirstName());
                     Glide.with(MainActivity.this).load(profile.getProfilePictureUri()).error(R.drawable.man_profile).into(mProfileIv);
                 }
             }
+
+
         };
 
         Observer<String> profileObserverFail = new Observer<String>() {
@@ -199,22 +217,35 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
 
     private void fetchProfileData() {
+        //loaderIv.setVisibility(View.VISIBLE);
+        Log.d("login","login");
+        loadingAnimation.setVisibility(View.VISIBLE);
         mViewModel.getNavigationHeaderProfile();
     }
 
     private void handleNavigationItemSelected(String title) {
+
         switch (title) {
             case "Home":
-                moveToSwipeFragment();
+                clearStack(null);
                 break;
             case "My Profile":
-                moveToProfileFragment();
+            ProfileFragment profileFragment = (ProfileFragment) getSupportFragmentManager().findFragmentByTag(ACCOUNT_PROFILE_FRAGMENT);
+                if (profileFragment == null || !profileFragment.isVisible()) {
+                    moveToProfileFragment();
+                }
                 break;
             case "Your Matches":
-                moveToMatchesFragment();
+                MatchesFragment matchesFragment = (MatchesFragment) getSupportFragmentManager().findFragmentByTag(MATCHES_FRAGMENT);
+                if (matchesFragment == null || !matchesFragment.isVisible()) {
+                    moveToMatchesFragment();
+                }
                 break;
             case "Questions":
-                moveToQuestionsFragment();
+                QuestionsFragment questionsFragment = (QuestionsFragment) getSupportFragmentManager().findFragmentByTag(QUESTIONS_FRAGMENT);
+                if (questionsFragment == null || !questionsFragment.isVisible()) {
+                    moveToQuestionsFragment();
+                }
                 break;
             case "Messages":
                 break;
@@ -223,19 +254,26 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             case "Logout":
                 mViewModel.setToken("");
                 mViewModel.setFirstTime(true);
+                mViewModel.setFirstLocation(true);
+                LocationViewModel.getInstance(getApplicationContext()).removeObserver(mLocationObserver);
                 mViewModel.logout();
+                clearStack(null);
+                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentByTag(SWIPE_FRAGMENT)).commit();
                 moveToLoginFragment();
+                break;
         }
     }
 
 
     private void moveToSwipeFragment() {
+        Log.d("login","swipe");
         final Fragment swipeFragment = SwipeFragment.newInstance(mViewModel.getProfile());
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.flContent, swipeFragment, SWIPE_FRAGMENT);
-        transaction.addToBackStack(null);
+        transaction.add(R.id.flContent_second, swipeFragment, SWIPE_FRAGMENT);
         transaction.commit();
+
+
 
 
         /*swipeProfile.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -275,43 +313,37 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     }
 
     private void moveToLoginFragment() {
-        loginFragment = loginFragment.newInstance();
+         LoginFragment loginFragment = LoginFragment.newInstance();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.main_activity_id, loginFragment, LOGIN_FRAGMENT);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 
     @Override
     public void onClickMoveToRegister() {
-        registerFragment = RegisterFragment.newInstance();
+        RegisterFragment registerFragment = RegisterFragment.newInstance();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStack();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.main_activity_id, registerFragment, REGISTER_FRAGMENT);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 
     @Override
     public void onClickMoveToLogin() {
-        loginFragment = LoginFragment.newInstance();
+        LoginFragment loginFragment = LoginFragment.newInstance();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStack();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.main_activity_id, loginFragment, LOGIN_FRAGMENT);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 
     private void moveToAccountSetup() {
         Fragment accountSetupFragment = AccountSetupFragment.newInstance();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStack();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.main_activity_id, accountSetupFragment, ACCOUNT_SETUP_FRAGMENT);
-        transaction.addToBackStack(null);
+      //  transaction.add(R.id.main_activity_id, accountSetupFragment, ACCOUNT_SETUP_FRAGMENT);
+        transaction.replace(R.id.main_activity_id,accountSetupFragment,ACCOUNT_SETUP_FRAGMENT);
         transaction.commit();
     }
 
@@ -323,10 +355,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private void moveToPreferences() {
         PreferencesFragment preferencesFragment = PreferencesFragment.newInstance();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStack();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.main_activity_id, preferencesFragment, ACCOUNT_PREFERENCES_FRAGMENT);
-        transaction.addToBackStack(null);
+        /*transaction.add(R.id.main_activity_id, preferencesFragment, ACCOUNT_PREFERENCES_FRAGMENT);
+        Fragment photoFragment = fragmentManager.findFragmentByTag(ACCOUNT_PHOTO_FRAGMENT);
+        if(photoFragment!=null)
+            transaction.remove(photoFragment);*/
+        transaction.replace(R.id.main_activity_id,preferencesFragment,ACCOUNT_PREFERENCES_FRAGMENT);
         transaction.commit();
     }
 
@@ -339,10 +373,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     public void OnClickContinueToPhoto(Profile profile) {
         ProfilePhotoFragment profilePhotoFragment = ProfilePhotoFragment.newInstance(profile);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStack();
+     //   fragmentManager.popBackStack();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.main_activity_id, profilePhotoFragment, ACCOUNT_PHOTO_FRAGMENT);
-        transaction.addToBackStack(null);
+       // transaction.add(R.id.main_activity_id, profilePhotoFragment, ACCOUNT_PHOTO_FRAGMENT);
+        transaction.replace(R.id.main_activity_id,profilePhotoFragment,ACCOUNT_PHOTO_FRAGMENT);
+    //    transaction.addToBackStack(STACK);
         transaction.commit();
     }
 
@@ -351,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         //TODO
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment preferenceFragment = fragmentManager.findFragmentByTag(ACCOUNT_PREFERENCES_FRAGMENT);
-        fragmentManager.popBackStack();
+     //   fragmentManager.popBackStack();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.remove(preferenceFragment);
         transaction.commit();
@@ -361,7 +396,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     @Override
     public void onLoginToApp() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStack();
+       // fragmentManager.popBackStack();
+        Fragment loginFragment = fragmentManager.findFragmentByTag(LOGIN_FRAGMENT);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.remove(loginFragment);
         transaction.commit();
@@ -383,7 +419,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         ProfileFragment profileFragment = ProfileFragment.newInstance(mViewModel.getProfile());
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.flContent, profileFragment, ACCOUNT_PROFILE_FRAGMENT);
+       // transaction.add(R.id.flContent, profileFragment, ACCOUNT_PROFILE_FRAGMENT);
+        transaction.replace(R.id.flContent,profileFragment,ACCOUNT_PROFILE_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -392,19 +429,32 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         QuestionsFragment questionsFragment = QuestionsFragment.newInstance(mViewModel.getProfile());
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.flContent, questionsFragment, QUESTIONS_FRAGMENT);
+      //  transaction.add(R.id.flContent, questionsFragment, QUESTIONS_FRAGMENT);
+        transaction.replace(R.id.flContent,questionsFragment,QUESTIONS_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
 
     }
 
     private void moveToMatchesFragment() {
-        MatchesFragment matchesFragment = MatchesFragment.newInstance(mViewModel.getProfile());
+        MatchesFragment matchesFragment = MatchesFragment.newInstance();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.flContent, matchesFragment, MATCHES_FRAGMENT);
+       // transaction.add(R.id.flContent, matchesFragment, MATCHES_FRAGMENT);
+        transaction.replace(R.id.flContent,matchesFragment,MATCHES_FRAGMENT);
+        transaction.addToBackStack(null);
+
+        transaction.commit();
+    }
+    private void moveToMatchesFragment(String matcherUid) {
+        MatchesFragment matchesFragment = MatchesFragment.newInstance(matcherUid);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+      //  transaction.add(R.id.flContent, matchesFragment, MATCHES_FRAGMENT);
+        transaction.replace(R.id.flContent,matchesFragment,MATCHES_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
+
     }
 
     @Override
@@ -414,37 +464,56 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     private void getUserLocation() {
         //   startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-        turnGPSOn();
-        LocationViewModel.getInstance(getApplicationContext()).observe(this, new Observer<Location>() {
+       // turnGPSOn();
+
+
+             mLocationObserver= new Observer<Location>() {
             @Override
             public void onChanged(Location location) {
+                try {
+                    List<Address> addressList = mGeoCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    mCityName = addressList.get(0).getLocality();
+                    if (mCityName != null) {
+                        mViewModel.getProfile().setCity(mCityName);
+                        mViewModel.getProfile().setLocation(new LocationPoint(location.getLatitude(),location.getLongitude()));
+                        //   moveToSwipeFragment();
+                        mViewModel.writeProfile();
+
+                        Log.d("loc",mCityName);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if (location != null) {
                     Toast.makeText(MainActivity.this, "User Location: Lat = " + location.getLatitude() + ", Lon =" + location.getLongitude(), Toast.LENGTH_SHORT).show();
                 }
-                if (mViewModel.isFirstTime()) {
+                if (mViewModel.isFirstLocation()) {
                     moveToSwipeFragment();
-                    mViewModel.setFirstTime(false);
+                    mViewModel.setFirstLocation(false);
                 }
-            }
 
-        });
+            }
+        };
+        LocationViewModel.getInstance(getApplicationContext()).observe(this, mLocationObserver);
+
 
     }
 
-    private void turnGPSOn() {
+    /*private void turnGPSOn() {
         Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
         intent.putExtra("enabled", true);
         sendBroadcast(intent);
     }
-
+*/
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_REQUEST) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
-              //  getUserLocation();
+                //  getUserLocation();
                 startLocation();
+
             }
             else{
                 moveToSwipeFragment();
@@ -498,22 +567,32 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         moveToChat(myProfile, otherProfile, chatid);
     }
 
-    public void checkIfReturnFromNotif() {
+    public void handleReturnFromNotif() {
         Bundle bundle = getIntent().getExtras();// add these lines of code to get data from notification
+        Log.d("notifi",getIntent().getStringExtra("other_match_uid")+"");
+
         if (bundle != null) {
-            String chatId = bundle.getString("chat_id");
-            if (chatId != null) {
-                Log.d("chatbundle", chatId);
-                mViewModel.getOtherProfile(chatId);
+            final Menu menu = navigationView.getMenu();
+            menu.getItem(2).setChecked(true);
+            if (bundle.containsKey("chat_id")) {
+                mViewModel.getOtherProfile(bundle.getString("chat_id"));
+            }
+            else if(bundle.containsKey("other_match_uid")){
+                Log.d("notifi","notifi");
+                moveToSwipeFragment();
+                moveToMatchesFragment(bundle.getString("other_match_uid"));
             }
             else {
                 requestLocationPermissions();
             }
         }
-        else
+        else {
             requestLocationPermissions();
+        }
 
     }
+
+
 
     public void requestLocationPermissions() {
         mGeoCoder = new Geocoder(this, Locale.getDefault());
@@ -523,9 +602,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
             } else {
                 startLocation();
+                //getUserLocation();
             }
         } else {
             startLocation();
+            //getUserLocation();
         }
     }
 
@@ -538,7 +619,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             @Override
             public void onLocationResult(final LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-                mHandler = new Handler();
+                /*mHandler = new Handler();
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -553,13 +634,15 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                                     moveToSwipeFragment();
                                     mViewModel.writeProfile();
 
-                                    Log.d("loc",mCityName);
+                                    Log.d("locc",mCityName);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-                });
+                });*/
+                mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
+                getUserLocation();
             }
         };
         final LocationRequest locationRequest = LocationRequest.create();
@@ -615,10 +698,51 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         if (requestCode == REQUEST_CHECK_SETTINGS) {
             if (resultCode == RESULT_OK)
                 startLocation();
+               // getUserLocation();
             else
                 moveToSwipeFragment();
         }
     }
+    private void clearStack(String stackName){
+        FragmentManager fm =getSupportFragmentManager();
+
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack(stackName,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        final Menu menu = navigationView.getMenu();
+        if (menu.getItem(0).isChecked()||menu.getItem(6).isChecked()) {
+            Log.d("wtf","wtf");
+            super.onBackPressed();
+        }
+        else{
+            ChatFragment chatFragment = (ChatFragment) getSupportFragmentManager().findFragmentByTag(CHAT_FRAGMENT);
+            if (chatFragment != null && chatFragment.isVisible()) {
+                super.onBackPressed();
+            }
+            else {
+                clearStack(null);
+                navigationView.getMenu().getItem(0).setChecked(true);
+            }
+            }
+        }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        this.setIntent(intent);
+
+        String action = intent.getStringExtra(intent.getAction());
+
+        Log.d("teest", getIntent().getAction()+"");
+        if (action != null) {
+            Log.d("teest", "shiva said right");
+
+        }
+        super.onNewIntent(intent);
+    }
+
 }
 
 

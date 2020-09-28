@@ -72,4 +72,5 @@ public class LocationViewModel extends MutableLiveData<Location> {
             mFusedLocation.removeLocationUpdates(mCallback);
         }
     }
+
 }

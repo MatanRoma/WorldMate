@@ -35,13 +35,17 @@ public class MatchesFragment extends Fragment  {
         public void OnClickMoveToChat(Profile myProfile,Profile otherProfile,String chatid);
     }
 
-    public static MatchesFragment newInstance(Profile profile)
+    public static MatchesFragment newInstance(String matherUid)
     {
         Bundle bundle=new Bundle();
-        bundle.putSerializable("profile",profile);
+        bundle.putString("matcher_uid",matherUid);
         MatchesFragment matchesFragment=new MatchesFragment();
         matchesFragment.setArguments(bundle);
         return matchesFragment;
+    }
+    public static MatchesFragment newInstance()
+    {
+        return new MatchesFragment();
     }
 
     @Override
@@ -56,6 +60,8 @@ public class MatchesFragment extends Fragment  {
         final View rootView = inflater.inflate(R.layout.matches_fragment,container,false);
         mViewModel =new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Matches)).get(MatchesViewModel.class);
       //  mViewModel.setProfile((Profile) getArguments().getSerializable("profile"));
+        if(getArguments()!=null)
+            mViewModel.setNewMatchUid(getArguments().getString("matcher_uid"));
 
 
         final RecyclerView matchesRecycler = rootView.findViewById(R.id.matches_recycler);
@@ -74,7 +80,7 @@ public class MatchesFragment extends Fragment  {
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
-            mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(),getContext(),mViewModel.getMyProfile());
+            mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(),getContext(),mViewModel.getMyProfile(),mViewModel.getNewMatchUid());
             mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
                 @Override
                 public void onChatClickedListener(int position) {
@@ -85,12 +91,12 @@ public class MatchesFragment extends Fragment  {
                 }
             });
             matchesRecycler.setAdapter(mMatchesAdapter);
+
             }
         };
         mViewModel.getMyProfileResultSuccess().observe(this,myProfileSuccessObserver);
         mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
         mViewModel.readMyProfile();
-
         return rootView;
     }
 
