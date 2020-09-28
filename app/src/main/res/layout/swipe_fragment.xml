@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_sign"
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,6 +23,7 @@
             android:id="@+id/food_cb"/>
 
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,15 +31,16 @@
         android:id="@+id/swipe_recycle_view">
 
 
-
-
-
-
-
-
-
     </androidx.recyclerview.widget.RecyclerView>
-
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spin_kit"
+        style="@style/SpinKitView.Large.WanderingCubes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+       android:layout_centerInParent="true"
+        app:SpinKit_Color="@color/Blue" />
 
 
 

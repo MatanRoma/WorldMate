@@ -92,7 +92,7 @@ public class SwipeViewModel extends AndroidViewModel {
         Match otherMatch = new Match(mProfile.getUid(),key);
         otherPofile.getMatches().add(otherMatch);
      //   notifyOtherProfile(otherPofile.getMessageToken());
-        notifyOtherProfile(mProfile.getMessageToken()); // only for test
+        notifyOtherProfile(otherPofile.getMessageToken()); // only for test
       //  mRepository.writeChat(mProfile.getUid()+otherPofile.getUid());
     }
 

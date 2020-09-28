@@ -25,6 +25,7 @@ import com.example.androidsecondproject.model.SwipeAdapter;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.SwipeViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,8 @@ public class SwipeFragment extends Fragment {
 
     private SwipeAdapter mSwipeAdapter;
     private SwipeViewModel mViewModel;
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
+    private SpinKitView mLoadingAnimation;
 
 
 
@@ -56,6 +58,8 @@ public class SwipeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        View rootView = inflater.inflate(R.layout.swipe_fragment,container,false);
 
+       mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
+        mLoadingAnimation.setVisibility(View.VISIBLE);
         mRecyclerView=rootView.findViewById(R.id.swipe_recycle_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
@@ -72,6 +76,7 @@ public class SwipeFragment extends Fragment {
                 if (mSwipeAdapter == null) {
                     mSwipeAdapter=new SwipeAdapter(profiles,getContext(),mViewModel.getProfile(),categories);
                     mRecyclerView.setAdapter(mSwipeAdapter);
+                    mLoadingAnimation.setVisibility(View.GONE);
                 }
                 else {
                     mSwipeAdapter.setmProfiles(profiles);

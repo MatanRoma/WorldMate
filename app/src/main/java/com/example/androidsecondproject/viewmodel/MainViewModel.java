@@ -24,6 +24,7 @@ public class MainViewModel extends AndroidViewModel {
     private boolean isFirstTime=true;
     private String messageToken;
     private boolean isFirstLocation=true;
+    private boolean isFirstReadOtherProfile=true;
 
 
     public MainViewModel(@NonNull Application application) {
@@ -158,5 +159,13 @@ public class MainViewModel extends AndroidViewModel {
 
     public void setFirstLocation(boolean firstLocation) {
         isFirstLocation = firstLocation;
+    }
+
+    public boolean isFirstReadOtherProfile() {
+        return isFirstReadOtherProfile;
+    }
+
+    public void setFirstReadOtherProfile(boolean firstReadOtherProfile) {
+        isFirstReadOtherProfile = firstReadOtherProfile;
     }
 }

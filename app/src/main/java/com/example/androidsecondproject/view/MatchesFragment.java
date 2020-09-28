@@ -23,6 +23,7 @@ import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.MatchesViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class MatchesFragment extends Fragment  {
     private MatchesViewModel mViewModel;
     private MatchesAdapter mMatchesAdapter;
     private OnMoveToChat moveToChatListener;
+    private SpinKitView mLoadingAnimation;
 
     public interface OnMoveToChat{
         public void OnClickMoveToChat(Profile myProfile,Profile otherProfile,String chatid);
@@ -58,6 +60,10 @@ public class MatchesFragment extends Fragment  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.matches_fragment,container,false);
+
+        mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
+        mLoadingAnimation.setVisibility(View.VISIBLE);
+
         mViewModel =new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Matches)).get(MatchesViewModel.class);
       //  mViewModel.setProfile((Profile) getArguments().getSerializable("profile"));
         if(getArguments()!=null)
@@ -91,6 +97,7 @@ public class MatchesFragment extends Fragment  {
                 }
             });
             matchesRecycler.setAdapter(mMatchesAdapter);
+            mLoadingAnimation.setVisibility(View.GONE);
 
             }
         };

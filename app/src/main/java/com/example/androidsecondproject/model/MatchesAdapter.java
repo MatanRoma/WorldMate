@@ -50,8 +50,12 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
     public void onBindViewHolder(@NonNull MatchesViewHolder holder, int position) {
         Profile curProfile = mProfiles.get(position);
         holder.mProfileNameTv.setText(curProfile.getFirstName());
-        if(newMatchUid!=null){
+        if(newMatchUid!=null&&newMatchUid.equals(curProfile.getUid()))
+        {
             holder.mProfileNameTv.setTextColor(Color.RED);
+        }
+        else{
+            holder.mProfileNameTv.setTextColor(Color.BLACK);
         }
       /*  for (Match match: curProfile.getMatches()) {
             //Toast.makeText(mContext, mMyProfile.getEmail()+"", Toast.LENGTH_SHORT).show();

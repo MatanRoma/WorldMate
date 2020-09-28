@@ -56,7 +56,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 
             Intent activityIntent = new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
             String x_id=System.currentTimeMillis()+"";
-            activityIntent.setAction(x_id);
+            activityIntent.setAction(messageDataMap.get("match_uid"));
 
             PendingIntent activityPendingIntent = PendingIntent.getActivity(this,
                     5, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
