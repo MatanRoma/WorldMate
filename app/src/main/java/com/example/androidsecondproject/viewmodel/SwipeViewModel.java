@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.NotificationManager;
 import com.example.androidsecondproject.model.Profile;
@@ -64,6 +63,10 @@ public class SwipeViewModel extends AndroidViewModel {
          mProfile.getLikes().add((mProfilesMutableLiveData.getValue().get(position).getUid()));
     }
 
+    public void addDislikedProfile(int position){
+        mProfile.getDisLikes().add((mProfilesMutableLiveData.getValue().get(position).getUid()));
+    }
+
     public void removeProfile(int position) {
         mProfilesMutableLiveData.getValue().remove(position);
     }
@@ -92,7 +95,7 @@ public class SwipeViewModel extends AndroidViewModel {
         Match otherMatch = new Match(mProfile.getUid(),key);
         otherPofile.getMatches().add(otherMatch);
      //   notifyOtherProfile(otherPofile.getMessageToken());
-        notifyOtherProfile(otherPofile.getMessageToken()); // only for test
+        notifyOtherProfile(mProfile.getMessageToken()); // only for test
       //  mRepository.writeChat(mProfile.getUid()+otherPofile.getUid());
     }
 
@@ -116,6 +119,8 @@ public class SwipeViewModel extends AndroidViewModel {
             dataObject.put("match_uid",mProfile.getUid());
             dataObject.put("sender",mProfile.getFirstName());
             rootObject.put("data",dataObject);
+            rootObject.put("image",mProfile.getProfilePictureUri());
+            Log.d("notif",mProfile.getProfilePictureUri());
             NotificationManager.sendNotification(context,rootObject);
         } catch (JSONException e) {
             e.printStackTrace();

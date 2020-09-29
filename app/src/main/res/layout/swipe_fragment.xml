@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_sign"
     xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,6 +22,12 @@
             android:text="food"
             android:checked="true"
             android:id="@+id/food_cb"/>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="culture"
+            android:checked="true"
+            android:id="@+id/culture_cb"/>
 
     </LinearLayout>
 
@@ -55,7 +62,15 @@
 
 
 
-
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center"
+        android:src="@drawable/match_animation"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:id="@+id/match_anim"/>
 
 
 

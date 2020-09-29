@@ -69,12 +69,16 @@ private View mSportView;
 
         final CheckBox sportCb = rootView.findViewById(R.id.sport_rb);
         final CheckBox foodCb = rootView.findViewById(R.id.food_rb);
+        final CheckBox cultureCb = rootView.findViewById(R.id.culture_rb);
 
         final LinearLayout sportQuestionsLayout = rootView.findViewById(R.id.sport_questions_layout);
         final TextView sportTitleTv = rootView.findViewById(R.id.sport_title_tv);
 
         final LinearLayout foodQuestionsLayout = rootView.findViewById(R.id.food_questions_layout);
         final TextView foodTitleTv = rootView.findViewById(R.id.food_title_tv);
+
+        final LinearLayout cultureQuestionsLayout = rootView.findViewById(R.id.culture_questions_layout);
+        final TextView cultureTitleTv = rootView.findViewById(R.id.culture_title_tv);
 
         sportCb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +92,14 @@ private View mSportView;
             @Override
             public void onClick(View v) {
                 handleQuestion(foodCb,foodQuestionsLayout,foodTitleTv,"food");
+            }
+
+        });
+
+        cultureCb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleQuestion(cultureCb,cultureQuestionsLayout,cultureTitleTv,"culture");
             }
 
         });

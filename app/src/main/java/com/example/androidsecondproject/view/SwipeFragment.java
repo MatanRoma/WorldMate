@@ -1,18 +1,20 @@
 package com.example.androidsecondproject.view;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -47,6 +49,8 @@ public class SwipeFragment extends Fragment {
 
     private SwipeFlingAdapter mSwipeFlingAdapter;
 
+    ImageView mMatchAnimation;
+
 
 
     public static SwipeFragment newInstance(Profile profile)
@@ -70,6 +74,7 @@ public class SwipeFragment extends Fragment {
 
         mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
         mLoadingAnimation.setVisibility(View.VISIBLE);
+        mMatchAnimation = rootView.findViewById(R.id.match_anim);
 
       //  swipeProfile=rootView.findViewById(R.id.swipe_fling);
         mRecyclerView=rootView.findViewById(R.id.swipe_recycle_view);
@@ -81,6 +86,7 @@ public class SwipeFragment extends Fragment {
         final List<String> categories = new ArrayList<>();
         categories.add("sport");
         categories.add("food");
+        categories.add("culture");
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
@@ -152,6 +158,7 @@ public class SwipeFragment extends Fragment {
 
         final CheckBox sportCb = rootView.findViewById(R.id.sport_cb);
         final CheckBox foodCb = rootView.findViewById(R.id.food_cb);
+        final CheckBox cultureCb = rootView.findViewById(R.id.culture_cb);
 
         sportCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -166,6 +173,15 @@ public class SwipeFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String title = foodCb.getText().toString();
+                mSwipeAdapter.updateFilter(title,isChecked);
+                mSwipeAdapter.notifyDataSetChanged();
+            }
+        });
+
+        cultureCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String title = cultureCb.getText().toString();
                 mSwipeAdapter.updateFilter(title,isChecked);
                 mSwipeAdapter.notifyDataSetChanged();
             }
@@ -248,6 +264,18 @@ public class SwipeFragment extends Fragment {
 
 
             if(mViewModel.checkIfMatch(position)){
+                mMatchAnimation.setVisibility(View.VISIBLE);
+                AnimationDrawable animationDrawable = (AnimationDrawable) mMatchAnimation.getDrawable();
+                animationDrawable.start();
+                MediaPlayer matchSound = MediaPlayer.create(getActivity(),R.raw.match);
+                matchSound.start();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMatchAnimation.setVisibility(View.GONE);
+                    }
+                },3000);
                 mViewModel.updateMatch(position);
                 mViewModel.writeOtherProfile(position);
             }
@@ -255,13 +283,11 @@ public class SwipeFragment extends Fragment {
         //    mViewModel.removeProfile(position);
           //  mSwipeAdapter.notifyItemRemoved(position);
             mViewModel.writeMyProfile();
-
-
-
-
         }
+
         private  void profileDisliked(final int position){
-            
+            mViewModel.addDislikedProfile(position);
+            mViewModel.writeMyProfile();
 
         }
 
