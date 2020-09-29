@@ -78,6 +78,7 @@
             android:layout_below="@id/compability_tv"
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
+            android:layoutDirection="ltr"
             android:layout_marginTop="30dp">
 
             <!--<de.hdodenhof.circleimageview.CircleImageView
@@ -103,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_thumb_down"
                 android:layout_marginEnd="20dp"
-                android:id="@+id/like_ib"
+                android:id="@+id/dislike_ib"
                 android:background="@drawable/like_dislike_shapes"
                 android:padding="5dp"/>
 
@@ -113,7 +114,7 @@
                 android:src="@drawable/ic_thumb_up"
                 android:padding="5dp"
                 android:background="@drawable/like_dislike_shapes"
-                android:id="@+id/dislike_ib"/>
+                android:id="@+id/like_ib"/>
 
         </LinearLayout>
 

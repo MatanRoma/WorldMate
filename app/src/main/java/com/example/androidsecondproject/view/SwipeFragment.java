@@ -95,6 +95,37 @@ public class SwipeFragment extends Fragment {
                     Log.d("testtt","testt2");
                     mSwipeAdapter=new SwipeAdapter(profiles,getContext(),mViewModel.getProfile(),categories);
                  //   mSwipeFlingAdapter=new SwipeFlingAdapter(profiles,mViewModel.getProfile(),getContext());
+                    mSwipeAdapter.setLikeDislikeListener(new SwipeAdapter.LikeDislikeItemListener() {
+                        @Override
+                        public void OnLikeListener(View view) {
+                            profileLiked(0);
+/*                            Animation swipeRightAnim = AnimationUtils.loadAnimation(getContext(), R.anim.swipe_right_anim);
+                            view.startAnimation(swipeRightAnim);*/
+                            view.animate().translationX(1000).setDuration(1000).start();
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mSwipeAdapter.removeTopItem();
+                                }
+                            },1000);
+
+
+                        }
+
+                        @Override
+                        public void OnDislikeListener(View view) {
+                            profileDisliked(0);
+                            view.animate().translationX(-1000).setDuration(1000).start();
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mSwipeAdapter.removeTopItem();
+                                }
+                            },1000);
+                        }
+                    });
                       mRecyclerView.setAdapter(mSwipeAdapter);
 
 
@@ -246,6 +277,7 @@ public class SwipeFragment extends Fragment {
                         return ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
                     }
                 };
+
 
         final swipeable.com.layoutmanager.touchelper.ItemTouchHelper itemTouchHelper = new swipeable.com.layoutmanager.touchelper.ItemTouchHelper(swipeableTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
