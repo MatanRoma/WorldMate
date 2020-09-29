@@ -1,21 +1,30 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.androidsecondproject.model.Match;
+import com.example.androidsecondproject.model.NotificationManager;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
 public class SwipeViewModel extends AndroidViewModel {
 
+    private Context context;
     private Repository mRepository;
     private Profile mProfile;
+    private boolean isFirstTime=true;
     MutableLiveData<List<Profile>> mProfilesMutableLiveData;
 
     public SwipeViewModel(@NonNull Application application) {
@@ -51,7 +60,11 @@ public class SwipeViewModel extends AndroidViewModel {
     }
 
     public void addLikedProfile(int position) {
-         mProfile.getLikes().add((mProfilesMutableLiveData.getValue().get(position).getEmail()));
+         mProfile.getLikes().add((mProfilesMutableLiveData.getValue().get(position).getUid()));
+    }
+
+    public void addDislikedProfile(int position){
+        mProfile.getDisLikes().add((mProfilesMutableLiveData.getValue().get(position).getUid()));
     }
 
     public void removeProfile(int position) {
@@ -59,20 +72,31 @@ public class SwipeViewModel extends AndroidViewModel {
     }
 
     public boolean checkIfMatch(int position) {
-        String myEmail=mProfile.getEmail();
-        List<String> likeEmails=mProfilesMutableLiveData.getValue().get(position).getLikes();
-        return likeEmails.contains(myEmail);
+        String myUid=mProfile.getUid();
+        List<String> likeUids=mProfilesMutableLiveData.getValue().get(position).getLikes();
+        return likeUids.contains(myUid);
     }
 
     public void updateMatch(int position) {
         Profile otherPofile=mProfilesMutableLiveData.getValue().get(position);
-        mProfile.getMatches().add(otherPofile.getEmail());
-        otherPofile.getMatches().add(mProfile.getEmail());
-    }
-    public void test(){
-        for(String str:mProfile.getLikes()){
-            Log.d("like",str);
-        }
+        String key = mProfile.getUid()+otherPofile.getUid();
+        /*key = key.replace('.',' ');
+        key = key.replace('#',' ');
+        key = key.replace('$',' ');
+        key = key.replace('[',' ');
+        key = key.replace(']',' ');
+        key = key.trim();
+        Log.d("chat",key);*/
+        Match myMatch = new Match(otherPofile.getUid(),key);
+        //match.setEmail(otherPofile.getEmail());
+
+        mProfile.getMatches().add(myMatch);
+        Toast.makeText(getApplication(), otherPofile.getUid()+"", Toast.LENGTH_SHORT).show();
+        Match otherMatch = new Match(mProfile.getUid(),key);
+        otherPofile.getMatches().add(otherMatch);
+     //   notifyOtherProfile(otherPofile.getMessageToken());
+        notifyOtherProfile(mProfile.getMessageToken()); // only for test
+      //  mRepository.writeChat(mProfile.getUid()+otherPofile.getUid());
     }
 
     public void writeMyProfile() {
@@ -85,5 +109,36 @@ public class SwipeViewModel extends AndroidViewModel {
     public Profile getProfile()
     {
         return mProfile;
+    }
+
+    public void notifyOtherProfile(String to) {
+        JSONObject rootObject=new JSONObject();
+        JSONObject dataObject=new JSONObject();
+        try {
+            rootObject.put("to",to);
+            dataObject.put("match_uid",mProfile.getUid());
+            dataObject.put("sender",mProfile.getFirstName());
+            dataObject.put("image",mProfile.getProfilePictureUri());
+            rootObject.put("data",dataObject);
+            
+            Log.d("notif",mProfile.getProfilePictureUri());
+            NotificationManager.sendNotification(context,rootObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void setContext(Context context) {
+        this.context=context;
+    }
+
+    public boolean isFirstTime() {
+        return isFirstTime;
+    }
+
+    public void setFirstTime(boolean firstTime) {
+        isFirstTime = firstTime;
     }
 }

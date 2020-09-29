@@ -7,18 +7,24 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.Question;
 import com.example.androidsecondproject.repository.Repository;
+import com.google.firebase.iid.FirebaseInstanceId;
 
-
+import java.io.IOException;
 
 
 public class MainViewModel extends AndroidViewModel {
     private Repository mRepository;
     private MutableLiveData<Profile> mProfileSuccessLiveData;
     private MutableLiveData<String> mProfileFailedLiveData;
+    private MutableLiveData<Profile> mOtherProfileSuccessLiveData;
     private boolean isFirstTime=true;
+    private String messageToken;
+    private boolean isFirstLocation=true;
+    private boolean isFirstReadOtherProfile=true;
 
 
     public MainViewModel(@NonNull Application application) {
@@ -42,6 +48,15 @@ public class MainViewModel extends AndroidViewModel {
         return mProfileFailedLiveData;
     }
 
+    public MutableLiveData<Profile> getOtherProfileResultSuccess(){
+        if (mOtherProfileSuccessLiveData == null) {
+            mOtherProfileSuccessLiveData = new MutableLiveData<>();
+            loadOtherProfile();
+            //      database.readProfileFrom();
+        }
+        return mOtherProfileSuccessLiveData;
+    }
+
 
 
     private void loadProfileData() {
@@ -58,8 +73,13 @@ public class MainViewModel extends AndroidViewModel {
         });
     }
 
-    public void logout(){
+    public void logout()  {
         mRepository.logout();
+        try {
+            FirebaseInstanceId.getInstance().deleteInstanceId();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getNavigationHeaderProfile() {
@@ -94,4 +114,58 @@ public class MainViewModel extends AndroidViewModel {
     }
 
 
+    public void setToken(String token) {
+        Profile profile=mProfileSuccessLiveData.getValue();
+        if(profile!=null){
+            profile.setMessageToken(token);
+            messageToken=null;
+            mRepository.writeMyProfile(profile);
+        }
+        else{
+            messageToken=token;
+        }
+    }
+
+    public void setToken(){
+        if(messageToken!=null){
+            setToken(messageToken);
+        }
+    }
+    private void loadOtherProfile(){
+        mRepository.setOtherProfileListener(new Repository.ReadOtherProfileListener() {
+            @Override
+            public void onOtherProfileChange(Profile profile) {
+                mOtherProfileSuccessLiveData.setValue(profile);
+            }
+        });
+    }
+
+    public void getOtherProfile(String chatId) {
+        for(Match match:mProfileSuccessLiveData.getValue().getMatches()){
+            if(match.getId().equals(chatId)){
+                mRepository.readOtherProfile(match.getOtherUid());
+                return;
+            }
+        }
+    }
+
+    public void writeProfile() {
+        mRepository.writeMyProfile(mProfileSuccessLiveData.getValue());
+    }
+
+    public boolean isFirstLocation() {
+        return isFirstLocation;
+    }
+
+    public void setFirstLocation(boolean firstLocation) {
+        isFirstLocation = firstLocation;
+    }
+
+    public boolean isFirstReadOtherProfile() {
+        return isFirstReadOtherProfile;
+    }
+
+    public void setFirstReadOtherProfile(boolean firstReadOtherProfile) {
+        isFirstReadOtherProfile = firstReadOtherProfile;
+    }
 }

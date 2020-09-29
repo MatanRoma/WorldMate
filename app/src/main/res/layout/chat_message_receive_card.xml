@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="100dp"
+    android:layout_alignParentStart="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        app:cardCornerRadius="7dp"
+        app:cardElevation="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/relative_receive_card"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/message_content"
+                android:layout_centerVertical="true"
+                android:text="Receive Message"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_margin="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/message_time"
+                android:layout_alignBottom="@id/message_content"
+                android:layout_toEndOf="@id/message_content"
+                android:textColor="@color/black"
+                android:text="date_and_hour"
+                android:textSize="10sp"
+                android:layout_margin="5dp"/>
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>

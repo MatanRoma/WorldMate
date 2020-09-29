@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardUseCompatPadding="true"
@@ -11,14 +11,15 @@
     app:cardCornerRadius="25dp">
 
     <RelativeLayout
-        android:layout_margin="30dp"
-        android:padding="10dp"
+
+        android:padding="5dp"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             android:src="@mipmap/ic_launcher"
@@ -29,14 +30,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/card_profile_iv"
             android:id="@+id/card_profile_info"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_centerInParent="true"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Matan Romanov, "
                 android:textSize="25sp"
                 android:textStyle="bold"
                 android:id="@+id/card_name_tv"/>
@@ -44,7 +44,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="26"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
@@ -57,7 +56,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/card_profile_info"
             android:layout_marginTop="5dp"
-            android:text="Tel Aviv"
             android:textColor="@color/Blue"
             android:textSize="20sp"
             android:layout_centerHorizontal="true"
@@ -73,6 +71,52 @@
             android:textSize="20sp"
             android:layout_centerHorizontal="true"
             android:id="@+id/compability_tv"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/compability_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp">
+
+            <!--<de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/ic_thumb_down"
+                android:layout_marginEnd="30dp"
+                android:id="@+id/dislike_ib"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/ic_thumb_up"
+                android:layout_margin="5dp"
+                app:civ_border_color="#FF000000"
+                android:id="@+id/like_ib"
+                app:civ_border_width="2dp" />-->
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_thumb_down"
+                android:layout_marginEnd="20dp"
+                android:id="@+id/like_ib"
+                android:background="@drawable/like_dislike_shapes"
+                android:padding="5dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_thumb_up"
+                android:padding="5dp"
+                android:background="@drawable/like_dislike_shapes"
+                android:id="@+id/dislike_ib"/>
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 

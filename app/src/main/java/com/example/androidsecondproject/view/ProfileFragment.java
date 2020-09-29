@@ -37,10 +37,13 @@ import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.ProfileViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -49,10 +52,10 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
     final int GALLERY_PICTURE = 1;
     final int CAMERA_REQUEST = 2;
     CircleImageView profilePicture;
+    Button changePicBtn;
     Uri imageUri;
     File file;
-
-    private float mAge;
+    //private float mAge;
 
 
     private ProfileViewModel mViewModel;
@@ -94,32 +97,22 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.profile_fragment,container,false);
 
-        final Button editDescriptionBtn = rootView.findViewById(R.id.edit_btn);
+        //final Button editDescriptionBtn = rootView.findViewById(R.id.edit_btn);
+        //final TextView descriptionTv = rootView.findViewById(R.id.description_tv);
+        //final EditText descriptionEt = rootView.findViewById(R.id.description_et);
+        //final ImageButton confirmNameBtn = rootView.findViewById(R.id.name_confirm_iv);
+        //final EditText firstNameEt = rootView.findViewById(R.id.first_name_et);
+        //final EditText lastNameEt = rootView.findViewById(R.id.last_name_et);
         final Button saveBtn = rootView.findViewById(R.id.save_btn);
-        final TextView descriptionTv = rootView.findViewById(R.id.description_tv);
-        final EditText descriptionEt = rootView.findViewById(R.id.description_et);
-        final ImageButton editNameBtn = rootView.findViewById(R.id.name_edit_iv);
-        final TextView firstNameTv = rootView.findViewById(R.id.first_name_tv);
-        final TextView lastNameTv = rootView.findViewById(R.id.last_name_tv);
-        final ImageButton confirmNameBtn = rootView.findViewById(R.id.name_confirm_iv);
-        final EditText firstNameEt = rootView.findViewById(R.id.first_name_et);
-        final EditText lastNameEt = rootView.findViewById(R.id.last_name_et);
+        final TextInputEditText firstName = rootView.findViewById(R.id.first_name_edit_profile_et);
+        final TextInputEditText lastName = rootView.findViewById(R.id.last_name_edit_profile_et);
+        final TextInputEditText descriptionAboutMe = rootView.findViewById(R.id.about_me_edit_profile_et);
+        final TextInputEditText myHobbies = rootView.findViewById(R.id.hobbies_edit_profile_et);
+        final TextInputEditText lookingFor = rootView.findViewById(R.id.looking_for_edit_profile_et);
         final RadioButton menRb = rootView.findViewById(R.id.men_rb);
         final RadioButton womenRb = rootView.findViewById(R.id.women_rb);
-        final TextView ageTv = rootView.findViewById(R.id.age_tv);
-        final EditText ageEt = rootView.findViewById(R.id.age_et);
         profilePicture = rootView.findViewById(R.id.profile_image);
-
-
-
-
-        ArrayList<String> genders = new ArrayList<String >();
-        genders.add("Male");
-        genders.add("Female");
-        final ArrayAdapter<String> genderArrayAdapter = new ArrayAdapter<String>(getContext(),R.layout.spinner_item,genders);
-        //genderSpinner.setAdapter(genderArrayAdapter);
-
-
+        changePicBtn = rootView.findViewById(R.id.change_pic_btn);
 
 
 
@@ -138,7 +131,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
             @Override
             public void onChanged(Uri uri) {
                 Glide.with(getContext()).load(uri).into(profilePicture);
-               // mViewModel.setImageUri(uri);
+                // mViewModel.setImageUri(uri);
                 mViewModel.getProfile().setProfilePictureUri(uri.toString());
                 mUpdateDrawerListener.onUpdateProfile(mViewModel.getProfile());
             }
@@ -147,13 +140,15 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
         mViewModel.getDownloadResultSuccess().observe(this, downloadObserverSuccess);
 
         Bundle bundle=getArguments();
+        //Initialize my profile fragment
         mViewModel.setProfile((Profile)bundle.getSerializable("profile"));
         mViewModel.setImageUri(Uri.parse(bundle.getString("profile_picture")));
-
-        firstNameTv.setText(mViewModel.getProfile().getFirstName());
-        lastNameTv.setText(mViewModel.getProfile().getLastName());
+        firstName.setText(mViewModel.getProfile().getFirstName());
+        lastName.setText(mViewModel.getProfile().getLastName());
+        descriptionAboutMe.setText(mViewModel.getProfile().getDescription());
+        myHobbies.setText(mViewModel.getProfile().getHobbies());
+        lookingFor.setText(mViewModel.getProfile().getLookingFor());
         Toast.makeText(getContext(), mViewModel.getImageUri()+"", Toast.LENGTH_SHORT).show();
-        ageTv.setText(((int)mViewModel.getProfile().getAge())+"");
         Glide.with(this).load(mViewModel.getImageUri()).error(R.drawable.man_profile).into(profilePicture);
         if(mViewModel.getProfile().getGender().equals("male"))
         {
@@ -161,11 +156,57 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
         }
         else
         {
-
             womenRb.setChecked(true);
         }
 
-        menRb.setOnClickListener(new View.OnClickListener() {
+
+        changePicBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePicture();
+            }
+        });
+
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePicture();
+            }
+        });
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.getProfile().setFirstName(Objects.requireNonNull(firstName.getText()).toString());
+                mViewModel.getProfile().setLastName(Objects.requireNonNull(lastName.getText()).toString());
+                mViewModel.getProfile().setHobbies(Objects.requireNonNull(myHobbies.getText()).toString());
+                mViewModel.getProfile().setLookingFor(Objects.requireNonNull(lookingFor.getText()).toString());
+                mViewModel.getProfile().setDescription(Objects.requireNonNull(descriptionAboutMe.getText()).toString());
+                if(menRb.isChecked()){
+                    mViewModel.getProfile().setGender("male");
+                }
+                else if(womenRb.isChecked()){
+                    mViewModel.getProfile().setGender("female");
+                }
+                mViewModel.writeProfile();
+                mViewModel.readProfiles();
+                mUpdateDrawerListener.onUpdateProfile(mViewModel.getProfile());
+            }
+        });
+
+        return rootView;
+
+
+        /*ArrayList<String> genders = new ArrayList<String >();
+        genders.add("Male");
+        genders.add("Female");
+        final ArrayAdapter<String> genderArrayAdapter = new ArrayAdapter<String>(getContext(),R.layout.spinner_item,genders);
+        genderSpinner.setAdapter(genderArrayAdapter);*/
+
+        //ageTv.setText(((int)mViewModel.getProfile().getAge())+"");
+
+
+        /*menRb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(menRb.isChecked())
@@ -187,13 +228,13 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
                 }
 
             }
-        });
+        });*/
 
 
         //ageSb.setMinValue(mViewModel.getProfile().getAge()).apply();
         //ageSb.setMinStartValue(mViewModel.getProfile().getAge()).apply();
         //menRb.setText(mViewModel.getProfile().getGender());
-        Toast.makeText(getContext(), mViewModel.getProfile().getAge()+"", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), mViewModel.getProfile().getAge()+"", Toast.LENGTH_SHORT).show();
         //ageTv.setText("My age  "+mViewModel.getProfile().getAge());
 
 /*        ageSb.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
@@ -204,48 +245,9 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
             }
         });*/
 
-        profilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
-                        getActivity());
-                myAlertDialog.setTitle("Upload Pictures Option");
-                myAlertDialog.setMessage("How do you want to set your picture?");
-
-                myAlertDialog.setPositiveButton("Gallery",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                startActivityForResult(intent, GALLERY_PICTURE);
-
-                            }
-                        });
-
-                myAlertDialog.setNegativeButton("Camera",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
 
 
-                                file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),    System.nanoTime()+"profile.jpg");
-
-                                imageUri = FileProvider.getUriForFile(
-                                        getContext(),
-                                        "com.example.androidsecondproject.provider", //(use your app signature + ".provider" )
-                                        file);
-
-                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                                startActivityForResult(intent, CAMERA_REQUEST);
-
-                            }
-                        });
-                myAlertDialog.show();
-
-
-            }
-        });
-        
-        editNameBtn.setOnClickListener(new View.OnClickListener() {
+       /* editNameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 firstNameTv.setVisibility(View.GONE);
@@ -257,7 +259,6 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
                 lastNameEt.setVisibility(View.VISIBLE);
                 lastNameEt.setText(lastNameTv.getText().toString());
                 ageTv.setVisibility(View.GONE);
-                ageEt.setText(ageTv.getText().toString());
                 //menRb.setVisibility(View.GONE);
                // genderSpinner.setVisibility(View.VISIBLE);
                 ageEt.setVisibility(View.VISIBLE);
@@ -295,14 +296,16 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
                 }
 
             }
-        });
+        });*/
 
-        ArrayList<String> profileItems = new ArrayList<String >();
+
+        /*ArrayList<String> profileItems = new ArrayList<String >();
         profileItems.add("Choose a subject");
         profileItems.add("About myself");
         profileItems.add("Looking for");
-        profileItems.add("My hobbies");
+        profileItems.add("My hobbies");*/
 
+/*
 
         final Spinner itemSpinner = rootView.findViewById(R.id.profile_item_spinner);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(),R.layout.spinner_item,profileItems);
@@ -374,57 +377,92 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
                 }
 
             }
+*/
 
-            @Override
+            /*@Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
 
 
 
         //itemSpinner.setPopupBackgroundDrawable(getResources().getDrawable(R.drawable.spinner_background));
 
-
-
-        return rootView;
     }
 
-    public void writeToUi(String title,TextView descriptionTv)
-        {
-        switch (title){
-            case "About myself":
-                descriptionTv.setText(mViewModel.getProfile().getFirstName());
-                break;
-            case "Looking for":
-                descriptionTv.setText(mViewModel.getProfile().getLookingFor());
-                break;
-            case "My hobbies":
-                descriptionTv.setText(mViewModel.getProfile().getHobbies());
-                break;
-        }
+    public void changePicture(){
+        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
+                getActivity());
+        myAlertDialog.setTitle("Upload Pictures Option");
+        myAlertDialog.setMessage("How do you want to set your picture?");
+
+        myAlertDialog.setPositiveButton("Gallery",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, GALLERY_PICTURE);
+
+                    }
+                });
+
+        myAlertDialog.setNegativeButton("Camera",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+
+                        file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),    System.nanoTime()+"profile.jpg");
+
+                        imageUri = FileProvider.getUriForFile(
+                                getContext(),
+                                "com.example.androidsecondproject.provider", //(use your app signature + ".provider" )
+                                file);
+
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                        startActivityForResult(intent, CAMERA_REQUEST);
+
+                    }
+                });
+        myAlertDialog.show();
 
     }
 
-    public void readFromUi(String title, EditText descriptionEt)
-    {
-        switch (title){
-            case "About myself":
-                mViewModel.getProfile().setDescription(descriptionEt.getText().toString());
-                mViewModel.writeProfile();
-                break;
-            case "Looking for":
-                mViewModel.getProfile().setLookingFor(descriptionEt.getText().toString());
-                mViewModel.writeProfile();
-                break;
-            case "My hobbies":
-                mViewModel.getProfile().setHobbies(descriptionEt.getText().toString());
-                mViewModel.writeProfile();
-                break;
-        }
-    }
+    /*  public void writeToUi(String title,TextView descriptionTv)
+          {
+          switch (title){
+              case "About myself":
+                  descriptionTv.setText(mViewModel.getProfile().getFirstName());
+                  break;
+              case "Looking for":
+                  descriptionTv.setText(mViewModel.getProfile().getLookingFor());
+                  break;
+              case "My hobbies":
+                  descriptionTv.setText(mViewModel.getProfile().getHobbies());
+                  break;
+          }
 
+      }
 
+      public void readFromUi(String title, EditText descriptionEt)
+      {
+          switch (title){
+              case "About myself":
+                  mViewModel.getProfile().setDescription(descriptionEt.getText().toString());
+                  mViewModel.writeProfile();
+                  break;
+              case "Looking for":
+                  mViewModel.getProfile().setLookingFor(descriptionEt.getText().toString());
+                  mViewModel.writeProfile();
+                  break;
+              case "My hobbies":
+                  mViewModel.getProfile().setHobbies(descriptionEt.getText().toString());
+                  mViewModel.writeProfile();
+                  break;
+          }
+      }
+
+  */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);

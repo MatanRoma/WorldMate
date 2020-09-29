@@ -15,6 +15,7 @@ public class Profile implements Serializable {
     private float age;
     private String birthday;
     private String gender;
+    private String messageToken;
     private String hobbies;
     private String lookingFor;
     private boolean discovery;
@@ -23,8 +24,10 @@ public class Profile implements Serializable {
     private Preferences preferences;
     private List<String> likes;
     private List<String> disLikes;
-    private List<String> matches;
+    private List<Match> matches;
     private String uid;
+    private String city;
+    private LocationPoint location;
     private List<QuestionRespond> questionResponds;
 
 
@@ -173,11 +176,11 @@ public class Profile implements Serializable {
         this.disLikes = disLikes;
     }
 
-    public List<String> getMatches() {
+    public List<Match> getMatches() {
         return matches;
     }
 
-    public void setMatches(List<String> matches) {
+    public void setMatches(List<Match> matches) {
         this.matches = matches;
     }
 
@@ -187,6 +190,30 @@ public class Profile implements Serializable {
 
     public void setQuestionResponds(List<QuestionRespond> questionResponds) {
         this.questionResponds = questionResponds;
+    }
+
+    public String getMessageToken() {
+        return messageToken;
+    }
+
+    public void setMessageToken(String messageToken) {
+        this.messageToken = messageToken;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public LocationPoint getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationPoint location) {
+        this.location = location;
     }
 }
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@color/colorPrimaryDark"
+    app:contentPadding="10dp"
+    android:id="@+id/profile_chat_cardview"
+    app:cardCornerRadius="7dp"
+    app:cardElevation="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/ic_launcher"
+            android:id="@+id/profile_iv_chat_card"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/profile_iv_chat_card"
+            android:id="@+id/profile_name_chat_card"
+            android:layout_centerVertical="true"
+            android:text="Liran Amzaleg"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_marginStart="20dp"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

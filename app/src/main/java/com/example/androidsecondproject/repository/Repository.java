@@ -6,13 +6,18 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.androidsecondproject.model.Chat;
+import com.example.androidsecondproject.model.Match;
+import com.example.androidsecondproject.model.Message;
 import com.example.androidsecondproject.model.Preferences;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.Question;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -22,22 +27,31 @@ public class Repository {
 
     private final String PROFILE_TABLE = "profiles";
     private final String QUESTIONS_TABLE = "questions_table";
+    private final String CHATS_TABLE = "chats_table";
     private FirebaseDatabase database;
     private AuthRepository authRepository;
     private StorageRepository storageRepository;
     private DatabaseReference profilesTable;
     private DatabaseReference questionsTable;
+    private DatabaseReference chatsTable;
     private ProfileListener profileListener;
     private ProfilesListener profilesListener;
+    private  MessageListener messageListener;
 
     private static Repository repository;
     private QuestionsListener questionsListener;
+    private ChatListener chatListener;
+    private ReadOtherProfileListener readOtherProfileListener;
+    private MatchesListener matchesListener;
 
 
     private Repository(Context context) {
         database=FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(false);
         profilesTable=database.getReference(PROFILE_TABLE);
         questionsTable=database.getReference(QUESTIONS_TABLE);
+        chatsTable = database.getReference(CHATS_TABLE);
+        chatsTable.keepSynced(true);
         authRepository=AuthRepository.getInstance(context);
         storageRepository=StorageRepository.getInstance();
 
@@ -49,7 +63,10 @@ public class Repository {
         return repository;
     }
 
+
+
     public void readProfile(String uid){
+
                 profilesTable.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -74,36 +91,11 @@ public class Repository {
                         //TODO
                     }
         });
-                /*
-                profilesTable.child(uid).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            Profile profile=snapshot.getValue(Profile.class);
-                            Log.d("prof","tst2");
-                            if(profileListener!=null) {
-                                Log.d("prof", "tst3");
-                                profileListener.onProfileDataChangeSuccess(profile);
-                            }
-                        }
-                        else {
-                            if(profileListener!=null)
-                                profileListener.onProfileDataChangeFail("not_exist");
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        if(profileListener!=null)
-                            profileListener.onProfileDataChangeFail(error.getMessage());
-                        //TODO
-                    }
-                });
-
-                 */
     }
 
     public void readProfiles(final Profile myProfile){
+
         profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -116,6 +108,7 @@ public class Repository {
                            Profile profile = currSnapshot.getValue(Profile.class);
                            if(checkCompatibility(myProfile,profile)) {
                                profiles.add(profile);
+
                            }
                        }
                     }
@@ -131,25 +124,73 @@ public class Repository {
         });
     }
 
+    public void readMatches(final Profile myProfile){
+
+        profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.exists()){
+                    String myUid=getCurrentUserId();
+                    List<Profile> profiles=new ArrayList<>();
+                    List<Match> matches=myProfile.getMatches();
+                    for(DataSnapshot currSnapshot:snapshot.getChildren()){
+                        String otherUid=currSnapshot.getKey();
+                        Log.d("uid",otherUid);
+                        if(!otherUid.equals(myUid)) {
+                            Profile profile = currSnapshot.getValue(Profile.class);
+                            for(Match match:matches){
+                                if(match.getOtherUid().equals(otherUid))
+                                    profiles.add(profile);
+                            }
+                            ;
+                        }
+                    }
+                    Log.d("size",profiles.size()+"");
+                    matchesListener.onMatchesDataChangeSuccess(profiles);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private boolean checkCompatibility(Profile myProfile, Profile otherProfile) {
         if(!otherProfile.isDiscovery()){
             return false;
         }
-        if(checkCompatibilityHelper(myProfile,otherProfile.getPreferences())&&checkCompatibilityHelper(otherProfile,myProfile.getPreferences())){
+        if(checkCompatibilityHelper(myProfile,otherProfile)&&checkCompatibilityHelper(otherProfile,myProfile)){
             return true;
         }
         return false;
     }
 
-    private boolean checkCompatibilityHelper(Profile profile, Preferences preferences) {
-        float myAge=profile.getAge();
-        String myGender=profile.getGender();
-        /*if(myAge<preferences.getMinAge()||myAge>preferences.getMaxAge()){
+
+
+
+
+    private boolean checkCompatibilityHelper(Profile profile, Profile otherProfile) {
+        float myAge = profile.getAge();
+        String myGender = profile.getGender();
+        Preferences otherPrefences = otherProfile.getPreferences();
+        Preferences myPreferences=profile.getPreferences();
+
+        if (myAge < otherPrefences.getMinAge() || myAge > otherPrefences.getMaxAge()) {
+            return false;
+        } else if (!((otherPrefences.isLookingForMen() && myGender.equals("male")) || (otherPrefences.isLookingForWomen() && myGender.equals("female")))) {
+            return false;
+        } else if (profile.getCity() == null && otherProfile.getCity() != null) {
             return false;
         }
-        else if(!((preferences.isLookingForMen()&&myGender.equals("male"))||(preferences.isLookingForWomen()&&myGender.equals("female")))){
-            return false;
-        }*/
+        else if(profile.getLocation()!=null&&otherProfile.getLocation()!=null){
+            Log.d("dist",profile.getLocation().calculateDistance(otherProfile.getLocation())+"");
+            if(profile.getLocation().calculateDistance(otherProfile.getLocation())>myPreferences.getMaxDistance())
+                return false;
+        }
         return true;
     }
 
@@ -160,6 +201,38 @@ public class Repository {
     }
     public void writeOtherProfile(Profile profile){
         profilesTable.child((profile.getUid())).setValue(profile);
+
+    }
+
+    public void writeChat(String chatid)
+    {
+        Log.d("chat",chatid);
+        chatsTable.child(chatid).push().setValue(null);
+    }
+
+    public void readChat(String chatId){
+        profilesTable.child(chatId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    Chat chat=snapshot.getValue(Chat.class);
+                    if(chatListener!=null) {
+                        chatListener.onChatDataChangeSuccess(chat);
+                    }
+                }
+                else {
+                    if(chatListener!=null)
+                        chatListener.onChatDataChangeFail("not_exist");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                if(chatListener!=null)
+                    chatListener.onChatDataChangeFail(error.getMessage());
+                //TODO
+            }
+        });
 
     }
 
@@ -190,6 +263,30 @@ public class Repository {
         return authRepository.getCurrentUserEmail();
     }
 
+    public Query readAllMessages(String chatId) {
+        return chatsTable.child(chatId);
+    }
+    public void writeMessage(String chatId, final Message message){
+        chatsTable.child(chatId).push().setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                if(messageListener!=null)
+                        messageListener.onMessageSentSuccess(message);
+            }
+        });
+    }
+    public interface MessageListener{
+        void onMessageSentSuccess(Message message);
+    }
+
+    public interface ChatListener{
+        void onChatDataChangeSuccess(Chat chat);
+        void onChatDataChangeFail(String error);
+    }
+    public void setChatListener(ChatListener chatListener) {
+        this.chatListener = chatListener;
+    }
+
 
     public interface ProfileListener {
         void onProfileDataChangeSuccess(Profile profile);
@@ -206,6 +303,15 @@ public class Repository {
     public void setProfilesListener(ProfilesListener profilesListener) {
         this.profilesListener = profilesListener;
     }
+    public void setMatchesListener(MatchesListener matchesListener){
+        this.matchesListener=matchesListener;
+    }
+
+    public interface  MatchesListener{
+        void onMatchesDataChangeSuccess(List<Profile> matches);
+        void onMatchesDataChangeFail(String error);
+    }
+
     public interface QuestionsListener{
         void onQuestionsDataChangeSuccess(List<Question> questions);
         void onQuestionsDataChangeFail(String error);
@@ -235,10 +341,44 @@ public class Repository {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+
+
             }
         });
     }
 
+    public MessageListener getMessageListener() {
+        return messageListener;
+    }
 
+    public void setMessageListener(MessageListener messageListener) {
+        this.messageListener = messageListener;
+    }
 
+    public interface ReadOtherProfileListener{
+        void onOtherProfileChange(Profile profile);
+    }
+    public void setOtherProfileListener(ReadOtherProfileListener readOtherProfileListener){
+        this.readOtherProfileListener=readOtherProfileListener;
+    }
+    public void readOtherProfile(String uid) {
+
+        profilesTable.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Profile profile = snapshot.getValue(Profile.class);
+                    if (profileListener != null) {
+                        readOtherProfileListener.onOtherProfileChange(profile);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                if (profileListener != null)
+                    profileListener.onProfileDataChangeFail(error.getMessage());
+            }
+        });
+    }
 }

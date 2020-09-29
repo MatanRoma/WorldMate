@@ -7,18 +7,17 @@
     android:id="@+id/main_activity_id">
 
 
-<androidx.drawerlayout.widget.DrawerLayout android:layout_width="match_parent"
-
+<androidx.drawerlayout.widget.DrawerLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="@drawable/background_sign"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
@@ -31,7 +30,34 @@
                 android:id="@+id/flContent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                >
+
+                <FrameLayout
+                    android:id="@+id/flContent_second"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <!--<ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_launcher"
+                        android:id="@+id/main_loader"
+                        android:layout_gravity="center"
+                        android:visibility="gone"/>-->
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/spin_kit"
+                        style="@style/SpinKitView.Large.WanderingCubes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        app:SpinKit_Color="@color/Blue" />
+                </FrameLayout>
+
+
+            </FrameLayout>
+
 
 
 

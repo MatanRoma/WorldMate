@@ -11,7 +11,9 @@ public enum eViewModels {
         Main,
         ProfileFragment,
         Swipe,
-        Questions
+        Questions,
+        Matches,
+        Chat
 
 
 }
