@@ -129,7 +129,7 @@ public class SwipeFragment extends Fragment {
                       mRecyclerView.setAdapter(mSwipeAdapter);
 
 
-                /*    swipeProfile.setAdapter(mSwipeFlingAdapter);
+                    /*swipeProfile.setAdapter(mSwipeFlingAdapter);
                     swipeProfile.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
