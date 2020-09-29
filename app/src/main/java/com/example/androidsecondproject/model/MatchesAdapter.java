@@ -11,9 +11,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesViewHolder> {
     private List<Profile> mProfiles;
@@ -49,7 +52,8 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
     @Override
     public void onBindViewHolder(@NonNull MatchesViewHolder holder, int position) {
         Profile curProfile = mProfiles.get(position);
-        holder.mProfileNameTv.setText(curProfile.getFirstName());
+        holder.mProfileNameTv.setText(curProfile.getFirstName()+" "+curProfile.getLastName());
+        Glide.with(mContext).load(curProfile.getProfilePictureUri()).error(R.drawable.man_profile).into(holder.mProfileIv);
         if(newMatchUid!=null&&newMatchUid.equals(curProfile.getUid()))
         {
             holder.mProfileNameTv.setTextColor(Color.RED);
@@ -73,9 +77,11 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
 
     public class MatchesViewHolder extends  RecyclerView.ViewHolder{
         TextView mProfileNameTv;
+        CircleImageView mProfileIv;
         public MatchesViewHolder(@NonNull View itemView) {
             super(itemView);
             mProfileNameTv = itemView.findViewById(R.id.profile_name_chat_card);
+            mProfileIv  =itemView.findViewById(R.id.profile_iv_chat_card);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

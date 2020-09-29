@@ -1,5 +1,6 @@
 package com.example.androidsecondproject.services;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -61,20 +62,25 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 
             remoteViews = new RemoteViews(getPackageName(),R.layout.match_notif_layout);
             remoteViews.setTextViewText(R.id.title_tv,"you matched with "+messageDataMap.get("sender"));
+
+           // Notification notification=builder.build();
+
+
+
+
+
             NotificationTarget notificationTarget = new NotificationTarget(this,R.id.profile_image_notif,remoteViews,builder.build(),NOTIF_ID);
-           // Log.d("notif",messageDataMap.get("image"));
-            if(messageDataMap.get("image")!=null){
-                Glide.with(FirebaseInstanceIDService.this).asBitmap().load(Uri.parse(messageDataMap.get("image"))).into(notificationTarget);
 
-            }
-            builder.setContent(remoteViews);
+            Glide.with(FirebaseInstanceIDService.this).asBitmap().load(messageDataMap.get("image")).error(R.drawable.man_profile).into(notificationTarget);
+        //    builder.setCustomContentView(remoteViews);
+        //    remoteViews.setImageViewUri(R.id.profile_image_notif,Uri.parse(messageDataMap.get("image")));
 
-         //   activityIntent.putExtra("other_match_uid",messageDataMap.get("match_uid"));//"other_match_uid"
             builder.setAutoCancel(true);
             builder.setContentIntent(activityPendingIntent);
-/*            builder.setContentTitle(messageDataMap.get("you matched with "+messageDataMap.get("sender")));
-            builder.setContentText("you matched with "+messageDataMap.get("sender"));*/
+
             builder.setSmallIcon(R.drawable.ic_messages_icon);
+
+
             notificationManager.notify(NOTIF_ID,builder.build());
 
         }
