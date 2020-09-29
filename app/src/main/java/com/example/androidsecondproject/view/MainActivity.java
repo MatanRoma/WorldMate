@@ -106,8 +106,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     Observer<Location> mLocationObserver;
 
 
-    SwipeFlingAdapterView swipeProfile;
-    SwipeAdapter swipeAdapter;
+
 
   //  private ImageView loaderIv;
     private SpinKitView mLoadingAnimation;
@@ -280,39 +279,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
 
 
-        /*swipeProfile.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
-            @Override
-            public void removeFirstObjectInAdapter() {
 
-            }
-
-            @Override
-            public void onLeftCardExit(Object o) {
-
-            }
-
-            @Override
-            public void onRightCardExit(Object o) {
-
-            }
-
-            @Override
-            public void onAdapterAboutToEmpty(int i) {
-
-            }
-
-            @Override
-            public void onScroll(float v) {
-
-            }
-        });
-
-        swipeProfile.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int i, Object o) {
-
-            }
-        });*/
 
     }
 
@@ -578,26 +545,27 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     public void handleReturnFromNotif() {
         Bundle bundle = getIntent().getExtras();// add these lines of code to get data from notification
-        Log.d("notifi",getIntent().getStringExtra("other_match_uid")+"");
+        Log.d("other_match_uid",getIntent().getAction()+" "+getIntent().getAction().substring(3));
 
-        if (bundle != null) {
-            final Menu menu = navigationView.getMenu();
+        String action=getIntent().getAction();
+        final Menu menu = navigationView.getMenu();
+
+        if (bundle != null&&bundle.containsKey("chat_id")) {
+       //     Log.d("other_match_uid",bundle.getString("other_match_uid")+"");
+
             menu.getItem(2).setChecked(true);
-            if (bundle.containsKey("chat_id")) {
-                mViewModel.getOtherProfile(bundle.getString("chat_id"));
+            mViewModel.getOtherProfile(bundle.getString("chat_id"));
             }
-            else if(bundle.containsKey("other_match_uid")){
-                Log.d("notifi","notifi");
+            else if(action.startsWith("&k&")){
                 moveToSwipeFragment();
-                moveToMatchesFragment(bundle.getString("other_match_uid"));
+                moveToMatchesFragment(action.substring(3));
+                menu.getItem(2).setChecked(true);
             }
             else {
                 requestLocationPermissions();
             }
-        }
-        else {
-            requestLocationPermissions();
-        }
+
+
 
     }
 
@@ -749,11 +717,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
 
         Log.d("teest", getIntent().getAction()+"");
-        if (matcherUid != null) {
-            moveToMatchesFragment(matcherUid);
-        }
-        else if(intent.hasExtra("chat_id")){
+        if (intent.hasExtra("chat_id")) {
+
             mViewModel.getOtherProfile(intent.getStringExtra("chat_id"));
+        }
+        else if(matcherUid!=null&&matcherUid.startsWith("&k&")){
+            moveToMatchesFragment(matcherUid.substring(3));
         }
         super.onNewIntent(intent);
     }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,13 +23,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.SwipeAdapter;
+import com.example.androidsecondproject.model.SwipeFlingAdapter;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.SwipeViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import swipeable.com.layoutmanager.OnItemSwiped;
+import swipeable.com.layoutmanager.SwipeableLayoutManager;
+import swipeable.com.layoutmanager.SwipeableTouchHelperCallback;
 
 public class SwipeFragment extends Fragment {
 
@@ -36,6 +43,9 @@ public class SwipeFragment extends Fragment {
     private SwipeViewModel mViewModel;
     private RecyclerView mRecyclerView;
     private SpinKitView mLoadingAnimation;
+    SwipeFlingAdapterView swipeProfile;
+
+    private SwipeFlingAdapter mSwipeFlingAdapter;
 
 
 
@@ -58,8 +68,10 @@ public class SwipeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        View rootView = inflater.inflate(R.layout.swipe_fragment,container,false);
 
-       mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
+        mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
         mLoadingAnimation.setVisibility(View.VISIBLE);
+
+      //  swipeProfile=rootView.findViewById(R.id.swipe_fling);
         mRecyclerView=rootView.findViewById(R.id.swipe_recycle_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
@@ -72,10 +84,51 @@ public class SwipeFragment extends Fragment {
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
-                Log.d("testtt","testt");
+                Log.d("testtt","testt1");
                 if (mSwipeAdapter == null) {
+                    Log.d("testtt","testt2");
                     mSwipeAdapter=new SwipeAdapter(profiles,getContext(),mViewModel.getProfile(),categories);
-                    mRecyclerView.setAdapter(mSwipeAdapter);
+                 //   mSwipeFlingAdapter=new SwipeFlingAdapter(profiles,mViewModel.getProfile(),getContext());
+                      mRecyclerView.setAdapter(mSwipeAdapter);
+
+
+                /*    swipeProfile.setAdapter(mSwipeFlingAdapter);
+                    swipeProfile.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
+            @Override
+            public void removeFirstObjectInAdapter() {
+
+            }
+
+            @Override
+            public void onLeftCardExit(Object o) {
+
+            }
+
+            @Override
+            public void onRightCardExit(Object o) {
+
+            }
+
+            @Override
+            public void onAdapterAboutToEmpty(int i) {
+
+            }
+
+            @Override
+            public void onScroll(float v) {
+
+            }
+        });*/
+
+
+/*
+        swipeProfile.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int i, Object o) {
+
+            }
+        });*/
+
                     mLoadingAnimation.setVisibility(View.GONE);
                 }
                 else {
@@ -89,8 +142,10 @@ public class SwipeFragment extends Fragment {
         mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
         mViewModel.setUserProfile((Profile)getArguments().getSerializable("profile"));
         setTouchHelper();
-
+        Log.d("testtt","testt0");
         mViewModel.readProfiles();
+
+
 
 
 
@@ -122,7 +177,7 @@ public class SwipeFragment extends Fragment {
     }
 
     private void setTouchHelper() {
-        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.DOWN,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+        /*ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.DOWN,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -130,10 +185,10 @@ public class SwipeFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position=viewHolder.getAdapterPosition();
-/*                List<String> tstList = new ArrayList<>();
+*//*                List<String> tstList = new ArrayList<>();
                 tstList.add("sport");
                 CompabilityCalculator compabilityCalculator = new CompabilityCalculator(tstList,mViewModel.getProfile().getQuestionResponds(),mSwipeAdapter.getmProfiles().get(position).getQuestionResponds());
-                Toast.makeText(getContext(), compabilityCalculator.getCompability()+"", Toast.LENGTH_SHORT).show();*/
+                Toast.makeText(getContext(), compabilityCalculator.getCompability()+"", Toast.LENGTH_SHORT).show();*//*
                     if(direction==ItemTouchHelper.RIGHT)
                     {
                         Toast.makeText(getContext(), "gothere", Toast.LENGTH_SHORT).show();
@@ -147,7 +202,45 @@ public class SwipeFragment extends Fragment {
                 }
             };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);*/
+        SwipeableTouchHelperCallback swipeableTouchHelperCallback =
+                new SwipeableTouchHelperCallback(new OnItemSwiped() {
+                    @Override public void onItemSwiped() {
+                        mSwipeAdapter.removeTopItem();
+                    }
+
+                    @Override public void onItemSwipedLeft() {
+                        profileDisliked(0);
+                    }
+
+                    @Override public void onItemSwipedRight() {
+                        profileLiked(0);
+                    }
+
+                    @Override public void onItemSwipedUp() {
+                        Log.e("SWIPE", "UP");
+                    }
+
+                    @Override public void onItemSwipedDown() {
+                        Log.e("SWIPE", "DOWN");
+                    }
+                }) {
+                    @Override
+                    public int getAllowedSwipeDirectionsMovementFlags(RecyclerView.ViewHolder viewHolder) {
+                        return ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+                    }
+                };
+
+        final swipeable.com.layoutmanager.touchelper.ItemTouchHelper itemTouchHelper = new swipeable.com.layoutmanager.touchelper.ItemTouchHelper(swipeableTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
+        mRecyclerView.setLayoutManager(new SwipeableLayoutManager().setAngle(10)
+                .setAnimationDuratuion(450)
+                .setMaxShowCount(3)
+                .setScaleGap(0.1f)
+                .setTransYGap(0));
+
+
+
         };
 
         private void profileLiked(final int position){
@@ -159,8 +252,8 @@ public class SwipeFragment extends Fragment {
                 mViewModel.writeOtherProfile(position);
             }
            
-            mViewModel.removeProfile(position);
-            mSwipeAdapter.notifyItemRemoved(position);
+        //    mViewModel.removeProfile(position);
+          //  mSwipeAdapter.notifyItemRemoved(position);
             mViewModel.writeMyProfile();
 
 
@@ -168,7 +261,7 @@ public class SwipeFragment extends Fragment {
 
         }
         private  void profileDisliked(final int position){
-
+            
 
         }
 

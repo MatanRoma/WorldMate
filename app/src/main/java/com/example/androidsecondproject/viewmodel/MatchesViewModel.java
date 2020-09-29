@@ -60,17 +60,17 @@ public class MatchesViewModel extends AndroidViewModel {
 
 
     private void loadProfilesData() {
-        mRepository.setProfilesListener(new Repository.ProfilesListener() {
-            @Override
-            public void onProfilesDataChangeSuccess(List<Profile> profiles) {
-                mMatchesMutableLiveData.setValue(profiles);
-            }
+       mRepository.setMatchesListener(new Repository.MatchesListener() {
+           @Override
+           public void onMatchesDataChangeSuccess(List<Profile> matches) {
+               mMatchesMutableLiveData.setValue(matches);
+           }
 
-            @Override
-            public void onProfilesDataChangeFail(String error) {
+           @Override
+           public void onMatchesDataChangeFail(String error) {
 
-            }
-        });
+           }
+       });
     }
 
     public void readMatches(){

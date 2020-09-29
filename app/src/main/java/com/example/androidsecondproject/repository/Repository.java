@@ -42,6 +42,7 @@ public class Repository {
     private QuestionsListener questionsListener;
     private ChatListener chatListener;
     private ReadOtherProfileListener readOtherProfileListener;
+    private MatchesListener matchesListener;
 
 
     private Repository(Context context) {
@@ -146,7 +147,7 @@ public class Repository {
                         }
                     }
                     Log.d("size",profiles.size()+"");
-                    profilesListener.onProfilesDataChangeSuccess(profiles);
+                    matchesListener.onMatchesDataChangeSuccess(profiles);
                 }
 
             }
@@ -302,6 +303,15 @@ public class Repository {
     public void setProfilesListener(ProfilesListener profilesListener) {
         this.profilesListener = profilesListener;
     }
+    public void setMatchesListener(MatchesListener matchesListener){
+        this.matchesListener=matchesListener;
+    }
+
+    public interface  MatchesListener{
+        void onMatchesDataChangeSuccess(List<Profile> matches);
+        void onMatchesDataChangeFail(String error);
+    }
+
     public interface QuestionsListener{
         void onQuestionsDataChangeSuccess(List<Question> questions);
         void onQuestionsDataChangeFail(String error);

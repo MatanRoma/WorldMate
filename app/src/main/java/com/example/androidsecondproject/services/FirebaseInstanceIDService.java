@@ -42,7 +42,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
         Log.d("servicee","service");
         if(messageDataMap!=null&&messageDataMap.get("sender")!=null){
 
-            Log.d("notifi",messageDataMap.get("match_uid"));
+            Log.d("other_match_uid",messageDataMap.get("match_uid"));
 
            NotificationManager notificationManager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
             String channelId="channel_one";
@@ -55,12 +55,14 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
             NotificationCompat.Builder builder=new NotificationCompat.Builder(this,channelId);
 
             Intent activityIntent = new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            String x_id=System.currentTimeMillis()+"";
-            activityIntent.setAction(messageDataMap.get("match_uid"));
+            activityIntent.setAction("&k&"+messageDataMap.get("match_uid"));
 
             PendingIntent activityPendingIntent = PendingIntent.getActivity(this,
                     5, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            activityIntent.putExtra(x_id,messageDataMap.get("match_uid"));//"other_match_uid"
+
+
+         //   activityIntent.putExtra("other_match_uid",messageDataMap.get("match_uid"));//"other_match_uid"
+            builder.setAutoCancel(true);
             builder.setContentIntent(activityPendingIntent);
             builder.setContentTitle(messageDataMap.get("you matched with "+messageDataMap.get("sender")));
             builder.setContentText("you matched with "+messageDataMap.get("sender"));
