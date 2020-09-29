@@ -32,10 +32,15 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
 
     }
 
+    public void removeItemPosition(int position) {
+        mProfiles.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public interface LikeDislikeItemListener
     {
-        void OnLikeListener(View view);
-        void OnDislikeListener(View view);
+        void OnLikeListener(View view,int position);
+        void OnDislikeListener(View view,int position);
     }
 
     private LikeDislikeItemListener mLikeDislikeListener;
@@ -59,8 +64,8 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         TextView mAgeTv;
         ImageButton likeBtn;
         ImageButton dislikeBtn;
-
         View mItemView;
+        boolean isSwiped;
 
         public SwipeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +77,24 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
             likeBtn = itemView.findViewById(R.id.like_ib);
             dislikeBtn = itemView.findViewById(R.id.dislike_ib);
             mItemView = itemView;
+
+            likeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!isSwiped) {
+                        mLikeDislikeListener.OnLikeListener(mItemView,getAdapterPosition());
+                    }
+                    isSwiped=true;
+                }
+            });
+            dislikeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                        mLikeDislikeListener.OnDislikeListener(mItemView,getAdapterPosition());
+
+                }
+            });
 
         }
     }
@@ -123,19 +146,6 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         else {
             holder.mCompabilityTv.setVisibility(View.GONE);
         }
-
-        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLikeDislikeListener.OnLikeListener(holder.mItemView);
-            }
-        });
-        holder.dislikeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLikeDislikeListener.OnDislikeListener(holder.mItemView);
-            }
-        });
 
     }
 

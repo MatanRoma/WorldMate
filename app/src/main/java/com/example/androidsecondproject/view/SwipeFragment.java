@@ -46,6 +46,7 @@ public class SwipeFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private SpinKitView mLoadingAnimation;
     SwipeFlingAdapterView swipeProfile;
+    Boolean isWhat;
 
     private SwipeFlingAdapter mSwipeFlingAdapter;
 
@@ -79,7 +80,7 @@ public class SwipeFragment extends Fragment {
       //  swipeProfile=rootView.findViewById(R.id.swipe_fling);
         mRecyclerView=rootView.findViewById(R.id.swipe_recycle_view);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+   //     mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
 
         mViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Swipe)).get(SwipeViewModel.class);
         mViewModel.setContext(getContext());
@@ -94,81 +95,36 @@ public class SwipeFragment extends Fragment {
                 if (mSwipeAdapter == null) {
                     Log.d("testtt","testt2");
                     mSwipeAdapter=new SwipeAdapter(profiles,getContext(),mViewModel.getProfile(),categories);
-                 //   mSwipeFlingAdapter=new SwipeFlingAdapter(profiles,mViewModel.getProfile(),getContext());
                     mSwipeAdapter.setLikeDislikeListener(new SwipeAdapter.LikeDislikeItemListener() {
                         @Override
-                        public void OnLikeListener(View view) {
-                            profileLiked(0);
-/*                            Animation swipeRightAnim = AnimationUtils.loadAnimation(getContext(), R.anim.swipe_right_anim);
-                            view.startAnimation(swipeRightAnim);*/
-                            view.animate().translationX(1000).setDuration(1000).start();
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
+                        public void OnLikeListener(View view, final int position) {
+
+                            profileLiked(position);
+
+                            view.animate().translationX(1000).setDuration(500).withEndAction(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mSwipeAdapter.removeTopItem();
+                                    Log.d("pos",position+" "+mSwipeAdapter.getItemCount());
+                                    mSwipeAdapter.removeItemPosition(position);
                                 }
-                            },1000);
-
-
+                            }).start();
                         }
 
                         @Override
-                        public void OnDislikeListener(View view) {
-                            profileDisliked(0);
-                            view.animate().translationX(-1000).setDuration(1000).start();
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mSwipeAdapter.removeTopItem();
-                                }
-                            },1000);
+                        public void OnDislikeListener(View view, final int position) {
+                            Log.d("pos",position+" "+mSwipeAdapter.getItemCount());
+                            profileDisliked(position);
+                            view.animate().translationX(-1000).setDuration(500).start();
+                            mSwipeAdapter.removeItemPosition(position);
+
+
                         }
                     });
                       mRecyclerView.setAdapter(mSwipeAdapter);
-
-
-                    /*swipeProfile.setAdapter(mSwipeFlingAdapter);
-                    swipeProfile.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
-            @Override
-            public void removeFirstObjectInAdapter() {
-
-            }
-
-            @Override
-            public void onLeftCardExit(Object o) {
-
-            }
-
-            @Override
-            public void onRightCardExit(Object o) {
-
-            }
-
-            @Override
-            public void onAdapterAboutToEmpty(int i) {
-
-            }
-
-            @Override
-            public void onScroll(float v) {
-
-            }
-        });*/
-
-
-/*
-        swipeProfile.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int i, Object o) {
-
-            }
-        });*/
-
-                    mLoadingAnimation.setVisibility(View.GONE);
+                     mLoadingAnimation.setVisibility(View.GONE);
                 }
                 else {
+
                     mSwipeAdapter.setmProfiles(profiles);
                     mSwipeAdapter.notifyDataSetChanged();
                 }
@@ -250,6 +206,7 @@ public class SwipeFragment extends Fragment {
             };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);*/
+
         SwipeableTouchHelperCallback swipeableTouchHelperCallback =
                 new SwipeableTouchHelperCallback(new OnItemSwiped() {
                     @Override public void onItemSwiped() {
@@ -279,13 +236,17 @@ public class SwipeFragment extends Fragment {
                 };
 
 
+
         final swipeable.com.layoutmanager.touchelper.ItemTouchHelper itemTouchHelper = new swipeable.com.layoutmanager.touchelper.ItemTouchHelper(swipeableTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-        mRecyclerView.setLayoutManager(new SwipeableLayoutManager().setAngle(10)
+        SwipeableLayoutManager swipeableLayoutManager= new SwipeableLayoutManager();
+        mRecyclerView.setLayoutManager(swipeableLayoutManager.setAngle(10)
                 .setAnimationDuratuion(450)
-                .setMaxShowCount(3)
+                .setMaxShowCount(100)
                 .setScaleGap(0.1f)
                 .setTransYGap(0));
+
+
 
 
 
