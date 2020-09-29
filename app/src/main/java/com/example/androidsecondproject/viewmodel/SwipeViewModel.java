@@ -118,8 +118,9 @@ public class SwipeViewModel extends AndroidViewModel {
             rootObject.put("to",to);
             dataObject.put("match_uid",mProfile.getUid());
             dataObject.put("sender",mProfile.getFirstName());
+            dataObject.put("image",mProfile.getProfilePictureUri());
             rootObject.put("data",dataObject);
-            rootObject.put("image",mProfile.getProfilePictureUri());
+
             Log.d("notif",mProfile.getProfilePictureUri());
             NotificationManager.sendNotification(context,rootObject);
         } catch (JSONException e) {

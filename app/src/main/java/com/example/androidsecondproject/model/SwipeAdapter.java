@@ -4,9 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +32,19 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
 
     }
 
+    public interface LikeDislikeItemListener
+    {
+        void OnLikeListener(View view);
+        void OnDislikeListener(View view);
+    }
+
+    private LikeDislikeItemListener mLikeDislikeListener;
+
+    public void setLikeDislikeListener(LikeDislikeItemListener likeDislikeItemListener)
+    {
+        this.mLikeDislikeListener = likeDislikeItemListener;
+    }
+
     public void removeTopItem() {
         mProfiles.remove(0);
         notifyItemRemoved(0);
@@ -45,6 +57,10 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         TextView mCompabilityTv;
         TextView mCityTv;
         TextView mAgeTv;
+        ImageButton likeBtn;
+        ImageButton dislikeBtn;
+
+        View mItemView;
 
         public SwipeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -53,6 +69,9 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
             mCompabilityTv = itemView.findViewById(R.id.compability_tv);
             mCityTv=itemView.findViewById(R.id.location_tv);
             mAgeTv=itemView.findViewById(R.id.card_age_tv);
+            likeBtn = itemView.findViewById(R.id.like_ib);
+            dislikeBtn = itemView.findViewById(R.id.dislike_ib);
+            mItemView = itemView;
 
         }
     }
@@ -86,7 +105,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SwipeViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final SwipeViewHolder holder, int position) {
         Profile currentProfile=mProfiles.get(position);
         Glide.with(mContext).load(currentProfile.getProfilePictureUri()).error(R.drawable.man_profile).into(holder.mProfileIv);
         holder.mNameTv.setText(currentProfile.getFirstName()+",");
@@ -104,6 +123,19 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         else {
             holder.mCompabilityTv.setVisibility(View.GONE);
         }
+
+        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLikeDislikeListener.OnLikeListener(holder.mItemView);
+            }
+        });
+        holder.dislikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLikeDislikeListener.OnDislikeListener(holder.mItemView);
+            }
+        });
 
     }
 
