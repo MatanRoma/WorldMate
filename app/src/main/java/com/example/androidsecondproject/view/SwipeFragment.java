@@ -12,14 +12,13 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidsecondproject.R;
@@ -31,25 +30,37 @@ import com.example.androidsecondproject.viewmodel.SwipeViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
+import com.yuyakaido.android.cardstackview.CardStackListener;
+import com.yuyakaido.android.cardstackview.CardStackView;
+import com.yuyakaido.android.cardstackview.Direction;
+import com.yuyakaido.android.cardstackview.Duration;
+import com.yuyakaido.android.cardstackview.RewindAnimationSetting;
+import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
+import com.yuyakaido.android.cardstackview.SwipeableMethod;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import swipeable.com.layoutmanager.OnItemSwiped;
-import swipeable.com.layoutmanager.SwipeableLayoutManager;
-import swipeable.com.layoutmanager.SwipeableTouchHelperCallback;
 
 public class SwipeFragment extends Fragment {
 
     private SwipeAdapter mSwipeAdapter;
     private SwipeViewModel mViewModel;
     private RecyclerView mRecyclerView;
+    private CardStackView mCardStackView;
     private SpinKitView mLoadingAnimation;
     SwipeFlingAdapterView swipeProfile;
+    Boolean isWhat;
+
+    SwipeAnimationSetting mSettingRight, mSettingLeft;
+    CardStackLayoutManager mCardStackLayoutManager;
 
     private SwipeFlingAdapter mSwipeFlingAdapter;
 
     ImageView mMatchAnimation;
+
+    LinearLayout btnsLayout;
+    ImageView rewindBtn;
 
 
 
@@ -78,8 +89,46 @@ public class SwipeFragment extends Fragment {
 
       //  swipeProfile=rootView.findViewById(R.id.swipe_fling);
         mRecyclerView=rootView.findViewById(R.id.swipe_recycle_view);
+        mCardStackView = rootView.findViewById(R.id.stack_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+   //     mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+
+        ImageView likeBtn = rootView.findViewById(R.id.like_ib);
+        ImageView dislikeBtn = rootView.findViewById(R.id.dislike_ib);
+        rewindBtn = rootView.findViewById(R.id.rewind_ib);
+        btnsLayout = rootView.findViewById(R.id.btns_layout);
+        btnsLayout.setVisibility(View.GONE);
+
+        likeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCardStackLayoutManager.setSwipeAnimationSetting(mSettingRight);
+                mCardStackView.swipe();
+            }
+        });
+
+        dislikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCardStackLayoutManager.setSwipeAnimationSetting(mSettingLeft);
+                mCardStackView.swipe();
+            }
+        });
+
+        rewindBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mViewModel.getProfile().getDisLikes().isEmpty())
+                {
+
+                    mViewModel.getProfile().getDisLikes().remove(mViewModel.getProfile().getDisLikes().size()-1);
+                    mCardStackView.rewind();
+
+                }
+            }
+        });
+
+
 
         mViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Swipe)).get(SwipeViewModel.class);
         mViewModel.setContext(getContext());
@@ -94,81 +143,41 @@ public class SwipeFragment extends Fragment {
                 if (mSwipeAdapter == null) {
                     Log.d("testtt","testt2");
                     mSwipeAdapter=new SwipeAdapter(profiles,getContext(),mViewModel.getProfile(),categories);
-                 //   mSwipeFlingAdapter=new SwipeFlingAdapter(profiles,mViewModel.getProfile(),getContext());
                     mSwipeAdapter.setLikeDislikeListener(new SwipeAdapter.LikeDislikeItemListener() {
                         @Override
-                        public void OnLikeListener(View view) {
-                            profileLiked(0);
-/*                            Animation swipeRightAnim = AnimationUtils.loadAnimation(getContext(), R.anim.swipe_right_anim);
-                            view.startAnimation(swipeRightAnim);*/
-                            view.animate().translationX(1000).setDuration(1000).start();
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
+                        public void OnLikeListener(View view, final int position) {
+
+                            //profileLiked(position);
+                            mCardStackLayoutManager.setSwipeAnimationSetting(mSettingRight);
+                            mCardStackView.swipe();
+/*                            view.animate().translationX(1000).setDuration(500).withEndAction(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mSwipeAdapter.removeTopItem();
+                                    Log.d("pos",position+" "+mSwipeAdapter.getItemCount());
+                                    mSwipeAdapter.removeItemPosition(position);
                                 }
-                            },1000);
-
-
+                            }).start();*/
                         }
 
                         @Override
-                        public void OnDislikeListener(View view) {
-                            profileDisliked(0);
-                            view.animate().translationX(-1000).setDuration(1000).start();
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mSwipeAdapter.removeTopItem();
-                                }
-                            },1000);
+                        public void OnDislikeListener(View view, final int position) {
+                            Log.d("pos",position+" "+mSwipeAdapter.getItemCount());
+                            //profileDisliked(position);
+                            mCardStackLayoutManager.setSwipeAnimationSetting(mSettingLeft);
+                            mCardStackView.swipe();
+/*                            view.animate().translationX(-1000).setDuration(500).start();
+                            mSwipeAdapter.removeItemPosition(position);*/
+
+
                         }
                     });
                       mRecyclerView.setAdapter(mSwipeAdapter);
-
-
-                    /*swipeProfile.setAdapter(mSwipeFlingAdapter);
-                    swipeProfile.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
-            @Override
-            public void removeFirstObjectInAdapter() {
-
-            }
-
-            @Override
-            public void onLeftCardExit(Object o) {
-
-            }
-
-            @Override
-            public void onRightCardExit(Object o) {
-
-            }
-
-            @Override
-            public void onAdapterAboutToEmpty(int i) {
-
-            }
-
-            @Override
-            public void onScroll(float v) {
-
-            }
-        });*/
-
-
-/*
-        swipeProfile.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int i, Object o) {
-
-            }
-        });*/
-
-                    mLoadingAnimation.setVisibility(View.GONE);
+                      mCardStackView.setAdapter(mSwipeAdapter);
+                     mLoadingAnimation.setVisibility(View.GONE);
+                     btnsLayout.setVisibility(View.VISIBLE);
                 }
                 else {
+
                     mSwipeAdapter.setmProfiles(profiles);
                     mSwipeAdapter.notifyDataSetChanged();
                 }
@@ -250,7 +259,8 @@ public class SwipeFragment extends Fragment {
             };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);*/
-        SwipeableTouchHelperCallback swipeableTouchHelperCallback =
+
+ /*       SwipeableTouchHelperCallback swipeableTouchHelperCallback =
                 new SwipeableTouchHelperCallback(new OnItemSwiped() {
                     @Override public void onItemSwiped() {
                         mSwipeAdapter.removeTopItem();
@@ -279,15 +289,80 @@ public class SwipeFragment extends Fragment {
                 };
 
 
+
         final swipeable.com.layoutmanager.touchelper.ItemTouchHelper itemTouchHelper = new swipeable.com.layoutmanager.touchelper.ItemTouchHelper(swipeableTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-        mRecyclerView.setLayoutManager(new SwipeableLayoutManager().setAngle(10)
+        SwipeableLayoutManager swipeableLayoutManager= new SwipeableLayoutManager();
+        mRecyclerView.setLayoutManager(swipeableLayoutManager.setAngle(10)
                 .setAnimationDuratuion(450)
-                .setMaxShowCount(3)
+                .setMaxShowCount(100)
                 .setScaleGap(0.1f)
-                .setTransYGap(0));
+                .setTransYGap(0));*/
+        mCardStackLayoutManager = new CardStackLayoutManager(getContext(), new CardStackListener() {
+            @Override
+            public void onCardDragging(Direction direction, float ratio) {
+                Log.d("stack_swipe","dragging");
+            }
 
+            @Override
+            public void onCardSwiped(Direction direction) {
+            if(direction == Direction.Right)
+            {
+                profileLiked(0);
+                mSwipeAdapter.removeTopItem();
+                rewindBtn.setVisibility(View.GONE);
+                Log.d("stack_swipe","swiped_right");
+            }
+            else if(direction ==Direction.Left){
+                profileDisliked(0);
+                mSwipeAdapter.removeTopItem();
+                rewindBtn.setVisibility(View.VISIBLE);
+                Log.d("stack_swipe","swiped_left");
+            }
+            }
 
+            @Override
+            public void onCardRewound() {
+                Log.d("stack_swipe","rewind");
+            }
+
+            @Override
+            public void onCardCanceled() {
+                Log.d("stack_swipe","canceled");
+            }
+
+            @Override
+            public void onCardAppeared(View view, int position) {
+                Log.d("stack_swipe","apeared");
+            }
+
+            @Override
+            public void onCardDisappeared(View view, int position) {
+                Log.d("stack_swipe","disappeared");
+            }
+        });
+
+        mCardStackView.setLayoutManager(mCardStackLayoutManager);
+       mSettingRight= new SwipeAnimationSetting.Builder().setDirection(Direction.Right)
+                .setDuration(Duration.Slow.duration)
+                .build();
+        mSettingLeft = new SwipeAnimationSetting.Builder().setDirection(Direction.Left)
+                .setDuration(Duration.Slow.duration)
+                .build();
+        //mCardStackLayoutManager.setSwipeAnimationSetting(mSetting);
+
+        RewindAnimationSetting rewindSetting = new RewindAnimationSetting.Builder()
+                .setDirection(Direction.Bottom)
+                .setDuration(Duration.Normal.duration)
+                .build();
+        mCardStackLayoutManager.setRewindAnimationSetting(rewindSetting);
+
+        mCardStackLayoutManager.setMaxDegree(45.0f);
+        mCardStackLayoutManager.setDirections(Direction.HORIZONTAL);
+        mCardStackLayoutManager.setSwipeThreshold(0.5f);
+        mCardStackLayoutManager.setCanScrollHorizontal(true);
+        mCardStackLayoutManager.setCanScrollVertical(true);
+        mCardStackLayoutManager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual);
 
         };
 
