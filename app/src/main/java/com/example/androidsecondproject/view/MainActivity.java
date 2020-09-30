@@ -388,6 +388,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         if(item.getItemId() == R.id.filter_id){
             Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show();
         }
+
         return super.onOptionsItemSelected(item);
     }
 
