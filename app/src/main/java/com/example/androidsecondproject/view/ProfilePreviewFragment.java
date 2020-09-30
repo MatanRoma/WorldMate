@@ -21,6 +21,8 @@ import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.ProfilePreviewViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
+import java.util.List;
+
 public class ProfilePreviewFragment extends Fragment {
     ProfilePreviewViewModel mViewModel;
     ProfilePicturesPagerAdapter mViewPagerAdapter;
@@ -92,10 +94,11 @@ public class ProfilePreviewFragment extends Fragment {
             myHobbiesDesTv.setTextColor(getResources().getColor(R.color.black));
         }
         //test uri array
-        String images[] = {"android.resource://com.example.androidsecondproject/" + R.drawable.bob_dylan1,"android.resource://com.example.androidsecondproject/" + R.drawable.bob_dylan2,"android.resource://com.example.androidsecondproject/" + R.drawable.bob_dylan3};
+         //{"android.resource://com.example.androidsecondproject/" + R.drawable.bob_dylan1,"android.resource://com.example.androidsecondproject/" + R.drawable.bob_dylan2,"android.resource://com.example.androidsecondproject/" + R.drawable.bob_dylan3};
+        initializePager();
 
         mViewPager = rootView.findViewById(R.id.pictures_pager);
-        mViewPagerAdapter = new ProfilePicturesPagerAdapter(getContext(),images);
+
         mViewPager.setAdapter(mViewPagerAdapter);
 
         mViewPagerAdapter.setProfilePagerClick(new ProfilePicturesPagerAdapter.ProfilePagerClickListener() {
@@ -146,6 +149,44 @@ public class ProfilePreviewFragment extends Fragment {
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.removeItem(R.id.filter_id);
+    }
+
+    private void initializePager()
+    {
+        List<String> pictures = mViewModel.getOtherProfile().getPictures();
+        int i;
+        String[] images;
+        if(!mViewModel.getOtherProfile().getProfilePictureUri().equals(""))
+        {
+            images = new String[pictures.size()+1];
+            images[0] = mViewModel.getOtherProfile().getProfilePictureUri();
+            i =1;
+        }
+        else
+        {
+            if(pictures.size() == 0)
+            {
+                images = new String[]{"android.resource://com.example.androidsecondproject/" + R.drawable.man_profile};
+                if(mViewModel.getOtherProfile().getGender().equals("female"))
+                {
+                    images[0] = "android.resource://com.example.androidsecondproject/" + R.drawable.woman_profile;
+                }
+                
+            }
+            else
+            {
+                images = new String[pictures.size()];
+
+            }
+
+            i =0;
+        }
+        for(String picture : pictures)
+        {
+            images[i] = picture;
+            i++;
+        }
+        mViewPagerAdapter = new ProfilePicturesPagerAdapter(getContext(),images);
     }
 
 }

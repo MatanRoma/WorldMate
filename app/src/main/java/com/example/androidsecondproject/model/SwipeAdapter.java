@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,8 +14,6 @@ import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHolder>  {
 
@@ -56,7 +55,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
 
     public class SwipeViewHolder extends RecyclerView.ViewHolder {
         TextView mNameTv;
-        CircleImageView mProfileIv;
+        ImageView mProfileIv;
         TextView mCompabilityTv;
         TextView mCityTv;
         TextView mAgeTv;
@@ -144,7 +143,14 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
     @Override
     public void onBindViewHolder(@NonNull final SwipeViewHolder holder, int position) {
         Profile currentProfile=mProfiles.get(position);
-        Glide.with(mContext).load(currentProfile.getProfilePictureUri()).error(R.drawable.man_profile).into(holder.mProfileIv);
+        if(currentProfile.getGender().equals("male"))
+        {
+            Glide.with(mContext).load(currentProfile.getProfilePictureUri()).error(R.drawable.man_profile).into(holder.mProfileIv);
+        }
+        else
+        {
+            Glide.with(mContext).load(currentProfile.getProfilePictureUri()).error(R.drawable.woman_profile).into(holder.mProfileIv);
+        }
         holder.mNameTv.setText(currentProfile.getFirstName()+",");
         holder.mAgeTv.setText((int)currentProfile.getAge()+"");
         if(currentProfile.getCity()!=null)

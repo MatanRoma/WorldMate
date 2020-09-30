@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_sign"
+    android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <LinearLayout
@@ -71,7 +71,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="10dp"
         android:layoutDirection="ltr"
         android:layout_marginTop="5dp"
         android:id="@+id/btns_layout">
@@ -99,11 +99,11 @@
             android:layout_height="60dp"
             android:src="@drawable/ic_thumb_down"
             android:scaleType="fitXY"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="50dp"
             android:id="@+id/dislike_ib"
             android:background="@drawable/like_dislike_shapes"
             android:padding="5dp"/>
-        <ImageButton
+<!--        <ImageButton
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/rewind_icon2"
@@ -112,7 +112,7 @@
             android:padding="10dp"
             android:background="@drawable/like_dislike_shapes"
             android:visibility="gone"
-            android:id="@+id/rewind_ib"/>
+            android:id="@+id/rewind_ib"/>-->
 
         <ImageButton
             android:layout_width="60dp"

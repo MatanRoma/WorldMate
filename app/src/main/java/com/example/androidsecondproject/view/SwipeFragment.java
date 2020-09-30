@@ -61,7 +61,7 @@ public class SwipeFragment extends Fragment {
     ImageView mMatchAnimation;
 
     LinearLayout btnsLayout;
-    ImageView rewindBtn;
+    //ImageView rewindBtn;
 
     private OnMoveToProfilePreview onMoveToProfilePreview;
 
@@ -122,7 +122,7 @@ public class SwipeFragment extends Fragment {
 
         ImageView likeBtn = rootView.findViewById(R.id.like_ib);
         ImageView dislikeBtn = rootView.findViewById(R.id.dislike_ib);
-        rewindBtn = rootView.findViewById(R.id.rewind_ib);
+        //rewindBtn = rootView.findViewById(R.id.rewind_ib);
         btnsLayout = rootView.findViewById(R.id.btns_layout);
         btnsLayout.setVisibility(View.GONE);
 
@@ -142,7 +142,7 @@ public class SwipeFragment extends Fragment {
             }
         });
 
-        rewindBtn.setOnClickListener(new View.OnClickListener() {
+       /* rewindBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!mViewModel.getProfile().getDisLikes().isEmpty())
@@ -153,7 +153,7 @@ public class SwipeFragment extends Fragment {
 
                 }
             }
-        });
+        });*/
 
 
 
@@ -317,13 +317,13 @@ public class SwipeFragment extends Fragment {
             {
                 profileLiked(0);
                 mSwipeAdapter.removeTopItem();
-                rewindBtn.setVisibility(View.GONE);
+                //rewindBtn.setVisibility(View.GONE);
                 Log.d("stack_swipe","swiped_right");
             }
             else if(direction ==Direction.Left){
                 profileDisliked(0);
                 mSwipeAdapter.removeTopItem();
-                rewindBtn.setVisibility(View.VISIBLE);
+                //rewindBtn.setVisibility(View.VISIBLE);
                 Log.d("stack_swipe","swiped_left");
             }
             }
