@@ -11,17 +11,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,11 +32,9 @@ import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.ProfileViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -89,7 +81,14 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.removeItem(R.id.filter_id);
     }
 
     @Nullable
@@ -113,6 +112,8 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment {
         final RadioButton womenRb = rootView.findViewById(R.id.women_rb);
         profilePicture = rootView.findViewById(R.id.profile_image);
         changePicBtn = rootView.findViewById(R.id.change_pic_btn);
+
+
 
 
 

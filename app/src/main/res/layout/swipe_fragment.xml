@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:layout_marginHorizontal="30dp"
         android:id="@+id/filter_layout">
-        <CheckBox
+<!--        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="sport"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="culture"
             android:checked="true"
-            android:id="@+id/culture_cb"/>
+            android:id="@+id/culture_cb"/>-->
 
     </LinearLayout>
     <com.yuyakaido.android.cardstackview.CardStackView

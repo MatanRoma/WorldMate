@@ -1,16 +1,15 @@
 package com.example.androidsecondproject.view;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -38,6 +37,14 @@ public class ChatFragment extends Fragment {
     private LinearLayoutManager mLinearLayoutManager;
 
     RecyclerView mRecyclerView;
+
+    public OnMoveToProfilePreviewFromChat onMoveToProfilePreviewFromChat;
+
+    public interface OnMoveToProfilePreviewFromChat
+    {
+        void onClickMoveToProfilePreviewFromChat(Profile otherProfile,int compability);
+    }
+
     public static ChatFragment newInstance(Profile profile, Profile otherProfile, String chatId)
     {
         Bundle bundle=new Bundle();
@@ -47,6 +54,12 @@ public class ChatFragment extends Fragment {
         ChatFragment chatFragment=new ChatFragment();
         chatFragment.setArguments(bundle);
         return chatFragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        onMoveToProfilePreviewFromChat = (OnMoveToProfilePreviewFromChat)getActivity();
     }
 
     @Nullable
@@ -67,11 +80,20 @@ public class ChatFragment extends Fragment {
         TextView nameTv=rootView.findViewById(R.id.profile_name_chat);
         CircleImageView profileImage=rootView.findViewById(R.id.profile_image_chat);
 
+        RelativeLayout chatHeader = rootView.findViewById(R.id.chat_rl_layout);
+
         mViewModel.setChatId(getArguments().getString("chat_id"));
         mViewModel.setMyProfile((Profile)getArguments().getSerializable("profile"));
         mViewModel.setOtherProfile((Profile)getArguments().getSerializable("other_profile"));
         mViewModel.setContext(getContext());
         FirebaseRecyclerOptions<Message> recyclerOptions=new FirebaseRecyclerOptions.Builder<Message>().setQuery(mViewModel.readAllMessages(),Message.class).build();
+
+        chatHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMoveToProfilePreviewFromChat.onClickMoveToProfilePreviewFromChat(mViewModel.getOtherProfile(),0);
+            }
+        });
 
         backToAllChats.setOnClickListener(new View.OnClickListener() {
             @Override

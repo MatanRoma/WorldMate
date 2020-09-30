@@ -15,10 +15,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -40,7 +43,6 @@ import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.LocationPoint;
 import com.example.androidsecondproject.model.Profile;
-import com.example.androidsecondproject.model.SwipeAdapter;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.LocationViewModel;
 import com.example.androidsecondproject.viewmodel.MainViewModel;
@@ -61,7 +63,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.io.IOException;
 import java.util.List;
@@ -71,7 +72,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface,
-        AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface, ProfileFragment.UpdateDrawerFromProfileFragment,MatchesFragment.OnMoveToChat {
+        AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface,
+        ProfileFragment.UpdateDrawerFromProfileFragment,MatchesFragment.OnMoveToChat, SwipeFragment.OnMoveToProfilePreview, ChatFragment.OnMoveToProfilePreviewFromChat,
+        ProfilePreviewFragment.OnMoveToPhotoPreview {
     private final int REQUEST_CHECK_SETTINGS =2 ;
     private Geocoder mGeoCoder;
     private String mCityName;
@@ -92,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private final String QUESTIONS_FRAGMENT = "questions_fragment";
     private final String MATCHES_FRAGMENT = "matches_fragment";
     private final String CHAT_FRAGMENT = "chat_fragment";
+    private final String PROFILE_PREVIEW_FRAGMENT = "profile_preview_fragment";
+    private final String PHOTO_PREVIEW_FRAGMENT = "photo_preview_fragment";
 
     private final String STACK ="secondary_stack";
 
@@ -100,11 +105,16 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private MainViewModel mViewModel;
     private CircleImageView mProfileIv;
     private TextView mNameTv;
+    Toolbar toolbar;
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private View headerView;
     Observer<Location> mLocationObserver;
+
+
+
+    private AlertDialog show;
 
 
 
@@ -128,6 +138,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
 
 
+
+
+
+
         if (mViewModel.checkIfAuth()) { // from splash activity
             fetchProfileData();
         } else {
@@ -139,10 +153,17 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         headerView = navigationView.getHeaderView(0);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         mProfileIv = headerView.findViewById(R.id.profile_image);
         mNameTv = headerView.findViewById(R.id.username_tv);
         setSupportActionBar(toolbar);
+
+/*        Spinner spinner = findViewById(R.id.filter_spinner);
+        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(this,R.layout.spinner_dropdown_filter,categories);
+        spinner.setAdapter(categoriesAdapter);*/
+
+
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -227,7 +248,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     }
 
     private void handleNavigationItemSelected(String title) {
-
         switch (title) {
             case "Home":
                 clearStack(null);
@@ -376,20 +396,65 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_with_filter,menu);
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @SuppressLint("WrongConstant")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         if (item.getItemId() == android.R.id.home) {
             drawerLayout.openDrawer(Gravity.START);
         }
         if(item.getItemId() == R.id.filter_id){
-            Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show();
+            openDialogFragment();
+
         }
 
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openDialogFragment()
+    {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View alertView = inflater.inflate(R.layout.filter_dialog, null);
+        alertDialog.setView(alertView);
+        CheckBox sportCb = alertView.findViewById(R.id.filter_sport_cb);
+        CheckBox foodCb = alertView.findViewById(R.id.filter_food_cb);
+        CheckBox cultureCb = alertView.findViewById(R.id.filter_culture_cb);
+        Button confirmBtn = alertView.findViewById(R.id.confirm_btn);
+        Button cancelBtn = alertView.findViewById(R.id.cancel_btn);
+        final CheckBox[] checkBoxes  = new CheckBox[]{sportCb,foodCb,cultureCb};
+        show = alertDialog.show();
+        for (int i = 0; i <checkBoxes.length;i++)
+        {
+            Toast.makeText(this, sportCb+"", Toast.LENGTH_SHORT).show();
+            checkBoxes[i].setChecked(mViewModel.getIsCategoryChecked()[i]);
+        }
+
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean[] chekeds = mViewModel.getIsCategoryChecked();
+                for (int i = 0; i <checkBoxes.length;i++) {
+                    chekeds[i] = checkBoxes[i].isChecked();
+                }
+                SwipeFragment fragment = (SwipeFragment) getSupportFragmentManager().findFragmentByTag(SWIPE_FRAGMENT);
+                fragment.updateCategories(mViewModel.getIsCategoryChecked());
+                show.dismiss();
+
+            }
+        });
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                show.dismiss();
+            }
+        });
     }
 
     public void moveToProfileFragment() {
@@ -548,6 +613,37 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     @Override
     public void OnClickMoveToChat(Profile myProfile, Profile otherProfile, String chatid) {
         moveToChat(myProfile, otherProfile, chatid);
+    }
+
+    @Override
+    public void onClickMoveToProfilePreview(Profile otherProfile,int compability) {
+        ProfilePreviewFragment profilePreviewFragment = ProfilePreviewFragment.newInstance(otherProfile,compability);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.flContent, profilePreviewFragment, PROFILE_PREVIEW_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        setTitle(otherProfile.getFirstName()+" "+otherProfile.getLastName());
+    }
+
+    @Override
+    public void onClickMoveToProfilePreviewFromChat(Profile otherProfile, int compability) {
+        ProfilePreviewFragment profilePreviewFragment = ProfilePreviewFragment.newInstance(otherProfile,compability);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.flContent, profilePreviewFragment, PROFILE_PREVIEW_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        setTitle(otherProfile.getFirstName()+" "+otherProfile.getLastName());
+    }
+    @Override
+    public void onClickMoveToPhotoPreviewListener(String uri) {
+        PhotoPreviewFragment photoPreviewFragment = PhotoPreviewFragment.newInstance(uri);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.flContent, photoPreviewFragment, PHOTO_PREVIEW_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     public void handleReturnFromNotif() {
@@ -733,6 +829,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         }
         super.onNewIntent(intent);
     }
+
+
 
 }
 

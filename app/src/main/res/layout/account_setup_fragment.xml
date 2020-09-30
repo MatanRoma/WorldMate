@@ -129,16 +129,18 @@
         android:layout_marginTop="25dp"
         android:id="@+id/birthday_tv"/>
 
-    <DatePicker android:layout_width="wrap_content"
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:datePickerMode="spinner"
-        android:calendarViewShown="false"
-        android:layout_centerHorizontal="true"
-        android:maxDate="31/12/2001"
-        android:minDate="1/1/1921"
-        android:layout_marginTop="15dp"
         android:layout_below="@id/birthday_tv"
-        android:id="@+id/date_picker"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="81dp"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:maxDate="31/12/2000"
+        android:minDate="1/1/1921" />
 
     <Button
         android:layout_width="wrap_content"

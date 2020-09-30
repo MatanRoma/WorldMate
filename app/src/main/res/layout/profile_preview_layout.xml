@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.viewpager.widget.ViewPager
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:id="@+id/pictures_pager"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pictures_pager"
+                android:id="@+id/card_profile_info"
+                android:layout_marginTop="30dp"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Liran Amzaleg, "
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:id="@+id/profile_name_tv"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="26"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:id="@+id/profile_age_tv"/>
+
+            </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/card_profile_info"
+
+                    android:text="gender"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="15dp"
+                    android:id="@+id/profile_gender_tv"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_gender_tv"
+
+                    android:text="Tel Aviv"
+                    android:textColor="@color/Blue"
+                    android:textSize="20sp"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/profile_location_tv"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profile_location_tv"
+                android:text="90%"
+                android:textColor="@color/colorAccent"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/compability_tv"/>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@+id/compability_tv"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/divider"
+                android:layout_marginTop="15dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginHorizontal="20dp"
+                android:text="About myself:"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/about_myself_tv"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/about_myself_tv"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginHorizontal="20dp"
+                android:text="my description"
+                android:textColor="@color/grey"
+                android:textSize="20sp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/about_myself_des_tv"/>
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerHorizontal="true"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@+id/about_myself_des_tv"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/divider2"
+                android:layout_marginTop="15dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginHorizontal="20dp"
+                android:text="Looking for:"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/looking_for_tv"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/looking_for_tv"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginHorizontal="20dp"
+                android:text="I'm looking for..."
+                android:textColor="@color/grey"
+                android:textSize="20sp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/looking_for_des_tv"/>
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerHorizontal="true"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@+id/looking_for_des_tv"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/divider3"
+                android:layout_marginTop="15dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginHorizontal="20dp"
+                android:text="My hobbies:"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/my_hobbies_tv"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_hobbies_tv"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginHorizontal="20dp"
+                android:text="my hobbies..."
+                android:textColor="@color/grey"
+                android:textSize="20sp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/my_hobbies_des_tv"/>
+
+
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+
+
+
+
+
+</RelativeLayout>
