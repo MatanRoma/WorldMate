@@ -3,7 +3,6 @@ package com.example.androidsecondproject.viewmodel;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -25,7 +24,7 @@ public class SwipeViewModel extends AndroidViewModel {
     private Context context;
     private Repository mRepository;
     private Profile mProfile;
-    private boolean isFirstTime=true;
+ //   private boolean isFirstTime=true;
     MutableLiveData<List<Profile>> mProfilesMutableLiveData;
     private  List<String> categories;
 
@@ -63,16 +62,17 @@ public class SwipeViewModel extends AndroidViewModel {
     }
 
     public void addLikedProfile(int position) {
-         mProfile.getLikes().add((mProfilesMutableLiveData.getValue().get(position).getUid()));
+        List<String> likes=mProfile.getLikes();
+        likes.add((mProfilesMutableLiveData.getValue().get(position).getUid()));
+        mRepository.updateProfile(mProfile.getUid(),"likes",likes);
+
     }
 
     public void addDislikedProfile(int position){
         mProfile.getDisLikes().add((mProfilesMutableLiveData.getValue().get(position).getUid()));
+        mRepository.updateProfile(mProfile.getUid(),"disLikes",mProfile.getDisLikes());
     }
 
-    public void removeProfile(int position) {
-        mProfilesMutableLiveData.getValue().remove(position);
-    }
 
     public boolean checkIfMatch(int position) {
         String myUid=mProfile.getUid();
@@ -83,32 +83,26 @@ public class SwipeViewModel extends AndroidViewModel {
     public void updateMatch(int position) {
         Profile otherPofile=mProfilesMutableLiveData.getValue().get(position);
         String key = mProfile.getUid()+otherPofile.getUid();
-        /*key = key.replace('.',' ');
-        key = key.replace('#',' ');
-        key = key.replace('$',' ');
-        key = key.replace('[',' ');
-        key = key.replace(']',' ');
-        key = key.trim();
-        Log.d("chat",key);*/
         Match myMatch = new Match(otherPofile.getUid(),key);
-        //match.setEmail(otherPofile.getEmail());
+        Match otherMatch = new Match(mProfile.getUid(),key);
+        final String MATCHES= "matches";
 
         mProfile.getMatches().add(myMatch);
-        Toast.makeText(getApplication(), otherPofile.getUid()+"", Toast.LENGTH_SHORT).show();
-        Match otherMatch = new Match(mProfile.getUid(),key);
+        mRepository.updateProfile(mProfile.getUid(),MATCHES,mProfile.getMatches());
         otherPofile.getMatches().add(otherMatch);
-     //   notifyOtherProfile(otherPofile.getMessageToken());
+        mRepository.updateProfile(otherPofile.getUid(),MATCHES,otherPofile.getMatches());
+
+
         notifyOtherProfile(mProfile.getMessageToken()); // only for test
-      //  mRepository.writeChat(mProfile.getUid()+otherPofile.getUid());
     }
 
     public void writeMyProfile() {
         mRepository.writeMyProfile(mProfile);
     }
 
-    public void writeOtherProfile(int position) {
+  /*  public void writeOtherProfile(int position) {
         mRepository.writeOtherProfile(mProfilesMutableLiveData.getValue().get(position));
-    }
+    }*/
     public Profile getProfile()
     {
         return mProfile;
@@ -137,12 +131,13 @@ public class SwipeViewModel extends AndroidViewModel {
         this.context=context;
     }
 
-    public boolean isFirstTime() {
+   /* public boolean isFirstTime() {
         return isFirstTime;
     }
 
     public void setFirstTime(boolean firstTime) {
         isFirstTime = firstTime;
+
     }
 
     public List<String> getCategories() {
@@ -152,4 +147,11 @@ public class SwipeViewModel extends AndroidViewModel {
     public void setCategories(List<String> categories) {
         this.categories = categories;
     }
+
+    }*/
+
+   /* public void updateProfile() {
+        mRepository.updateProfie(mRepository.getCurrentUserId(),);
+    }*/
+
 }

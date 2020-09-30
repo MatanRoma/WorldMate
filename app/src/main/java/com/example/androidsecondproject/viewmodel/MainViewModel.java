@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.androidsecondproject.model.LocationPoint;
 import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
@@ -171,6 +172,7 @@ public class MainViewModel extends AndroidViewModel {
 
 
 
+
     public boolean[] getIsCategoryChecked() {
         return isCategoryChecked;
     }
@@ -178,6 +180,16 @@ public class MainViewModel extends AndroidViewModel {
     public void setIsCategoryChecked(boolean[] isCategoryChecked) {
         this.isCategoryChecked = isCategoryChecked;
 
+
+
+    public void updateCityName(String cityName) {
+        mProfileSuccessLiveData.getValue().setCity(cityName);
+        mRepository.updateProfile(mProfileSuccessLiveData.getValue().getUid(),"city",cityName);
+    }
+
+    public void updateLocation(LocationPoint locationPoint) {
+        mProfileSuccessLiveData.getValue().setLocation(locationPoint);
+        mRepository.updateProfile(mProfileSuccessLiveData.getValue().getUid(),"location",locationPoint);
 
     }
 }

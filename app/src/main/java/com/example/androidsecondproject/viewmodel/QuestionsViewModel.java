@@ -49,8 +49,9 @@ public class QuestionsViewModel extends AndroidViewModel {
         });
     }
 
-    public void writeProfile(){
-        mRepository.writeMyProfile(profile);
+    public void updateQuestion(){
+     //   mRepository.writeMyProfile(profile);
+        mRepository.updateProfile(profile.getUid(),"questionResponds",profile.getQuestionResponds());
     }
 
     public void setProfile(Profile profile) {

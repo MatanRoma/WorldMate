@@ -6,7 +6,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.Message;
 import com.example.androidsecondproject.model.Preferences;
@@ -21,7 +20,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Repository {
 
@@ -40,7 +41,6 @@ public class Repository {
 
     private static Repository repository;
     private QuestionsListener questionsListener;
-    private ChatListener chatListener;
     private ReadOtherProfileListener readOtherProfileListener;
     private MatchesListener matchesListener;
 
@@ -201,6 +201,13 @@ public class Repository {
     }
     public void writeOtherProfile(Profile profile){
         profilesTable.child((profile.getUid())).setValue(profile);
+    }
+    public void updateProfile(String uid, String key, Object objectToUpdate){
+        Map<String,Object> map =new HashMap<>();
+        map.put(key,objectToUpdate);
+        profilesTable.child((uid)).updateChildren(map);
+    }
+  /*  public void updateSpecificQuestion(){
 
     }
 
@@ -208,39 +215,18 @@ public class Repository {
     {
         Log.d("chat",chatid);
         chatsTable.child(chatid).push().setValue(null);
-    }
+    }*/
 
-    public void readChat(String chatId){
-        profilesTable.child(chatId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    Chat chat=snapshot.getValue(Chat.class);
-                    if(chatListener!=null) {
-                        chatListener.onChatDataChangeSuccess(chat);
-                    }
-                }
-                else {
-                    if(chatListener!=null)
-                        chatListener.onChatDataChangeFail("not_exist");
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                if(chatListener!=null)
-                    chatListener.onChatDataChangeFail(error.getMessage());
-                //TODO
-            }
-        });
-
-    }
 
     public String getCurrentUserId(){
        return authRepository.getCurrentUserUid();
     }
-    public void setDownloadListener(StorageRepository.StorageDownloadPicListener downloadListener){
+    public void setDownloadProfilePicListener(StorageRepository.StorageDownloadProfilePicListener downloadListener){
         storageRepository.setDownloadListener(downloadListener);
+    }
+    public void setDownloadMainPicListener(StorageRepository.StorageDownloadMainPicListener downloadMainPicListener){
+        storageRepository.setDownloadMainPicListener(downloadMainPicListener);
     }
     public void setUploadListener(StorageRepository.StorageUploadPicListener uploadListener){
         storageRepository.setUploadListener(uploadListener);
@@ -277,14 +263,6 @@ public class Repository {
     }
     public interface MessageListener{
         void onMessageSentSuccess(Message message);
-    }
-
-    public interface ChatListener{
-        void onChatDataChangeSuccess(Chat chat);
-        void onChatDataChangeFail(String error);
-    }
-    public void setChatListener(ChatListener chatListener) {
-        this.chatListener = chatListener;
     }
 
 
@@ -324,6 +302,7 @@ public class Repository {
     }
 
     public void readQuestions(){
+
         questionsTable.child("english").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -336,6 +315,7 @@ public class Repository {
                     if(questionsListener!=null)
                          questionsListener.onQuestionsDataChangeSuccess(questions);
                 }
+
             }
 
             @Override
@@ -380,5 +360,9 @@ public class Repository {
                     profileListener.onProfileDataChangeFail(error.getMessage());
             }
         });
+    }
+    public void uploadAndDownload(Bitmap bitmap,boolean isProfilePic){
+        storageRepository.uploadAndDownload(bitmap,isProfilePic);
+
     }
 }

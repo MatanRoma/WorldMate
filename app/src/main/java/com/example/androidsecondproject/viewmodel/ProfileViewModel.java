@@ -12,12 +12,15 @@ import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
 import com.example.androidsecondproject.repository.StorageRepository;
 
+import java.util.List;
+
 public class ProfileViewModel extends AndroidViewModel {
 
     private Repository mRepository;
-    private Profile profile;
+    private Profile mProfile;
     private MutableLiveData<Boolean> mPictureUploadSuccess;
-    private MutableLiveData<Uri> mPictureDownloadSuccess;
+    private MutableLiveData<Uri> mPictureProfileDownloadSuccess;
+    private MutableLiveData<Uri> mPictureMainDownloadSuccess;
 
     public ProfileViewModel(@NonNull Application application) {
         super(application);
@@ -26,7 +29,7 @@ public class ProfileViewModel extends AndroidViewModel {
 
 
     public void writeProfile(){
-        mRepository.writeMyProfile(profile);
+        mRepository.writeMyProfile(mProfile);
     }
 
     public void writePicture(Bitmap bitmap){
@@ -54,22 +57,45 @@ public class ProfileViewModel extends AndroidViewModel {
             }
         });
     }
-    public MutableLiveData<Uri> getDownloadResultSuccess(){
-        if (mPictureDownloadSuccess == null) {
-            mPictureDownloadSuccess = new MutableLiveData<>();
-            setDownloadListener();
+    public MutableLiveData<Uri> getDownloadProfileResultSuccess(){
+        if (mPictureProfileDownloadSuccess == null) {
+            mPictureProfileDownloadSuccess = new MutableLiveData<>();
+            setDownloadProfilePicListener();
         }
-        return mPictureDownloadSuccess;
+        return mPictureProfileDownloadSuccess;
     }
-    private void setDownloadListener() {
-        mRepository.setDownloadListener(new StorageRepository.StorageDownloadPicListener() {
+
+    public MutableLiveData<Uri> getDownloadMainResultSuccess(){
+        if (mPictureMainDownloadSuccess == null) {
+            mPictureMainDownloadSuccess = new MutableLiveData<>();
+            setDownloadMainPicListener();
+        }
+        return mPictureMainDownloadSuccess;
+    }
+
+    private void setDownloadMainPicListener() {
+        mRepository.setDownloadMainPicListener(new StorageRepository.StorageDownloadMainPicListener() {
             @Override
-            public void onSuccessDownloadPic(Uri uri) {
-                mPictureDownloadSuccess.setValue(uri);
+            public void onSuccessDownloadMainPic(Uri uri) {
+                mPictureMainDownloadSuccess.setValue(uri);
             }
 
             @Override
-            public void onFailedDownloadPic(String error) {
+            public void onFailedDownloadMainPic(String error) {
+
+            }
+        });
+    }
+
+    private void setDownloadProfilePicListener() {
+        mRepository.setDownloadProfilePicListener(new StorageRepository.StorageDownloadProfilePicListener() {
+            @Override
+            public void onSuccessDownloadProfilePic(Uri uri) {
+                mPictureProfileDownloadSuccess.setValue(uri);
+            }
+
+            @Override
+            public void onFailedDownloadProfilePic(String error) {
 
             }
         });
@@ -79,30 +105,44 @@ public class ProfileViewModel extends AndroidViewModel {
     public void downloadPicture(){
         mRepository.readMyProfilePictureFromStorage();
     }
-    public void uploadPicture(Bitmap bitmap){
-        mRepository.writePictureToStorage(bitmap);
+    public void uploadPicture(Bitmap bitmap,boolean isProfilePic){
+       // mRepository.writePictureToStorage(bitmap);
+        mRepository.uploadAndDownload(bitmap,isProfilePic);
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setmProfile(Profile mProfile) {
+        this.mProfile = mProfile;
     }
 
     public void setImageUri(Uri imageUri) {
-        profile.setProfilePictureUri(imageUri.toString());
+        mProfile.setProfilePictureUri(imageUri.toString());
     }
 
-    public Profile getProfile()
+    public Profile getmProfile()
     {
-        return profile;
+        return mProfile;
     }
 
     public Uri getImageUri()
     {
-        return Uri.parse(profile.getProfilePictureUri()) ;
+        return Uri.parse(mProfile.getProfilePictureUri()) ;
     }
 
 
     public void readProfiles() {
-        mRepository.readProfiles(profile);
+        mRepository.readProfiles(mProfile);
+    }
+
+    public List<String> getPictures() {
+        return mProfile.getPictures();
+
+    }
+
+    public void updateProfileMainPictures() {
+        mRepository.updateProfile(mRepository.getCurrentUserId(),"pictures",mProfile.getPictures());
+    }
+
+    public void updateDataBaseProfilePic() {
+        mRepository.updateProfile(mRepository.getCurrentUserId(),"profilePictureUri",mProfile.getProfilePictureUri());
     }
 }

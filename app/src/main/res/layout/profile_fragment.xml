@@ -23,7 +23,11 @@
                 android:id="@+id/save_btn"
                 android:textAllCaps="false"
                 android:textSize="20sp" />
-
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/circle_image_layout">
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="200dp"
@@ -31,9 +35,19 @@
                 android:src="@drawable/woman_profile"
                 android:id="@+id/profile_image"
                 app:civ_border_width="2dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 app:civ_border_color="#FF000000"
-                android:layout_centerHorizontal="true"/>
+                />
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        android:id="@+id/spin_kit_loading_profile_pic"
+                        android:layout_centerInParent="true"
+                        style="@style/SpinKitView.Large.Circle"
+                        app:SpinKit_Color="@color/grey"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_gravity="center"/>
+
 
             <Button
                 android:layout_width="wrap_content"
@@ -49,7 +63,302 @@
                 android:textStyle="bold"
                 android:id="@+id/change_pic_btn"
                 android:text="Change photo" />
+                </RelativeLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/circle_image_layout"
+                android:layout_marginTop="25dp"
+                android:id="@+id/pic_gallery_layout"
+                >
+                <ImageButton
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@color/transparent"
+                    android:layout_marginHorizontal="10dp"
+                    android:src="@drawable/ic_baseline_photo_camera_24"
+                    android:id="@+id/camera_btn"/>
+                <ImageButton
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_baseline_gallery"
+                    android:background="@color/transparent"
+                    android:id="@+id/gallery_btn"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pic_gallery_layout"
+                android:id="@+id/relative_pictures"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relative0">
+
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="120dp"
+                        android:src="@color/transparent"
+                        android:id="@+id/picture0_iv"
+                        android:scaleType="fitXY"
+                        android:background="#fff"/>
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        android:id="@+id/spin_kit_loading0"
+                        android:layout_marginStart="27dp"
+                        android:layout_marginTop="40dp"
+                        style="@style/SpinKitView.Circle"
+                        app:SpinKit_Color="@color/grey"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+
+                        />
+
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/picture0_close"
+                        android:src="@drawable/close_btn_iv"
+                        android:background="@color/transparent"
+                        android:visibility="invisible"
+                        android:layout_toEndOf="@id/picture0_iv"
+                        android:layout_below="@id/picture0_iv"
+                        android:layout_marginStart="-20dp"
+                        android:layout_marginTop="-17dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relative1"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@id/relative0">
+
+
+                    <ImageView
+                        android:id="@+id/picture1_iv"
+                        android:layout_width="100dp"
+                        android:layout_height="120dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginTop="2dp"
+                        android:background="#fff"
+                        android:scaleType="fitXY"
+                        android:src="@color/transparent" />
+
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/spin_kit_loading1"
+                        style="@style/SpinKitView.Circle"
+                        app:SpinKit_Color="@color/grey"
+                        android:layout_marginStart="27dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_width="wrap_content"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                         />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/picture1_close"
+                        android:src="@drawable/close_btn_iv"
+                        android:visibility="invisible"
+                        android:background="@color/transparent"
+                        android:layout_toEndOf="@id/picture1_iv"
+                        android:layout_below="@id/picture1_iv"
+                        android:layout_marginStart="-20dp"
+                        android:layout_marginTop="-17dp"/>
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relative2"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@id/relative1">
+
+
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="120dp"
+                        android:src="@color/transparent"
+                        android:id="@+id/picture2_iv"
+                        android:scaleType="fitXY"
+                        android:background="#fff"/>
+
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/spin_kit_loading2"
+                        android:layout_marginStart="27dp"
+                        android:layout_marginTop="40dp"
+                        style="@style/SpinKitView.Circle"
+                        app:SpinKit_Color="@color/grey"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                         />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/picture2_close"
+                        android:src="@drawable/close_btn_iv"
+                        android:visibility="invisible"
+                        android:background="@color/transparent"
+                        android:layout_toEndOf="@id/picture2_iv"
+                        android:layout_below="@id/picture2_iv"
+                        android:layout_marginStart="-20dp"
+                        android:layout_marginTop="-17dp"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/relative_pictures1"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_below="@id/relative_pictures">
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relative3">
+
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="120dp"
+                        android:src="@color/transparent"
+                        android:id="@+id/picture3_iv"
+                        android:scaleType="fitXY"
+                        android:background="#fff"/>
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        android:id="@+id/spin_kit_loading3"
+                        style="@style/SpinKitView.Circle"
+                        android:layout_marginStart="27dp"
+                        android:layout_marginTop="40dp"
+                        app:SpinKit_Color="@color/grey"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/picture3_close"
+                        android:visibility="invisible"
+                        android:src="@drawable/close_btn_iv"
+                        android:background="@color/transparent"
+                        android:layout_toEndOf="@id/picture3_iv"
+                        android:layout_below="@id/picture3_iv"
+                        android:layout_marginStart="-20dp"
+                        android:layout_marginTop="-17dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relative4"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@id/relative3">
+
+
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="120dp"
+                        android:src="@color/transparent"
+                        android:id="@+id/picture4_iv"
+                        android:scaleType="fitXY"
+                        android:background="#fff"/>
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        android:id="@+id/spin_kit_loading4"
+                        android:layout_marginStart="27dp"
+                        android:layout_marginTop="40dp"
+                        style="@style/SpinKitView.Circle"
+                        app:SpinKit_Color="@color/grey"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                         />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/picture4_close"
+                        android:src="@drawable/close_btn_iv"
+                        android:background="@color/transparent"
+                        android:layout_toEndOf="@id/picture4_iv"
+                        android:layout_below="@id/picture4_iv"
+                        android:visibility="invisible"
+                        android:layout_marginStart="-20dp"
+                        android:layout_marginTop="-17dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relative5"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@id/relative4">
+
+
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="120dp"
+                        android:src="@color/transparent"
+                        android:scaleType="fitXY"
+                        android:id="@+id/picture5_iv"
+                        android:background="#fff"/>
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/spin_kit_loading5"
+                        style="@style/SpinKitView.Circle"
+                        android:layout_marginStart="27dp"
+                        android:layout_marginTop="40dp"
+                        app:SpinKit_Color="@color/grey"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                         />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/picture5_close"
+                        android:src="@drawable/close_btn_iv"
+                        android:visibility="invisible"
+                        android:background="@color/transparent"
+                        android:layout_toEndOf="@id/picture5_iv"
+                        android:layout_below="@id/picture5_iv"
+                        android:layout_marginStart="-20dp"
+                        android:layout_marginTop="-17dp"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,7 +367,7 @@
                 android:padding="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_below="@id/change_pic_btn"
+                android:layout_below="@id/relative_pictures1"
                 android:id="@+id/name_layout">
 
                 <com.google.android.material.textfield.TextInputLayout

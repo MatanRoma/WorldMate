@@ -29,6 +29,7 @@ public class Profile implements Serializable {
     private String city;
     private LocationPoint location;
     private List<QuestionRespond> questionResponds;
+    private List<String> pictures;
 
 
 
@@ -41,6 +42,8 @@ public class Profile implements Serializable {
         disLikes=new ArrayList<>();
         matches=new ArrayList<>();
         questionResponds = new ArrayList<>();
+        pictures=new ArrayList<>();
+
     }
 
 
@@ -214,6 +217,14 @@ public class Profile implements Serializable {
 
     public void setLocation(LocationPoint location) {
         this.location = location;
+    }
+
+    public List<String> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
     }
 }
 

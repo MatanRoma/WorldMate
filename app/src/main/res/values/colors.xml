@@ -10,5 +10,7 @@
     <color name="grey">#ACA1A1</color>
     <color name="red_stroke">#FF0A0A</color>
     <color name="red_fill">#F37676</color>
+    <color name="white">#FFFFFF</color>
+    <color name="grey">#BBB9B9</color>
 
 </resources>
