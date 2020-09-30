@@ -3,31 +3,41 @@
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_layout">
+
+        <ImageView
+            android:id="@+id/profile_image_notif"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:src="@mipmap/ic_launcher"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Match!"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="start"
+            android:id="@+id/title_tv"/>
+
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="title"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:gravity="start"
-        android:id="@+id/title_tv"/>
-    <ImageView
-        android:id="@+id/profile_image_notif"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_weight="1"
-        android:layout_alignParentEnd="true"
-        android:scaleType="fitXY" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="click here to say hello"
+        android:text="You got a new match with roni!"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:gravity="start"
-        android:layout_below="@id/title_tv"
+        android:layout_below="@id/title_layout"
         android:id="@+id/text_id"/>
 </RelativeLayout>

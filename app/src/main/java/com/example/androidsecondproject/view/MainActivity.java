@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -277,10 +278,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.commit();
 
 
-
-
-
-
     }
 
     private void moveToLoginFragment() {
@@ -376,11 +373,20 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_with_filter,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     @SuppressLint("WrongConstant")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             drawerLayout.openDrawer(Gravity.START);
+        }
+        if(item.getItemId() == R.id.filter_id){
+            Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
