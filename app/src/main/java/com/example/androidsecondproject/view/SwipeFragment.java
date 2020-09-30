@@ -407,17 +407,18 @@ public class SwipeFragment extends Fragment {
                     }
                 },3000);
                 mViewModel.updateMatch(position);
-                mViewModel.writeOtherProfile(position);
+             //   mViewModel.writeOtherProfile(position);
             }
            
         //    mViewModel.removeProfile(position);
           //  mSwipeAdapter.notifyItemRemoved(position);
-            mViewModel.writeMyProfile();
+         //   mViewModel.writeMyProfile();
+         //   mViewModel.updateProfile();
         }
 
         private  void profileDisliked(final int position){
             mViewModel.addDislikedProfile(position);
-            mViewModel.writeMyProfile();
+          //  mViewModel.writeMyProfile();
 
         }
 

@@ -172,7 +172,7 @@ private View mSportView;
 
                                 }
                                 mViewModel.getProfile().getQuestionResponds().add(questionRespond);
-                                mViewModel.writeProfile();
+                                mViewModel.updateQuestion();
                                 Toast.makeText(getContext(), "size is "+questionResponds.size(), Toast.LENGTH_SHORT).show();
 
 
