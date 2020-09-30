@@ -53,14 +53,14 @@ public class ProfilePhotoViewModel extends AndroidViewModel {
         return mPictureDownloadSuccess;
     }
     private void setDownloadListener() {
-        mRepository.setDownloadListener(new StorageRepository.StorageDownloadPicListener() {
+        mRepository.setDownloadProfilePicListener(new StorageRepository.StorageDownloadProfilePicListener() {
             @Override
-            public void onSuccessDownloadPic(Uri uri) {
+            public void onSuccessDownloadProfilePic(Uri uri) {
                 mPictureDownloadSuccess.setValue(uri);
             }
 
             @Override
-            public void onFailedDownloadPic(String error) {
+            public void onFailedDownloadProfilePic(String error) {
 
             }
         });

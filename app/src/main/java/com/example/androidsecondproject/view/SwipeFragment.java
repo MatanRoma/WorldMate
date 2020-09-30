@@ -7,15 +7,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -78,6 +83,22 @@ public class SwipeFragment extends Fragment {
         super.onAttach(context);
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_with_filter,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.filter_id){
+            Toast.makeText(getContext(), "Filter", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -86,6 +107,8 @@ public class SwipeFragment extends Fragment {
         mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
         mLoadingAnimation.setVisibility(View.VISIBLE);
         mMatchAnimation = rootView.findViewById(R.id.match_anim);
+
+        //((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
 
       //  swipeProfile=rootView.findViewById(R.id.swipe_fling);
         mRecyclerView=rootView.findViewById(R.id.swipe_recycle_view);
@@ -384,17 +407,18 @@ public class SwipeFragment extends Fragment {
                     }
                 },3000);
                 mViewModel.updateMatch(position);
-                mViewModel.writeOtherProfile(position);
+             //   mViewModel.writeOtherProfile(position);
             }
            
         //    mViewModel.removeProfile(position);
           //  mSwipeAdapter.notifyItemRemoved(position);
-            mViewModel.writeMyProfile();
+         //   mViewModel.writeMyProfile();
+         //   mViewModel.updateProfile();
         }
 
         private  void profileDisliked(final int position){
             mViewModel.addDislikedProfile(position);
-            mViewModel.writeMyProfile();
+          //  mViewModel.writeMyProfile();
 
         }
 

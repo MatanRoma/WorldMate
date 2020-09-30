@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                     mLoadingAnimation.setVisibility(View.GONE);
 
                 } else {
+
                     mNameTv.setText(profile.getFirstName());
                     Glide.with(MainActivity.this).load(profile.getProfilePictureUri()).error(R.drawable.man_profile).into(mProfileIv);
                 }
@@ -388,6 +389,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         if(item.getItemId() == R.id.filter_id){
             Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show();
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -455,10 +457,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                     List<Address> addressList = mGeoCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     mCityName = addressList.get(0).getLocality();
                     if (mCityName != null) {
-                        mViewModel.getProfile().setCity(mCityName);
-                        mViewModel.getProfile().setLocation(new LocationPoint(location.getLatitude(),location.getLongitude()));
+                      //  mViewModel.getProfile().setCity(mCityName);
+                      //  mViewModel.getProfile().setLocation(new LocationPoint(location.getLatitude(),location.getLongitude()));
                         //   moveToSwipeFragment();
-                        mViewModel.writeProfile();
+                        mViewModel.updateCityName(mCityName);
+                        mViewModel.updateLocation(new LocationPoint(location.getLatitude(),location.getLongitude()));
 
                         Log.d("loc",mCityName);
                     }
