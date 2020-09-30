@@ -70,56 +70,15 @@
             android:layout_below="@id/location_tv"
             android:layout_marginTop="5dp"
             android:text=""
-            android:textColor="@color/Blue"
-            android:textSize="20sp"
+            android:textColor="@color/colorAccent"
+            android:textSize="30sp"
+            android:visibility="gone"
+            android:textStyle="bold"
             android:layout_centerHorizontal="true"
             android:id="@+id/compability_tv"/>
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/compability_tv"
-            android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="30dp">
 
-            <!--<de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/ic_thumb_down"
-                android:layout_marginEnd="30dp"
-                android:id="@+id/dislike_ib"
-                app:civ_border_color="#FF000000"
-                app:civ_border_width="2dp" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/ic_thumb_up"
-                android:layout_margin="5dp"
-                app:civ_border_color="#FF000000"
-                android:id="@+id/like_ib"
-                app:civ_border_width="2dp" />-->
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_thumb_down"
-                android:layout_marginEnd="50dp"
-                android:id="@+id/like_ib"
-                android:background="@drawable/like_dislike_shapes"
-                android:padding="5dp"/>
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_thumb_up"
-                android:padding="5dp"
-                android:background="@drawable/like_dislike_shapes"
-                android:id="@+id/dislike_ib"/>
-
-        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/left_overlay"
@@ -132,24 +91,24 @@
                 android:src="@drawable/dislike_icon"
                 android:layout_gravity="right"
                 android:scaleType="fitCenter"/>
+
+            <FrameLayout
+                android:id="@+id/right_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="left"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/like_icon" />
+                <!-- Set your left overlay -->
+
+            </FrameLayout>
             <!-- Set your left overlay -->
 
         </FrameLayout>
-        <FrameLayout
-            android:id="@+id/right_overlay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/like_icon"
-                android:layout_gravity="left"
-                android:scaleType="fitXY"/>
-            <!-- Set your left overlay -->
-
-        </FrameLayout>
-
 
 
     </RelativeLayout>

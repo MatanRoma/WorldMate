@@ -16,6 +16,7 @@ import com.example.androidsecondproject.repository.Repository;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SwipeViewModel extends AndroidViewModel {
@@ -25,10 +26,12 @@ public class SwipeViewModel extends AndroidViewModel {
     private Profile mProfile;
  //   private boolean isFirstTime=true;
     MutableLiveData<List<Profile>> mProfilesMutableLiveData;
+    private  List<String> categories;
 
     public SwipeViewModel(@NonNull Application application) {
         super(application);
         mRepository=Repository.getInstance(application.getApplicationContext());
+        categories = new ArrayList<>();
     }
     public MutableLiveData<List<Profile>> getProfilesResultSuccess(){
         if (mProfilesMutableLiveData == null) {
@@ -134,9 +137,21 @@ public class SwipeViewModel extends AndroidViewModel {
 
     public void setFirstTime(boolean firstTime) {
         isFirstTime = firstTime;
+
+    }
+
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
+    }
+
     }*/
 
    /* public void updateProfile() {
         mRepository.updateProfie(mRepository.getCurrentUserId(),);
     }*/
+
 }

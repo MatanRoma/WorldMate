@@ -11,11 +11,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -37,7 +40,9 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.util.List;
+
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -91,7 +96,14 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.removeItem(R.id.filter_id);
     }
 
     @Nullable
@@ -129,6 +141,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
         initializePictures();
         pictureButtonListeners(cameraBtn,galleryBtn);
         closeButtonsListeners();
+
 
 
 

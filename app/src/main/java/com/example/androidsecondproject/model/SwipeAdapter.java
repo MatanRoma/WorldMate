@@ -36,17 +36,16 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         notifyItemRemoved(position);
     }
 
-    public interface LikeDislikeItemListener
+    public interface ProfilePressedListener
     {
-        void OnLikeListener(View view,int position);
-        void OnDislikeListener(View view,int position);
+        void OnProfiledPressedListener(Profile otherProfile,int compability);
     }
 
-    private LikeDislikeItemListener mLikeDislikeListener;
+    private ProfilePressedListener mProfilePressedListener;
 
-    public void setLikeDislikeListener(LikeDislikeItemListener likeDislikeItemListener)
+    public void setProfiledPressedListener(ProfilePressedListener likeDislikeItemListener)
     {
-        this.mLikeDislikeListener = likeDislikeItemListener;
+        this.mProfilePressedListener = likeDislikeItemListener;
     }
 
     public void removeTopItem() {
@@ -61,6 +60,8 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         TextView mCompabilityTv;
         TextView mCityTv;
         TextView mAgeTv;
+
+        int mCompability;
 /*        ImageButton likeBtn;
         ImageButton dislikeBtn;*/
         View mItemView;
@@ -76,6 +77,12 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
 /*            likeBtn = itemView.findViewById(R.id.like_ib);
             dislikeBtn = itemView.findViewById(R.id.dislike_ib);*/
             mItemView = itemView;
+
+            mItemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mProfilePressedListener.OnProfiledPressedListener(mProfiles.get(getAdapterPosition()),mCompability);               }
+            });
 
 /*            likeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -103,7 +110,15 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
     Profile mProfile;
     Context mContext;
 
-    public SwipeAdapter(List<Profile> profiles,Context context,Profile profile,List<String> categories){
+    public List<String> getmCategories() {
+        return mCategories;
+    }
+
+    public void setmCategories(List<String> mCategories) {
+        this.mCategories = mCategories;
+    }
+
+    public SwipeAdapter(List<Profile> profiles, Context context, Profile profile, List<String> categories){
         this.mProfiles=profiles;
         this.mContext=context;
         this.mProfile = profile;
@@ -138,9 +153,16 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
 
         if(mCategories.size() != 0)
         {
+
             CompabilityCalculator compabilityCalculator = new CompabilityCalculator(mCategories,mProfile.getQuestionResponds(),getmProfiles().get(position).getQuestionResponds());
-            holder.mCompabilityTv.setText(compabilityCalculator.getCompability()+"%");
-            holder.mCompabilityTv.setVisibility(View.VISIBLE);
+            holder.mCompability = compabilityCalculator.getCompability();
+            if(holder.mCompability != 0)
+            {
+                holder.mCompabilityTv.setText(holder.mCompability+"%");
+                holder.mCompabilityTv.setVisibility(View.VISIBLE);
+                holder.mCompabilityTv.setVisibility(View.VISIBLE);
+            }
+
         }
         else {
             holder.mCompabilityTv.setVisibility(View.GONE);

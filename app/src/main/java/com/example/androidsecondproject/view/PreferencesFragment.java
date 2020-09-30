@@ -24,10 +24,7 @@ import com.example.androidsecondproject.model.Preferences;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.PreferencesViewModel;
-import com.example.androidsecondproject.viewmodel.RegisterViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
-
-import java.util.ArrayList;
 
 public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
 
@@ -102,6 +99,7 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
         });
 
         final CrystalRangeSeekbar ageSb = rootView.findViewById(R.id.age_range_seekbar);
+        ageSb.setMinStartValue(17);
         final TextView ageResTv = rootView.findViewById(R.id.age_res_tv);
         ageSb.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override

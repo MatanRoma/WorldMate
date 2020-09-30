@@ -266,6 +266,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:bar_highlight_color="@color/colorAccent"
+                    app:min_start_value="18"
+                    app:min_value="18"
                     app:left_thumb_image="@drawable/thumb_range"
                     app:left_thumb_image_pressed="@drawable/thumb_range_pressed"
                     app:right_thumb_image="@drawable/thumb_range"

@@ -2,11 +2,10 @@ package com.example.androidsecondproject.view;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidsecondproject.R;
-import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.MatchesAdapter;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.eViewModels;
@@ -112,6 +110,19 @@ public class MatchesFragment extends Fragment  {
     public void moveToChat(Profile myProfile,Profile otherProfile,String chatid)
     {
         moveToChatListener.OnClickMoveToChat(myProfile,otherProfile,chatid);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.removeItem(R.id.filter_id);
     }
 
 

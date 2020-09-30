@@ -12,15 +12,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -67,6 +63,13 @@ public class SwipeFragment extends Fragment {
     LinearLayout btnsLayout;
     ImageView rewindBtn;
 
+    private OnMoveToProfilePreview onMoveToProfilePreview;
+
+    public interface OnMoveToProfilePreview
+    {
+        void onClickMoveToProfilePreview(Profile otherProfile,int compability);
+    }
+
 
 
     public static SwipeFragment newInstance(Profile profile)
@@ -81,6 +84,7 @@ public class SwipeFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        onMoveToProfilePreview = (OnMoveToProfilePreview)getActivity();
     }
 
     @Override
@@ -92,9 +96,9 @@ public class SwipeFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if(item.getItemId() == R.id.filter_id){
+/*        if(item.getItemId() == R.id.filter_id){
             Toast.makeText(getContext(), "Filter", Toast.LENGTH_SHORT).show();
-        }
+        }*/
         return super.onOptionsItemSelected(item);
 
     }
@@ -166,34 +170,13 @@ public class SwipeFragment extends Fragment {
                 if (mSwipeAdapter == null) {
                     Log.d("testtt","testt2");
                     mSwipeAdapter=new SwipeAdapter(profiles,getContext(),mViewModel.getProfile(),categories);
-                    mSwipeAdapter.setLikeDislikeListener(new SwipeAdapter.LikeDislikeItemListener() {
+                    mSwipeAdapter.setProfiledPressedListener(new SwipeAdapter.ProfilePressedListener() {
                         @Override
-                        public void OnLikeListener(View view, final int position) {
-
-                            //profileLiked(position);
-                            mCardStackLayoutManager.setSwipeAnimationSetting(mSettingRight);
-                            mCardStackView.swipe();
-/*                            view.animate().translationX(1000).setDuration(500).withEndAction(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Log.d("pos",position+" "+mSwipeAdapter.getItemCount());
-                                    mSwipeAdapter.removeItemPosition(position);
-                                }
-                            }).start();*/
-                        }
-
-                        @Override
-                        public void OnDislikeListener(View view, final int position) {
-                            Log.d("pos",position+" "+mSwipeAdapter.getItemCount());
-                            //profileDisliked(position);
-                            mCardStackLayoutManager.setSwipeAnimationSetting(mSettingLeft);
-                            mCardStackView.swipe();
-/*                            view.animate().translationX(-1000).setDuration(500).start();
-                            mSwipeAdapter.removeItemPosition(position);*/
-
-
+                        public void OnProfiledPressedListener(Profile otherProfile,int compability) {
+                            moveToProfilePreview(otherProfile,compability);
                         }
                     });
+
                       mRecyclerView.setAdapter(mSwipeAdapter);
                       mCardStackView.setAdapter(mSwipeAdapter);
                      mLoadingAnimation.setVisibility(View.GONE);
@@ -219,7 +202,7 @@ public class SwipeFragment extends Fragment {
 
 
 
-        final CheckBox sportCb = rootView.findViewById(R.id.sport_cb);
+        /*final CheckBox sportCb = rootView.findViewById(R.id.sport_cb);
         final CheckBox foodCb = rootView.findViewById(R.id.food_cb);
         final CheckBox cultureCb = rootView.findViewById(R.id.culture_cb);
 
@@ -249,11 +232,12 @@ public class SwipeFragment extends Fragment {
                 mSwipeAdapter.notifyDataSetChanged();
             }
         });
-
+*/
 
 
         return rootView;
     }
+
 
     private void setTouchHelper() {
         /*ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.DOWN,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
@@ -421,6 +405,28 @@ public class SwipeFragment extends Fragment {
           //  mViewModel.writeMyProfile();
 
         }
+
+
+    private void moveToProfilePreview(Profile otherProfile, int compability) {
+        onMoveToProfilePreview.onClickMoveToProfilePreview(otherProfile,compability);
+    }
+
+
+    public void updateCategories(boolean[] checkeds)
+    {
+        List<String> categories = mSwipeAdapter.getmCategories();
+        String[] filterCategories = {"sport","food","culture"};
+        categories.clear();
+        for(int i = 0; i < checkeds.length;i++)
+        {
+            if(checkeds[i])
+            {
+                categories.add(filterCategories[i]);
+            }
+        }
+        mSwipeAdapter.setmCategories(categories);
+        mSwipeAdapter.notifyDataSetChanged();
+    }
 
 
 }

@@ -1,7 +1,6 @@
 package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -10,7 +9,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.androidsecondproject.model.LocationPoint;
 import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.Profile;
-import com.example.androidsecondproject.model.Question;
 import com.example.androidsecondproject.repository.Repository;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -26,11 +24,13 @@ public class MainViewModel extends AndroidViewModel {
     private String messageToken;
     private boolean isFirstLocation=true;
     private boolean isFirstReadOtherProfile=true;
+    private boolean[] isCategoryChecked;
 
 
     public MainViewModel(@NonNull Application application) {
         super(application);
         mRepository=Repository.getInstance(application.getApplicationContext());
+        isCategoryChecked = new boolean[]{true,true,true};
     }
     public MutableLiveData<Profile> getProfileResultSuccess(){
         if (mProfileSuccessLiveData == null) {
@@ -170,6 +170,18 @@ public class MainViewModel extends AndroidViewModel {
         isFirstReadOtherProfile = firstReadOtherProfile;
     }
 
+
+
+
+    public boolean[] getIsCategoryChecked() {
+        return isCategoryChecked;
+    }
+
+    public void setIsCategoryChecked(boolean[] isCategoryChecked) {
+        this.isCategoryChecked = isCategoryChecked;
+
+
+
     public void updateCityName(String cityName) {
         mProfileSuccessLiveData.getValue().setCity(cityName);
         mRepository.updateProfile(mProfileSuccessLiveData.getValue().getUid(),"city",cityName);
@@ -178,5 +190,6 @@ public class MainViewModel extends AndroidViewModel {
     public void updateLocation(LocationPoint locationPoint) {
         mProfileSuccessLiveData.getValue().setLocation(locationPoint);
         mRepository.updateProfile(mProfileSuccessLiveData.getValue().getUid(),"location",locationPoint);
+
     }
 }

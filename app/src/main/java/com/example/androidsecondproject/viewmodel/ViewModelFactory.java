@@ -88,6 +88,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                     objectToReturn= (T) (new ChatViewModel(mApplication));
                 }
                 break;
+            case ProfilePreview:
+                if (modelClass.isAssignableFrom(ProfilePreviewViewModel.class)) {
+                    objectToReturn= (T) (new ProfilePreviewViewModel(mApplication));
+                }
+                break;
 
 
 
