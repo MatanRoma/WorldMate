@@ -75,6 +75,7 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/compability_tv"/>
 
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -119,6 +120,36 @@
                 android:id="@+id/dislike_ib"/>
 
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/left_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/dislike_icon"
+                android:layout_gravity="right"
+                android:scaleType="fitCenter"/>
+            <!-- Set your left overlay -->
+
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/right_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/like_icon"
+                android:layout_gravity="left"
+                android:scaleType="fitXY"/>
+            <!-- Set your left overlay -->
+
+        </FrameLayout>
+
 
 
     </RelativeLayout>

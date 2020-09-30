@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,10 +31,15 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
 
     }
 
+    public void removeItemPosition(int position) {
+        mProfiles.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public interface LikeDislikeItemListener
     {
-        void OnLikeListener(View view);
-        void OnDislikeListener(View view);
+        void OnLikeListener(View view,int position);
+        void OnDislikeListener(View view,int position);
     }
 
     private LikeDislikeItemListener mLikeDislikeListener;
@@ -57,10 +61,10 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         TextView mCompabilityTv;
         TextView mCityTv;
         TextView mAgeTv;
-        ImageButton likeBtn;
-        ImageButton dislikeBtn;
-
+/*        ImageButton likeBtn;
+        ImageButton dislikeBtn;*/
         View mItemView;
+        boolean isSwiped;
 
         public SwipeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,9 +73,27 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
             mCompabilityTv = itemView.findViewById(R.id.compability_tv);
             mCityTv=itemView.findViewById(R.id.location_tv);
             mAgeTv=itemView.findViewById(R.id.card_age_tv);
-            likeBtn = itemView.findViewById(R.id.like_ib);
-            dislikeBtn = itemView.findViewById(R.id.dislike_ib);
+/*            likeBtn = itemView.findViewById(R.id.like_ib);
+            dislikeBtn = itemView.findViewById(R.id.dislike_ib);*/
             mItemView = itemView;
+
+/*            likeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!isSwiped) {
+                        mLikeDislikeListener.OnLikeListener(mItemView,getAdapterPosition());
+                    }
+                    isSwiped=true;
+                }
+            });
+            dislikeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                        mLikeDislikeListener.OnDislikeListener(mItemView,getAdapterPosition());
+
+                }
+            });*/
 
         }
     }
@@ -123,19 +145,6 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         else {
             holder.mCompabilityTv.setVisibility(View.GONE);
         }
-
-        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLikeDislikeListener.OnLikeListener(holder.mItemView);
-            }
-        });
-        holder.dislikeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLikeDislikeListener.OnDislikeListener(holder.mItemView);
-            }
-        });
 
     }
 
