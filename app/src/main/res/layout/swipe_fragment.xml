@@ -30,11 +30,18 @@
             android:id="@+id/culture_cb"/>
 
     </LinearLayout>
+    <com.yuyakaido.android.cardstackview.CardStackView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/filter_layout"
+        android:layout_above="@id/btns_layout"
+        android:id="@+id/stack_recycler_view"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/filter_layout"
+        android:visibility="gone"
         android:id="@+id/swipe_recycle_view">
 
 
@@ -58,7 +65,65 @@
         app:SpinKit_Color="@color/Blue" />
 
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="30dp"
+        android:layoutDirection="ltr"
+        android:layout_marginTop="5dp"
+        android:id="@+id/btns_layout">
 
+        <!--<de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_thumb_down"
+            android:layout_marginEnd="30dp"
+            android:id="@+id/dislike_ib"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_thumb_up"
+            android:layout_margin="5dp"
+            app:civ_border_color="#FF000000"
+            android:id="@+id/like_ib"
+            app:civ_border_width="2dp" />-->
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_thumb_down"
+            android:scaleType="fitXY"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/dislike_ib"
+            android:background="@drawable/like_dislike_shapes"
+            android:padding="5dp"/>
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/rewind_icon2"
+            android:scaleType="fitXY"
+            android:layout_marginEnd="10dp"
+            android:padding="10dp"
+            android:background="@drawable/like_dislike_shapes"
+            android:visibility="gone"
+            android:id="@+id/rewind_ib"/>
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_thumb_up"
+            android:scaleType="fitXY"
+            android:padding="5dp"
+            android:background="@drawable/like_dislike_shapes"
+            android:id="@+id/like_ib"/>
+
+    </LinearLayout>
 
 
 

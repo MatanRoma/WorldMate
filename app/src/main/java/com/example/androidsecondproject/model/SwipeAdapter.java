@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,8 +61,8 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         TextView mCompabilityTv;
         TextView mCityTv;
         TextView mAgeTv;
-        ImageButton likeBtn;
-        ImageButton dislikeBtn;
+/*        ImageButton likeBtn;
+        ImageButton dislikeBtn;*/
         View mItemView;
         boolean isSwiped;
 
@@ -74,11 +73,11 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
             mCompabilityTv = itemView.findViewById(R.id.compability_tv);
             mCityTv=itemView.findViewById(R.id.location_tv);
             mAgeTv=itemView.findViewById(R.id.card_age_tv);
-            likeBtn = itemView.findViewById(R.id.like_ib);
-            dislikeBtn = itemView.findViewById(R.id.dislike_ib);
+/*            likeBtn = itemView.findViewById(R.id.like_ib);
+            dislikeBtn = itemView.findViewById(R.id.dislike_ib);*/
             mItemView = itemView;
 
-            likeBtn.setOnClickListener(new View.OnClickListener() {
+/*            likeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(!isSwiped) {
@@ -94,7 +93,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
                         mLikeDislikeListener.OnDislikeListener(mItemView,getAdapterPosition());
 
                 }
-            });
+            });*/
 
         }
     }
