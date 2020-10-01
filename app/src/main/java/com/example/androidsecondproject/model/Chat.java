@@ -1,18 +1,38 @@
 package com.example.androidsecondproject.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chat {
+public class Chat implements Comparable<Chat> {
     private String id;
     private String firstUid;
     private String secondUid;
-    private List<Message> messages = new ArrayList<>();
+    private  Message lastMessage;
 
-    public Chat(String id, String firstUid, String secondEmail) {
+
+    public Chat(String id, String firstUid, String secondUid,Message message) {
         this.id = id;
         this.firstUid = firstUid;
-        this.secondUid = secondEmail;
+        this.secondUid = secondUid;
+        this.lastMessage=message;
+    }
+    public Chat(String id, String firstUid, String secondUid) {
+        this.id = id;
+        this.firstUid = firstUid;
+        this.secondUid = secondUid;
+
+    }
+
+    public Chat() {
+
+    }
+
+    @Override
+    public int compareTo(Chat o) {
+        Log.d("cmp","cmp");
+        return this.getLastMessage().getMessageDate().compareTo(o.getLastMessage().getMessageDate());
     }
 
     public String getId() {
@@ -39,11 +59,11 @@ public class Chat {
         this.secondUid = secondUid;
     }
 
-    public List<Message> getMessages() {
-        return messages;
+    public Message getLastMessage() {
+        return lastMessage;
     }
 
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
+    public void setLastMessage(Message lastMessage) {
+        this.lastMessage = lastMessage;
     }
 }

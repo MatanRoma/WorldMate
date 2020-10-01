@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.NotificationManager;
 import com.example.androidsecondproject.model.Profile;
@@ -26,6 +27,7 @@ public class SwipeViewModel extends AndroidViewModel {
     private Profile mProfile;
  //   private boolean isFirstTime=true;
     MutableLiveData<List<Profile>> mProfilesMutableLiveData;
+    private List<Profile> mProfiles;
     private  List<String> categories;
 
     public SwipeViewModel(@NonNull Application application) {
@@ -36,10 +38,12 @@ public class SwipeViewModel extends AndroidViewModel {
     public MutableLiveData<List<Profile>> getProfilesResultSuccess(){
         if (mProfilesMutableLiveData == null) {
             mProfilesMutableLiveData = new MutableLiveData<>();
+            mProfiles=new ArrayList<>();
             loadProfilesData();
         }
         return mProfilesMutableLiveData;
     }
+
     public void readProfiles(){
         mRepository.readProfiles(mProfile);
     }
@@ -51,6 +55,8 @@ public class SwipeViewModel extends AndroidViewModel {
         mRepository.setProfilesListener(new Repository.ProfilesListener() {
             @Override
             public void onProfilesDataChangeSuccess(List<Profile> profiles) {
+                mProfiles.clear();
+                mProfiles.addAll(profiles);
                 mProfilesMutableLiveData.setValue(profiles);
             }
 
@@ -63,34 +69,46 @@ public class SwipeViewModel extends AndroidViewModel {
 
     public void addLikedProfile(int position) {
         List<String> likes=mProfile.getLikes();
-        likes.add((mProfilesMutableLiveData.getValue().get(position).getUid()));
+    //    likes.add((mProfilesMutableLiveData.getValue().get(position).getUid()));
+        likes.add((mProfiles.get(position).getUid()));
         mRepository.updateProfile(mProfile.getUid(),"likes",likes);
 
     }
 
     public void addDislikedProfile(int position){
-        mProfile.getDisLikes().add((mProfilesMutableLiveData.getValue().get(position).getUid()));
+      //  mProfile.getDisLikes().add((mProfilesMutableLiveData.getValue().get(position).getUid()));
+        mProfile.getDisLikes().add((mProfiles.get(position).getUid()));
         mRepository.updateProfile(mProfile.getUid(),"disLikes",mProfile.getDisLikes());
     }
 
 
     public boolean checkIfMatch(int position) {
         String myUid=mProfile.getUid();
-        List<String> likeUids=mProfilesMutableLiveData.getValue().get(position).getLikes();
+       // List<String> likeUids=mProfilesMutableLiveData.getValue().get(position).getLikes();
+        List<String> likeUids=mProfiles.get(position).getLikes();
         return likeUids.contains(myUid);
     }
 
     public void updateMatch(int position) {
-        Profile otherPofile=mProfilesMutableLiveData.getValue().get(position);
-        String key = mProfile.getUid()+otherPofile.getUid();
-        Match myMatch = new Match(otherPofile.getUid(),key);
-        Match otherMatch = new Match(mProfile.getUid(),key);
+    //    Profile otherPofile=mProfilesMutableLiveData.getValue().get(position);
+        Profile otherPofile=mProfiles.get(position);
+        String chatKeyId,myUid=mProfile.getUid(),otherUid=otherPofile.getUid();
+        if(myUid.compareTo(otherUid)>0){
+            chatKeyId=myUid+otherUid;
+        }
+        else{
+            chatKeyId=otherUid+myUid;
+        }
+        Match myMatch = new Match(otherPofile.getUid(),chatKeyId);
+        Match otherMatch = new Match(mProfile.getUid(),chatKeyId);
         final String MATCHES= "matches";
 
         mProfile.getMatches().add(myMatch);
         mRepository.updateProfile(mProfile.getUid(),MATCHES,mProfile.getMatches());
         otherPofile.getMatches().add(otherMatch);
         mRepository.updateProfile(otherPofile.getUid(),MATCHES,otherPofile.getMatches());
+        Chat chat =new Chat(chatKeyId,mProfile.getUid(),otherPofile.getUid());
+        mRepository.writeChat(chat);
 
 
         notifyOtherProfile(mProfile.getMessageToken()); // only for test
@@ -129,6 +147,11 @@ public class SwipeViewModel extends AndroidViewModel {
 
     public void setContext(Context context) {
         this.context=context;
+    }
+
+
+    public List<Profile> getProfiles() {
+        return mProfiles;
     }
 
    /* public boolean isFirstTime() {

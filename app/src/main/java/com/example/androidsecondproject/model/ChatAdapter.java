@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.androidsecondproject.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ChatAdapter extends FirebaseRecyclerAdapter< Message, ChatAdapter.ChatViewHolder> {
    /* List<Profile> mProfiles;
@@ -116,8 +117,10 @@ public class ChatAdapter extends FirebaseRecyclerAdapter< Message, ChatAdapter.C
 
     @Override
     protected void onBindViewHolder(@NonNull ChatViewHolder holder, int position, @NonNull Message message) {
-        holder.contentTv.setText(message.getText());
-        holder.dateTv.setText(message.getFormattedDate());
+        if(!message.getText().equals("")) {
+            holder.contentTv.setText(message.getText());
+            holder.dateTv.setText(message.getFormattedDate());
+        }
     }
 
 
@@ -125,4 +128,6 @@ public class ChatAdapter extends FirebaseRecyclerAdapter< Message, ChatAdapter.C
     public int getItemCount() {
         return super.getItemCount();
     }
+
+
 }

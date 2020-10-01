@@ -2,6 +2,7 @@ package com.example.androidsecondproject.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidsecondproject.R;
+import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.MatchesAdapter;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.eViewModels;
@@ -84,7 +86,7 @@ public class MatchesFragment extends Fragment  {
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
-            mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(),getContext(),mViewModel.getMyProfile(),mViewModel.getNewMatchUid());
+            /*mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(),getContext(),mViewModel.getMyProfile(),mViewModel.getNewMatchUid());
             mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
                 @Override
                 public void onChatClickedListener(int position) {
@@ -97,8 +99,43 @@ public class MatchesFragment extends Fragment  {
             matchesRecycler.setAdapter(mMatchesAdapter);
             mLoadingAnimation.setVisibility(View.GONE);
 
+*/
+            mViewModel.readChats();
             }
         };
+        Observer<List<Chat>> chatDataChangedObserver= new Observer<List<Chat>>() {
+            @Override
+            public void onChanged(List<Chat> chats) {
+
+                if (mMatchesAdapter == null){
+                    mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(), getContext(),mViewModel.getChats(), mViewModel.getNewMatchUid());
+                mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
+                    @Override
+                    public void onChatClickedListener(Profile otherProfile) {
+                        String chatid = mViewModel.getChatId(otherProfile.getUid());
+                        moveToChat(mViewModel.getMyProfile(), otherProfile, chatid);
+
+                    }
+                });
+
+                mMatchesAdapter.sortChats();
+                    Log.d("heree","ger1");
+                matchesRecycler.setAdapter(mMatchesAdapter);
+                mLoadingAnimation.setVisibility(View.GONE);
+            }
+                else{
+                    Log.d("heree","ger2");
+                  //  mMatchesAdapter.setChats();
+                    mMatchesAdapter.sortChats();
+                    mMatchesAdapter.notifyDataSetChanged();
+
+                }
+
+
+            }
+        };
+
+        mViewModel.getChatDataChange().observe(this,chatDataChangedObserver);
         mViewModel.getMyProfileResultSuccess().observe(this,myProfileSuccessObserver);
         mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
         mViewModel.readMyProfile();
