@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private final String CHAT_FRAGMENT = "chat_fragment";
     private final String PROFILE_PREVIEW_FRAGMENT = "profile_preview_fragment";
     private final String PHOTO_PREVIEW_FRAGMENT = "photo_preview_fragment";
+    private  final String SETTINGS_FRAGMENT="settings_fragment";
 
     private final String STACK ="secondary_stack";
 
@@ -275,6 +276,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             case "Messages":
                 break;
             case "Settings":
+                moveToSettingFragment();
                 break;
             case "Logout":
                 mViewModel.setToken("");
@@ -831,6 +833,16 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             moveToMatchesFragment(matcherUid.substring(3));
         }
         super.onNewIntent(intent);
+    }
+
+    public void moveToSettingFragment() {
+        SettingsFragment settingsFragment = SettingsFragment.newInstance(mViewModel.getProfile());
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.flContent,settingsFragment,SETTINGS_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        setTitle("Settings");
     }
 
 
