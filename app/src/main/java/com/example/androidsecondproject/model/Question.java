@@ -1,10 +1,12 @@
 package com.example.androidsecondproject.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Question implements Serializable {
     private String sentence;
-    private AnswerOptions answers;
+    //private AnswerOptions answers;
+    private List<String> answers;
     private String category;
     private int id;
 
@@ -19,11 +21,11 @@ public class Question implements Serializable {
         this.sentence = sentence;
     }
 
-    public AnswerOptions getAnswers() {
+    public List<String> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(AnswerOptions answers) {
+    public void setAnswers(List<String> answers) {
         this.answers = answers;
     }
 
@@ -42,4 +44,6 @@ public class Question implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
+
 }

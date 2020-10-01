@@ -80,7 +80,20 @@
             android:id="@+id/compability_tv"/>
 
 
+        <FrameLayout
+            android:id="@+id/right_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="left"
+                android:scaleType="fitCenter"
+                android:src="@drawable/like_icon" />
+            <!-- Set your left overlay -->
+
+        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/left_overlay"
@@ -94,20 +107,7 @@
                 android:layout_gravity="right"
                 android:scaleType="fitCenter"/>
 
-            <FrameLayout
-                android:id="@+id/right_overlay"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="left"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/like_icon" />
-                <!-- Set your left overlay -->
-
-            </FrameLayout>
             <!-- Set your left overlay -->
 
         </FrameLayout>

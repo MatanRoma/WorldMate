@@ -70,7 +70,7 @@
                         android:layout_below="@id/divider"
                         android:id="@+id/answers_radio_group">
 
-                        <RadioButton
+<!--                        <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="answer 1"
@@ -79,7 +79,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="answer 2"
-                            android:id="@+id/option2_rb"/>
+                            android:id="@+id/option2_rb"/>-->
 
                     </RadioGroup>
 
