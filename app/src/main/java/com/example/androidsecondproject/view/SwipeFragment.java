@@ -415,7 +415,7 @@ public class SwipeFragment extends Fragment {
     public void updateCategories(boolean[] checkeds)
     {
         List<String> categories = mSwipeAdapter.getmCategories();
-        String[] filterCategories = {"sport","food","culture"};
+        String[] filterCategories = {"sport","food","culture","music"};
         categories.clear();
         for(int i = 0; i < checkeds.length;i++)
         {

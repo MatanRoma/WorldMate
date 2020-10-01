@@ -47,6 +47,13 @@
                 android:text="culture"
                 android:layout_below="@id/food_rb"
                 android:id="@+id/culture_rb"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:text="music"
+                android:layout_below="@id/culture_rb"
+                android:id="@+id/music_rb"/>
 
 
 
@@ -112,6 +119,27 @@
                     android:textSize="40sp"
                     android:visibility="gone"
                     android:id="@+id/culture_title_tv"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@id/culture_questions_layout"
+                android:id="@+id/music_questions_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="30dp"
+                    android:text="Food"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="40sp"
+                    android:visibility="gone"
+                    android:id="@+id/music_title_tv"/>
 
             </LinearLayout>
 

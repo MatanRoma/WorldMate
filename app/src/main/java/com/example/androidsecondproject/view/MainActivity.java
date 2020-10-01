@@ -427,9 +427,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         CheckBox sportCb = alertView.findViewById(R.id.filter_sport_cb);
         CheckBox foodCb = alertView.findViewById(R.id.filter_food_cb);
         CheckBox cultureCb = alertView.findViewById(R.id.filter_culture_cb);
+        CheckBox musicCb = alertView.findViewById(R.id.filter_music_cb);
         Button confirmBtn = alertView.findViewById(R.id.confirm_btn);
         Button cancelBtn = alertView.findViewById(R.id.cancel_btn);
-        final CheckBox[] checkBoxes  = new CheckBox[]{sportCb,foodCb,cultureCb};
+        final CheckBox[] checkBoxes  = new CheckBox[]{sportCb,foodCb,cultureCb,musicCb};
         show = alertDialog.show();
         for (int i = 0; i <checkBoxes.length;i++)
         {

@@ -70,9 +70,12 @@ public class CompabilityCalculator {
 
                 if (myQuestion.getId() == otherQuestion.getId()) {
                     matchedQuestions++;
-
                     {
-                        if(myQuestion.getResponse() == otherQuestion.getResponse())
+                        if(myQuestion.getAnswersNum() > 2 &&Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) <=1)
+                        {
+                            matchedAnswer++;
+                        }
+                        else if(myQuestion.getResponse() == otherQuestion.getResponse())
                         {
                             matchedAnswer++;
                         }

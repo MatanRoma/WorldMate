@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.ChatAdapter;
+import com.example.androidsecondproject.model.CompabilityCalculator;
 import com.example.androidsecondproject.model.Message;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.eViewModels;
@@ -27,6 +28,8 @@ import com.example.androidsecondproject.viewmodel.ChatViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -91,7 +94,8 @@ public class ChatFragment extends Fragment {
         chatHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMoveToProfilePreviewFromChat.onClickMoveToProfilePreviewFromChat(mViewModel.getOtherProfile(),0);
+                int compability = checkComapability(mViewModel.getMyProfile(),mViewModel.getOtherProfile());
+                onMoveToProfilePreviewFromChat.onClickMoveToProfilePreviewFromChat(mViewModel.getOtherProfile(),compability);
             }
         });
 
@@ -151,6 +155,8 @@ public class ChatFragment extends Fragment {
         nameTv.setText(otherProfile.getFirstName() + " " + otherProfile.getLastName());
         Glide.with(getContext()).load(otherProfile.getProfilePictureUri()).error(R.drawable.man_profile).into(profileImage);
 
+
+
         return rootView;
     }
 
@@ -164,6 +170,18 @@ public class ChatFragment extends Fragment {
     public void onStart() {
         super.onStart();
         mChatAdapter.startListening();
+    }
+
+    public int checkComapability(Profile myProfile, Profile otherProfile)
+    {
+        List<String> categories = new ArrayList<String>() {{
+            add("sport");
+            add("food");
+            add("culture");
+            add("music");
+        }};
+        CompabilityCalculator compabilityCalculator = new CompabilityCalculator(categories,myProfile.getQuestionResponds(),otherProfile.getQuestionResponds());
+        return compabilityCalculator.getCompability();
     }
 
     public void sendMessage(String text)  {
