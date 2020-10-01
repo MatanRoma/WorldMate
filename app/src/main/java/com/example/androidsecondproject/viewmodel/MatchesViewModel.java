@@ -11,6 +11,7 @@ import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MatchesViewModel extends AndroidViewModel {
@@ -18,10 +19,13 @@ public class MatchesViewModel extends AndroidViewModel {
     private Profile mProfile;
     private int currentChatPosition;
     private String newMatchUid;
+    private List<Chat> mChats;
 
 
     private MutableLiveData<List<Profile>> mMatchesMutableLiveData;
     private MutableLiveData<Profile> mMyProfileMutableLiveData;
+    private MutableLiveData<List<Chat>> mChatMutableLiveData;
+
 
 
     public MatchesViewModel(@NonNull Application application) {
@@ -36,6 +40,26 @@ public class MatchesViewModel extends AndroidViewModel {
         }
         return mMatchesMutableLiveData;
     }
+    public MutableLiveData<List<Chat>> getChatDataChange(){
+        if (mChatMutableLiveData == null) {
+            mChatMutableLiveData = new MutableLiveData<>();
+            mChats=new ArrayList<>();
+            loadChatData();
+        }
+        return mChatMutableLiveData;
+    }
+
+    private void loadChatData() {
+        mRepository.setChatListener(new Repository.ChatListener() {
+            @Override
+            public void onChatDataChanged(List<Chat> chats) {
+                mChats.clear();
+                mChats.addAll(chats);
+                mChatMutableLiveData.setValue(chats);
+            }
+        });
+    }
+
     public MutableLiveData<Profile> getMyProfileResultSuccess(){
         if (mMyProfileMutableLiveData == null) {
             mMyProfileMutableLiveData = new MutableLiveData<>();
@@ -110,12 +134,17 @@ public class MatchesViewModel extends AndroidViewModel {
     }
 
     public String getChatId(String otherUid) {
-        for(Match match:mMyProfileMutableLiveData.getValue().getMatches()){
+       /* for(Match match:mMyProfileMutableLiveData.getValue().getMatches()){
             if(match.getOtherUid().equals(otherUid))
                 return match.getId();
         }
-        return "";
-
+        return "";*/
+       if(mMyProfileMutableLiveData.getValue().getUid().compareTo(otherUid)>0){
+            return mMyProfileMutableLiveData.getValue().getUid()+otherUid;
+       }
+       else {
+            return otherUid+mMyProfileMutableLiveData.getValue().getUid();
+       }
     }
 
     public Profile getMyProfile() {
@@ -132,5 +161,13 @@ public class MatchesViewModel extends AndroidViewModel {
 
     public String getNewMatchUid() {
         return newMatchUid;
+    }
+
+    public void readChats() {
+       mRepository.readChats(mMyProfileMutableLiveData.getValue());
+    }
+
+    public List<Chat> getChats() {
+        return mChats;
     }
 }

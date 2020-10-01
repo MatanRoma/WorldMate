@@ -51,7 +51,7 @@ public class ChatViewModel extends AndroidViewModel {
     }
 
     public void writeMessage(String text) {
-        mRepository.writeMessage(chatId,new Message(mRepository.getCurrentUserId(),text));
+        mRepository.writeMessage(chatId,new Message(mRepository.getCurrentUserId(),text,otherProfile.getUid()));
     }
 
     public String getMyUid() {

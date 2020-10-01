@@ -9,12 +9,15 @@ import java.util.Date;
 public class Message implements Serializable {
     private String senderUid;
     private String text;
+    private String recipientUid;
+
     private Date messageDate;
 
-    public Message(String senderUid, String text) {
+    public Message(String senderUid, String text,String recipientUid) {
         this.senderUid = senderUid;
         this.text = text;
         messageDate=new Date();
+        this.recipientUid=recipientUid;
     }
 
     public Message() {
@@ -47,5 +50,13 @@ public class Message implements Serializable {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getRecipientUid() {
+        return recipientUid;
+    }
+
+    public void setRecipientUid(String recipientUid) {
+        this.recipientUid = recipientUid;
     }
 }

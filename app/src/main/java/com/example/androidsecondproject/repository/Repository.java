@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.androidsecondproject.model.Chat;
+import com.example.androidsecondproject.model.ChatAndMessages;
 import com.example.androidsecondproject.model.Match;
 import com.example.androidsecondproject.model.Message;
 import com.example.androidsecondproject.model.Preferences;
@@ -21,8 +23,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Repository {
 
@@ -38,6 +42,7 @@ public class Repository {
     private ProfileListener profileListener;
     private ProfilesListener profilesListener;
     private  MessageListener messageListener;
+    private ChatListener chatListener;
 
     private static Repository repository;
     private QuestionsListener questionsListener;
@@ -250,10 +255,11 @@ public class Repository {
     }
 
     public Query readAllMessages(String chatId) {
-        return chatsTable.child(chatId);
+        return chatsTable.child(chatId).child("Messages");
     }
     public void writeMessage(String chatId, final Message message){
-        chatsTable.child(chatId).push().setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
+        chatsTable.child(chatId).child("chat").setValue(new Chat(chatId,message.getRecipientUid(),message.getSenderUid(),message));
+        chatsTable.child(chatId).child("Messages").push().setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 if(messageListener!=null)
@@ -261,6 +267,47 @@ public class Repository {
             }
         });
     }
+    private String calculateChatUid(String myUid,String otherUid){
+        if(myUid.compareTo(otherUid)>0){
+            return myUid+otherUid;
+        }
+        else {
+            return otherUid + myUid;
+        }
+    }
+    public void readChats(final Profile profile) {
+        final Set<String> chatIds=new HashSet<>();
+        for(Match match:profile.getMatches()){
+            chatIds.add(match.getId());
+        }
+        chatsTable.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Chat> chats=new ArrayList<>();
+
+               for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                   ChatAndMessages chatAndMessages=snapshot.getValue(ChatAndMessages.class);
+                   if(chatIds.contains(chatAndMessages.getChat().getId()))
+                        chats.add(chatAndMessages.getChat());
+               }
+               Log.d("chat_size",chats.size()+"");
+                if(chatListener!=null){
+                    chatListener.onChatDataChanged(chats);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void writeChat(Chat chat) {
+        chat.setLastMessage(new Message(chat.getFirstUid(),"",chat.getSecondUid()));
+        chatsTable.child(chat.getId()).child("chat").setValue(chat);
+    }
+
     public interface MessageListener{
         void onMessageSentSuccess(Message message);
     }
@@ -293,6 +340,9 @@ public class Repository {
     public interface QuestionsListener{
         void onQuestionsDataChangeSuccess(List<Question> questions);
         void onQuestionsDataChangeFail(String error);
+    }
+    public interface ChatListener{
+        void onChatDataChanged(List<Chat> chats);
     }
     public void setQuestionsListener(QuestionsListener questionsListener) {
         this.questionsListener = questionsListener;
@@ -364,5 +414,8 @@ public class Repository {
     public void uploadAndDownload(Bitmap bitmap,boolean isProfilePic){
         storageRepository.uploadAndDownload(bitmap,isProfilePic);
 
+    }
+    public void setChatListener(ChatListener chatListener){
+        this.chatListener=chatListener;
     }
 }

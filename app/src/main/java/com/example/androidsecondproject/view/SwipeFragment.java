@@ -169,7 +169,7 @@ public class SwipeFragment extends Fragment {
                 Log.d("testtt","testt1");
                 if (mSwipeAdapter == null) {
                     Log.d("testtt","testt2");
-                    mSwipeAdapter=new SwipeAdapter(profiles,getContext(),mViewModel.getProfile(),categories);
+                    mSwipeAdapter=new SwipeAdapter(mViewModel.getProfiles(),getContext(),mViewModel.getProfile(),categories);
                     mSwipeAdapter.setProfiledPressedListener(new SwipeAdapter.ProfilePressedListener() {
                         @Override
                         public void OnProfiledPressedListener(Profile otherProfile,int compability) {
@@ -184,7 +184,7 @@ public class SwipeFragment extends Fragment {
                 }
                 else {
 
-                    mSwipeAdapter.setmProfiles(profiles);
+                 //   mSwipeAdapter.setmProfiles(profiles);
                     mSwipeAdapter.notifyDataSetChanged();
                 }
 
