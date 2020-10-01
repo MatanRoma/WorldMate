@@ -54,7 +54,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             @Override
             public int compare(Chat o1, Chat o2) {
                 Log.d("cmp_date",o1.getLastMessage().getMessageDate().compareTo(o2.getLastMessage().getMessageDate())+"");
-                return o1.getLastMessage().getMessageDate().compareTo(o2.getLastMessage().getMessageDate());
+                return (o1.getLastMessage().getMessageDate().compareTo(o2.getLastMessage().getMessageDate()))*(-1);
             }
         });
     }
