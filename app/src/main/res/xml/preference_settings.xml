@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <CheckBoxPreference
+        android:title="Discovery"
+        android:key="discovery_cb_pref"
+        android:summary="Allowing other users to see you"/>
+
+    <PreferenceCategory
+        android:title="Your Preference"
+        android:key="your_preference_category">
+
+        <MultiSelectListPreference
+            android:entries="@array/multi_entries"
+            android:entryValues="@array/multi_values"
+            android:key="looking_for_pref"
+            android:summary="Gender for them I am interested"
+            android:title="Looking for"/>
+
+        <SeekBarPreference
+            android:title="Max Distance"
+            android:key="max_distance_pref"
+            android:summary=""
+            android:max="100"
+            app:min="0"
+            app:seekBarIncrement="1"/>
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Notification"
+        android:key="notif_category">
+
+        <SwitchPreference
+            android:title="New Match notification"
+            android:key="match_pref"
+            android:defaultValue="true"/>
+
+        <SwitchPreference
+            android:title="New message notification"
+            android:key="message_pref"
+            android:defaultValue="true"/>
+
+        <SwitchPreference
+            android:title="Vibrate"
+            android:defaultValue="false"
+            android:key="vibrate_pref"
+            android:summary="Vibrate on new notification"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="About"
+        android:key="about_category">
+
+        <Preference
+            android:title="We are development team!"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Version"
+        android:key="version_category">
+
+        <Preference
+            android:title="2.0.1"/>
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

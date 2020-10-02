@@ -43,6 +43,7 @@ public class Repository {
     private ProfilesListener profilesListener;
     private  MessageListener messageListener;
     private ChatListener chatListener;
+    private ProfilesForGuestListener profilesForGuestListener;
 
     private static Repository repository;
     private QuestionsListener questionsListener;
@@ -307,6 +308,41 @@ public class Repository {
         chat.setLastMessage(new Message(chat.getFirstUid(),"",chat.getSecondUid()));
         chatsTable.child(chat.getId()).child("chat").setValue(chat);
     }
+
+    public void readProfilesForGuest() {
+        profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.exists()){
+                    final int MAX_PROFILES_TO_SHOW=4;
+                    int i=0;
+                    List<Profile> profiles=new ArrayList<>();
+                    for(DataSnapshot currSnapshot:snapshot.getChildren()){
+                        if(i==MAX_PROFILES_TO_SHOW)
+                            break;
+                        profiles.add(currSnapshot.getValue(Profile.class));
+                        i++;
+                    }
+                    if(profilesForGuestListener!=null)
+                        profilesForGuestListener.onGuestProfilesChangedSuccess(profiles);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public interface  ProfilesForGuestListener{
+        void onGuestProfilesChangedSuccess(List<Profile> guestProfiles);
+    }
+    public void setProfileGuestListener(ProfilesForGuestListener profileGuestListener){
+        this.profilesForGuestListener=profileGuestListener;
+    }
+
 
     public interface MessageListener{
         void onMessageSentSuccess(Message message);

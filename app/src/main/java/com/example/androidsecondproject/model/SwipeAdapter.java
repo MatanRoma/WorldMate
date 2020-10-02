@@ -61,8 +61,8 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         TextView mAgeTv;
 
         int mCompability;
-/*        ImageButton likeBtn;
-        ImageButton dislikeBtn;*/
+        /*        ImageButton likeBtn;
+                ImageButton dislikeBtn;*/
         View mItemView;
         boolean isSwiped;
 
@@ -104,10 +104,11 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         }
     }
 
-    List<Profile> mProfiles;
-    List<String> mCategories;
-    Profile mProfile;
-    Context mContext;
+    private List<Profile> mProfiles;
+    private List<String> mCategories;
+    private  Profile mMyProfile;
+    private Context mContext;
+    private boolean mIsGuestLogin;
 
     public List<String> getmCategories() {
         return mCategories;
@@ -120,7 +121,13 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
     public SwipeAdapter(List<Profile> profiles, Context context, Profile profile, List<String> categories){
         this.mProfiles=profiles;
         this.mContext=context;
-        this.mProfile = profile;
+        this.mMyProfile = profile;
+        this.mCategories = categories;
+    }
+    public SwipeAdapter(List<Profile> profiles, Context context, List<String> categories){
+        this.mProfiles=profiles;
+        this.mContext=context;
+        mIsGuestLogin=true;
         this.mCategories = categories;
     }
 
@@ -135,7 +142,8 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
     @NonNull
     @Override
     public SwipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.profile_card,parent,false);
+        //View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.profile_card,parent,false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.test_swipe_card,parent,false);
         SwipeViewHolder swipeViewHolder=new SwipeViewHolder(view);
         return swipeViewHolder;
     }
@@ -157,10 +165,10 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
             holder.mCityTv.setText(currentProfile.getCity());
 
 
-        if(mCategories.size() != 0)
+        if(mCategories.size() != 0&&!mIsGuestLogin)
         {
 
-            CompabilityCalculator compabilityCalculator = new CompabilityCalculator(mCategories,mProfile.getQuestionResponds(),getmProfiles().get(position).getQuestionResponds());
+            CompabilityCalculator compabilityCalculator = new CompabilityCalculator(mCategories, mMyProfile.getQuestionResponds(),getmProfiles().get(position).getQuestionResponds());
             holder.mCompability = compabilityCalculator.getCompability();
             if(holder.mCompability != 0)
             {
