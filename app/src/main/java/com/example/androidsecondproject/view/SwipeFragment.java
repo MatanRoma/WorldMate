@@ -63,11 +63,21 @@ public class SwipeFragment extends Fragment {
     LinearLayout btnsLayout;
     //ImageView rewindBtn;
 
-    private OnMoveToProfilePreview onMoveToProfilePreview;
+    private SwipeInterface swipeInterface;
 
-    public interface OnMoveToProfilePreview
+    public static Fragment newInstance() {
+        // login as guest
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("is_guest",true);
+        SwipeFragment swipeFragment  = new SwipeFragment();
+        swipeFragment.setArguments(bundle);
+        return swipeFragment;
+    }
+
+    public interface SwipeInterface
     {
         void onClickMoveToProfilePreview(Profile otherProfile,int compability);
+        void onShowToolbar();
     }
 
 
@@ -76,6 +86,7 @@ public class SwipeFragment extends Fragment {
     {
         Bundle bundle=new Bundle();
         bundle.putSerializable("profile",profile);
+        bundle.putSerializable("is_guest",false);
         SwipeFragment swipeFragment  = new SwipeFragment();
         swipeFragment.setArguments(bundle);
         return swipeFragment;
@@ -84,7 +95,7 @@ public class SwipeFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        onMoveToProfilePreview = (OnMoveToProfilePreview)getActivity();
+        swipeInterface = (SwipeInterface)getActivity();
     }
 
     @Override
@@ -92,6 +103,8 @@ public class SwipeFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_with_filter,menu);
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -106,7 +119,9 @@ public class SwipeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       View rootView = inflater.inflate(R.layout.swipe_fragment,container,false);
+        View rootView = inflater.inflate(R.layout.swipe_fragment,container,false);
+        mViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Swipe)).get(SwipeViewModel.class);
+        mViewModel.setIsLoginAsGuest(getArguments().getBoolean("is_guest"));
 
         mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
         mLoadingAnimation.setVisibility(View.VISIBLE);
@@ -114,11 +129,11 @@ public class SwipeFragment extends Fragment {
 
         //((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
 
-      //  swipeProfile=rootView.findViewById(R.id.swipe_fling);
+        //  swipeProfile=rootView.findViewById(R.id.swipe_fling);
         mRecyclerView=rootView.findViewById(R.id.swipe_recycle_view);
         mCardStackView = rootView.findViewById(R.id.stack_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-   //     mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+        //     mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
 
         ImageView likeBtn = rootView.findViewById(R.id.like_ib);
         ImageView dislikeBtn = rootView.findViewById(R.id.dislike_ib);
@@ -157,45 +172,41 @@ public class SwipeFragment extends Fragment {
 
 
 
-        mViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Swipe)).get(SwipeViewModel.class);
+
         mViewModel.setContext(getContext());
         final List<String> categories = new ArrayList<>();
         categories.add("sport");
         categories.add("food");
         categories.add("culture");
-        Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
-            @Override
-            public void onChanged(List<Profile> profiles) {
-                Log.d("testtt","testt1");
-                if (mSwipeAdapter == null) {
-                    Log.d("testtt","testt2");
-                    mSwipeAdapter=new SwipeAdapter(mViewModel.getProfiles(),getContext(),mViewModel.getProfile(),categories);
-                    mSwipeAdapter.setProfiledPressedListener(new SwipeAdapter.ProfilePressedListener() {
-                        @Override
-                        public void OnProfiledPressedListener(Profile otherProfile,int compability) {
-                            moveToProfilePreview(otherProfile,compability);
+        if(!mViewModel.isLoginAsGuest()) {
+            Observer<List<Profile>> profileSuccessObserver = new Observer<List<Profile>>() {
+                @Override
+                public void onChanged(List<Profile> profiles) {
+                        if (mSwipeAdapter == null) {
+                           initialAdapter(categories);
+                        } else {
+                            mSwipeAdapter.notifyDataSetChanged();
                         }
-                    });
-
-                      mRecyclerView.setAdapter(mSwipeAdapter);
-                      mCardStackView.setAdapter(mSwipeAdapter);
-                     mLoadingAnimation.setVisibility(View.GONE);
-                     btnsLayout.setVisibility(View.VISIBLE);
                 }
-                else {
+            };
 
-                 //   mSwipeAdapter.setmProfiles(profiles);
-                    mSwipeAdapter.notifyDataSetChanged();
+            mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
+            mViewModel.setUserProfile((Profile) getArguments().getSerializable("profile"));
+            mViewModel.readProfiles();
+        }
+        else{
+            Observer<List<Profile>> guestProfileSuccessObserver=new Observer<List<Profile>>() {
+                @Override
+                public void onChanged(List<Profile> profiles) {
+                    initialAdapter(categories);
                 }
-
-            }
-        };
-
-        mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
-        mViewModel.setUserProfile((Profile)getArguments().getSerializable("profile"));
+            };
+            mViewModel.getGuestProfilesResultSuccess().observe(this,guestProfileSuccessObserver);
+            mViewModel.readProfilesForGuest();
+        }
         setTouchHelper();
         Log.d("testtt","testt0");
-        mViewModel.readProfiles();
+
 
 
 
@@ -236,6 +247,27 @@ public class SwipeFragment extends Fragment {
 
 
         return rootView;
+    }
+    private void initialAdapter(List<String> categories){
+        if(mViewModel.isLoginAsGuest()){
+            mSwipeAdapter= new SwipeAdapter(mViewModel.getGuestProfiles(), getContext(), categories);
+        }
+        else{
+            mSwipeAdapter = new SwipeAdapter(mViewModel.getProfiles(), getContext(), mViewModel.getProfile(), categories);
+        }
+        swipeInterface.onShowToolbar();
+
+        mSwipeAdapter.setProfiledPressedListener(new SwipeAdapter.ProfilePressedListener() {
+            @Override
+            public void OnProfiledPressedListener(Profile otherProfile, int compability) {
+                moveToProfilePreview(otherProfile, compability);
+            }
+        });
+
+        //    mRecyclerView.setAdapter(mSwipeAdapter);
+        mCardStackView.setAdapter(mSwipeAdapter);
+        mLoadingAnimation.setVisibility(View.GONE);
+        btnsLayout.setVisibility(View.VISIBLE);
     }
 
 
@@ -313,19 +345,23 @@ public class SwipeFragment extends Fragment {
 
             @Override
             public void onCardSwiped(Direction direction) {
-            if(direction == Direction.Right)
-            {
-                profileLiked(0);
-                mSwipeAdapter.removeTopItem();
-                //rewindBtn.setVisibility(View.GONE);
-                Log.d("stack_swipe","swiped_right");
-            }
-            else if(direction ==Direction.Left){
-                profileDisliked(0);
-                mSwipeAdapter.removeTopItem();
-                //rewindBtn.setVisibility(View.VISIBLE);
-                Log.d("stack_swipe","swiped_left");
-            }
+                if(direction == Direction.Right)
+                {
+                    if(!mViewModel.isLoginAsGuest()) {
+                        profileLiked(0);
+                    }
+                    mSwipeAdapter.removeTopItem();
+                    //rewindBtn.setVisibility(View.GONE);
+                    Log.d("stack_swipe","swiped_right");
+                }
+                else if(direction ==Direction.Left){
+                    if(!mViewModel.isLoginAsGuest()) {
+                        profileDisliked(0);
+                    }
+                    mSwipeAdapter.removeTopItem();
+                    //rewindBtn.setVisibility(View.VISIBLE);
+                    Log.d("stack_swipe","swiped_left");
+                }
             }
 
             @Override
@@ -350,7 +386,7 @@ public class SwipeFragment extends Fragment {
         });
 
         mCardStackView.setLayoutManager(mCardStackLayoutManager);
-       mSettingRight= new SwipeAnimationSetting.Builder().setDirection(Direction.Right)
+        mSettingRight= new SwipeAnimationSetting.Builder().setDirection(Direction.Right)
                 .setDuration(Duration.Slow.duration)
                 .build();
         mSettingLeft = new SwipeAnimationSetting.Builder().setDirection(Direction.Left)
@@ -371,44 +407,44 @@ public class SwipeFragment extends Fragment {
         mCardStackLayoutManager.setCanScrollVertical(true);
         mCardStackLayoutManager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual);
 
-        };
+    };
 
-        private void profileLiked(final int position){
-            mViewModel.addLikedProfile(position);
+    private void profileLiked(final int position){
+        mViewModel.addLikedProfile(position);
 
 
-            if(mViewModel.checkIfMatch(position)){
-                mMatchAnimation.setVisibility(View.VISIBLE);
-                AnimationDrawable animationDrawable = (AnimationDrawable) mMatchAnimation.getDrawable();
-                animationDrawable.start();
-                MediaPlayer matchSound = MediaPlayer.create(getActivity(),R.raw.match);
-                matchSound.start();
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mMatchAnimation.setVisibility(View.GONE);
-                    }
-                },3000);
-                mViewModel.updateMatch(position);
-             //   mViewModel.writeOtherProfile(position);
-            }
-           
+        if(mViewModel.checkIfMatch(position)){
+            mMatchAnimation.setVisibility(View.VISIBLE);
+            AnimationDrawable animationDrawable = (AnimationDrawable) mMatchAnimation.getDrawable();
+            animationDrawable.start();
+            MediaPlayer matchSound = MediaPlayer.create(getActivity(),R.raw.match);
+            matchSound.start();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mMatchAnimation.setVisibility(View.GONE);
+                }
+            },3000);
+            mViewModel.updateMatch(position);
+            //   mViewModel.writeOtherProfile(position);
+        }
+
         //    mViewModel.removeProfile(position);
-          //  mSwipeAdapter.notifyItemRemoved(position);
-         //   mViewModel.writeMyProfile();
-         //   mViewModel.updateProfile();
-        }
+        //  mSwipeAdapter.notifyItemRemoved(position);
+        //   mViewModel.writeMyProfile();
+        //   mViewModel.updateProfile();
+    }
 
-        private  void profileDisliked(final int position){
-            mViewModel.addDislikedProfile(position);
-          //  mViewModel.writeMyProfile();
+    private  void profileDisliked(final int position){
+        mViewModel.addDislikedProfile(position);
+        //  mViewModel.writeMyProfile();
 
-        }
+    }
 
 
     private void moveToProfilePreview(Profile otherProfile, int compability) {
-        onMoveToProfilePreview.onClickMoveToProfilePreview(otherProfile,compability);
+        swipeInterface.onClickMoveToProfilePreview(otherProfile,compability);
     }
 
 

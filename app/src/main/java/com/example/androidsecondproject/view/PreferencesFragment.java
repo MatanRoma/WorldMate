@@ -28,9 +28,10 @@ import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
 public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
 
-    private int minAge;
-    private int maxAge;
+    /*private int minAge;
+    private int maxAge;*/
     private PreferencesViewModel mViewModel;
+    private TextView mWarningTv;
 
 
     private PreferencesFragmentInterface mListener;
@@ -68,6 +69,7 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
         final CheckBox menCb=rootView.findViewById(R.id.men_cb);
         final CheckBox womenCb=rootView.findViewById(R.id.women_cb);
         final CheckBox discoveryCb=rootView.findViewById(R.id.discovery_cb);
+        mWarningTv=rootView.findViewById(R.id.checkbox_warning_preference_tv);
         mViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Preferences)).get(PreferencesViewModel.class);
 
         Observer<Profile> profileObserver=new Observer<Profile>() {
@@ -76,8 +78,8 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
                 Preferences preferences=new Preferences();
                 preferences.setLookingForMen(menCb.isChecked());
                 preferences.setLookingForWomen(womenCb.isChecked());
-                preferences.setMaxAge(maxAge);
-                preferences.setMinAge(minAge);
+                preferences.setMaxAge(mViewModel.getmMaxAge());
+                preferences.setMinAge(mViewModel.getmMinAge());
                 preferences.setMaxDistance(distanceSb.getSelectedMinValue().intValue());
                 profile.setPreferences(preferences);
                 profile.setDiscovery(discoveryCb.isChecked());
@@ -91,6 +93,7 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
         mViewModel.getProfileResultSuccess().observe(this, profileObserver);
 
         distanceSb.setMinStartValue(20);
+        distanceSb.apply();
         distanceSb.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
             @Override
             public void valueChanged(Number value) {
@@ -104,8 +107,8 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
         ageSb.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
             public void valueChanged(Number minValue, Number maxValue) {
-                minAge = minValue.intValue();
-                maxAge = maxValue.intValue();
+                mViewModel.setmMinAge(minValue.intValue());
+               mViewModel.setmMaxAge(maxValue.intValue());
                 ageResTv.setText(minValue + " - " + maxValue);
             }
         });
@@ -120,9 +123,34 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
 
             }
         });
+        checkBoxListeners(menCb,womenCb);
 
         setCancelable(false);
         return rootView;
+    }
+
+    private void checkBoxListeners(final CheckBox menCb, final CheckBox womenCb) {
+        menCb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showWarningMessageIfBothNotChecked(menCb.isChecked(),womenCb.isChecked());
+            }
+        });
+        womenCb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showWarningMessageIfBothNotChecked(menCb.isChecked(),womenCb.isChecked());
+            }
+        });
+    }
+
+    private void showWarningMessageIfBothNotChecked(boolean isCheckedMen, boolean isCheckedWomen) {
+        if(!isCheckedMen&&!isCheckedWomen){
+            mWarningTv.setVisibility(View.VISIBLE);
+        }
+        else{
+            mWarningTv.setVisibility(View.GONE);
+        }
     }
 
 

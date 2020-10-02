@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ public class MatchesFragment extends Fragment  {
     private MatchesAdapter mMatchesAdapter;
     private OnMoveToChat moveToChatListener;
     private SpinKitView mLoadingAnimation;
+
 
     public interface OnMoveToChat{
         public void OnClickMoveToChat(Profile myProfile,Profile otherProfile,String chatid);
@@ -60,7 +62,6 @@ public class MatchesFragment extends Fragment  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.matches_fragment,container,false);
-
         mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
         mLoadingAnimation.setVisibility(View.VISIBLE);
 
@@ -106,7 +107,6 @@ public class MatchesFragment extends Fragment  {
         Observer<List<Chat>> chatDataChangedObserver= new Observer<List<Chat>>() {
             @Override
             public void onChanged(List<Chat> chats) {
-
                 if (mMatchesAdapter == null){
                     mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(), getContext(),mViewModel.getChats(), mViewModel.getNewMatchUid());
                 mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
