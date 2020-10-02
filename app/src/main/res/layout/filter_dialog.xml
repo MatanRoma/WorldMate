@@ -13,11 +13,23 @@
             android:layout_height="wrap_content"
             android:text="Pick categories"
             android:layout_gravity="center"
-            android:padding="15dp"
+            android:padding="10dp"
             android:gravity="center"
             android:textSize="25sp"
+            android:textStyle="bold"
             android:textColor="@color/black"
             android:id="@+id/filter_title"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginBottom="10dp"
+        android:text="Choose according to which categories to see the compability"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:id="@+id/filter_description"/>
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
@@ -27,40 +39,43 @@
         android:layout_below="@+id/filter_title"
         android:background="?android:attr/listDivider" />
     <LinearLayout
-        android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="10dp"
+    android:layout_marginHorizontal="15dp"
+    android:gravity="center"
+    android:layout_centerInParent="true"
+    android:layout_below="@id/divider"
+    android:id="@+id/grid_layout">
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="15dp"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/divider"
-        android:id="@+id/grid_layout">
-        <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginEnd="90dp">
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginEnd="90dp">
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:gravity=""
-                android:text="sport"
-                android:layout_below="@id/filter_title"
-                android:id="@+id/filter_sport_cb"/>
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:text="food"
-                android:layout_below="@id/filter_sport_cb"
-                android:id="@+id/filter_food_cb"/>
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:gravity="center"
+            android:text="sport"
+            android:textSize="17sp"
+            android:layout_below="@id/filter_title"
+            android:id="@+id/filter_sport_cb"/>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:gravity="center"
+            android:text="food"
+            android:textSize="17sp"
+            android:layout_below="@id/filter_sport_cb"
+            android:id="@+id/filter_food_cb"/>
 
 
-        </LinearLayout>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -70,7 +85,9 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
+            android:gravity="center"
             android:text="culture"
+            android:textSize="17sp"
             android:layout_below="@+id/filter_food_cb"
             android:id="@+id/filter_culture_cb"/>
         <CheckBox
@@ -78,7 +95,9 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
+            android:gravity="center"
             android:text="music"
+            android:textSize="17sp"
             android:layout_below="@+id/filter_food_cb"
             android:id="@+id/filter_music_cb"/>
 
@@ -87,7 +106,7 @@
 
 
 
-    </LinearLayout>
+</LinearLayout>
     <View
         android:id="@+id/divider2"
         android:layout_width="match_parent"
