@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/prefernce_text"
-        android:text="Prefernce"
+        android:text="Prefernces"
         android:textStyle="bold"
         android:textSize="40sp"
         android:gravity="center"
@@ -128,7 +128,9 @@
                             android:layout_alignParentEnd="true"
                             android:layout_gravity="center_vertical|end"
                             android:layout_marginHorizontal="5dp"
-                            android:buttonTint="@color/colorAccent" />
+                            android:buttonTint="@color/colorAccent"
+
+                            android:checked="true" />
 
 
 
@@ -160,6 +162,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical|end"
                             android:buttonTint="@color/colorAccent"
+                            android:checked="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="5dp"
                             android:id="@+id/women_cb"/>
@@ -175,7 +178,18 @@
 
 
             </androidx.cardview.widget.CardView>
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/red_stroke"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:text="Please check at least one of the checkboxes"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="15dp"
+                    android:layout_below="@id/looking_for_card_view"
+                    android:id="@+id/checkbox_warning_preference_tv"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -184,7 +198,7 @@
                 android:text="Maximum Distance:"
                 android:textSize="20sp"
                 android:layout_alignParentStart="true"
-                android:layout_below="@id/looking_for_card_view"
+                android:layout_below="@id/checkbox_warning_preference_tv"
                 android:textColor="@color/black"
                 android:id="@+id/distance_tv"/>
 
@@ -196,7 +210,7 @@
                 android:text="20 Km"
                 android:textSize="20sp"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@id/looking_for_card_view"
+                android:layout_below="@id/checkbox_warning_preference_tv"
                 android:textColor="@color/black"
                 android:id="@+id/distance_res_tv"/>
 

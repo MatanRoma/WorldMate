@@ -31,6 +31,7 @@ public class LoginFragment extends Fragment {
     interface LoginFragmentInterface{
         void onClickMoveToRegister();
         void onLoginToApp();
+        void onLoginAsGuest();
     }
 
     public static LoginFragment newInstance()
@@ -74,6 +75,7 @@ public class LoginFragment extends Fragment {
 
         Button loginButton=rootView.findViewById(R.id.login_btn);
         Button signUpButton=rootView.findViewById(R.id.sign_up_button);
+        Button guestLoginBtn=rootView.findViewById(R.id.login_as_guest_btn);
         mEmailEt =rootView.findViewById(R.id.email_et_signin);
         mPasswordEt =rootView.findViewById(R.id.password_et_singin);
         mErrorTv=rootView.findViewById(R.id.error_et_signin);
@@ -93,6 +95,13 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 mListener.onClickMoveToRegister();
                 // dismiss();
+            }
+        });
+
+        guestLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onLoginAsGuest();
             }
         });
 

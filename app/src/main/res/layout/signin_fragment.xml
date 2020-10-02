@@ -105,10 +105,11 @@
             android:layout_below="@id/login_btn"
             android:background="@color/transparent"
             android:layout_marginTop="20dp"
-            android:text="Forgot Password?"
+            android:text="Click on me to login as Guest"
             android:textSize="15sp"
             android:textAllCaps="false"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:id="@+id/login_as_guest_btn"/>
 
 
     </RelativeLayout>

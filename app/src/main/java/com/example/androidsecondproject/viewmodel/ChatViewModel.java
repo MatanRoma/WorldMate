@@ -73,7 +73,7 @@ public class ChatViewModel extends AndroidViewModel {
                     notificationObject.put("title",myProfile.getFirstName()+" "+myProfile.getLastName());
                     notificationObject.put("body",text);
                     notificationObject.put("tag",myProfile.getEmail());
-                    notificationObject.put("icon", R.drawable.ic_messages_icon);
+             //       notificationObject.put("icon", R.drawable.ic_messages_icon);
                  //   notificationObject.put("image",myProfile.getProfilePictureUri());
                     dataObject.put("chat_id",chatId);
                     rootObject.put("notification",notificationObject);
