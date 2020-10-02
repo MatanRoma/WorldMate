@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">AndroidSecondProject</string>
     <string-array name="multi_entries">
-        <item name="Men" type="string"/>
-        <item name="Women" type="string"/>
+        <item>"Men"</item>
+        <item>"Women"</item>
     </string-array>
 
     <string-array name="multi_values">
-        <item name="male" type="string"/>
-        <item name="female" type="string"/>
+        <item>"male"</item>
+        <item>"female"</item>
     </string-array>
+
 </resources>

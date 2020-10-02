@@ -4,142 +4,147 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_sign"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="10dp">
+            android:layout_marginVertical="10dp"
+            android:padding="10dp">
 
             <Button
+                android:id="@+id/save_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="Done"
                 android:background="@drawable/btn_shape"
-                android:id="@+id/save_btn"
+                android:text="Done"
                 android:textAllCaps="false"
                 android:textSize="20sp" />
-                <RelativeLayout
+
+            <RelativeLayout
+                android:id="@+id/circle_image_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/woman_profile"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+                <com.github.ybq.android.spinkit.SpinKitView
+                    android:id="@+id/spin_kit_loading_profile_pic"
+                    style="@style/SpinKitView.Large.Circle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    app:SpinKit_Color="@color/grey" />
+
+
+                <Button
+                    android:id="@+id/change_pic_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profile_image"
                     android:layout_centerHorizontal="true"
-                    android:id="@+id/circle_image_layout">
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:src="@drawable/woman_profile"
-                android:id="@+id/profile_image"
-                app:civ_border_width="2dp"
-                android:layout_marginTop="30dp"
-                app:civ_border_color="#FF000000"
-                />
-                    <com.github.ybq.android.spinkit.SpinKitView
-                        android:id="@+id/spin_kit_loading_profile_pic"
-                        android:layout_centerInParent="true"
-                        style="@style/SpinKitView.Large.Circle"
-                        app:SpinKit_Color="@color/grey"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:layout_gravity="center"/>
-
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/profile_image"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="-25dp"
-                android:padding="8dp"
-                android:layout_marginBottom="10dp"
-                android:background="#9E9696"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:id="@+id/change_pic_btn"
-                android:text="Change photo" />
-                </RelativeLayout>
+                    android:layout_marginTop="-25dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#9E9696"
+                    android:padding="8dp"
+                    android:text="Change photo"
+                    android:textAllCaps="false"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/pic_gallery_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/circle_image_layout"
-                android:layout_marginTop="25dp"
-                android:id="@+id/pic_gallery_layout"
-                >
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp">
+
                 <ImageButton
+                    android:id="@+id/camera_btn"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@color/transparent"
                     android:layout_marginHorizontal="10dp"
-                    android:src="@drawable/ic_baseline_photo_camera_24"
-                    android:id="@+id/camera_btn"/>
+                    android:background="@color/transparent"
+                    android:src="@drawable/ic_baseline_photo_camera_24" />
+
                 <ImageButton
+                    android:id="@+id/gallery_btn"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/ic_baseline_gallery"
                     android:background="@color/transparent"
-                    android:id="@+id/gallery_btn"/>
+                    android:src="@drawable/ic_baseline_gallery" />
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/relative_pictures"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/pic_gallery_layout"
-                android:id="@+id/relative_pictures"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp">
 
                 <RelativeLayout
+                    android:id="@+id/relative0"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/relative0">
+                    android:layout_height="wrap_content">
 
 
                     <ImageView
+                        android:id="@+id/picture0_iv"
                         android:layout_width="100dp"
                         android:layout_height="120dp"
-                        android:src="@color/transparent"
-                        android:id="@+id/picture0_iv"
+                        android:background="#fff"
                         android:scaleType="fitXY"
-                        android:background="#fff"/>
+                        android:src="@color/transparent" />
+
                     <com.github.ybq.android.spinkit.SpinKitView
                         android:id="@+id/spin_kit_loading0"
-                        android:layout_marginStart="27dp"
-                        android:layout_marginTop="40dp"
                         style="@style/SpinKitView.Circle"
-                        app:SpinKit_Color="@color/grey"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="27dp"
+                        android:layout_marginTop="40dp"
                         android:visibility="gone"
+                        app:SpinKit_Color="@color/grey"
 
                         />
 
 
                     <ImageButton
+                        android:id="@+id/picture0_close"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/picture0_close"
-                        android:src="@drawable/close_btn_iv"
-                        android:background="@color/transparent"
-                        android:visibility="invisible"
-                        android:layout_toEndOf="@id/picture0_iv"
                         android:layout_below="@id/picture0_iv"
                         android:layout_marginStart="-20dp"
-                        android:layout_marginTop="-17dp"/>
+                        android:layout_marginTop="-17dp"
+                        android:layout_toEndOf="@id/picture0_iv"
+                        android:background="@color/transparent"
+                        android:src="@drawable/close_btn_iv"
+                        android:visibility="invisible" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/relative1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/relative1"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@id/relative0">
 
@@ -156,268 +161,261 @@
                         android:scaleType="fitXY"
                         android:src="@color/transparent" />
 
-                    <com.github.ybq.android.spinkit.SpinKitView
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/spin_kit_loading1"
                         style="@style/SpinKitView.Circle"
-                        app:SpinKit_Color="@color/grey"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="27dp"
                         android:layout_marginTop="40dp"
-                        android:layout_width="wrap_content"
                         android:visibility="gone"
-                        android:layout_height="wrap_content"
-                         />
+                        app:SpinKit_Color="@color/grey" />
 
                     <ImageButton
+                        android:id="@+id/picture1_close"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/picture1_close"
-                        android:src="@drawable/close_btn_iv"
-                        android:visibility="invisible"
-                        android:background="@color/transparent"
-                        android:layout_toEndOf="@id/picture1_iv"
                         android:layout_below="@id/picture1_iv"
                         android:layout_marginStart="-20dp"
-                        android:layout_marginTop="-17dp"/>
+                        android:layout_marginTop="-17dp"
+                        android:layout_toEndOf="@id/picture1_iv"
+                        android:background="@color/transparent"
+                        android:src="@drawable/close_btn_iv"
+                        android:visibility="invisible" />
 
                 </RelativeLayout>
 
 
                 <RelativeLayout
+                    android:id="@+id/relative2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/relative2"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@id/relative1">
 
 
-
                     <ImageView
+                        android:id="@+id/picture2_iv"
                         android:layout_width="100dp"
                         android:layout_height="120dp"
-                        android:src="@color/transparent"
-                        android:id="@+id/picture2_iv"
+                        android:background="#fff"
                         android:scaleType="fitXY"
-                        android:background="#fff"/>
+                        android:src="@color/transparent" />
 
-                    <com.github.ybq.android.spinkit.SpinKitView
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/spin_kit_loading2"
+                        style="@style/SpinKitView.Circle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="27dp"
                         android:layout_marginTop="40dp"
-                        style="@style/SpinKitView.Circle"
-                        app:SpinKit_Color="@color/grey"
                         android:visibility="gone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                         />
+                        app:SpinKit_Color="@color/grey" />
 
                     <ImageButton
+                        android:id="@+id/picture2_close"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/picture2_close"
-                        android:src="@drawable/close_btn_iv"
-                        android:visibility="invisible"
-                        android:background="@color/transparent"
-                        android:layout_toEndOf="@id/picture2_iv"
                         android:layout_below="@id/picture2_iv"
                         android:layout_marginStart="-20dp"
-                        android:layout_marginTop="-17dp"/>
+                        android:layout_marginTop="-17dp"
+                        android:layout_toEndOf="@id/picture2_iv"
+                        android:background="@color/transparent"
+                        android:src="@drawable/close_btn_iv"
+                        android:visibility="invisible" />
 
                 </RelativeLayout>
 
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/relative_pictures1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/relative_pictures1"
-                android:layout_marginTop="10dp"
+                android:layout_below="@id/relative_pictures"
                 android:layout_marginStart="10dp"
-                android:layout_below="@id/relative_pictures">
+                android:layout_marginTop="10dp">
 
 
                 <RelativeLayout
+                    android:id="@+id/relative3"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/relative3">
+                    android:layout_height="wrap_content">
 
 
                     <ImageView
+                        android:id="@+id/picture3_iv"
                         android:layout_width="100dp"
                         android:layout_height="120dp"
-                        android:src="@color/transparent"
-                        android:id="@+id/picture3_iv"
+                        android:background="#fff"
                         android:scaleType="fitXY"
-                        android:background="#fff"/>
+                        android:src="@color/transparent" />
+
                     <com.github.ybq.android.spinkit.SpinKitView
                         android:id="@+id/spin_kit_loading3"
                         style="@style/SpinKitView.Circle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="27dp"
                         android:layout_marginTop="40dp"
-                        app:SpinKit_Color="@color/grey"
                         android:visibility="gone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        />
+                        app:SpinKit_Color="@color/grey" />
 
                     <ImageButton
+                        android:id="@+id/picture3_close"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/picture3_close"
-                        android:visibility="invisible"
-                        android:src="@drawable/close_btn_iv"
-                        android:background="@color/transparent"
-                        android:layout_toEndOf="@id/picture3_iv"
                         android:layout_below="@id/picture3_iv"
                         android:layout_marginStart="-20dp"
-                        android:layout_marginTop="-17dp"/>
+                        android:layout_marginTop="-17dp"
+                        android:layout_toEndOf="@id/picture3_iv"
+                        android:background="@color/transparent"
+                        android:src="@drawable/close_btn_iv"
+                        android:visibility="invisible" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/relative4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/relative4"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@id/relative3">
 
 
-
                     <ImageView
+                        android:id="@+id/picture4_iv"
                         android:layout_width="100dp"
                         android:layout_height="120dp"
-                        android:src="@color/transparent"
-                        android:id="@+id/picture4_iv"
+                        android:background="#fff"
                         android:scaleType="fitXY"
-                        android:background="#fff"/>
+                        android:src="@color/transparent" />
+
                     <com.github.ybq.android.spinkit.SpinKitView
                         android:id="@+id/spin_kit_loading4"
+                        style="@style/SpinKitView.Circle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="27dp"
                         android:layout_marginTop="40dp"
-                        style="@style/SpinKitView.Circle"
-                        app:SpinKit_Color="@color/grey"
                         android:visibility="gone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                         />
+                        app:SpinKit_Color="@color/grey" />
 
                     <ImageButton
+                        android:id="@+id/picture4_close"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/picture4_close"
-                        android:src="@drawable/close_btn_iv"
-                        android:background="@color/transparent"
-                        android:layout_toEndOf="@id/picture4_iv"
                         android:layout_below="@id/picture4_iv"
-                        android:visibility="invisible"
                         android:layout_marginStart="-20dp"
-                        android:layout_marginTop="-17dp"/>
+                        android:layout_marginTop="-17dp"
+                        android:layout_toEndOf="@id/picture4_iv"
+                        android:background="@color/transparent"
+                        android:src="@drawable/close_btn_iv"
+                        android:visibility="invisible" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/relative5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/relative5"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@id/relative4">
 
 
-
                     <ImageView
+                        android:id="@+id/picture5_iv"
                         android:layout_width="100dp"
                         android:layout_height="120dp"
-                        android:src="@color/transparent"
+                        android:background="#fff"
                         android:scaleType="fitXY"
-                        android:id="@+id/picture5_iv"
-                        android:background="#fff"/>
-                    <com.github.ybq.android.spinkit.SpinKitView
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:src="@color/transparent" />
+
+                    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/spin_kit_loading5"
                         style="@style/SpinKitView.Circle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="27dp"
                         android:layout_marginTop="40dp"
-                        app:SpinKit_Color="@color/grey"
                         android:visibility="gone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                         />
+                        app:SpinKit_Color="@color/grey" />
 
                     <ImageButton
+                        android:id="@+id/picture5_close"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/picture5_close"
-                        android:src="@drawable/close_btn_iv"
-                        android:visibility="invisible"
-                        android:background="@color/transparent"
-                        android:layout_toEndOf="@id/picture5_iv"
                         android:layout_below="@id/picture5_iv"
                         android:layout_marginStart="-20dp"
-                        android:layout_marginTop="-17dp"/>
+                        android:layout_marginTop="-17dp"
+                        android:layout_toEndOf="@id/picture5_iv"
+                        android:background="@color/transparent"
+                        android:src="@drawable/close_btn_iv"
+                        android:visibility="invisible" />
 
                 </RelativeLayout>
 
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/name_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp"
+                android:layout_below="@id/relative_pictures1"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_below="@id/relative_pictures1"
-                android:id="@+id/name_layout">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/first_name_edit_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/first_name_edit_profile"
                     android:textColorHint="#000">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/first_name_edit_profile_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:textColor="#000"
-                        android:textSize="20sp"
                         android:gravity="start"
                         android:hint="First name"
-                        android:id="@+id/first_name_edit_profile_et"
-                        android:inputType="textPersonName"/>
+                        android:inputType="textPersonName"
+                        android:padding="15dp"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/last_name_edit_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:id="@+id/last_name_edit_profile"
                     android:textColorHint="#000">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/last_name_edit_profile_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:textColor="#000"
-                        android:textSize="20sp"
                         android:gravity="start"
                         android:hint="Last name"
-                        android:id="@+id/last_name_edit_profile_et"
-                        android:inputType="textPersonName"/>
+                        android:inputType="textPersonName"
+                        android:padding="15dp"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/gender_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
@@ -426,93 +424,92 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:id="@+id/gender_text"/>
+                        android:textStyle="bold" />
 
 
                     <RadioGroup
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center">
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
 
                         <RadioButton
+                            android:id="@+id/men_rb"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:textSize="15sp"
                             android:text="Men"
-                            android:id="@+id/men_rb"/>
+                            android:textSize="15sp" />
 
                         <RadioButton
+                            android:id="@+id/women_rb"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:textSize="15sp"
                             android:text="Women"
-                            android:id="@+id/women_rb"/>
+                            android:textSize="15sp" />
 
                     </RadioGroup>
 
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/about_me_edit_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:id="@+id/about_me_edit_profile"
                     android:textColorHint="#000">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/about_me_edit_profile_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:textColor="#000"
-                        android:textSize="20sp"
                         android:gravity="start"
                         android:hint="About myself"
-                        android:id="@+id/about_me_edit_profile_et"
-                        android:inputType="text"/>
+                        android:inputType="text"
+                        android:padding="15dp"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/looking_for_edit_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:id="@+id/looking_for_edit_profile"
                     android:textColorHint="#000">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/looking_for_edit_profile_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:textColor="#000"
-                        android:textSize="20sp"
                         android:gravity="start"
                         android:hint="Looking for"
-                        android:id="@+id/looking_for_edit_profile_et"
-                        android:inputType="text"/>
+                        android:inputType="text"
+                        android:padding="15dp"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/hobbies_edit_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:id="@+id/hobbies_edit_profile"
                     android:textColorHint="#000">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/hobbies_edit_profile_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:textColor="#000"
-                        android:textSize="20sp"
                         android:gravity="start"
                         android:hint="My hobbies"
-                        android:id="@+id/hobbies_edit_profile_et"
-                        android:inputType="text"/>
+                        android:inputType="text"
+                        android:padding="15dp"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
