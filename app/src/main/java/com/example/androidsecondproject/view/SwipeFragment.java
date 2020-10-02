@@ -12,8 +12,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +26,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.SwipeAdapter;
@@ -43,6 +48,8 @@ import com.yuyakaido.android.cardstackview.SwipeableMethod;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class SwipeFragment extends Fragment {
 
     private SwipeAdapter mSwipeAdapter;
@@ -58,9 +65,12 @@ public class SwipeFragment extends Fragment {
 
     private SwipeFlingAdapter mSwipeFlingAdapter;
 
-    ImageView mMatchAnimation;
+    private ImageView mMatchAnimation;
 
-    LinearLayout btnsLayout;
+    private LinearLayout btnsLayout;
+    private RelativeLayout noPeopleLayout;
+    private ImageView rangeIv;
+    private CircleImageView noPeopleLogo;
     //ImageView rewindBtn;
 
     private SwipeInterface swipeInterface;
@@ -141,6 +151,10 @@ public class SwipeFragment extends Fragment {
         btnsLayout = rootView.findViewById(R.id.btns_layout);
         btnsLayout.setVisibility(View.GONE);
 
+        noPeopleLayout = rootView.findViewById(R.id.no_people_layout);
+        rangeIv = rootView.findViewById(R.id.range_iv);
+        noPeopleLogo = rootView.findViewById(R.id.no_people_logo);
+
         likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,6 +192,7 @@ public class SwipeFragment extends Fragment {
         categories.add("sport");
         categories.add("food");
         categories.add("culture");
+
         if(!mViewModel.isLoginAsGuest()) {
             Observer<List<Profile>> profileSuccessObserver = new Observer<List<Profile>>() {
                 @Override
@@ -186,6 +201,7 @@ public class SwipeFragment extends Fragment {
                            initialAdapter(categories);
                         } else {
                             mSwipeAdapter.notifyDataSetChanged();
+
                         }
                 }
             };
@@ -200,10 +216,15 @@ public class SwipeFragment extends Fragment {
                 public void onChanged(List<Profile> profiles) {
                     initialAdapter(categories);
                 }
+
+            }
+        };
+
             };
             mViewModel.getGuestProfilesResultSuccess().observe(this,guestProfileSuccessObserver);
             mViewModel.readProfilesForGuest();
         }
+
         setTouchHelper();
         Log.d("testtt","testt0");
 
@@ -462,6 +483,16 @@ public class SwipeFragment extends Fragment {
         }
         mSwipeAdapter.setmCategories(categories);
         mSwipeAdapter.notifyDataSetChanged();
+    }
+
+
+    public void noPeopleAnimation()
+    {
+        noPeopleLayout.setVisibility(View.VISIBLE);
+        Glide.with(getContext()).load(mViewModel.getProfile().getProfilePictureUri()).error(R.mipmap.ic_launcher).into(noPeopleLogo);
+        Animation rangeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.range_animation);
+        rangeAnimation.setRepeatMode(Animation.REVERSE);
+        rangeIv.startAnimation(rangeAnimation);
     }
 
 

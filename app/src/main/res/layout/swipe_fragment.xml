@@ -136,6 +136,39 @@
         android:layout_centerInParent="true"
         android:visibility="gone"
         android:id="@+id/match_anim"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:id="@+id/no_people_layout">
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/range_cicrle_green"
+        android:background="@color/transparent"
+        android:id="@+id/range_iv"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ic_launcher"
+            android:background="@color/transparent"
+            android:id="@+id/no_people_logo"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/no_people_logo"
+            android:gravity="center"
+            android:text="There are no more people to show you"
+            android:textColor="@color/black"
+            android:textSize="25sp"/>
+
+
+    </RelativeLayout>
 
 
 

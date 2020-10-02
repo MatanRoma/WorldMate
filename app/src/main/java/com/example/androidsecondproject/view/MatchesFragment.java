@@ -1,16 +1,22 @@
 package com.example.androidsecondproject.view;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.widget.LinearLayout;
+
 import android.widget.RelativeLayout;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,6 +39,7 @@ public class MatchesFragment extends Fragment  {
     private MatchesAdapter mMatchesAdapter;
     private OnMoveToChat moveToChatListener;
     private SpinKitView mLoadingAnimation;
+    private LinearLayout noMatchesLayout;
 
 
     public interface OnMoveToChat{
@@ -65,6 +72,8 @@ public class MatchesFragment extends Fragment  {
         mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
         mLoadingAnimation.setVisibility(View.VISIBLE);
 
+        noMatchesLayout = rootView.findViewById(R.id.no_matches_layout);
+
         mViewModel =new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Matches)).get(MatchesViewModel.class);
       //  mViewModel.setProfile((Profile) getArguments().getSerializable("profile"));
         if(getArguments()!=null)
@@ -80,9 +89,21 @@ public class MatchesFragment extends Fragment  {
             @Override
             public void onChanged(Profile profile) {
                 mViewModel.readMatches();
+                SearchView searchView = rootView.findViewById(R.id.search_view);
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        mMatchesAdapter.getFilter().filter(newText);
+                        return false;
+                    }
+                });
             }
         };
-
 
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override
@@ -107,8 +128,12 @@ public class MatchesFragment extends Fragment  {
         Observer<List<Chat>> chatDataChangedObserver= new Observer<List<Chat>>() {
             @Override
             public void onChanged(List<Chat> chats) {
+
+                checkIfNoMatches();
+
                 if (mMatchesAdapter == null){
-                    mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(), getContext(),mViewModel.getChats(), mViewModel.getNewMatchUid());
+                   boolean isLtr = checkDirection();
+                    mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(), getContext(),mViewModel.getChats(), mViewModel.getNewMatchUid(),isLtr);
                 mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
                     @Override
                     public void onChatClickedListener(Profile otherProfile) {
@@ -135,6 +160,8 @@ public class MatchesFragment extends Fragment  {
             }
         };
 
+
+
         mViewModel.getChatDataChange().observe(this,chatDataChangedObserver);
         mViewModel.getMyProfileResultSuccess().observe(this,myProfileSuccessObserver);
         mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
@@ -142,6 +169,29 @@ public class MatchesFragment extends Fragment  {
         return rootView;
     }
 
+    private boolean checkDirection() {
+        boolean isLtr;
+        Configuration config = getResources().getConfiguration();
+        if(config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            isLtr = false;
+        }
+        else {
+            isLtr = true;
+        }
+        return  isLtr;
+    }
+
+    void checkIfNoMatches()
+    {
+        if(mViewModel.getChats().size()==0)
+        {
+            noMatchesLayout.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            noMatchesLayout.setVisibility(View.GONE);
+        }
+    }
 
 
     public void moveToChat(Profile myProfile,Profile otherProfile,String chatid)

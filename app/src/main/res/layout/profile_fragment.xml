@@ -440,6 +440,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
+                            android:buttonTint="@color/black"
                             android:textSize="15sp"
                             android:text="Men"
                             android:id="@+id/men_rb"/>
@@ -448,6 +449,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
+                            android:buttonTint="@color/black"
                             android:textSize="15sp"
                             android:text="Women"
                             android:id="@+id/women_rb"/>
@@ -464,15 +466,15 @@
                     android:textColorHint="#000">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/about_me_edit_profile_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:textColor="#000"
-                        android:textSize="20sp"
                         android:gravity="start"
                         android:hint="About myself"
-                        android:id="@+id/about_me_edit_profile_et"
-                        android:inputType="text"/>
+                        android:inputType="text"
+                        android:padding="15dp"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

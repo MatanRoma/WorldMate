@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_sign"
+    android:clickable="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <ScrollView
         android:layout_width="match_parent"
@@ -10,51 +12,113 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/relative_questions">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginVertical="30dp"
+                android:layout_marginTop="30dp"
                 android:text="Select category"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 android:id="@+id/select_category_tv"/>
 
-
-
-
-            <CheckBox
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:text="sport"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="30dp"
+                android:layout_marginHorizontal="60dp"
+                android:gravity="center"
+                android:text="Pick what categories of questions you want to answer"
+                android:textColor="@color/black"
+                android:textSize="15sp"
                 android:layout_below="@id/select_category_tv"
-                android:id="@+id/sport_rb"/>
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:text="food"
-                android:layout_below="@id/sport_rb"
-                android:id="@+id/food_rb"/>
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:text="culture"
-                android:layout_below="@id/food_rb"
-                android:id="@+id/culture_rb"/>
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:text="music"
-                android:layout_below="@id/culture_rb"
-                android:id="@+id/music_rb"/>
+                android:id="@+id/select_category_desc_tv"/>
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="10dp"
+                app:cardCornerRadius="10dp"
+                android:layout_centerHorizontal="true"
+                android:paddingHorizontal="30dp"
+                android:background="@color/transparent"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+                android:layout_below="@id/select_category_desc_tv"
+                android:id="@+id/filter_card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:layout_below="@id/select_category_tv"
+                    android:id="@+id/grid_layout">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginEnd="90dp">
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:buttonTint="@color/black"
+                            android:gravity=""
+                            android:text="sport"
+                            android:layout_below="@id/filter_title"
+                            android:id="@+id/sport_rb"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:buttonTint="@color/black"
+                            android:text="food"
+                            android:layout_below="@id/filter_sport_cb"
+                            android:id="@+id/food_rb"/>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:buttonTint="@color/black"
+                            android:text="culture"
+                            android:layout_below="@+id/filter_food_cb"
+                            android:id="@+id/culture_rb"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:buttonTint="@color/black"
+                            android:text="music"
+                            android:layout_below="@+id/filter_food_cb"
+                            android:id="@+id/music_rb"/>
+
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
 
 
 
@@ -63,17 +127,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_below="@id/food_rb"
+                android:layout_marginBottom="30dp"
+                android:layout_below="@id/filter_card"
                 android:id="@+id/sport_questions_layout">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginVertical="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
                     android:text="Sport"
                     android:textStyle="bold"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/black"
                     android:textSize="40sp"
                     android:visibility="gone"
                     android:id="@+id/sport_title_tv"/>
@@ -83,6 +149,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginBottom="30dp"
                 android:layout_below="@id/sport_questions_layout"
                 android:id="@+id/food_questions_layout">
 
@@ -90,10 +157,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginVertical="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
                     android:text="Food"
                     android:textStyle="bold"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/black"
                     android:textSize="40sp"
                     android:visibility="gone"
                     android:id="@+id/food_title_tv"/>
@@ -105,6 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginBottom="30dp"
                 android:layout_below="@id/food_questions_layout"
                 android:id="@+id/culture_questions_layout">
 
@@ -112,10 +181,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginVertical="30dp"
-                    android:text="Food"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Culture"
                     android:textStyle="bold"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/black"
                     android:textSize="40sp"
                     android:visibility="gone"
                     android:id="@+id/culture_title_tv"/>
@@ -126,6 +196,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginBottom="30dp"
                 android:layout_below="@id/culture_questions_layout"
                 android:id="@+id/music_questions_layout">
 
@@ -133,10 +204,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginVertical="30dp"
-                    android:text="Food"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Music"
                     android:textStyle="bold"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/black"
                     android:textSize="40sp"
                     android:visibility="gone"
                     android:id="@+id/music_title_tv"/>

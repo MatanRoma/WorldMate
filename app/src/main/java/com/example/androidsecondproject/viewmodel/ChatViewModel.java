@@ -2,33 +2,19 @@ package com.example.androidsecondproject.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.androidsecondproject.R;
-import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.Message;
 import com.example.androidsecondproject.model.NotificationManager;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.repository.Repository;
 import com.google.firebase.database.Query;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ChatViewModel extends AndroidViewModel {
     private Repository mRepository;
@@ -73,7 +59,11 @@ public class ChatViewModel extends AndroidViewModel {
                     notificationObject.put("title",myProfile.getFirstName()+" "+myProfile.getLastName());
                     notificationObject.put("body",text);
                     notificationObject.put("tag",myProfile.getEmail());
+
+                    //notificationObject.put("icon", R.drawable.ic_messages_icon);
+
              //       notificationObject.put("icon", R.drawable.ic_messages_icon);
+
                  //   notificationObject.put("image",myProfile.getProfilePictureUri());
                     dataObject.put("chat_id",chatId);
                     rootObject.put("notification",notificationObject);
