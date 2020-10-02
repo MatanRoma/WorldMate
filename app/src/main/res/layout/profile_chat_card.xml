@@ -28,7 +28,7 @@
             android:layout_toEndOf="@id/profile_iv_chat_card"
             android:id="@+id/profile_name_chat_card"
             android:layout_centerVertical="true"
-            android:text="Liran Amzaleg"
+            android:text="@string/name_of_profile"
             android:textColor="@color/black"
             android:textSize="25sp"
             android:layout_marginStart="20dp"/>

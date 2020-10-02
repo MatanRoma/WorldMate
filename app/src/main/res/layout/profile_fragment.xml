@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/btn_shape"
-                android:text="Done"
+                android:text="@string/done_str"
                 android:textAllCaps="false"
                 android:textSize="20sp" />
 
@@ -62,7 +62,7 @@
                     android:layout_marginBottom="10dp"
                     android:background="#9E9696"
                     android:padding="8dp"
-                    android:text="Change photo"
+                    android:text="@string/change_profile_photo_str"
                     android:textAllCaps="false"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -378,7 +378,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:hint="First name"
+                        android:hint="@string/first_name"
                         android:inputType="textPersonName"
                         android:padding="15dp"
                         android:textColor="#000"
@@ -399,7 +399,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:hint="Last name"
+                        android:hint="@string/last_name"
                         android:inputType="textPersonName"
                         android:padding="15dp"
                         android:textColor="#000"
@@ -420,7 +420,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:padding="5dp"
-                        android:text="Gender: "
+                        android:text="@string/gender_str_with"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/black"
                         android:textSize="20sp"
@@ -438,7 +438,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:text="Men"
+                            android:text="@string/men"
                             android:textSize="15sp" />
 
                         <RadioButton
@@ -446,7 +446,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:text="Women"
+                            android:text="@string/women"
                             android:textSize="15sp" />
 
                     </RadioGroup>
@@ -465,7 +465,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:hint="About myself"
+                        android:hint="@string/about_myself_str"
                         android:inputType="text"
                         android:padding="15dp"
                         android:textColor="#000"
@@ -485,7 +485,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:hint="Looking for"
+                        android:hint="@string/looking_for"
                         android:inputType="text"
                         android:padding="15dp"
                         android:textColor="#000"
@@ -505,7 +505,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:hint="My hobbies"
+                        android:hint="@string/my_hobbies"
                         android:inputType="text"
                         android:padding="15dp"
                         android:textColor="#000"

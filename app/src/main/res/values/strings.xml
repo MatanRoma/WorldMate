@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name">AndroidSecondProject</string>
+    <string name="home">Home</string>
+    <string name="my_profile">My Profile</string>
+    <string name="your_matches">Your Matches</string>
+    <string name="questions">Questions</string>
+    <string name="settings">Settings</string>
+    <string name="messages">Messages</string>
+    <string name="logout">Logout</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="i_am">Gender</string>
+    <string name="men">Male</string>
+    <string name="women">Female</string>
+    <string name="you_must_pick_a_gender">You must pick a gender</string>
+    <string name="my_birthday_is">My birthday is</string>
+
     <string-array name="multi_entries">
         <item>"Men"</item>
         <item>"Women"</item>
@@ -9,5 +24,58 @@
         <item>"male"</item>
         <item>"female"</item>
     </string-array>
+    <string name="continue_str">Continue</string>
+    <string name="messaging">Messages</string>
+    <string name="name_of_profile">Name of profile</string>
+    <string name="enter_your_text_here">Enter your text here...</string>
+    <string name="receive_message">Receive Message</string>
+    <string name="date_and_hour">date_and_hour</string>
+    <string name="send_message">Send Message</string>
+    <string name="pick_categories">Pick categories</string>
+    <string name="sport">sport</string>
+    <string name="food">food</string>
+    <string name="culture">culture</string>
+    <string name="music">music</string>
+    <string name="cancel">cancel</string>
+    <string name="confirm">confirm</string>
+    <string name="match">Match!</string>
+    <string name="you_got_a_new_match">You got a new match!</string>
+    <string name="choose_your_profile_picture">Choose your profile picture</string>
+    <string name="from_gallery">From Gallery</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="prefernce_str">Prefernces</string>
+    <string name="discovery_str">Discovery</string>
+    <string name="allowing_other_users_to_see_you">allowing other users to see your profile</string>
+    <string name="looking_for_str">Looking For:</string>
+    <string name="maximum_distance_str">Maximum Distance:</string>
+    <string name="_20_km_str">20 Km</string>
+    <string name="age_range_str">Age Range:</string>
+    <string name="age_int">26</string>
+    <string name="city_str">City</string>
+    <string name="change_profile_photo_str">Change profile photo</string>
+    <string name="done_str">Done</string>
+    <string name="gender_str_with">Gender:</string>
+    <string name="about_myself_str">About myself</string>
+    <string name="looking_for">Looking for</string>
+    <string name="my_hobbies">My hobbies</string>
+    <string name="title">Title</string>
+    <string name="_90_compability">90%</string>
+    <string name="my_description_str">My description</string>
+    <string name="question_str">question</string>
+    <string name="select_category_str">Select category</string>
+    <string name="sport_cap_lett">Sport</string>
+    <string name="food_cap_lett">Food</string>
+    <string name="culture_cap_lett">Culture</string>
+    <string name="music_cap_lett">Music</string>
+    <string name="sign_in_str">Sign in</string>
+    <string name="e_mail_str">E-mail</string>
+    <string name="password_str">Password</string>
+    <string name="invalid_credentials_str">Invalid Credentials</string>
+    <string name="login_str">Login</string>
+    <string name="forgot_password_str">Forgot Password?</string>
+    <string name="don_t_have_account_str">Don\'t have account ?</string>
+    <string name="sign_up_str">Sign up</string>
+    <string name="register_str">Register</string>
+    <string name="already_have_an_account_str">Already have an account ?</string>
 
 </resources>
