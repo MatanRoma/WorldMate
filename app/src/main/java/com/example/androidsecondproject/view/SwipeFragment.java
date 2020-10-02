@@ -203,6 +203,10 @@ public class SwipeFragment extends Fragment {
                             mSwipeAdapter.notifyDataSetChanged();
 
                         }
+                        if(mSwipeAdapter.getItemCount()==0)
+                            noMatchesAnimation();
+                        else
+                            noPeopleLayout.setVisibility(View.GONE);
                 }
             };
 
@@ -210,20 +214,20 @@ public class SwipeFragment extends Fragment {
             mViewModel.setUserProfile((Profile) getArguments().getSerializable("profile"));
             mViewModel.readProfiles();
         }
-        else{
-            Observer<List<Profile>> guestProfileSuccessObserver=new Observer<List<Profile>>() {
+        else {
+            Observer<List<Profile>> guestProfileSuccessObserver = new Observer<List<Profile>>() {
                 @Override
                 public void onChanged(List<Profile> profiles) {
                     initialAdapter(categories);
                 }
 
-            }
-        };
-
             };
-            mViewModel.getGuestProfilesResultSuccess().observe(this,guestProfileSuccessObserver);
+
+
+            mViewModel.getGuestProfilesResultSuccess().observe(this, guestProfileSuccessObserver);
             mViewModel.readProfilesForGuest();
         }
+
 
         setTouchHelper();
         Log.d("testtt","testt0");
@@ -371,7 +375,7 @@ public class SwipeFragment extends Fragment {
                     if(!mViewModel.isLoginAsGuest()) {
                         profileLiked(0);
                     }
-                    mSwipeAdapter.removeTopItem();
+
                     //rewindBtn.setVisibility(View.GONE);
                     Log.d("stack_swipe","swiped_right");
                 }
@@ -379,10 +383,12 @@ public class SwipeFragment extends Fragment {
                     if(!mViewModel.isLoginAsGuest()) {
                         profileDisliked(0);
                     }
-                    mSwipeAdapter.removeTopItem();
                     //rewindBtn.setVisibility(View.VISIBLE);
                     Log.d("stack_swipe","swiped_left");
                 }
+                mSwipeAdapter.removeTopItem();
+                if(mSwipeAdapter.getItemCount()==0)
+                    noMatchesAnimation();
             }
 
             @Override
@@ -486,13 +492,15 @@ public class SwipeFragment extends Fragment {
     }
 
 
-    public void noPeopleAnimation()
+    public void noMatchesAnimation()
     {
-        noPeopleLayout.setVisibility(View.VISIBLE);
-        Glide.with(getContext()).load(mViewModel.getProfile().getProfilePictureUri()).error(R.mipmap.ic_launcher).into(noPeopleLogo);
-        Animation rangeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.range_animation);
-        rangeAnimation.setRepeatMode(Animation.REVERSE);
-        rangeIv.startAnimation(rangeAnimation);
+        if(!mViewModel.isLoginAsGuest()) {
+            noPeopleLayout.setVisibility(View.VISIBLE);
+            Glide.with(getContext()).load(mViewModel.getProfile().getProfilePictureUri()).error(R.mipmap.ic_launcher).into(noPeopleLogo);
+            Animation rangeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.range_animation);
+            rangeAnimation.setRepeatMode(Animation.REVERSE);
+            rangeIv.startAnimation(rangeAnimation);
+        }
     }
 
 

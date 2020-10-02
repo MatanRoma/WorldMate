@@ -11,6 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:visibility="gone"
             android:layout_marginTop="3dp"
             android:layout_marginHorizontal="5dp"
             android:id="@+id/search_view"/>
@@ -29,25 +30,19 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/matches_recycler"/>
 
-            <com.github.ybq.android.spinkit.SpinKitView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/spin_kit"
-                style="@style/SpinKitView.Large.WanderingCubes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_centerInParent="true"
-                app:SpinKit_Color="@color/Blue" />
 
 
 
         </RelativeLayout>
+
+
 
     </ScrollView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="gone"
         android:layout_marginHorizontal="50dp"
         android:layout_centerInParent="true"
         android:id="@+id/no_matches_layout">
@@ -67,6 +62,15 @@
             android:textSize="25sp"
             android:textColor="@color/black"/>
     </LinearLayout>
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spin_kit"
+        style="@style/SpinKitView.Large.WanderingCubes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        app:SpinKit_Color="@color/Blue" />
 
 </RelativeLayout>
 

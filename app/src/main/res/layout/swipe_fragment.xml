@@ -127,15 +127,7 @@
 
 
 
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:scaleType="fitXY"
-        android:layout_gravity="center"
-        android:src="@drawable/match_animation"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:id="@+id/match_anim"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -171,6 +163,14 @@
     </RelativeLayout>
 
 
-
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center"
+        android:src="@drawable/match_animation"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:id="@+id/match_anim"/>
 
 </RelativeLayout>
