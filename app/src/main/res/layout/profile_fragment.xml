@@ -435,7 +435,7 @@
                         android:orientation="horizontal">
 
                         <RadioButton
-                            android:id="@+id/men_rb"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
@@ -444,12 +444,12 @@
 
                             android:buttonTint="@color/black"
                             android:textSize="15sp"
-                            android:text="Men"
+
                             android:id="@+id/men_rb"/>
 
 
                         <RadioButton
-                            android:id="@+id/women_rb"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
@@ -458,7 +458,7 @@
 
                             android:buttonTint="@color/black"
                             android:textSize="15sp"
-                            android:text="Women"
+
                             android:id="@+id/women_rb"/>
 
 

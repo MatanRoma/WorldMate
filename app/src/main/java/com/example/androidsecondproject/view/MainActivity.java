@@ -248,50 +248,42 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             guestNotAllowedDialog(false);
         }
         else {
-            switch (title) {
-                case "Home":
-                    clearStack(null);
-                    setTitle(R.string.app_name);
-                    break;
-                case "My Profile":
-                    ProfileFragment profileFragment = (ProfileFragment) getSupportFragmentManager().findFragmentByTag(ACCOUNT_PROFILE_FRAGMENT);
-                    if (profileFragment == null || !profileFragment.isVisible()) {
-                        moveToProfileFragment();
-                    }
-                    break;
-                case "Your Matches":
-                    MatchesFragment matchesFragment = (MatchesFragment) getSupportFragmentManager().findFragmentByTag(MATCHES_FRAGMENT);
-                    if (matchesFragment == null || !matchesFragment.isVisible()) {
-                        moveToMatchesFragment();
-                    }
-                    break;
-                case "Questions":
-                    QuestionsFragment questionsFragment = (QuestionsFragment) getSupportFragmentManager().findFragmentByTag(QUESTIONS_FRAGMENT);
-                    if (questionsFragment == null || !questionsFragment.isVisible()) {
-                        moveToQuestionsFragment();
-                    }
-                    break;
-                case "Messages":
-                    break;
-                case "Settings":
-                    moveToSettingFragment();
-                    break;
-                case "Logout":
-                    if (!mViewModel.isLoginAsGuest()) {
-                        mViewModel.setToken("");
-                        mViewModel.setFirstTime(true);
-                        mViewModel.setFirstLocation(true);
-                        LocationViewModel.getInstance(getApplicationContext()).removeObserver(mLocationObserver);
-                        mViewModel.logout();
-                    } else {
-                        mViewModel.setLoginAsGuest(false);
-                        navigationView.getMenu().getItem(6).setChecked(true);
+            if (getString(R.string.home).equals(title)) {
+                clearStack(null);
+                setTitle(R.string.app_name);
+            } else if (getString(R.string.my_profile).equals(title)) {
+                ProfileFragment profileFragment = (ProfileFragment) getSupportFragmentManager().findFragmentByTag(ACCOUNT_PROFILE_FRAGMENT);
+                if (profileFragment == null || !profileFragment.isVisible()) {
+                    moveToProfileFragment();
+                }
+            } else if (getString(R.string.your_matches).equals(title)) {
+                MatchesFragment matchesFragment = (MatchesFragment) getSupportFragmentManager().findFragmentByTag(MATCHES_FRAGMENT);
+                if (matchesFragment == null || !matchesFragment.isVisible()) {
+                    moveToMatchesFragment();
+                }
+            } else if (getString(R.string.questions).equals(title)) {
+                QuestionsFragment questionsFragment = (QuestionsFragment) getSupportFragmentManager().findFragmentByTag(QUESTIONS_FRAGMENT);
+                if (questionsFragment == null || !questionsFragment.isVisible()) {
+                    moveToQuestionsFragment();
+                }
+            } else if (getString(R.string.messages).equals(title)) {
+            } else if (getString(R.string.settings).equals(title)) {
+                moveToSettingFragment();
+            } else if (getString(R.string.logout).equals(title)) {
+                if (!mViewModel.isLoginAsGuest()) {
+                    mViewModel.setToken("");
+                    mViewModel.setFirstTime(true);
+                    mViewModel.setFirstLocation(true);
+                    LocationViewModel.getInstance(getApplicationContext()).removeObserver(mLocationObserver);
+                    mViewModel.logout();
+                } else {
+                    mViewModel.setLoginAsGuest(false);
+                    navigationView.getMenu().getItem(6).setChecked(true);
 
-                    }
-                    clearStack(null);
-                    getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentByTag(SWIPE_FRAGMENT)).commit();
-                    moveToLoginFragment();
-                    break;
+                }
+                clearStack(null);
+                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentByTag(SWIPE_FRAGMENT)).commit();
+                moveToLoginFragment();
             }
         }
     }
