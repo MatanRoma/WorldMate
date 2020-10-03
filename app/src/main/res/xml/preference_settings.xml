@@ -2,10 +2,34 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <CheckBoxPreference
-        android:title="Discovery"
-        android:key="discovery_cb_pref"
-        android:summary="Allowing other users to see you"/>
+
+    <PreferenceCategory
+        android:title="Private"
+        android:key="private_category">
+
+        <CheckBoxPreference
+            android:title="Discovery"
+            android:key="discovery_cb_pref"
+            android:defaultValue="true"
+            android:summary="Allowing other users to see you"/>
+
+        <SeekBarPreference
+            android:title="Min age"
+            android:key="min_age_pref1"
+            android:max="100"
+            app:showSeekBarValue="true"
+            app:min="18"
+            app:seekBarIncrement="1" />
+
+        <SeekBarPreference
+            android:title="Max age"
+            android:key="max_age_pref1"
+            android:max="100"
+            app:showSeekBarValue="true"
+            app:min="18"
+            app:seekBarIncrement="1" />
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="Your Preference"
@@ -15,17 +39,16 @@
             android:entries="@array/multi_entries"
             android:entryValues="@array/multi_values"
             android:key="looking_for_pref"
-            android:summary="Gender for them I am interested"
+            android:summary="Tap to change"
             android:title="Looking for"/>
 
         <SeekBarPreference
             android:title="Max Distance"
             android:key="max_distance_pref"
-            android:summary=""
+            app:showSeekBarValue="true"
             android:max="100"
             app:min="0"
             app:seekBarIncrement="1"/>
-
 
     </PreferenceCategory>
 
@@ -36,12 +59,14 @@
         <SwitchPreference
             android:title="New Match notification"
             android:key="match_pref"
-            android:defaultValue="true"/>
+            android:defaultValue="true"
+            android:summary="When you got a new match"/>
 
         <SwitchPreference
             android:title="New message notification"
             android:key="message_pref"
-            android:defaultValue="true"/>
+            android:defaultValue="true"
+            android:summary="When you got a new meesage"/>
 
         <SwitchPreference
             android:title="Vibrate"

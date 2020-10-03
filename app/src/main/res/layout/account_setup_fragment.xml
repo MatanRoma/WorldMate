@@ -8,7 +8,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-<RelativeLayout android:layout_width="match_parent"
+<RelativeLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -24,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:hint="First name"
+            android:hint="@string/first_name"
 
 
             android:inputType="textPersonName"
@@ -53,7 +54,7 @@
             android:textColor="#000"
             android:textSize="25sp"
             android:gravity="center"
-            android:hint="Last name"
+            android:hint="@string/last_name"
             android:inputType="textPersonName"
             android:id="@+id/last_name_et"/>
 
@@ -64,9 +65,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="I am"
+        android:text="@string/i_am"
         android:layout_margin="20dp"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#000"
         android:layout_below="@id/lastname_info"
@@ -82,7 +83,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Men"
+            android:text="@string/men"
             android:textAllCaps="false"
             android:textSize="20sp"
             android:background="@drawable/gender_btn_selector"
@@ -93,7 +94,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Women"
+            android:text="@string/women"
             android:textAllCaps="false"
             android:textSize="20sp"
             android:textColor="#000"
@@ -105,7 +106,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You must pick a gender"
+        android:text="@string/you_must_pick_a_gender"
         android:gravity="center_horizontal"
         android:layout_centerInParent="true"
         android:textColor="@color/red_stroke"
@@ -119,11 +120,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My birthday is"
+        android:text="@string/my_birthday_is"
         android:gravity="center_horizontal"
         android:layout_centerInParent="true"
         android:textColor="#000"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:layout_below="@id/gender_error_tv"
         android:layout_marginTop="25dp"
@@ -150,7 +151,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="10dp"
-        android:text="Continue"
+        android:text="@string/continue_str"
         android:padding="5dp"
         android:id="@+id/continue_btn"/>
 </RelativeLayout>

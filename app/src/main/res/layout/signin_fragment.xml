@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/sign_in_text"
-        android:text="Sign in"
+        android:text="@string/sign_in_str"
         android:textStyle="bold"
         android:textSize="40sp"
         android:gravity="center"
@@ -42,7 +42,7 @@
                 android:textColor="#000"
                 android:textSize="30sp"
                 android:gravity="center"
-                android:hint="E-mail"
+                android:hint="@string/e_mail_str"
                 android:id="@+id/email_et_signin"
                 android:inputType="textEmailAddress"/>
 
@@ -66,7 +66,7 @@
                 android:textColor="#000"
                 android:textSize="30sp"
                 android:gravity="center"
-                android:hint="Password"
+                android:hint="@string/password_str"
                 android:id="@+id/password_et_singin"
                 android:inputType="numberPassword"/>
 
@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_margin="15dp"
             android:visibility="gone"
-            android:text="Invalid Credentials"
+            android:text="@string/invalid_credentials_str"
             android:textStyle="bold"
             android:textColor="@color/red_stroke"
             android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login"
+            android:text="@string/login_str"
             android:textSize="25sp"
             android:background="@drawable/btn_shape"
             android:padding="15dp"
@@ -105,7 +105,9 @@
             android:layout_below="@id/login_btn"
             android:background="@color/transparent"
             android:layout_marginTop="20dp"
-            android:text="Click on me to login as Guest"
+
+            android:text="@string/forgot_password_str"
+
             android:textSize="15sp"
             android:textAllCaps="false"
             android:layout_centerHorizontal="true"
@@ -125,7 +127,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Don't have account ?"
+            android:text="@string/don_t_have_account_str"
             android:layout_marginTop="10dp"
             android:textSize="15sp"
             android:textColor="@color/Blue"
@@ -139,7 +141,7 @@
             android:id="@+id/sign_up_button"
             android:layout_toEndOf="@id/donthave_account"
             android:background="@color/transparent"
-            android:text="Sign up"/>
+            android:text="@string/sign_up_str"/>
 
     </RelativeLayout>
 
