@@ -21,6 +21,7 @@ public class MainViewModel extends AndroidViewModel {
     private MutableLiveData<String> mProfileFailedLiveData;
     private MutableLiveData<Profile> mOtherProfileSuccessLiveData;
     private String messageToken;
+    private Profile mMyProfile;
 
     private boolean isFirstTime=true;
     private boolean isFirstLocation=true;
@@ -37,6 +38,7 @@ public class MainViewModel extends AndroidViewModel {
     public MutableLiveData<Profile> getProfileResultSuccess(){
         if (mProfileSuccessLiveData == null) {
             mProfileSuccessLiveData = new MutableLiveData<>();
+            mMyProfile=new Profile();
             loadProfileData();
             //      database.readProfileFrom();
         }
@@ -66,6 +68,7 @@ public class MainViewModel extends AndroidViewModel {
         mRepository.setProfileListener(new Repository.ProfileListener() {
             @Override
             public void onProfileDataChangeSuccess(Profile profile) {
+                copyProfile(profile);
                 mProfileSuccessLiveData.setValue(profile);
             }
 
@@ -92,10 +95,10 @@ public class MainViewModel extends AndroidViewModel {
 
 
 
-    public Profile getProfile(){
+   /* public Profile getProfile(){
         return mProfileSuccessLiveData.getValue();
     }
-
+*/
     public void setProfile(Profile profile)
     {
         mProfileSuccessLiveData.setValue(profile);
@@ -118,11 +121,11 @@ public class MainViewModel extends AndroidViewModel {
 
 
     public void setToken(String token) {
-        Profile profile=mProfileSuccessLiveData.getValue();
-        if(profile!=null){
-            profile.setMessageToken(token);
+     //   Profile profile=mProfileSuccessLiveData.getValue();
+        if(mMyProfile!=null){
+            mMyProfile.setMessageToken(token);
             messageToken=null;
-            mRepository.writeMyProfile(profile);
+            mRepository.writeMyProfile(mMyProfile);
         }
         else{
             messageToken=token;
@@ -144,7 +147,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void getOtherProfile(String chatId) {
-        for(Match match:mProfileSuccessLiveData.getValue().getMatches()){
+        for(Match match:mMyProfile.getMatches()){
             if(match.getId().equals(chatId)){
                 mRepository.readOtherProfile(match.getOtherUid());
                 return;
@@ -153,7 +156,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void writeProfile() {
-        mRepository.writeMyProfile(mProfileSuccessLiveData.getValue());
+        mRepository.writeMyProfile(mMyProfile);
     }
 
     public boolean isFirstLocation() {
@@ -184,14 +187,17 @@ public class MainViewModel extends AndroidViewModel {
     }
 
         public void updateCityName(String cityName){
-            mProfileSuccessLiveData.getValue().setCity(cityName);
-            mRepository.updateProfile(mProfileSuccessLiveData.getValue().getUid(), "city", cityName);
+         //   mProfileSuccessLiveData.getValue().setCity(cityName);
+            mRepository.updateProfile(mMyProfile.getUid(), "city", cityName);
         }
 
         public void updateLocation(LocationPoint locationPoint){
-            mProfileSuccessLiveData.getValue().setLocation(locationPoint);
-            mRepository.updateProfile(mProfileSuccessLiveData.getValue().getUid(), "location", locationPoint);
+         //   mProfileSuccessLiveData.getValue().setLocation(locationPoint);
+            mRepository.updateProfile(mMyProfile.getUid(), "location", locationPoint);
 
+        }
+        public Profile getMyProfile(){
+            return mMyProfile;
         }
 
     public boolean isLoginAsGuest() {
@@ -201,5 +207,32 @@ public class MainViewModel extends AndroidViewModel {
     public void setLoginAsGuest(boolean loginAsGuest) {
         isLoginAsGuest = loginAsGuest;
 
+    }
+    private void copyProfile(Profile newProfile){
+        mMyProfile.setDiscovery(newProfile.isDiscovery());
+        mMyProfile.setLocation(newProfile.getLocation());
+        mMyProfile.setCity(newProfile.getCity());
+        mMyProfile.setMessageToken(newProfile.getMessageToken());
+        mMyProfile.setProfilePictureUri(newProfile.getProfilePictureUri());
+        mMyProfile.setEmail(newProfile.getEmail());
+        mMyProfile.setPreferences(newProfile.getPreferences());
+        mMyProfile.setFirstName(newProfile.getFirstName());
+        mMyProfile.setGender(newProfile.getGender());
+        mMyProfile.setAge(newProfile.getAge());
+        mMyProfile.setBirthday(newProfile.getBirthday());
+        mMyProfile.setDescription(newProfile.getDescription());
+        mMyProfile.setDisLikes(newProfile.getDisLikes());
+        mMyProfile.setLikes(newProfile.getLikes());
+        mMyProfile.setHobbies(newProfile.getHobbies());
+        mMyProfile.setLastName(newProfile.getLastName());
+        mMyProfile.setMatches(newProfile.getMatches());
+        mMyProfile.setLookingFor(newProfile.getLookingFor());
+        mMyProfile.setPictures(newProfile.getPictures());
+        mMyProfile.setQuestionResponds(newProfile.getQuestionResponds());
+        mMyProfile.setUid(newProfile.getUid());
+    }
+
+    public void removeProfileListener() {
+        mRepository.remveProfileListener(mMyProfile.getUid());
     }
 }

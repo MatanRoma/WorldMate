@@ -179,9 +179,10 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
                 Glide.with(getContext()).load(uri).into(profilePicture);
                 mLoadingProfileAnimation.setVisibility(View.GONE);
                 // mViewModel.setImageUri(uri);
-                mViewModel.getmProfile().setProfilePictureUri(uri.toString());
-                mUpdateDrawerListener.onUpdateProfile(mViewModel.getmProfile());
-                mViewModel.updateDataBaseProfilePic();
+
+           //     mViewModel.getmProfile().setProfilePictureUri(uri.toString());
+           //     mUpdateDrawerListener.onUpdateProfile(mViewModel.getmProfile());
+                mViewModel.updateDataBaseProfilePic(uri.toString());
             }
         };
        // mViewModel.getUploadResultSuccess().observe(this, uploadObserverSuccess);
@@ -236,7 +237,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
                 }
                 mViewModel.writeProfile();
                 mViewModel.readProfiles();
-                mUpdateDrawerListener.onUpdateProfile(mViewModel.getmProfile());
+            //    mUpdateDrawerListener.onUpdateProfile(mViewModel.getmProfile());
                 Objects.requireNonNull(getActivity()).onBackPressed();
             }
         });

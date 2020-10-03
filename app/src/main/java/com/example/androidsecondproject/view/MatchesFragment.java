@@ -45,18 +45,18 @@ public class MatchesFragment extends Fragment  {
         public void OnClickMoveToChat(Profile myProfile,Profile otherProfile,String chatid);
     }
 
-    public static MatchesFragment newInstance(String matherUid)
+    public static MatchesFragment newInstance(Profile myProfile)
     {
         Bundle bundle=new Bundle();
-        bundle.putString("matcher_uid",matherUid);
+        bundle.putSerializable("my_profile",myProfile);
         MatchesFragment matchesFragment=new MatchesFragment();
         matchesFragment.setArguments(bundle);
         return matchesFragment;
     }
-    public static MatchesFragment newInstance()
+  /*  public static MatchesFragment newInstance()
     {
         return new MatchesFragment();
-    }
+    }*/
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -88,9 +88,8 @@ public class MatchesFragment extends Fragment  {
         });
 
         mViewModel =new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Matches)).get(MatchesViewModel.class);
+        mViewModel.setProfile((Profile)getArguments().getSerializable("my_profile"));
       //  mViewModel.setProfile((Profile) getArguments().getSerializable("profile"));
-        if(getArguments()!=null)
-            mViewModel.setNewMatchUid(getArguments().getString("matcher_uid"));
 
 
         final RecyclerView matchesRecycler = rootView.findViewById(R.id.matches_recycler);
@@ -98,30 +97,16 @@ public class MatchesFragment extends Fragment  {
         matchesRecycler.setLayoutManager(new GridLayoutManager(getContext(),1));
 
 
-        Observer<Profile> myProfileSuccessObserver=new Observer<Profile>() {
+    /*    Observer<Profile> myProfileSuccessObserver=new Observer<Profile>() {
             @Override
             public void onChanged(Profile profile) {
                 mViewModel.readMatches();
             }
-        };
+        };*/
 
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
-            /*mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(),getContext(),mViewModel.getMyProfile(),mViewModel.getNewMatchUid());
-            mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
-                @Override
-                public void onChatClickedListener(int position) {
-                    Profile otherProfile=mViewModel.getMatches().get(position);
-                    String chatid=mViewModel.getChatId(otherProfile.getUid());
-                    moveToChat(mViewModel.getMyProfile(),otherProfile,chatid);
-
-                }
-            });
-            matchesRecycler.setAdapter(mMatchesAdapter);
-            mLoadingAnimation.setVisibility(View.GONE);
-
-*/
             mViewModel.readChats();
             }
         };
@@ -165,9 +150,9 @@ public class MatchesFragment extends Fragment  {
 
 
         mViewModel.getChatDataChange().observe(this,chatDataChangedObserver);
-        mViewModel.getMyProfileResultSuccess().observe(this,myProfileSuccessObserver);
+       // mViewModel.getMyProfileResultSuccess().observe(this,myProfileSuccessObserver);
         mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
-        mViewModel.readMyProfile();
+        mViewModel.readMatches();
         return rootView;
     }
 

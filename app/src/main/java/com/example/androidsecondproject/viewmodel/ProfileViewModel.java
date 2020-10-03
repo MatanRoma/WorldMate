@@ -142,7 +142,7 @@ public class ProfileViewModel extends AndroidViewModel {
         mRepository.updateProfile(mRepository.getCurrentUserId(),"pictures",mProfile.getPictures());
     }
 
-    public void updateDataBaseProfilePic() {
-        mRepository.updateProfile(mRepository.getCurrentUserId(),"profilePictureUri",mProfile.getProfilePictureUri());
+    public void updateDataBaseProfilePic(String s) {
+        mRepository.updateProfile(mRepository.getCurrentUserId(),"profilePictureUri",s);
     }
 }

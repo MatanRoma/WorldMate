@@ -93,10 +93,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                     objectToReturn= (T) (new ProfilePreviewViewModel(mApplication));
                 }
                 break;
-
-
-
-
+            case Settings:
+                if (modelClass.isAssignableFrom(SettingsViewModel.class)) {
+                    objectToReturn= (T) (new SettingsViewModel(mApplication));
+                }
+                break;
 
         }
         return objectToReturn;
