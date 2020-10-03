@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Liran Amzaleg, "
+                android:text="@string/name_of_profile"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 android:id="@+id/card_name_tv"/>
@@ -47,7 +47,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="26"
+                android:text="@string/age_int"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/card_profile_info"
             android:layout_marginTop="5dp"
-            android:text="Tel Aviv"
+            android:text="@string/city_str"
             android:textColor="@color/Blue"
             android:textSize="20sp"
             android:layout_centerHorizontal="true"
