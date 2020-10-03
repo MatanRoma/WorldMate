@@ -178,18 +178,20 @@
 
 
             </androidx.cardview.widget.CardView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textColor="@color/red_stroke"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:visibility="gone"
-                android:text="Please check at least one of the checkboxes"
-                android:layout_centerHorizontal="true"
-                android:textSize="15dp"
-                android:layout_below="@id/looking_for_card_view"
-                android:id="@+id/checkbox_warning_preference_tv"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/red_stroke"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:text="Please check at least one of the checkboxes"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="15dp"
+                    android:layout_below="@id/looking_for_card_view"
+                    android:id="@+id/checkbox_warning_preference_tv"/>
+
 
             <TextView
                 android:layout_width="wrap_content"

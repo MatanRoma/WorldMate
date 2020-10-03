@@ -11,27 +11,29 @@ import com.example.androidsecondproject.repository.Repository;
 
 public class PreferencesViewModel extends AndroidViewModel {
 
-    private MutableLiveData<Profile> profileMutableLiveData;
-    private Repository repository;
+    private MutableLiveData<Profile> mProfileMutableLiveData;
+    private Repository mRepository;
+    private int mMaxAge;
+    private int mMinAge;
 
     public PreferencesViewModel(@NonNull Application application) {
         super(application);
-        repository=Repository.getInstance(application.getApplicationContext());
+        mRepository =Repository.getInstance(application.getApplicationContext());
     }
 
     public MutableLiveData<Profile> getProfileResultSuccess(){
-        if (profileMutableLiveData == null) {
-            profileMutableLiveData = new MutableLiveData<>();
+        if (mProfileMutableLiveData == null) {
+            mProfileMutableLiveData = new MutableLiveData<>();
             loadProfileData();
         }
-        return profileMutableLiveData;
+        return mProfileMutableLiveData;
     }
 
     private void loadProfileData(){
-        repository.setProfileListener(new Repository.ProfileListener() {
+        mRepository.setProfileListener(new Repository.ProfileListener() {
             @Override
             public void onProfileDataChangeSuccess(Profile profile) {
-                profileMutableLiveData.setValue(profile);
+                mProfileMutableLiveData.setValue(profile);
             }
 
             @Override
@@ -42,9 +44,25 @@ public class PreferencesViewModel extends AndroidViewModel {
     }
 
     public void readProfile() {
-        repository.readProfile(repository.getCurrentUserId());
+        mRepository.readProfile(mRepository.getCurrentUserId());
     }
     public void writeProfile(Profile profile){
-        repository.writeMyProfile(profile);
+        mRepository.writeMyProfile(profile);
+    }
+
+    public int getmMaxAge() {
+        return mMaxAge;
+    }
+
+    public void setmMaxAge(int mMaxAge) {
+        this.mMaxAge = mMaxAge;
+    }
+
+    public int getmMinAge() {
+        return mMinAge;
+    }
+
+    public void setmMinAge(int mMinAge) {
+        this.mMinAge = mMinAge;
     }
 }

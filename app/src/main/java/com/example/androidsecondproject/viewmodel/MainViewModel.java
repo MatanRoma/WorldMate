@@ -20,11 +20,13 @@ public class MainViewModel extends AndroidViewModel {
     private MutableLiveData<Profile> mProfileSuccessLiveData;
     private MutableLiveData<String> mProfileFailedLiveData;
     private MutableLiveData<Profile> mOtherProfileSuccessLiveData;
-    private boolean isFirstTime=true;
     private String messageToken;
+
+    private boolean isFirstTime=true;
     private boolean isFirstLocation=true;
     private boolean isFirstReadOtherProfile=true;
     private boolean[] isCategoryChecked;
+    private boolean isLoginAsGuest;
 
 
     public MainViewModel(@NonNull Application application) {
@@ -192,4 +194,12 @@ public class MainViewModel extends AndroidViewModel {
 
         }
 
+    public boolean isLoginAsGuest() {
+        return isLoginAsGuest;
+    }
+
+    public void setLoginAsGuest(boolean loginAsGuest) {
+        isLoginAsGuest = loginAsGuest;
+
+    }
 }

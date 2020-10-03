@@ -1,7 +1,6 @@
 package com.example.androidsecondproject.view;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
@@ -15,10 +14,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -40,9 +37,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.List;
-
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -60,6 +55,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
     private ImageButton[] mImageCloseBtns;
     private SpinKitView[] mLoadingAnimations;
     private SpinKitView mLoadingProfileAnimation;
+    AlertDialog show;
     //private float mAge;
 
 
@@ -309,9 +305,47 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
     }
 
     public void changePicture(){
-        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
-                getActivity());
-        myAlertDialog.setTitle("Upload Pictures Option");
+        final AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getLayoutInflater();
+        final View alertView = inflater.inflate(R.layout.take_picture_dialog, null);
+        ImageButton cameraBtn = alertView.findViewById(R.id.camera_btn);
+        ImageButton galleryBtn = alertView.findViewById(R.id.gallery_btn);
+        Button closeBtn = alertView.findViewById(R.id.close_btn);
+
+        cameraBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),    System.nanoTime()+"profile.jpg");
+
+                imageUri = FileProvider.getUriForFile(
+                        getContext(),
+                        "com.example.androidsecondproject.provider", //(use your app signature + ".provider" )
+                        file);
+
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                mIsfromProfile=true;
+                startActivityForResult(intent, CAMERA_REQUEST);
+            }
+        });
+
+        galleryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                mIsfromProfile=true;
+                startActivityForResult(intent, GALLERY_PICTURE);
+            }
+        });
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                show.dismiss();
+            }
+        });
+        myAlertDialog.setView(alertView);
+        show =myAlertDialog.show();
+       /* myAlertDialog.setTitle("Upload Pictures Option");
         myAlertDialog.setMessage("How do you want to set your picture?");
 
         myAlertDialog.setPositiveButton("Gallery",
@@ -342,8 +376,8 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
                         startActivityForResult(intent, CAMERA_REQUEST);
 
                     }
-                });
-        myAlertDialog.show();
+                });*/
+
 
     }
 

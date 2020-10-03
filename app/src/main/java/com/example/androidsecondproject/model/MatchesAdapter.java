@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,30 +17,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesViewHolder> {
+public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesViewHolder> implements Filterable {
+    final long DAY = 24 * 60 * 60 * 1000;
+
     private Map<String,Profile> mProfilesMap;
     private Context mContext;
     private String newMatchUid;
     private List<Chat> mChats;
+    private List<Chat> mAllChats;
+    private boolean isLtr;
 
 
 
-    public MatchesAdapter(List<Profile> profiles,Context context,List<Chat> chats,String newMatchUid) {
+    public MatchesAdapter(List<Profile> profiles,Context context,List<Chat> chats,String newMatchUid,boolean isLtr) {
         this.mContext = context;
         this.newMatchUid=newMatchUid;
         this.mChats=chats;
@@ -45,6 +49,8 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         for(Profile profile:profiles){
            mProfilesMap.put(profile.getUid(),profile);
         }
+        this.mAllChats = new ArrayList<>(chats);
+        this.isLtr = isLtr;
     }
 
     private MatchInterface matchClickListener;
@@ -58,6 +64,47 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             }
         });
     }
+
+    @Override
+    public Filter getFilter() {
+        return mFilter;
+    }
+
+    private Filter mFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Chat> filteredList = new ArrayList<>();
+            if(constraint.toString().isEmpty()){
+                filteredList.addAll(mAllChats);
+            }
+            else {
+                for(Chat chat : mAllChats){
+                    Profile currProfile;
+                    if(mProfilesMap.containsKey(chat.getFirstUid())){
+                        currProfile=mProfilesMap.get(chat.getFirstUid());
+                    }
+                    else {
+                        currProfile=mProfilesMap.get(chat.getSecondUid());
+                    }
+                    String fullName = currProfile.getFirstName()+" "+currProfile.getLastName();
+                    if(fullName.toLowerCase().contains(constraint.toString().toLowerCase())){
+                        filteredList.add(chat);
+                    }
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mChats.clear();
+            mChats.addAll((Collection<? extends Chat>) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
 
     public interface MatchInterface
     {
@@ -105,9 +152,28 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         else{
             holder.mProfileNameTv.setTextColor(Color.BLACK);
         }
+        Toast.makeText(mContext, currChat.getLastMessage().getText()+"", Toast.LENGTH_SHORT).show();
         if(currChat.getLastMessage()!=null) {
-            holder.mLastMessageTv.setText(currChat.getLastMessage().getText());
+            if(!currChat.getLastMessage().getText().equals(""))
+            {
+                holder.mNewMatchIv.setVisibility(View.GONE);
+                holder.mLastMessageTv.setText(currChat.getLastMessage().getText());
+                holder.mDateTv.setText(currChat.getLastMessage().getFormattedDate());
+                if(currChat.getLastMessage().getText().length()>30)
+                {
+                    String subLastMessage = currChat.getLastMessage().getText().substring(0,30) + "...";
+                    holder.mLastMessageTv.setText(subLastMessage);
+                }
+            }
+            else if(inLastDay(currChat.getLastMessage().getMessageDate()))
+            {
+                holder.mNewMatchIv.setVisibility(View.VISIBLE);
+                if(!isLtr){
+                    holder.mNewMatchIv.setRotation(-90);
+                }
+            }
         }
+
 
 
 
@@ -189,13 +255,18 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
     }
 
     public class MatchesViewHolder extends  RecyclerView.ViewHolder{
-        TextView mProfileNameTv,mLastMessageTv;
+        TextView mProfileNameTv,mLastMessageTv,mDateTv;
         CircleImageView mProfileIv;
+        ImageView mNewMatchIv;
+
         public MatchesViewHolder(@NonNull View itemView) {
             super(itemView);
             mProfileNameTv = itemView.findViewById(R.id.profile_name_chat_card);
             mProfileIv  =itemView.findViewById(R.id.profile_iv_chat_card);
             mLastMessageTv= itemView.findViewById(R.id.last_message_tv_chat_card);
+            mDateTv = itemView.findViewById(R.id.date_tv_chat_card);
+            mNewMatchIv = itemView.findViewById(R.id.new_match_iv);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -217,5 +288,9 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             });
 
         }
+    }
+
+    public boolean inLastDay(Date aDate) {
+        return aDate.getTime() > System.currentTimeMillis() - DAY;
     }
 }

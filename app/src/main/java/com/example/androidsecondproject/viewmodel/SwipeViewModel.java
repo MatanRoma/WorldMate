@@ -27,8 +27,10 @@ public class SwipeViewModel extends AndroidViewModel {
     private Profile mProfile;
  //   private boolean isFirstTime=true;
     MutableLiveData<List<Profile>> mProfilesMutableLiveData;
+    MutableLiveData<List<Profile>> mGuestProfilesMutableLiveData;
     private List<Profile> mProfiles;
     private  List<String> categories;
+    private boolean mIsLoginAsGuest;
 
     public SwipeViewModel(@NonNull Application application) {
         super(application);
@@ -42,6 +44,22 @@ public class SwipeViewModel extends AndroidViewModel {
             loadProfilesData();
         }
         return mProfilesMutableLiveData;
+    }
+    public MutableLiveData<List<Profile>> getGuestProfilesResultSuccess(){
+        if (mGuestProfilesMutableLiveData == null) {
+            mGuestProfilesMutableLiveData = new MutableLiveData<>();
+            loadGuestProfilesData();
+        }
+        return mGuestProfilesMutableLiveData;
+    }
+
+    private void loadGuestProfilesData() {
+        mRepository.setProfileGuestListener(new Repository.ProfilesForGuestListener() {
+            @Override
+            public void onGuestProfilesChangedSuccess(List<Profile> guestProfiles) {
+                mGuestProfilesMutableLiveData.setValue(guestProfiles);
+            }
+        });
     }
 
     public void readProfiles(){
@@ -176,5 +194,19 @@ public class SwipeViewModel extends AndroidViewModel {
    /* public void updateProfile() {
         mRepository.updateProfie(mRepository.getCurrentUserId(),);
     }*/
+   public void readProfilesForGuest(){
+       mRepository.readProfilesForGuest();
+   }
 
+    public boolean isLoginAsGuest() {
+        return mIsLoginAsGuest;
+    }
+
+    public void setIsLoginAsGuest(boolean mIsLoginAsGuest) {
+        this.mIsLoginAsGuest = mIsLoginAsGuest;
+    }
+
+    public List<Profile> getGuestProfiles() {
+       return mGuestProfilesMutableLiveData.getValue();
+    }
 }
