@@ -97,7 +97,7 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
         distanceSb.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
             @Override
             public void valueChanged(Number value) {
-                distanceResTv.setText(value + " Km");
+                distanceResTv.setText(value + " "+getString(R.string.kilometer));
             }
         });
 

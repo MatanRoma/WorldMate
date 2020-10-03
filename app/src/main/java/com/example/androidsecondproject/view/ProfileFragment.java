@@ -29,6 +29,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.Profile;
+import com.example.androidsecondproject.model.TranslateString;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.ProfileViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
@@ -195,7 +196,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
         lookingFor.setText(mViewModel.getmProfile().getLookingFor());
         Toast.makeText(getContext(), mViewModel.getImageUri()+"", Toast.LENGTH_SHORT).show();
         Glide.with(this).load(mViewModel.getImageUri()).error(R.drawable.man_profile).into(profilePicture);
-        if(mViewModel.getmProfile().getGender().equals("male"))
+        if(TranslateString.checkMale(mViewModel.getmProfile().getGender()))
         {
             menRb.setChecked(true);
         }

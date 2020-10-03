@@ -14,13 +14,80 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:id="@+id/pictures_pager"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layoutDirection="ltr"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:layout_below="@id/pictures_pager"
+                android:id="@+id/pictures_circles_layout">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/green_circle_selector"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    android:id="@+id/cicle_1"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/green_circle_selector"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    android:id="@+id/cicle_2"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/green_circle_selector"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    android:id="@+id/cicle_3"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/green_circle_selector"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    android:id="@+id/cicle_4"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/green_circle_selector"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    android:id="@+id/cicle_5"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/green_circle_selector"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    android:id="@+id/cicle_6"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/green_circle_selector"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    android:id="@+id/cicle_7"/>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/pictures_pager"
+                android:layout_below="@+id/pictures_circles_layout"
                 android:id="@+id/card_profile_info"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="15dp"
                 android:layout_centerInParent="true"
                 android:orientation="horizontal">
 

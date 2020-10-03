@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     }
 
     private void handleNavigationItemSelected(String title) {
-        if(mViewModel.isLoginAsGuest()&&!title.equals("Home")&&!title.equals("Logout")){
+        if(mViewModel.isLoginAsGuest()&&!title.equals(getString(R.string.home))&&!title.equals(getString(R.string.logout))){
             guestNotAllowedDialog(false);
         }
         else {
@@ -485,7 +485,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.replace(R.id.flContent,profileFragment,ACCOUNT_PROFILE_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
-        setTitle("My Profile");
+        setTitle(getString(R.string.my_profile));
     }
 
     public void moveToQuestionsFragment() {
@@ -496,7 +496,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.replace(R.id.flContent,questionsFragment,QUESTIONS_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
-        setTitle("Questions");
+        setTitle(getString(R.string.questions));
 
     }
 
@@ -509,8 +509,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.addToBackStack(null);
 
         transaction.commit();
-        setTitle("Matches");
-        navigationView.getMenu().getItem(3).setChecked(true);
+        setTitle(getString(R.string.your_matches));
+        navigationView.getMenu().getItem(2).setChecked(true);
     }
     private void moveToMatchesFragment(String matcherUid) {
         MatchesFragment matchesFragment = MatchesFragment.newInstance(matcherUid);
@@ -520,7 +520,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.replace(R.id.flContent,matchesFragment,MATCHES_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
-        setTitle("Matches");
+        setTitle(getString(R.string.your_matches));
 
     }
 
@@ -874,7 +874,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.replace(R.id.flContent,settingsFragment,SETTINGS_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
-        setTitle("Settings");
+        setTitle(getString(R.string.settings));
     }
 
     @Override
@@ -887,7 +887,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         mViewModel.setLoginAsGuest(true);
         navigationView.getMenu().getItem(0).setChecked(true);
         Glide.with(MainActivity.this).load(R.drawable.man_profile).error(R.drawable.man_profile).into(mProfileIv);
-        mNameTv.setText("Hello guest");
+        mNameTv.setText(getString(R.string.hello_guest));
         getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentByTag(LOGIN_FRAGMENT)).commit();
 
         moveToSwipeFragment();
@@ -897,15 +897,15 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private void guestNotAllowedDialog(boolean isFilterPressed){
         String dialogMessage;
         if(isFilterPressed){
-            dialogMessage="We are sorry but you can't filter as a guest";
+            dialogMessage=getString(R.string.cant_filter_guest);
         }
         else{
-            dialogMessage="We are sorry but you can only click home and logout as a guest";
+            dialogMessage=getString(R.string.cant_menu_guest);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(dialogMessage)
                 .setCancelable(true)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //do things
                     }

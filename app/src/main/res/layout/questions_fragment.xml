@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:text="Select category"
+                android:text="@string/pick_categories"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="25sp"
@@ -32,7 +32,7 @@
                 android:layout_marginBottom="30dp"
                 android:layout_marginHorizontal="60dp"
                 android:gravity="center"
-                android:text="Pick what categories of questions you want to answer"
+                android:text="@string/select_categories_desc"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:layout_below="@id/select_category_tv"
@@ -73,7 +73,7 @@
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
                             android:gravity=""
-                            android:text="sport"
+                            android:text="@string/sport"
                             android:layout_below="@id/filter_title"
                             android:id="@+id/sport_rb"/>
                         <CheckBox
@@ -82,7 +82,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="food"
+                            android:text="@string/food"
                             android:layout_below="@id/filter_sport_cb"
                             android:id="@+id/food_rb"/>
 
@@ -98,7 +98,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="culture"
+                            android:text="@string/culture"
                             android:layout_below="@+id/filter_food_cb"
                             android:id="@+id/culture_rb"/>
                         <CheckBox
@@ -107,7 +107,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="music"
+                            android:text="@string/music"
                             android:layout_below="@+id/filter_food_cb"
                             android:id="@+id/music_rb"/>
 
@@ -137,7 +137,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="10dp"
-                    android:text="Sport"
+                    android:text="@string/sport_title"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="40sp"
@@ -159,7 +159,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="10dp"
-                    android:text="Food"
+                    android:text="@string/food_cap_lett"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="40sp"
@@ -183,7 +183,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="10dp"
-                    android:text="Culture"
+                    android:text="@string/culture_title"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="40sp"
@@ -206,7 +206,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="10dp"
-                    android:text="Music"
+                    android:text="@string/music_title"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="40sp"

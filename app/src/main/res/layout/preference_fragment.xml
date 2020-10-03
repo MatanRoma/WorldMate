@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/prefernce_text"
-        android:text="Prefernces"
+        android:text="@string/preferences"
         android:textStyle="bold"
         android:textSize="40sp"
         android:gravity="center"
@@ -54,7 +54,7 @@
                         android:layout_centerVertical="true"
                         android:layout_alignParentStart="true"
                         android:textColor="@color/black"
-                        android:text="Discovery"/>
+                        android:text="@string/discovery"/>
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -78,20 +78,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
-                android:text="allowing other users to see you"
+                android:text="@string/discovery_desc"
                 android:layout_below="@id/discovery_card_view"
                 android:textColor="@color/black"
                 android:id="@+id/discovey_tv"/>
 
             <TextView
+                android:id="@+id/looking_for_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:text="Looking For:"
-                android:textSize="20sp"
                 android:layout_below="@id/discovey_tv"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="27dp"
+                android:layout_marginEnd="0dp"
+                android:text="@string/looking_for_str"
                 android:textColor="@color/black"
-                android:id="@+id/looking_for_tv"/>
+                android:textSize="20sp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -119,7 +121,7 @@
                             android:layout_centerVertical="true"
                             android:layout_alignParentStart="true"
                             android:textColor="@color/black"
-                            android:text="Men"/>
+                            android:text="@string/men_str"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/men_cb"
@@ -156,7 +158,7 @@
                             android:layout_centerVertical="true"
                             android:layout_alignParentStart="true"
                             android:textColor="@color/black"
-                            android:text="Women"/>
+                            android:text="@string/women_str"/>
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -197,7 +199,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="Maximum Distance:"
+                android:text="@string/maximum_distance_str"
                 android:textSize="20sp"
                 android:layout_alignParentStart="true"
                 android:layout_below="@id/checkbox_warning_preference_tv"
@@ -215,6 +217,13 @@
                 android:layout_below="@id/checkbox_warning_preference_tv"
                 android:textColor="@color/black"
                 android:id="@+id/distance_res_tv"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/max_distance_desc"
+                android:layout_below="@id/distance_tv"
+                android:textColor="@color/black"
+                android:id="@+id/distance_desc_tv"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -224,7 +233,7 @@
                 app:cardCornerRadius="10dp"
                 android:paddingHorizontal="10dp"
                 app:cardBackgroundColor="@color/colorPrimaryDark"
-                android:layout_below="@id/distance_tv"
+                android:layout_below="@id/distance_desc_tv"
                 android:id="@+id/distance_card_view">
 
                 <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
@@ -247,7 +256,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="Age Range:"
+                android:text="@string/age_range_str"
                 android:textSize="20sp"
                 android:layout_alignParentStart="true"
                 android:layout_below="@id/distance_card_view"
@@ -265,12 +274,19 @@
                 android:layout_below="@id/distance_card_view"
                 android:textColor="@color/black"
                 android:id="@+id/age_res_tv"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/age_range_desc"
+                android:layout_below="@id/age_tv"
+                android:textColor="@color/black"
+                android:id="@+id/age_desc_tv"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/age_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/age_tv"
+                android:layout_below="@id/age_desc_tv"
                 android:paddingHorizontal="10dp"
                 app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="10dp"
@@ -318,7 +334,7 @@
                 android:textAllCaps="false"
                 android:background="@drawable/btn_shape"
                 android:padding="5dp"
-                android:text="Continue" />
+                android:text="@string/continue_str" />
 
 
         </RelativeLayout>

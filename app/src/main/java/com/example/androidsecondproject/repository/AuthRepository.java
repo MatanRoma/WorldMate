@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.androidsecondproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -69,13 +70,13 @@ public class AuthRepository {
             try {
                 throw task.getException();
             } catch (FirebaseAuthWeakPasswordException e) {
-                mRegisterLister.onFailedRegister("Password must be at least 8 letters");
+                mRegisterLister.onFailedRegister(mContext.getString(R.string.password_length_error));
             } catch (FirebaseAuthInvalidCredentialsException e) {
-                mRegisterLister.onFailedRegister("Invalid Credentials");
+                mRegisterLister.onFailedRegister(mContext.getString(R.string.invalid_credentials));
             } catch (FirebaseAuthUserCollisionException e) {
-                mRegisterLister.onFailedRegister("User already exists");
+                mRegisterLister.onFailedRegister(mContext.getString(R.string.user_already_exist));
             } catch (Exception e) {
-                mRegisterLister.onFailedRegister("Error");
+                mRegisterLister.onFailedRegister(mContext.getString(R.string.error));
             }
         }
 

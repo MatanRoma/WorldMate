@@ -13,6 +13,7 @@ import com.example.androidsecondproject.model.Message;
 import com.example.androidsecondproject.model.Preferences;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.Question;
+import com.example.androidsecondproject.model.TranslateString;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,6 +50,7 @@ public class Repository {
     private QuestionsListener questionsListener;
     private ReadOtherProfileListener readOtherProfileListener;
     private MatchesListener matchesListener;
+    private Context mContext;
 
 
     private Repository(Context context) {
@@ -60,6 +62,7 @@ public class Repository {
         chatsTable.keepSynced(true);
         authRepository=AuthRepository.getInstance(context);
         storageRepository=StorageRepository.getInstance();
+        mContext = context;
 
     }
     public static Repository getInstance(Context context){
@@ -187,7 +190,7 @@ public class Repository {
 
         if (myAge < otherPrefences.getMinAge() || myAge > otherPrefences.getMaxAge()) {
             return false;
-        } else if (!((otherPrefences.isLookingForMen() && myGender.equals("male")) || (otherPrefences.isLookingForWomen() && myGender.equals("female")))) {
+        } else if (!((otherPrefences.isLookingForMen() && TranslateString.checkMale(myGender)) || (otherPrefences.isLookingForWomen() && TranslateString.checkFemale(myGender)))) {
             return false;
         } else if (profile.getCity() == null && otherProfile.getCity() != null) {
             return false;
