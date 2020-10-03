@@ -1,7 +1,6 @@
 package com.example.androidsecondproject.view;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +68,7 @@ public class AccountSetupFragment extends Fragment {
             public void onClick(View v) {
                 manBtn.setSelected(true);
                 womanBtn.setSelected(false);
-                mViewModel.setGender("male");
+                mViewModel.setGender(getString(R.string.male));
 
             }
         });
@@ -79,7 +78,7 @@ public class AccountSetupFragment extends Fragment {
             public void onClick(View v) {
                 manBtn.setSelected(false);
                 womanBtn.setSelected(true);
-                mViewModel.setGender("female");
+                mViewModel.setGender(getString(R.string.female));
             }
         });
 
@@ -108,7 +107,7 @@ public class AccountSetupFragment extends Fragment {
                 if(firstName.trim().length()==0){
                     fieldsValidated=false;
                 //    firstNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
-                    firstNameEt.setError("Please enter First Name");
+                    firstNameEt.setError(getString(R.string.enter_first_name));
                 }
                 else
                 {
@@ -118,7 +117,7 @@ public class AccountSetupFragment extends Fragment {
                 if(lastName.trim().length()==0){
                     fieldsValidated=false;
           //          lastNameInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red_stroke)));
-                    lastNameEt.setError("Please enter Last Name");
+                    lastNameEt.setError(getString(R.string.enter_last_name));
                 }
                 else
                 {

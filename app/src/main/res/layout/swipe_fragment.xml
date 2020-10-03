@@ -155,7 +155,7 @@
             android:layout_marginTop="30dp"
             android:layout_below="@id/no_people_logo"
             android:gravity="center"
-            android:text="There are no more people to show you"
+            android:text="@string/no_more_people"
             android:textColor="@color/black"
             android:textSize="25sp"/>
     </RelativeLayout>

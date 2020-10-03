@@ -68,4 +68,50 @@
     <string name="sign_up_str">הרשמה</string>
     <string name="register_str">הירשם</string>
     <string name="already_have_an_account_str">כבר יש לך חשבון?</string>
+    <string name="male">זכר</string>
+    <string name="female">נקבה</string>
+
+
+    <string-array name="multi_entries">
+        <item>"גברים"</item>
+        <item>"נשים"</item>
+    </string-array>
+
+    <string-array name="multi_values">
+        <item>"זכר"</item>
+        <item>"נקבה"</item>
+    </string-array>
+    <string name="take_picture_title">אפשרויות העלאת תמונה</string>
+    <string name="take_picture_description">איך אתה רוצה לקחת את התמונה שלך?</string>
+    <string name="close">סגור</string>
+    <string name="log_as_quest">התחבר כאורח</string>
+    <string name="password_length_error">סיסמה חייבת להיות לפחות 8 אותיות</string>
+    <string name="invalid_credentials">אישורים לא תקפים</string>
+    <string name="user_already_exist">משתמש כבר קיים</string>
+    <string name="error">שגיאה</string>
+    <string name="enter_first_name">בבקשה הכנס שם פרטי</string>
+    <string name="enter_last_name">בבקשה הכנס שם משפחה</string>
+    <string name="preferences">העדפות</string>
+    <string name="discovery">גילוי</string>
+    <string name="discovery_desc">אפשר למשתמשים אחרים לראות אותך</string>
+    <string name="men_str">גברים</string>
+    <string name="women_str">נשים</string>
+    <string name="max_distance">מרחק מקסימלי</string>
+    <string name="kilometer">ק\"מ</string>
+    <string name="max_distance_desc">בחר את המרחק בו אתה מחפש חברים</string>
+    <string name="age_range_desc">איזה גילאים אתה מחפש</string>
+    <string name="hello_guest">שלום אורח</string>
+    <string name="cant_filter_guest">אנחנו מצטערים, אבל אתה לא יכול לסנן בתור אורח</string>
+    <string name="cant_menu_guest">אנחנו מצטערים, אבל אתה יכול ללחוץ רק על בית והתנתקות בתור אורח</string>
+    <string name="ok">אישור</string>
+    <string name="no_more_people">אין עוד אנשים להראות לך</string>
+    <string name="no_mathces_yet">אין לך עדיין התאמות</string>
+    <string name="man">גבר</string>
+    <string name="woman">אישה</string>
+    <string name="select_categories_desc">בחר איזה על קטגוריות של שאלות אתה רוצה לענות</string>
+    <string name="sport_title">ספורט</string>
+    <string name="food_title">אוכל</string>
+    <string name="culture_title">תרבות</string>
+    <string name="music_title">מוזיקה</string>
+    <string name="choose_filter_desc">בחר לפי אילו קטגוריות תראה את התאימות</string>
 </resources>

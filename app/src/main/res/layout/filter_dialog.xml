@@ -11,7 +11,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pick categories"
+            android:text="@string/pick_categories"
             android:layout_gravity="center"
             android:padding="10dp"
             android:gravity="center"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:layout_marginBottom="10dp"
-        android:text="Choose according to which categories to see the compability"
+        android:text="@string/choose_filter_desc"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="15sp"
@@ -59,7 +59,7 @@
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:gravity="center"
-            android:text="sport"
+            android:text="@string/sport"
             android:textSize="17sp"
             android:layout_below="@id/filter_title"
             android:id="@+id/filter_sport_cb"/>
@@ -69,7 +69,7 @@
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:gravity="center"
-            android:text="food"
+            android:text="@string/food"
             android:textSize="17sp"
             android:layout_below="@id/filter_sport_cb"
             android:id="@+id/filter_food_cb"/>
@@ -86,7 +86,7 @@
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:gravity="center"
-            android:text="culture"
+            android:text="@string/culture"
             android:textSize="17sp"
             android:layout_below="@+id/filter_food_cb"
             android:id="@+id/filter_culture_cb"/>
@@ -96,7 +96,7 @@
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:gravity="center"
-            android:text="music"
+            android:text="@string/music"
             android:textSize="17sp"
             android:layout_below="@+id/filter_food_cb"
             android:id="@+id/filter_music_cb"/>
@@ -128,7 +128,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="cancel"
+        android:text="@string/cancel"
         android:background="@color/transparent"
         android:id="@+id/cancel_btn"/>
 
@@ -142,7 +142,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="confirm"
+        android:text="@string/confirm"
         android:background="@color/transparent"
         android:id="@+id/confirm_btn"/>
 </LinearLayout>

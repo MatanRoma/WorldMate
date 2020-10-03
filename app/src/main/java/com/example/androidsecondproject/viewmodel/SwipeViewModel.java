@@ -85,11 +85,19 @@ public class SwipeViewModel extends AndroidViewModel {
         });
     }
 
+
+   /* public void addLikedProfile(int position) {
+        List<String> likes=mProfile.getLikes();
+    //    likes.add((mProfilesMutableLiveData.getValue().get(position).getUid()));
+        likes.add((mProfiles.get(position).getUid()));
+        mRepository.updateProfile(mProfile.getUid(),"likes",likes);
+
     public void addLikedProfile(int position) {
 
         List<String> likes=mProfiles.get(position).getLikes();
         likes.add(mProfile.getUid());
         mRepository.updateProfile(mProfiles.get(position).getUid(),"likes",likes);
+
 
     }
 
@@ -103,6 +111,30 @@ public class SwipeViewModel extends AndroidViewModel {
     public boolean checkIfMatch(int position) {
         String otherUid=mProfiles.get(position).getUid();
        // List<String> likeUids=mProfilesMutableLiveData.getValue().get(position).getLikes();
+
+        List<String> likeUids=mProfiles.get(position).getLikes();
+        return likeUids.contains(myUid);
+    }*/
+
+    public void addLikedProfile(int position) {
+
+        List<String> likes=mProfiles.get(position).getLikes();
+        likes.add(mProfile.getUid());
+        mRepository.updateProfile(mProfiles.get(position).getUid(),"likes",likes);
+
+    }
+
+    public void addDislikedProfile(int position){
+        //  mProfile.getDisLikes().add((mProfilesMutableLiveData.getValue().get(position).getUid()));
+        mProfiles.get(position).getDisLikes().add((mProfile.getUid()));
+        mRepository.updateProfile(mProfiles.get(position).getUid(),"disLikes",mProfile.getDisLikes());
+    }
+
+
+    public boolean checkIfMatch(int position) {
+        String otherUid=mProfiles.get(position).getUid();
+        // List<String> likeUids=mProfilesMutableLiveData.getValue().get(position).getLikes();
+
         List<String> likeUids=mProfile.getLikes();
         return likeUids.contains(otherUid);
     }

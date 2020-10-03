@@ -24,6 +24,7 @@ import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.Question;
 import com.example.androidsecondproject.model.QuestionRespond;
+import com.example.androidsecondproject.model.TranslateString;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.QuestionsViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
@@ -88,7 +89,7 @@ private View mSportView;
         sportCb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleQuestion(sportCb,sportQuestionsLayout,sportTitleTv,"sport");
+                handleQuestion(sportCb,sportQuestionsLayout,sportTitleTv,getString(R.string.sport));
             }
 
         });
@@ -96,7 +97,7 @@ private View mSportView;
         foodCb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleQuestion(foodCb,foodQuestionsLayout,foodTitleTv,"food");
+                handleQuestion(foodCb,foodQuestionsLayout,foodTitleTv,getString(R.string.food));
             }
 
         });
@@ -104,7 +105,7 @@ private View mSportView;
         cultureCb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleQuestion(cultureCb,cultureQuestionsLayout,cultureTitleTv,"culture");
+                handleQuestion(cultureCb,cultureQuestionsLayout,cultureTitleTv,getString(R.string.culture));
             }
 
         });
@@ -112,7 +113,7 @@ private View mSportView;
         musicCb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleQuestion(musicCb,musicQuestionsLayout,musicTitleTv,"music");
+                handleQuestion(musicCb,musicQuestionsLayout,musicTitleTv,getString(R.string.music));
             }
 
         });
@@ -130,6 +131,7 @@ private View mSportView;
             titleTv.setVisibility(View.VISIBLE);
             questionsLayout.removeAllViews();
             questionsLayout.addView(titleTv);
+            titleStr = TranslateString.HebToEnglish(titleStr);
             for (final Question question:mViewModel.getQuestions()) {
                 if(question.getCategory().equals(titleStr))
                 {

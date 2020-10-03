@@ -151,8 +151,8 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
     @Override
     public void onBindViewHolder(@NonNull final SwipeViewHolder holder, int position) {
         Profile currentProfile=mProfiles.get(position);
-        if(currentProfile.getGender().equals("male"))
-        {
+        if(TranslateString.checkMale(currentProfile.getGender()))
+            {
             Glide.with(mContext).load(currentProfile.getProfilePictureUri()).error(R.drawable.man_profile).into(holder.mProfileIv);
         }
         else

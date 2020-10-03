@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,16 +19,19 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.ProfilePicturesPagerAdapter;
+import com.example.androidsecondproject.model.TranslateString;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.ProfilePreviewViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProfilePreviewFragment extends Fragment {
     ProfilePreviewViewModel mViewModel;
     ProfilePicturesPagerAdapter mViewPagerAdapter;
     ViewPager mViewPager;
+    private List<ImageView> mAllCircles;
 
     public interface OnMoveToPhotoPreview
     {
@@ -69,7 +74,14 @@ public class ProfilePreviewFragment extends Fragment {
 
         nameTv.setText(mViewModel.getOtherProfile().getFirstName()+" "+mViewModel.getOtherProfile().getLastName());
         ageTv.setText((int)mViewModel.getOtherProfile().getAge()+"");
-        genderTv.setText(mViewModel.getOtherProfile().getGender()+"");
+        if(TranslateString.checkMale(mViewModel.getOtherProfile().getGender()))
+        {
+            genderTv.setText(getString(R.string.man));
+        }
+        else {
+            genderTv.setText(getString(R.string.woman));
+        }
+        //genderTv.setText(mViewModel.getOtherProfile().getGender()+"");
         cityTv.setText(mViewModel.getOtherProfile().getCity()+"");
         int compability = getArguments().getInt("compability");
         if(compability !=0)
@@ -118,6 +130,44 @@ public class ProfilePreviewFragment extends Fragment {
             }
         });
 
+        mAllCircles = new ArrayList<>();
+        ImageView circle1 = rootView.findViewById(R.id.cicle_1);
+        ImageView circle2 = rootView.findViewById(R.id.cicle_2);
+        ImageView circle3 = rootView.findViewById(R.id.cicle_3);
+        ImageView circle4 = rootView.findViewById(R.id.cicle_4);
+        ImageView circle5 = rootView.findViewById(R.id.cicle_5);
+        ImageView circle6 = rootView.findViewById(R.id.cicle_6);
+        ImageView circle7 = rootView.findViewById(R.id.cicle_7);
+        mAllCircles.add(circle1);
+        mAllCircles.add(circle2);
+        mAllCircles.add(circle3);
+        mAllCircles.add(circle4);
+        mAllCircles.add(circle5);
+        mAllCircles.add(circle6);
+        mAllCircles.add(circle7);
+
+        loadCircles();
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                for(int i = 0; i < mViewPagerAdapter.getCount(); i++)
+                {
+                    mViewModel.getmCirclesIv().get(i).setSelected(false);
+                }
+                mViewModel.getmCirclesIv().get(position).setSelected(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         return rootView;
     }
 
@@ -125,7 +175,10 @@ public class ProfilePreviewFragment extends Fragment {
     {
         if(position != 0)
         {
+            Toast.makeText(getContext(), position+"", Toast.LENGTH_SHORT).show();
             mViewPager.setCurrentItem(position-1,true);
+/*            mViewModel.getmCirclesIv().get(position).setSelected(false);
+            mViewModel.getmCirclesIv().get(position-1).setSelected(true);*/
         }
     }
 
@@ -133,7 +186,10 @@ public class ProfilePreviewFragment extends Fragment {
     {
         if(position != mViewPagerAdapter.getCount()-1)
         {
+            Toast.makeText(getContext(), position+"", Toast.LENGTH_SHORT).show();
             mViewPager.setCurrentItem(position+1,true);
+/*            mViewModel.getmCirclesIv().get(position).setSelected(false);
+            mViewModel.getmCirclesIv().get(position+1).setSelected(true);*/
         }
     }
 
@@ -167,7 +223,7 @@ public class ProfilePreviewFragment extends Fragment {
             if(pictures.size() == 0)
             {
                 images = new String[]{"android.resource://com.example.androidsecondproject/" + R.drawable.man_profile};
-                if(mViewModel.getOtherProfile().getGender().equals("female"))
+                if(TranslateString.checkFemale(mViewModel.getOtherProfile().getGender()))
                 {
                     images[0] = "android.resource://com.example.androidsecondproject/" + R.drawable.woman_profile;
                 }
@@ -187,6 +243,20 @@ public class ProfilePreviewFragment extends Fragment {
             i++;
         }
         mViewPagerAdapter = new ProfilePicturesPagerAdapter(getContext(),images);
+    }
+
+    public void loadCircles()
+    {
+        int size = mViewPagerAdapter.getCount();
+        for(int i = 0; i < size; i++)
+        {
+            mViewModel.getmCirclesIv().add(mAllCircles.get(i));
+            mAllCircles.get(i).setVisibility(View.VISIBLE);
+            mAllCircles.get(i).setSelected(false);
+
+        }
+        mViewModel.getmCirclesIv().get(0).setSelected(true);
+
     }
 
 }
