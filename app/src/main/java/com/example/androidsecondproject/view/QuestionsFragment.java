@@ -152,6 +152,7 @@ private View mSportView;
                     List<RadioButton> radioButtons = new ArrayList<>();
                     for (int i= 0; i <question.getAnswers().size();i++) {
                         RadioButton radioButton = new RadioButton(getContext());
+                        radioButton.setHighlightColor(getResources().getColor(R.color.black));
                         radioButton.setTag(question.getId()+"");
                         radioButtons.add(radioButton);
                         radioButton.setText(question.getAnswers().get(i));

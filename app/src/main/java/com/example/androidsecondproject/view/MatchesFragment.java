@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 
 import android.widget.LinearLayout;
 
-import android.widget.RelativeLayout;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,25 +37,26 @@ public class MatchesFragment extends Fragment  {
     private MatchesAdapter mMatchesAdapter;
     private OnMoveToChat moveToChatListener;
     private SpinKitView mLoadingAnimation;
-    private LinearLayout noMatchesLayout;
+    private LinearLayout mNoMatchesLayout;
+    private SearchView mSearchView;
 
 
     public interface OnMoveToChat{
         public void OnClickMoveToChat(Profile myProfile,Profile otherProfile,String chatid);
     }
 
-    public static MatchesFragment newInstance(String matherUid)
+    public static MatchesFragment newInstance(Profile myProfile)
     {
         Bundle bundle=new Bundle();
-        bundle.putString("matcher_uid",matherUid);
+        bundle.putSerializable("my_profile",myProfile);
         MatchesFragment matchesFragment=new MatchesFragment();
         matchesFragment.setArguments(bundle);
         return matchesFragment;
     }
-    public static MatchesFragment newInstance()
+  /*  public static MatchesFragment newInstance()
     {
         return new MatchesFragment();
-    }
+    }*/
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -71,13 +70,26 @@ public class MatchesFragment extends Fragment  {
         final View rootView = inflater.inflate(R.layout.matches_fragment,container,false);
         mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
         mLoadingAnimation.setVisibility(View.VISIBLE);
+        mSearchView = rootView.findViewById(R.id.search_view);
+        mNoMatchesLayout = rootView.findViewById(R.id.no_matches_layout);
 
-        noMatchesLayout = rootView.findViewById(R.id.no_matches_layout);
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mMatchesAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
 
         mViewModel =new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Matches)).get(MatchesViewModel.class);
+        mViewModel.setProfile((Profile)getArguments().getSerializable("my_profile"));
       //  mViewModel.setProfile((Profile) getArguments().getSerializable("profile"));
-        if(getArguments()!=null)
-            mViewModel.setNewMatchUid(getArguments().getString("matcher_uid"));
 
 
         final RecyclerView matchesRecycler = rootView.findViewById(R.id.matches_recycler);
@@ -85,43 +97,16 @@ public class MatchesFragment extends Fragment  {
         matchesRecycler.setLayoutManager(new GridLayoutManager(getContext(),1));
 
 
-        Observer<Profile> myProfileSuccessObserver=new Observer<Profile>() {
+    /*    Observer<Profile> myProfileSuccessObserver=new Observer<Profile>() {
             @Override
             public void onChanged(Profile profile) {
                 mViewModel.readMatches();
-                SearchView searchView = rootView.findViewById(R.id.search_view);
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        mMatchesAdapter.getFilter().filter(newText);
-                        return false;
-                    }
-                });
             }
-        };
+        };*/
 
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
-            /*mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(),getContext(),mViewModel.getMyProfile(),mViewModel.getNewMatchUid());
-            mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
-                @Override
-                public void onChatClickedListener(int position) {
-                    Profile otherProfile=mViewModel.getMatches().get(position);
-                    String chatid=mViewModel.getChatId(otherProfile.getUid());
-                    moveToChat(mViewModel.getMyProfile(),otherProfile,chatid);
-
-                }
-            });
-            matchesRecycler.setAdapter(mMatchesAdapter);
-            mLoadingAnimation.setVisibility(View.GONE);
-
-*/
             mViewModel.readChats();
             }
         };
@@ -134,7 +119,7 @@ public class MatchesFragment extends Fragment  {
                 if (mMatchesAdapter == null){
                    boolean isLtr = checkDirection();
                     mMatchesAdapter = new MatchesAdapter(mViewModel.getMatches(), getContext(),mViewModel.getChats(), mViewModel.getNewMatchUid(),isLtr);
-                mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
+                    mMatchesAdapter.setListener(new MatchesAdapter.MatchInterface() {
                     @Override
                     public void onChatClickedListener(Profile otherProfile) {
                         String chatid = mViewModel.getChatId(otherProfile.getUid());
@@ -146,7 +131,9 @@ public class MatchesFragment extends Fragment  {
                 mMatchesAdapter.sortChats();
                     Log.d("heree","ger1");
                 matchesRecycler.setAdapter(mMatchesAdapter);
+
                 mLoadingAnimation.setVisibility(View.GONE);
+                mSearchView.setVisibility(View.VISIBLE);
             }
                 else{
                     Log.d("heree","ger2");
@@ -163,9 +150,9 @@ public class MatchesFragment extends Fragment  {
 
 
         mViewModel.getChatDataChange().observe(this,chatDataChangedObserver);
-        mViewModel.getMyProfileResultSuccess().observe(this,myProfileSuccessObserver);
+       // mViewModel.getMyProfileResultSuccess().observe(this,myProfileSuccessObserver);
         mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
-        mViewModel.readMyProfile();
+        mViewModel.readMatches();
         return rootView;
     }
 
@@ -185,11 +172,11 @@ public class MatchesFragment extends Fragment  {
     {
         if(mViewModel.getChats().size()==0)
         {
-            noMatchesLayout.setVisibility(View.VISIBLE);
+            mNoMatchesLayout.setVisibility(View.VISIBLE);
         }
         else
         {
-            noMatchesLayout.setVisibility(View.GONE);
+            mNoMatchesLayout.setVisibility(View.GONE);
         }
     }
 

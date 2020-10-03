@@ -14,10 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -68,12 +68,12 @@ public class SwipeFragment extends Fragment {
     private ImageView mMatchAnimation;
 
     private LinearLayout btnsLayout;
-    private RelativeLayout noPeopleLayout;
+    private RelativeLayout mNoPeopleMainLayout, mNoPeopleGuestLayout;
     private ImageView rangeIv;
-    private CircleImageView noPeopleLogo;
+    private CircleImageView mNoPeopleLogo;
     //ImageView rewindBtn;
 
-    private SwipeInterface swipeInterface;
+    private SwipeInterface mSwipeListener;
 
     public static Fragment newInstance() {
         // login as guest
@@ -88,6 +88,7 @@ public class SwipeFragment extends Fragment {
     {
         void onClickMoveToProfilePreview(Profile otherProfile,int compability);
         void onShowToolbar();
+        void onLogoutFromSwipeFragment();
     }
 
 
@@ -105,7 +106,7 @@ public class SwipeFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        swipeInterface = (SwipeInterface)getActivity();
+        mSwipeListener = (SwipeInterface)getActivity();
     }
 
     @Override
@@ -136,6 +137,7 @@ public class SwipeFragment extends Fragment {
         mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
         mLoadingAnimation.setVisibility(View.VISIBLE);
         mMatchAnimation = rootView.findViewById(R.id.match_anim);
+        mNoPeopleGuestLayout =rootView.findViewById(R.id.no_people_layout_guest);
 
         //((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
 
@@ -151,9 +153,9 @@ public class SwipeFragment extends Fragment {
         btnsLayout = rootView.findViewById(R.id.btns_layout);
         btnsLayout.setVisibility(View.GONE);
 
-        noPeopleLayout = rootView.findViewById(R.id.no_people_layout);
+        mNoPeopleMainLayout = rootView.findViewById(R.id.no_people_layout);
         rangeIv = rootView.findViewById(R.id.range_iv);
-        noPeopleLogo = rootView.findViewById(R.id.no_people_logo);
+        mNoPeopleLogo = rootView.findViewById(R.id.no_people_logo);
 
         likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,32 +205,46 @@ public class SwipeFragment extends Fragment {
                             mSwipeAdapter.notifyDataSetChanged();
 
                         }
+                        if(mSwipeAdapter.getItemCount()==0)
+                            noMatchesAnimation();
+                        else
+                            mNoPeopleMainLayout.setVisibility(View.GONE);
                 }
             };
 
             mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
             mViewModel.setUserProfile((Profile) getArguments().getSerializable("profile"));
+            Log.d("call","swipe");
             mViewModel.readProfiles();
         }
-        else{
-            Observer<List<Profile>> guestProfileSuccessObserver=new Observer<List<Profile>>() {
+        else {
+            Observer<List<Profile>> guestProfileSuccessObserver = new Observer<List<Profile>>() {
                 @Override
                 public void onChanged(List<Profile> profiles) {
                     initialAdapter(categories);
+                    if(mSwipeAdapter.getItemCount()==0)
+                        noMatchesAnimation();
+                    else
+                        mNoPeopleGuestLayout.setVisibility(View.GONE);
                 }
 
-            }
-        };
-
             };
-            mViewModel.getGuestProfilesResultSuccess().observe(this,guestProfileSuccessObserver);
+            Button guestNoPeopleBtn=rootView.findViewById(R.id.no_people_guest_btn);
+            guestNoPeopleBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSwipeListener.onLogoutFromSwipeFragment();
+                }
+            });
+
+
+            mViewModel.getGuestProfilesResultSuccess().observe(this, guestProfileSuccessObserver);
             mViewModel.readProfilesForGuest();
         }
 
+
         setTouchHelper();
         Log.d("testtt","testt0");
-
-
 
 
 
@@ -276,7 +292,7 @@ public class SwipeFragment extends Fragment {
         else{
             mSwipeAdapter = new SwipeAdapter(mViewModel.getProfiles(), getContext(), mViewModel.getProfile(), categories);
         }
-        swipeInterface.onShowToolbar();
+        mSwipeListener.onShowToolbar();
 
         mSwipeAdapter.setProfiledPressedListener(new SwipeAdapter.ProfilePressedListener() {
             @Override
@@ -371,7 +387,7 @@ public class SwipeFragment extends Fragment {
                     if(!mViewModel.isLoginAsGuest()) {
                         profileLiked(0);
                     }
-                    mSwipeAdapter.removeTopItem();
+
                     //rewindBtn.setVisibility(View.GONE);
                     Log.d("stack_swipe","swiped_right");
                 }
@@ -379,10 +395,12 @@ public class SwipeFragment extends Fragment {
                     if(!mViewModel.isLoginAsGuest()) {
                         profileDisliked(0);
                     }
-                    mSwipeAdapter.removeTopItem();
                     //rewindBtn.setVisibility(View.VISIBLE);
                     Log.d("stack_swipe","swiped_left");
                 }
+                mSwipeAdapter.removeTopItem();
+                if(mSwipeAdapter.getItemCount()==0)
+                    noMatchesAnimation();
             }
 
             @Override
@@ -465,7 +483,7 @@ public class SwipeFragment extends Fragment {
 
 
     private void moveToProfilePreview(Profile otherProfile, int compability) {
-        swipeInterface.onClickMoveToProfilePreview(otherProfile,compability);
+        mSwipeListener.onClickMoveToProfilePreview(otherProfile,compability);
     }
 
 
@@ -486,13 +504,18 @@ public class SwipeFragment extends Fragment {
     }
 
 
-    public void noPeopleAnimation()
+    public void noMatchesAnimation()
     {
-        noPeopleLayout.setVisibility(View.VISIBLE);
-        Glide.with(getContext()).load(mViewModel.getProfile().getProfilePictureUri()).error(R.mipmap.ic_launcher).into(noPeopleLogo);
-        Animation rangeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.range_animation);
-        rangeAnimation.setRepeatMode(Animation.REVERSE);
-        rangeIv.startAnimation(rangeAnimation);
+        if(!mViewModel.isLoginAsGuest()) {
+            mNoPeopleMainLayout.setVisibility(View.VISIBLE);
+            Glide.with(getContext()).load(mViewModel.getProfile().getProfilePictureUri()).error(R.mipmap.ic_launcher).into(mNoPeopleLogo);
+            Animation rangeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.range_animation);
+            rangeAnimation.setRepeatMode(Animation.REVERSE);
+            rangeIv.startAnimation(rangeAnimation);
+        }
+        else{
+            mNoPeopleGuestLayout.setVisibility(View.VISIBLE);
+        }
     }
 
 

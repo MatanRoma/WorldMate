@@ -12,6 +12,7 @@ import com.example.androidsecondproject.repository.Repository;
 public class SettingsViewModel extends AndroidViewModel {
 
     private Repository mRepository;
+    private Profile mProfile;
 
 
     public SettingsViewModel(@NonNull Application application) {
@@ -19,11 +20,17 @@ public class SettingsViewModel extends AndroidViewModel {
         mRepository =Repository.getInstance(application.getApplicationContext());
     }
 
-    public void readProfile() {
-        mRepository.readProfile(mRepository.getCurrentUserId());
-    }
-    public void writeProfile(Profile profile){
-        mRepository.writeMyProfile(profile);
+
+    public Profile getmProfile() {
+        return mProfile;
     }
 
+    public void setmProfile(Profile mProfile) {
+        this.mProfile = mProfile;
+    }
+
+    public void updateDiscovery(boolean isDiscoveryOn){
+        mProfile.setDiscovery(isDiscoveryOn);
+        mRepository.updateProfile(mProfile.getUid(),"discovery",isDiscoveryOn);
+    }
 }

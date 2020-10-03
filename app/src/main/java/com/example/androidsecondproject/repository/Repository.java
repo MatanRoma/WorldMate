@@ -44,6 +44,7 @@ public class Repository {
     private  MessageListener messageListener;
     private ChatListener chatListener;
     private ProfilesForGuestListener profilesForGuestListener;
+    private ValueEventListener mMyProfileValueEventListener;
 
     private static Repository repository;
     private QuestionsListener questionsListener;
@@ -72,8 +73,34 @@ public class Repository {
 
 
     public void readProfile(String uid){
+        if(mMyProfileValueEventListener!=null)
+            profilesTable.child(uid).removeEventListener(mMyProfileValueEventListener);
+                 mMyProfileValueEventListener=new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            Profile profile=snapshot.getValue(Profile.class);
+                            Log.d("prof","tst2");
+                            if(profileListener!=null) {
+                                Log.d("prof", "tst3");
+                                profileListener.onProfileDataChangeSuccess(profile);
+                            }
+                        }
+                        else {
+                            if(profileListener!=null)
+                                profileListener.onProfileDataChangeFail("not_exist");
+                        }
+                    }
 
-                profilesTable.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        if(profileListener!=null)
+                            profileListener.onProfileDataChangeFail(error.getMessage());
+                        //TODO
+                    }
+                };
+                profilesTable.child(uid).addValueEventListener(mMyProfileValueEventListener);
+              /*  profilesTable.child(uid).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
@@ -97,7 +124,7 @@ public class Repository {
                         //TODO
                     }
         });
-
+*/
     }
 
     public void readProfiles(final Profile myProfile){
@@ -105,9 +132,9 @@ public class Repository {
         profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                Log.d("call","call");
                 if(snapshot.exists()){
-                    String myUid=getCurrentUserId();
+                    String myUid=myProfile.getUid();
                     List<Profile> profiles=new ArrayList<>();
                     for(DataSnapshot currSnapshot:snapshot.getChildren()){
                        if(!currSnapshot.getKey().equals(myUid)) {
@@ -118,7 +145,8 @@ public class Repository {
                            }
                        }
                     }
-                    profilesListener.onProfilesDataChangeSuccess(profiles);
+                    if(profilesListener!=null)
+                         profilesListener.onProfilesDataChangeSuccess(profiles);
                 }
 
             }
@@ -202,7 +230,7 @@ public class Repository {
 
     public void writeMyProfile(Profile profile){
         Log.d("prof","tst1");
-        profilesTable.child(authRepository.getCurrentUserUid()).setValue(profile);
+        profilesTable.child(profile.getUid()).setValue(profile);
         //TODO
     }
     public void writeOtherProfile(Profile profile){
@@ -336,6 +364,13 @@ public class Repository {
             }
         });
     }
+
+    public void remveProfileListener(String uid) {
+        if (mMyProfileValueEventListener!=null){
+            profilesTable.child(uid).removeEventListener(mMyProfileValueEventListener);
+        }
+    }
+
     public interface  ProfilesForGuestListener{
         void onGuestProfilesChangedSuccess(List<Profile> guestProfiles);
     }
