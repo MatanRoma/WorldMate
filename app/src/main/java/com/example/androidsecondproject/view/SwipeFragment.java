@@ -214,6 +214,7 @@ public class SwipeFragment extends Fragment {
 
             mViewModel.getProfilesResultSuccess().observe(this, profileSuccessObserver);
             mViewModel.setUserProfile((Profile) getArguments().getSerializable("profile"));
+            Log.d("call","swipe");
             mViewModel.readProfiles();
         }
         else {

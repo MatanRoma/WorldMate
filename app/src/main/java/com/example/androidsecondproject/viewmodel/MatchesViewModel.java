@@ -23,7 +23,7 @@ public class MatchesViewModel extends AndroidViewModel {
 
 
     private MutableLiveData<List<Profile>> mMatchesMutableLiveData;
-    private MutableLiveData<Profile> mMyProfileMutableLiveData;
+ //   private MutableLiveData<Profile> mMyProfileMutableLiveData;
     private MutableLiveData<List<Chat>> mChatMutableLiveData;
 
 
@@ -60,7 +60,7 @@ public class MatchesViewModel extends AndroidViewModel {
         });
     }
 
-    public MutableLiveData<Profile> getMyProfileResultSuccess(){
+ /*   public MutableLiveData<Profile> getMyProfileResultSuccess(){
         if (mMyProfileMutableLiveData == null) {
             mMyProfileMutableLiveData = new MutableLiveData<>();
             loadMyProfileData();
@@ -80,7 +80,7 @@ public class MatchesViewModel extends AndroidViewModel {
 
             }
         });
-    }
+    }*/
 
 
     private void loadProfilesData() {
@@ -98,7 +98,7 @@ public class MatchesViewModel extends AndroidViewModel {
     }
 
     public void readMatches(){
-        mRepository.readMatches(mMyProfileMutableLiveData.getValue());
+        mRepository.readMatches(mProfile);
     }
 
 
@@ -139,16 +139,16 @@ public class MatchesViewModel extends AndroidViewModel {
                 return match.getId();
         }
         return "";*/
-       if(mMyProfileMutableLiveData.getValue().getUid().compareTo(otherUid)>0){
-            return mMyProfileMutableLiveData.getValue().getUid()+otherUid;
+       if(mProfile.getUid().compareTo(otherUid)>0){
+            return mProfile.getUid()+otherUid;
        }
        else {
-            return otherUid+mMyProfileMutableLiveData.getValue().getUid();
+            return otherUid+mProfile.getUid();
        }
     }
 
     public Profile getMyProfile() {
-        return mMyProfileMutableLiveData.getValue();
+        return mProfile;
     }
 
     public void readMyProfile() {
@@ -164,7 +164,7 @@ public class MatchesViewModel extends AndroidViewModel {
     }
 
     public void readChats() {
-       mRepository.readChats(mMyProfileMutableLiveData.getValue());
+       mRepository.readChats(mProfile);
     }
 
     public List<Chat> getChats() {
