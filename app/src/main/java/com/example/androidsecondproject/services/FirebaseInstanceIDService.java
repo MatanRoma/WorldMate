@@ -1,30 +1,39 @@
 package com.example.androidsecondproject.services;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.preference.PreferenceManager;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.NotificationTarget;
 import com.example.androidsecondproject.R;
+import com.example.androidsecondproject.view.ChatFragment;
 import com.example.androidsecondproject.view.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
+import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
+
 public class FirebaseInstanceIDService extends FirebaseMessagingService {
-    RemoteViews remoteViews;
-    final int NOTIF_ID = 1;
+
+
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
@@ -32,74 +41,129 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
         Intent intent=new Intent("token_changed");
         intent.putExtra("token",s);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
     }
+
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         Map<String,String> messageDataMap=remoteMessage.getData();
         Log.d("servicee","service");
-        if(messageDataMap!=null&&messageDataMap.get("sender")!=null){
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isMatchNotifAllowed=sharedPreferences.getBoolean("match_pref",true);
+        boolean isMessageNotifAllowed=sharedPreferences.getBoolean("message_pref",true);
+        boolean isVibrateNotif=sharedPreferences.getBoolean("vibrate_pref",true);
 
-            Log.d("other_match_uid",messageDataMap.get("match_uid"));
 
-           NotificationManager notificationManager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-            String channelId="channel_one";
-            String channelName="Match_Channel";
-            if(Build.VERSION.SDK_INT>=26) {
-/*                NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
-                notificationChannel.setSound(null, null);
-                notificationManager.createNotificationChannel(notificationChannel);*/
-                int importance = NotificationManager.IMPORTANCE_LOW;
+        if(messageDataMap.get("sender")!=null&&isMatchNotifAllowed) {
+            final int NOTIF_ID = 1;
+            Log.d("other_match_uid", messageDataMap.get("match_uid"));
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            String channelId;
+            if(isVibrateNotif)
+                channelId = "channel_two";
+            else
+                channelId="channel_three";
+            String channelName = "Match_Channel";
+            if (Build.VERSION.SDK_INT >= 26) {
+
+                int importance = NotificationManager.IMPORTANCE_HIGH;
                 NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
                 notificationChannel.enableLights(true);
                 notificationChannel.setLightColor(Color.RED);
-                notificationChannel.setVibrationPattern(new long[]{ 0 });
                 notificationChannel.enableVibration(true);
+                if (isVibrateNotif)
+                    notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                else
+                    notificationChannel.setVibrationPattern(new long[]{0});
+                notificationManager.createNotificationChannel(notificationChannel);
             }
-            NotificationCompat.Builder builder=new NotificationCompat.Builder(this,channelId);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
 
-            Intent activityIntent = new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            activityIntent.setAction("&k&"+messageDataMap.get("match_uid"));
+            Intent activityIntent = new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            activityIntent.setAction("&k&" + messageDataMap.get("match_uid"));
 
             PendingIntent activityPendingIntent = PendingIntent.getActivity(this,
                     5, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            remoteViews = new RemoteViews(getPackageName(),R.layout.match_notif_layout);
-            remoteViews.setTextViewText(R.id.title_tv,"you matched with "+messageDataMap.get("sender"));
+            RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.match_notif_layout);
+            remoteViews.setTextViewText(R.id.title_tv, "you matched with " + messageDataMap.get("sender"));
 
-           // Notification notification=builder.build();
+            NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, builder.build(), NOTIF_ID);
 
-
-
-
-
-            NotificationTarget notificationTarget = new NotificationTarget(this,R.id.profile_image_notif,remoteViews,builder.build(),NOTIF_ID);
-
-           // Log.d("notif",messageDataMap.get("image"));
-            //remoteViews.setImageViewUri(R.id.profile_image_notif, Uri.parse(messageDataMap.get("image")));
-            //Glide.with(FirebaseInstanceIDService.this).asBitmap().load(messageDataMap.get("image")).into(notificationTarget);
-
-
+            Glide.with(this).asBitmap().load(messageDataMap.get("image")).error(R.drawable.man_profile).into(notificationTarget);
             builder.setCustomContentView(remoteViews);
-
-
-        //    Glide.with(FirebaseInstanceIDService.this).asBitmap().load(messageDataMap.get("image")).error(R.drawable.man_profile).into(notificationTarget);
-        //    builder.setCustomContentView(remoteViews);
-        //    remoteViews.setImageViewUri(R.id.profile_image_notif,Uri.parse(messageDataMap.get("image")));
-
 
             builder.setAutoCancel(true);
             builder.setContentIntent(activityPendingIntent);
 
             builder.setSmallIcon(R.drawable.ic_messages_icon);
 
+            notificationManager.notify(NOTIF_ID, builder.build());
 
-            notificationManager.notify(NOTIF_ID,builder.build());
+        }
+        else if(messageDataMap.get("chat_id")!=null&&isMessageNotifAllowed){
+            if(!(ChatFragment.chatId!=null&&ChatFragment.chatId.equals(messageDataMap.get("chat_id")))) {
+                final int NOTIF_ID = 2;
+                Log.d("chat_notif", messageDataMap.get("fullname"));
+                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                String channelId;
+                if (isVibrateNotif)
+                    channelId = "channel_two";
+                else
+                    channelId = "channel_three";
+                String channelName = "Match_Channel";
+                if (Build.VERSION.SDK_INT >= 26) {
 
+                    int importance = NotificationManager.IMPORTANCE_HIGH;
+
+                    NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
+                    notificationChannel.enableLights(true);
+                    notificationChannel.setLightColor(Color.RED);
+                    notificationChannel.enableVibration(true);
+                    Log.d("vib", isVibrateNotif + "");
+                    if (isVibrateNotif)
+                        notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                    else
+                        notificationChannel.setVibrationPattern(new long[]{0L});
+                    notificationManager.createNotificationChannel(notificationChannel);
+                }
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
+
+                Intent activityIntent = new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                activityIntent.setAction("&s&" + messageDataMap.get("chat_id"));
+
+                PendingIntent activityPendingIntent = PendingIntent.getActivity(this,
+                        1, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                activityIntent.putExtra("chat_id", messageDataMap.get("chat_id"));
+
+
+                RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.match_notif_layout);
+                remoteViews.setTextViewText(R.id.title_tv, messageDataMap.get("fullname"));
+                remoteViews.setTextViewText(R.id.text_id, messageDataMap.get("text_message"));
+
+                NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, builder.build(), NOTIF_ID);
+
+                builder.setCustomContentView(remoteViews);
+
+                builder.setAutoCancel(true);
+                builder.setContentIntent(activityPendingIntent);
+
+                builder.setSmallIcon(R.drawable.ic_messages_icon);
+
+                notificationManager.notify(NOTIF_ID, builder.build());
+
+            }
         }
 
 
+    }
+    public boolean foregrounded() {
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+        return (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE);
     }
 
 }

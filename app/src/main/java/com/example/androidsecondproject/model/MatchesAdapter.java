@@ -37,6 +37,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
     private String newMatchUid;
     private List<Chat> mChats;
     private List<Chat> mAllChats;
+    private List<Profile> mMatches;
     private boolean isLtr;
 
 
@@ -51,11 +52,13 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         }
         this.mAllChats = new ArrayList<>(chats);
         this.isLtr = isLtr;
+        this.mMatches=profiles;
     }
 
     private MatchInterface matchClickListener;
 
     public void sortChats() {
+
         Collections.sort(mChats, new Comparator<Chat>() {
             @Override
             public int compare(Chat o1, Chat o2) {
@@ -63,6 +66,12 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
                 return (o1.getLastMessage().getMessageDate().compareTo(o2.getLastMessage().getMessageDate()))*(-1);
             }
         });
+        /*mProfilesMap=new HashMap<>();
+        for(Profile profile:mMatches){
+            mProfilesMap.put(profile.getUid(),profile);
+
+        }*/
+        this.mAllChats = new ArrayList<>(mChats);
     }
 
     @Override
@@ -171,6 +180,9 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
                 if(!isLtr){
                     holder.mNewMatchIv.setRotation(-90);
                 }
+            }
+            else {
+                holder.mNewMatchIv.setVisibility(View.GONE);
             }
         }
 
