@@ -270,22 +270,25 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             } else if (getString(R.string.settings).equals(title)) {
                 moveToSettingFragment();
             } else if (getString(R.string.logout).equals(title)) {
-                if (!mViewModel.isLoginAsGuest()) {
-                    mViewModel.setToken("");
-                    mViewModel.setFirstTime(true);
-                    mViewModel.setFirstLocation(true);
-                    LocationViewModel.getInstance(getApplicationContext()).removeObserver(mLocationObserver);
-                    mViewModel.logout();
-                } else {
-                    mViewModel.setLoginAsGuest(false);
-                    navigationView.getMenu().getItem(6).setChecked(true);
-
-                }
-                clearStack(null);
-                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentByTag(SWIPE_FRAGMENT)).commit();
-                moveToLoginFragment();
+                logoutUser();
             }
         }
+    }
+    private void logoutUser(){
+        if (!mViewModel.isLoginAsGuest()) {
+            mViewModel.setToken("");
+            mViewModel.setFirstTime(true);
+            mViewModel.setFirstLocation(true);
+            LocationViewModel.getInstance(getApplicationContext()).removeObserver(mLocationObserver);
+            mViewModel.logout();
+        } else {
+            mViewModel.setLoginAsGuest(false);
+            navigationView.getMenu().getItem(6).setChecked(true);
+
+        }
+        clearStack(null);
+        getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentByTag(SWIPE_FRAGMENT)).commit();
+        moveToLoginFragment();
     }
 
 
@@ -912,6 +915,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    @Override
+    public void onLogoutFromSwipeFragment() {
+        logoutUser();
+
     }
 }
 

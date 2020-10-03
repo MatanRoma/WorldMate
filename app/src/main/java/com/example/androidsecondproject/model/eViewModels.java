@@ -14,7 +14,8 @@ public enum eViewModels {
         Questions,
         Matches,
         Chat,
-        ProfilePreview
+        ProfilePreview,
+        Settings
 
 
 }

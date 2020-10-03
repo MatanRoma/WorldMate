@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
@@ -24,7 +25,10 @@ import androidx.preference.SwitchPreference;
 
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.model.Profile;
+import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.SettingsViewModel;
+import com.example.androidsecondproject.viewmodel.SwipeViewModel;
+import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
 import java.util.Set;
 
@@ -53,6 +57,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        mViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Settings)).get(SettingsViewModel.class);
+        mViewModel.setmProfile((Profile)getArguments().getSerializable("profile"));
 
     }
 
@@ -94,8 +101,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         vibrateSw = getPreferenceScreen().findPreference("vibrate_pref");
         minAgeSk = getPreferenceScreen().findPreference("min_age_pref");
         maxAgeSk = getPreferenceScreen().findPreference("max_age_pref");
-
-
     }
 
 
@@ -108,6 +113,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
             case "discovery_cb_pref":
                 discoveryCb.setChecked(sharedPreferences.getBoolean("discovery_cb_pref",true));
+               // mViewModel.updateDiscovery();
+             //   mViewModel.readSwipeProfiles()
                 break;
             case "looking_for_pref":
                 Set<String> gender = sharedPreferences.getStringSet("looking_for_pref",null);
