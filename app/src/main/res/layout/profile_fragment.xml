@@ -123,9 +123,7 @@
                         android:layout_marginStart="27dp"
                         android:layout_marginTop="40dp"
                         android:visibility="gone"
-                        app:SpinKit_Color="@color/grey"
-
-                        />
+                        app:SpinKit_Color="@color/grey" />
 
 
                     <ImageButton
@@ -372,6 +370,7 @@
                     android:id="@+id/first_name_edit_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/first_name"
                     android:textColorHint="#000">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -379,7 +378,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:hint="@string/first_name"
                         android:inputType="textPersonName"
                         android:padding="15dp"
                         android:textColor="#000"
@@ -393,6 +391,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:hint="@string/last_name"
                     android:textColorHint="#000">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -400,7 +399,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:hint="@string/last_name"
                         android:inputType="textPersonName"
                         android:padding="15dp"
                         android:textColor="#000"
@@ -435,32 +433,22 @@
                         android:orientation="horizontal">
 
                         <RadioButton
-
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-
                             android:text="@string/men"
-
                             android:buttonTint="@color/black"
                             android:textSize="15sp"
-
                             android:id="@+id/men_rb"/>
 
-
                         <RadioButton
-
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-
                             android:text="@string/women"
-
                             android:buttonTint="@color/black"
                             android:textSize="15sp"
-
                             android:id="@+id/women_rb"/>
-
 
                     </RadioGroup>
 
@@ -471,6 +459,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:hint="@string/about_myself_str"
                     android:textColorHint="#000">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -478,10 +467,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-
-                        android:hint="@string/about_myself_str"
-
                         android:inputType="text"
+                        android:drawablePadding="5dp"
+                        android:drawableStart="@drawable/ic_aboutme"
                         android:padding="15dp"
                         android:textColor="#000"
                         android:textSize="20sp" />
@@ -493,6 +481,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:hint="@string/looking_for"
                     android:textColorHint="#000">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -500,8 +489,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:hint="@string/looking_for"
                         android:inputType="text"
+                        android:drawablePadding="5dp"
+                        android:drawableStart="@drawable/ic_lookingfor"
                         android:padding="15dp"
                         android:textColor="#000"
                         android:textSize="20sp" />
@@ -512,6 +502,7 @@
                     android:id="@+id/hobbies_edit_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/my_hobbies"
                     android:layout_marginTop="5dp"
                     android:textColorHint="#000">
 
@@ -520,33 +511,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:hint="@string/my_hobbies"
                         android:inputType="text"
+                        android:drawablePadding="5dp"
+                        android:drawableStart="@drawable/ic_myhobby"
                         android:padding="15dp"
                         android:textColor="#000"
                         android:textSize="20sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <!--<ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_edit_btn_black"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/transparent"
-                    android:id="@+id/name_edit_iv"/>
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_baseline_save_24"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/transparent"
-                    android:visibility="gone"
-                    android:id="@+id/name_confirm_iv"/>-->
 
 
             </LinearLayout>

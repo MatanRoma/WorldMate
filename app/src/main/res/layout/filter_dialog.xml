@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout android:layout_width="wrap_content"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_gravity="center"
@@ -18,7 +19,7 @@
             android:textSize="25sp"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:id="@+id/filter_title"/>
+            android:id="@+id/filter_title" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,7 +62,6 @@
             android:gravity="center"
             android:text="@string/sport"
             android:textSize="17sp"
-            android:layout_below="@id/filter_title"
             android:id="@+id/filter_sport_cb"/>
         <CheckBox
             android:layout_width="wrap_content"
@@ -71,7 +71,6 @@
             android:gravity="center"
             android:text="@string/food"
             android:textSize="17sp"
-            android:layout_below="@id/filter_sport_cb"
             android:id="@+id/filter_food_cb"/>
 
 
@@ -88,7 +87,6 @@
             android:gravity="center"
             android:text="@string/culture"
             android:textSize="17sp"
-            android:layout_below="@+id/filter_food_cb"
             android:id="@+id/filter_culture_cb"/>
         <CheckBox
             android:layout_width="wrap_content"
@@ -98,7 +96,6 @@
             android:gravity="center"
             android:text="@string/music"
             android:textSize="17sp"
-            android:layout_below="@+id/filter_food_cb"
             android:id="@+id/filter_music_cb"/>
 
 

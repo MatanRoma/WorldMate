@@ -48,11 +48,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@id/last_message_tv_chat_card"
-                    android:layout_toEndOf="@id/profile_iv_chat_card"
                     android:id="@+id/profile_name_chat_card"
-                    android:layout_centerVertical="true"
-                    android:text="Liran Amzaleg"
+                    android:text="@string/name_of_profile"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="20sp"
@@ -61,10 +58,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/profile_iv_chat_card"
                     android:id="@+id/last_message_tv_chat_card"
-                    android:layout_alignParentBottom="true"
-                    android:text="click here to start talking"
+                    android:text="@string/click_here_to_start_talking"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:layout_marginStart="20dp"/>
