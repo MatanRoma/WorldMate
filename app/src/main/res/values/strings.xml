@@ -112,6 +112,7 @@
     <string name="culture_title">Culture</string>
     <string name="music_title">Music</string>
     <string name="choose_filter_desc">Choose according to which categories to see the compability</string>
+
     <string name="private_str">Private</string>
     <string name="min_age">Min age</string>
     <string name="max_age">Max age</string>
@@ -129,5 +130,6 @@
     <string name="about">About</string>
     <string name="we_are">We are development team!</string>
     <string name="version">Version</string>
+
 
 </resources>

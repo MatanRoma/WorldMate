@@ -114,6 +114,7 @@
     <string name="culture_title">תרבות</string>
     <string name="music_title">מוזיקה</string>
     <string name="choose_filter_desc">בחר לפי אילו קטגוריות תראה את התאימות</string>
+
     <string name="private_str">פרטי</string>
     <string name="min_age">גיל מינימלי</string>
     <string name="max_age">גיל מקסימלי</string>
@@ -131,4 +132,5 @@
     <string name="about">אודות</string>
     <string name="we_are">אנחנו צוות פיתוח!</string>
     <string name="version">גרסה</string>
+
 </resources>

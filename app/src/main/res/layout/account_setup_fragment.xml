@@ -26,8 +26,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:hint="@string/first_name"
-
-
             android:inputType="textPersonName"
             android:padding="15dp"
             android:textColor="#000"
@@ -150,8 +148,10 @@
         android:layout_below="@id/date_picker"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:text="@string/continue_str"
+        android:textSize="20sp"
+        android:textAllCaps="false"
         android:padding="5dp"
         android:id="@+id/continue_btn"/>
 </RelativeLayout>
