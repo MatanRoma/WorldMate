@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/colorPrimaryDark"
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <LinearLayout
@@ -73,7 +73,7 @@
        android:gravity="center"
 
         android:layoutDirection="ltr"
-        android:background="@color/black"
+        android:background="@color/colorPrimaryDark"
         android:id="@+id/btns_layout">
 
         <!--<de.hdodenhof.circleimageview.CircleImageView
@@ -103,6 +103,7 @@
             android:id="@+id/dislike_ib"
             android:background="@drawable/like_dislike_shapes"
             android:padding="5dp"/>
+
 <!--        <ImageButton
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -117,10 +118,11 @@
         <ImageButton
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_thumb_up"
+            android:src="@drawable/ic_thumbup1"
+
             android:scaleType="fitXY"
             android:padding="5dp"
-            android:background="@drawable/like_dislike_shapes"
+            android:background="@color/transparent"
             android:id="@+id/like_ib"/>
 
     </LinearLayout>

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -120,6 +121,12 @@ public class StorageRepository {
             }
         });
     }
+
+    public void deletePhotoFromStorage(String url) {
+        StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(url);
+        photoRef.delete();
+    }
+
     public interface StorageDownloadProfilePicListener {
         void onSuccessDownloadProfilePic(Uri uri);
         void onFailedDownloadProfilePic(String error);

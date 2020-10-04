@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class Repository {
     private final String CHATS_TABLE = "chats_table";
     private FirebaseDatabase database;
     private AuthRepository authRepository;
-    private StorageRepository storageRepository;
+    private StorageRepository mStorageRepository;
     private DatabaseReference profilesTable;
     private DatabaseReference questionsTable;
     private DatabaseReference chatsTable;
@@ -62,7 +63,7 @@ public class Repository {
         chatsTable = database.getReference(CHATS_TABLE);
         chatsTable.keepSynced(true);
         authRepository=AuthRepository.getInstance(context);
-        storageRepository=StorageRepository.getInstance();
+        mStorageRepository =StorageRepository.getInstance();
         mContext = context;
 
     }
@@ -200,6 +201,9 @@ public class Repository {
         if(!otherProfile.isDiscovery()){
             return false;
         }
+        else if(otherProfile.getLikes().contains(myProfile.getUid())||otherProfile.getDisLikes().contains(myProfile.getUid())){
+            return false;
+        }
         if(checkCompatibilityHelper(myProfile,otherProfile)&&checkCompatibilityHelper(otherProfile,myProfile)){
             return true;
         }
@@ -262,22 +266,22 @@ public class Repository {
        return authRepository.getCurrentUserUid();
     }
     public void setDownloadProfilePicListener(StorageRepository.StorageDownloadProfilePicListener downloadListener){
-        storageRepository.setDownloadListener(downloadListener);
+        mStorageRepository.setDownloadListener(downloadListener);
     }
     public void setDownloadMainPicListener(StorageRepository.StorageDownloadMainPicListener downloadMainPicListener){
-        storageRepository.setDownloadMainPicListener(downloadMainPicListener);
+        mStorageRepository.setDownloadMainPicListener(downloadMainPicListener);
     }
     public void setUploadListener(StorageRepository.StorageUploadPicListener uploadListener){
-        storageRepository.setUploadListener(uploadListener);
+        mStorageRepository.setUploadListener(uploadListener);
     }
     public void writePictureToStorage(Bitmap bitmap){
-        storageRepository.writePictureToStorage(bitmap,authRepository.getCurrentUserUid());
+        mStorageRepository.writePictureToStorage(bitmap,authRepository.getCurrentUserUid());
     }
     public void readMyProfilePictureFromStorage(){
-        storageRepository.readPictureFromStorage(authRepository.getCurrentUserUid());
+        mStorageRepository.readPictureFromStorage(authRepository.getCurrentUserUid());
     }
     public void readPictureFromStorage(String uid){
-        storageRepository.readPictureFromStorage(uid);
+        mStorageRepository.readPictureFromStorage(uid);
     }
 
     public boolean checkIfAuth() {
@@ -488,10 +492,14 @@ public class Repository {
         });
     }
     public void uploadAndDownload(Bitmap bitmap,boolean isProfilePic){
-        storageRepository.uploadAndDownload(bitmap,isProfilePic);
+        mStorageRepository.uploadAndDownload(bitmap,isProfilePic);
 
     }
     public void setChatListener(ChatListener chatListener){
         this.chatListener=chatListener;
+    }
+
+    public void deletePhotoFromStorage(String url){
+        mStorageRepository.deletePhotoFromStorage(url);
     }
 }

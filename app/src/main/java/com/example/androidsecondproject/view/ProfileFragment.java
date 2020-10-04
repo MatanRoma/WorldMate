@@ -439,10 +439,12 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
     public void onClick(View v) {
         int position= (int) v.getTag();
         List<String> pictures=mViewModel.getPictures();
+        mViewModel.deletePicture(pictures.get(position));
         pictures.remove(position); //TODO delete picture from storage
+
         if(position==pictures.size()){
             mImageCloseBtns[position].setVisibility(View.INVISIBLE);
-            Glide.with(getContext()).load(android.R.color.transparent).into(mImageViews[position]);
+            Glide.with(getContext()).load(R.drawable.back_image_square).into(mImageViews[position]);
         }
         else{
             for(int i=0;i<mImageViews.length;i++){
@@ -451,7 +453,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
                     mImageCloseBtns[i].setVisibility(View.VISIBLE);
                 }
                 else {
-                    Glide.with(getContext()).load(android.R.color.transparent).into(mImageViews[i]);
+                    Glide.with(getContext()).load(R.drawable.back_image_square).into(mImageViews[i]);
                     mImageCloseBtns[i].setVisibility(View.INVISIBLE);
                 }
             }
