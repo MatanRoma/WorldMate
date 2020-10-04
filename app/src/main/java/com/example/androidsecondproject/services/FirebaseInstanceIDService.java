@@ -1,7 +1,6 @@
 package com.example.androidsecondproject.services;
 
 import android.app.ActivityManager;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,7 +9,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
@@ -18,7 +16,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.NotificationTarget;
 import com.example.androidsecondproject.R;
 import com.example.androidsecondproject.view.ChatFragment;
@@ -89,11 +86,11 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                     5, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.match_notif_layout);
-            remoteViews.setTextViewText(R.id.title_tv, "you matched with " + messageDataMap.get("sender"));
+            remoteViews.setTextViewText(R.id.title_tv, getString(R.string.new_match_with) + messageDataMap.get("sender"));
 
-            NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, builder.build(), NOTIF_ID);
+            //NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, builder.build(), NOTIF_ID);
 
-            Glide.with(this).asBitmap().load(messageDataMap.get("image")).error(R.drawable.man_profile).into(notificationTarget);
+            //Glide.with(this).asBitmap().load(messageDataMap.get("image")).error(R.drawable.man_profile).into(notificationTarget);
             builder.setCustomContentView(remoteViews);
 
             builder.setAutoCancel(true);
@@ -144,7 +141,15 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 
                 RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.match_notif_layout);
                 remoteViews.setTextViewText(R.id.title_tv, messageDataMap.get("fullname"));
-                remoteViews.setTextViewText(R.id.text_id, messageDataMap.get("text_message"));
+                if(messageDataMap.get("text_message").length()>15)
+                {
+                    String subLastMessage = messageDataMap.get("text_message").substring(0,15) + "...";
+                    remoteViews.setTextViewText(R.id.text_id, subLastMessage);
+                }
+                else
+                {
+                    remoteViews.setTextViewText(R.id.text_id, messageDataMap.get("text_message"));
+                }
 
                 NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, builder.build(), NOTIF_ID);
 

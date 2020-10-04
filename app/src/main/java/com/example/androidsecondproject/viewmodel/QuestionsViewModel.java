@@ -12,6 +12,7 @@ import com.example.androidsecondproject.model.Question;
 import com.example.androidsecondproject.repository.Repository;
 
 import java.util.List;
+import java.util.Locale;
 
 public class QuestionsViewModel extends AndroidViewModel {
 
@@ -64,7 +65,12 @@ public class QuestionsViewModel extends AndroidViewModel {
     }
 
     public void readQuestions() {
-        mRepository.readQuestions();
+        String language = "english";
+        if(Locale.getDefault().getDisplayLanguage().equals("עברית"))
+        {
+            language = "hebrew";
+        }
+        mRepository.readQuestions(language);
     }
 
     public List<Question> getQuestions() {
