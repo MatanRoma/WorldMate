@@ -114,6 +114,17 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         }
     };
 
+    public Profile getMatchProfile(int position) {
+        Chat chat=mChats.get(position);
+        if(mProfilesMap.containsKey(chat.getSecondUid())){
+            return mProfilesMap.get(chat.getSecondUid());
+        }
+        else{
+            return mProfilesMap.get(chat.getFirstUid());
+        }
+
+    }
+
 
     public interface MatchInterface
     {
@@ -168,9 +179,9 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
                 holder.mNewMatchIv.setVisibility(View.GONE);
                 holder.mLastMessageTv.setText(currChat.getLastMessage().getText());
                 holder.mDateTv.setText(currChat.getLastMessage().getFormattedDate());
-                if(currChat.getLastMessage().getText().length()>30)
+                if(currChat.getLastMessage().getText().length()>15)
                 {
-                    String subLastMessage = currChat.getLastMessage().getText().substring(0,30) + "...";
+                    String subLastMessage = currChat.getLastMessage().getText().substring(0,15) + "...";
                     holder.mLastMessageTv.setText(subLastMessage);
                 }
             }

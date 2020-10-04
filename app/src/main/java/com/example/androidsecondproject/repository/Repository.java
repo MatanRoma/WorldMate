@@ -207,7 +207,9 @@ public class Repository {
     }
 
 
-
+    public void removeSpecificChat(String chatId){
+        chatsTable.child(chatId).removeValue();
+    }
 
 
     private boolean checkCompatibilityHelper(Profile profile, Profile otherProfile) {
@@ -425,9 +427,9 @@ public class Repository {
         authRepository.logoutUser();
     }
 
-    public void readQuestions(){
+    public void readQuestions(String language){
 
-        questionsTable.child("english").addListenerForSingleValueEvent(new ValueEventListener() {
+        questionsTable.child(language).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){

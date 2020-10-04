@@ -114,5 +114,23 @@
     <string name="culture_title">תרבות</string>
     <string name="music_title">מוזיקה</string>
     <string name="choose_filter_desc">בחר לפי אילו קטגוריות תראה את התאימות</string>
-    <string name="click_here_to_start_talking">לחץ כדי להתחיל לדבר</string>
+
+    <string name="private_str">פרטי</string>
+    <string name="min_age">גיל מינימלי</string>
+    <string name="max_age">גיל מקסימלי</string>
+    <string name="your_preferences">העדפות שלך</string>
+    <string name="tap_to_change">לחץ לשנות</string>
+    <string name="max_distance_km">מרחק מקסימלי (ק\"מ)</string>
+    <string name="notification">התראות</string>
+    <string name="new_match_notif">התראת התאמה חדשה</string>
+    <string name="when_got_new_match">כאשר אתה מקבל התאמה חדשה</string>
+    <string name="new_message_notif">התראת הודעה חדשה</string>
+    <string name="when_got_new_message">כאשר אתה מקבל הודעה חדשה</string>
+    <string name="vibrate">רטט</string>
+    <string name="vibrate_new_notif">רטט בזמן התראה</string>
+    <string name="new_match_with">"יש לך התאמה עם "</string>
+    <string name="about">אודות</string>
+    <string name="we_are">אנחנו צוות פיתוח!</string>
+    <string name="version">גרסה</string>
+
 </resources>

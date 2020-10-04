@@ -170,4 +170,35 @@ public class MatchesViewModel extends AndroidViewModel {
     public List<Chat> getChats() {
         return mChats;
     }
+
+    public void removeChat(String chatID) {
+        mRepository.removeSpecificChat(chatID);
+    }
+
+    public void updateMatches(Profile matchProfile,String matchID) {
+      removeMatch(matchProfile,matchID);
+      removeMatch(mProfile,matchID);
+      mRepository.updateProfile(matchProfile.getUid(),"matches",matchProfile.getMatches());
+      mRepository.updateProfile(mProfile.getUid(),"matches",mProfile.getMatches());
+
+    }
+    public void removeMatch(Profile profile,String matchID){
+        for(int i=0;i<profile.getMatches().size();i++){
+            if(profile.getMatches().get(i).getId().equals(matchID)){
+                profile.getMatches().remove(i);
+                break;
+            }
+        }
+    }
+
+    public void updateLikes(Profile matchProfile) {
+        matchProfile.getLikes().remove(mProfile.getUid());
+        mProfile.getLikes().remove(matchProfile.getUid());
+        matchProfile.getDisLikes().add(mProfile.getUid());
+        mProfile.getDisLikes().add(matchProfile.getUid());
+        mRepository.updateProfile(matchProfile.getUid(),"likes",matchProfile.getLikes());
+        mRepository.updateProfile(mProfile.getUid(),"likes",mProfile.getLikes());
+        mRepository.updateProfile(matchProfile.getUid(),"disLikes",matchProfile.getDisLikes());
+        mRepository.updateProfile(mProfile.getUid(),"disLikes",mProfile.getDisLikes());
+    }
 }

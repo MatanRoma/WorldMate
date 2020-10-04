@@ -89,7 +89,7 @@ public class ProfilePhotoFragment extends androidx.fragment.app.DialogFragment {
                         loadingAnimation.setVisibility(View.GONE);
                         resultIv.setVisibility(View.VISIBLE);
                     }
-                }, 1500);
+                }, 500);
                 Glide.with(ProfilePhotoFragment.this).load(uri).into(resultIv);
                 mViewModel.setProfileUri(uri);
 
