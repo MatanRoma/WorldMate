@@ -179,9 +179,9 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
                 holder.mNewMatchIv.setVisibility(View.GONE);
                 holder.mLastMessageTv.setText(currChat.getLastMessage().getText());
                 holder.mDateTv.setText(currChat.getLastMessage().getFormattedDate());
-                if(currChat.getLastMessage().getText().length()>30)
+                if(currChat.getLastMessage().getText().length()>15)
                 {
-                    String subLastMessage = currChat.getLastMessage().getText().substring(0,30) + "...";
+                    String subLastMessage = currChat.getLastMessage().getText().substring(0,15) + "...";
                     holder.mLastMessageTv.setText(subLastMessage);
                 }
             }

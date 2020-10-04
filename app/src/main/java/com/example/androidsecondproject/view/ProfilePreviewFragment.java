@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class ProfilePreviewFragment extends Fragment {
     ProfilePicturesPagerAdapter mViewPagerAdapter;
     ViewPager mViewPager;
     private List<ImageView> mAllCircles;
+    private LinearLayout mCirclesLayout;
 
     public interface OnMoveToPhotoPreview
     {
@@ -129,6 +131,8 @@ public class ProfilePreviewFragment extends Fragment {
             onMoveToPhotoPreview.onClickMoveToPhotoPreviewListener(uri);
             }
         });
+
+        mCirclesLayout = rootView.findViewById(R.id.pictures_circles_layout);
 
         mAllCircles = new ArrayList<>();
         ImageView circle1 = rootView.findViewById(R.id.cicle_1);
@@ -255,7 +259,12 @@ public class ProfilePreviewFragment extends Fragment {
             mAllCircles.get(i).setSelected(false);
 
         }
-        mViewModel.getmCirclesIv().get(0).setSelected(true);
+        mAllCircles.get(0).setSelected(true);
+        if(size==1)
+        {
+            mCirclesLayout.setVisibility(View.GONE);
+        }
+
 
     }
 

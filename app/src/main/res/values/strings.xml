@@ -112,5 +112,22 @@
     <string name="culture_title">Culture</string>
     <string name="music_title">Music</string>
     <string name="choose_filter_desc">Choose according to which categories to see the compability</string>
+    <string name="private_str">Private</string>
+    <string name="min_age">Min age</string>
+    <string name="max_age">Max age</string>
+    <string name="your_preferences">Your Preference</string>
+    <string name="tap_to_change">Tap to change</string>
+    <string name="max_distance_km">Max Distance (Km)</string>
+    <string name="notification">Notification</string>
+    <string name="new_match_notif">New Match notification</string>
+    <string name="when_got_new_match">When you got a new match</string>
+    <string name="new_message_notif">New message notification</string>
+    <string name="when_got_new_message">When you got a new meesage</string>
+    <string name="vibrate">Vibrate</string>
+    <string name="vibrate_new_notif">Vibrate on new notification</string>
+    <string name="new_match_with">you matched with</string>
+    <string name="about">About</string>
+    <string name="we_are">We are development team!</string>
+    <string name="version">Version</string>
 
 </resources>

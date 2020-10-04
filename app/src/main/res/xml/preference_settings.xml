@@ -5,17 +5,17 @@
 
 
     <PreferenceCategory
-        android:title="Private"
+        android:title="@string/private_str"
         android:key="private_category">
 
         <CheckBoxPreference
-            android:title="Discovery"
+            android:title="@string/discovery"
             android:key="discovery_cb_pref"
             android:defaultValue="true"
-            android:summary="Allowing other users to see you"/>
+            android:summary="@string/discovery_desc"/>
 
         <SeekBarPreference
-            android:title="Min age"
+            android:title="@string/min_age"
             android:key="min_age_pref1"
             android:max="100"
             app:showSeekBarValue="true"
@@ -23,7 +23,7 @@
             app:seekBarIncrement="1" />
 
         <SeekBarPreference
-            android:title="Max age"
+            android:title="@string/max_age"
             android:key="max_age_pref1"
             android:max="100"
             app:showSeekBarValue="true"
@@ -33,18 +33,18 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Your Preference"
+        android:title="@string/your_preferences"
         android:key="your_preference_category">
 
         <MultiSelectListPreference
             android:entries="@array/multi_entries"
             android:entryValues="@array/multi_values"
             android:key="looking_for_pref"
-            android:summary="Tap to change"
-            android:title="Looking for"/>
+            android:summary="@string/tap_to_change"
+            android:title="@string/looking_for"/>
 
         <SeekBarPreference
-            android:title="Max Distance"
+            android:title="@string/max_distance_km"
             android:key="max_distance_pref"
             app:showSeekBarValue="true"
             android:max="100"
@@ -54,40 +54,40 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Notification"
+        android:title="@string/notification"
         android:key="notif_category">
 
         <SwitchPreference
-            android:title="New Match notification"
+            android:title="@string/new_match_notif"
             android:key="match_pref"
             android:defaultValue="true"
-            android:summary="When you got a new match"/>
+            android:summary="@string/when_got_new_match"/>
 
         <SwitchPreference
-            android:title="New message notification"
+            android:title="@string/new_message_notif"
             android:key="message_pref"
             android:defaultValue="true"
-            android:summary="When you got a new meesage"/>
+            android:summary="@string/when_got_new_message"/>
 
         <SwitchPreference
-            android:title="Vibrate"
+            android:title="@string/vibrate"
             android:defaultValue="false"
             android:key="vibrate_pref"
-            android:summary="Vibrate on new notification"/>
+            android:summary="@string/vibrate_new_notif"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="About"
+        android:title="@string/about"
         android:key="about_category">
 
         <Preference
-            android:title="We are development team!"/>
+            android:title="@string/we_are"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Version"
+        android:title="@string/version"
         android:key="version_category">
 
         <Preference
