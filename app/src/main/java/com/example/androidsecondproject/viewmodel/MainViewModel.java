@@ -218,7 +218,7 @@ public class MainViewModel extends AndroidViewModel {
         mMyProfile.setPreferences(newProfile.getPreferences());
         mMyProfile.setFirstName(newProfile.getFirstName());
         mMyProfile.setGender(newProfile.getGender());
-        mMyProfile.setAge(newProfile.getAge());
+       // mMyProfile.setAge(newProfile.getAge());
         mMyProfile.setBirthday(newProfile.getBirthday());
         mMyProfile.setDescription(newProfile.getDescription());
         mMyProfile.setDisLikes(newProfile.getDisLikes());

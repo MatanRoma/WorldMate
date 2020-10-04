@@ -127,7 +127,7 @@ public class SwipeViewModel extends AndroidViewModel {
     public void addDislikedProfile(int position){
         //  mProfile.getDisLikes().add((mProfilesMutableLiveData.getValue().get(position).getUid()));
         mProfiles.get(position).getDisLikes().add((mProfile.getUid()));
-        mRepository.updateProfile(mProfiles.get(position).getUid(),"disLikes",mProfile.getDisLikes());
+            mRepository.updateProfile(mProfiles.get(position).getUid(),"disLikes",mProfiles.get(position).getDisLikes());
     }
 
 
@@ -161,7 +161,7 @@ public class SwipeViewModel extends AndroidViewModel {
         mRepository.writeChat(chat);
 
 
-        notifyOtherProfile(mProfile.getMessageToken()); // only for test
+        notifyOtherProfile(otherPofile.getMessageToken()); // only for test
     }
 
     public void writeMyProfile() {

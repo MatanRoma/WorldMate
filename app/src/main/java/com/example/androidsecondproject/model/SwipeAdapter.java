@@ -160,7 +160,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
             Glide.with(mContext).load(currentProfile.getProfilePictureUri()).error(R.drawable.woman_profile).into(holder.mProfileIv);
         }
         holder.mNameTv.setText(currentProfile.getFirstName()+",");
-        holder.mAgeTv.setText((int)currentProfile.getAge()+"");
+        holder.mAgeTv.setText((int)currentProfile.calculateCurrentAge()+"");
         if(currentProfile.getCity()!=null)
             holder.mCityTv.setText(currentProfile.getCity());
 

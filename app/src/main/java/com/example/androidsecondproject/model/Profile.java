@@ -1,6 +1,8 @@
 package com.example.androidsecondproject.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -63,6 +65,30 @@ public class Profile implements Serializable {
         int birthMonth=date.get(Calendar.MONTH);
         int birthDay=date.get(Calendar.DAY_OF_MONTH);
         this.birthday=birthDay+"/"+birthMonth+"/"+birthYear;
+    }
+    public int calculateCurrentAge(){
+        int year,month,dayOfMonth;
+        String[] parts= birthday.split("/");
+        dayOfMonth=Integer.parseInt(parts[0]);
+        month=Integer.parseInt(parts[1]);
+        year=Integer.parseInt(parts[2]);
+
+
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month-1, dayOfMonth);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+
+       // Integer ageInt = new Integer(age);
+       // String ageS = ageInt.toString();
+
+        return age;
     }
 
 

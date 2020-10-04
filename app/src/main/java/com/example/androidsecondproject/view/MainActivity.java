@@ -224,9 +224,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                     Log.d("call","6");
                     moveToSwipeFragment();
                     chatId=getIntent().getStringExtra("chat_id");
+                    chatId=getIntent().getAction().substring(3);
+
                 }
                 else{
-                   chatId  = getIntent().getExtras().getString("chat_id");
+//                   chatId  = getIntent().getExtras().getString("chat_id");
+                    chatId=getIntent().getAction().substring(3);
+                   Log.d("other_match_uid",chatId+"");
                 }
                 moveToChat(mViewModel.getMyProfile(), profile, chatId); // get  here only from notification
             }
@@ -681,17 +685,23 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     public void handleReturnFromNotif() {
         Bundle bundle = getIntent().getExtras();// add these lines of code to get data from notification
-        Log.d("other_match_uid",getIntent().getAction()+" "+getIntent().getAction().substring(3));
+       // Log.d("other_match_uid",getIntent().getAction()+" "+getIntent().getAction().substring(3));
 
         String action=getIntent().getAction();
         final Menu menu = navigationView.getMenu();
 
-        if (bundle != null&&bundle.containsKey("chat_id")) {
+       /* if (bundle != null&&bundle.containsKey("chat_id")) {
        //     Log.d("other_match_uid",bundle.getString("other_match_uid")+"");
             clearStack(null);
             menu.getItem(2).setChecked(true);
             mViewModel.getOtherProfile(bundle.getString("chat_id"));
-            }
+            }*/
+        if (action.startsWith("&s&")) {
+            Log.d("other_match_uid",action.substring(3)+"");
+            clearStack(null);
+            menu.getItem(2).setChecked(true);
+            mViewModel.getOtherProfile(action.substring(3));
+        }
             else if(action.startsWith("&k&")){
                 Log.d("call","3");
                 moveToSwipeFragment();
@@ -870,12 +880,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         this.setIntent(intent);
 
         String matcherUid = intent.getAction();
+        String action=matcherUid;
 
 
         Log.d("teest", getIntent().getAction()+"");
-        if (intent.hasExtra("chat_id")) {
-
-            mViewModel.getOtherProfile(intent.getStringExtra("chat_id"));
+        if (action.startsWith("&s&")) {//intent.hasExtra("chat_id")
+          //  mViewModel.getOtherProfile(intent.getStringExtra("chat_id"));
+            mViewModel.getOtherProfile(action.substring(3));
         }
         else if(matcherUid!=null&&matcherUid.startsWith("&k&")){
             moveToMatchesFragment(matcherUid.substring(3));

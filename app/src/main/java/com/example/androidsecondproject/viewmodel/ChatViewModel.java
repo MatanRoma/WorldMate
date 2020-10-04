@@ -36,6 +36,10 @@ public class ChatViewModel extends AndroidViewModel {
         this.chatId=chatId;
     }
 
+    public String getChatId() {
+        return chatId;
+    }
+
     public void writeMessage(String text) {
         mRepository.writeMessage(chatId,new Message(mRepository.getCurrentUserId(),text,otherProfile.getUid()));
     }
@@ -48,7 +52,23 @@ public class ChatViewModel extends AndroidViewModel {
             @Override
             public void onMessageSentSuccess(Message message) {
 
-                String text=message.getText();
+                JSONObject rootObject=new JSONObject();
+                JSONObject dataObject=new JSONObject();
+                try {
+                    rootObject.put("to",otherProfile.getMessageToken());
+                    dataObject.put("other_uid",myProfile.getUid());
+                    dataObject.put("chat_id",chatId);
+                    dataObject.put("text_message",message.getText());
+                    dataObject.put("fullname",myProfile.getFirstName()+" "+myProfile.getLastName());
+                    dataObject.put("image",myProfile.getProfilePictureUri());
+                    rootObject.put("data",dataObject);
+
+                    NotificationManager.sendNotification(context,rootObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+               /* String text=message.getText();
                 final JSONObject rootObject=new JSONObject();
                 JSONObject notificationObject=new JSONObject();
                 JSONObject dataObject=new JSONObject();
@@ -61,9 +81,7 @@ public class ChatViewModel extends AndroidViewModel {
                     notificationObject.put("tag",myProfile.getEmail());
 
                     //notificationObject.put("icon", R.drawable.ic_messages_icon);
-
              //       notificationObject.put("icon", R.drawable.ic_messages_icon);
-
                  //   notificationObject.put("image",myProfile.getProfilePictureUri());
                     dataObject.put("chat_id",chatId);
                     rootObject.put("notification",notificationObject);
@@ -72,7 +90,7 @@ public class ChatViewModel extends AndroidViewModel {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }
+                }*/
 
             }
         });

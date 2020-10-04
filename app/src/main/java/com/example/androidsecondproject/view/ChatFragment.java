@@ -2,6 +2,7 @@ package com.example.androidsecondproject.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class ChatFragment extends Fragment {
     private ChatAdapter mChatAdapter;
     private ChatViewModel mViewModel;
     private LinearLayoutManager mLinearLayoutManager;
-
+    public static String chatId;
     RecyclerView mRecyclerView;
 
     public OnMoveToProfilePreviewFromChat onMoveToProfilePreviewFromChat;
@@ -85,6 +86,7 @@ public class ChatFragment extends Fragment {
 
         RelativeLayout chatHeader = rootView.findViewById(R.id.chat_rl_layout);
 
+        Log.d("other_match_uid",getArguments().getString("chat_id")+"");
         mViewModel.setChatId(getArguments().getString("chat_id"));
         mViewModel.setMyProfile((Profile)getArguments().getSerializable("profile"));
         mViewModel.setOtherProfile((Profile)getArguments().getSerializable("other_profile"));
@@ -164,12 +166,14 @@ public class ChatFragment extends Fragment {
     public void onStop() {
         super.onStop();
         mChatAdapter.stopListening();
+        chatId=null;
     }
 
     @Override
     public void onStart() {
         super.onStart();
         mChatAdapter.startListening();
+        chatId=mViewModel.getChatId();
     }
 
     public int checkComapability(Profile myProfile, Profile otherProfile)

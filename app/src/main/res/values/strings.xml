@@ -82,7 +82,7 @@
     <string name="take_picture_title">Upload Picture Option</string>
     <string name="take_picture_description">How do you want to set your picture?</string>
     <string name="close">Close</string>
-    <string name="log_as_quest">Log in as guest</string>
+    <string name="log_as_quest">Login as guest</string>
     <string name="password_length_error">Password must be at least 8 letters</string>
     <string name="invalid_credentials">Invalid Credentials</string>
     <string name="user_already_exist">User already exists</string>
