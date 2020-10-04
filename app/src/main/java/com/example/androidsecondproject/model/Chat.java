@@ -9,7 +9,7 @@ public class Chat implements Comparable<Chat> {
     private String id;
     private String firstUid;
     private String secondUid;
-    private  Message lastMessage;
+    private Message lastMessage;
 
 
     public Chat(String id, String firstUid, String secondUid,Message message) {

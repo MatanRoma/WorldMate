@@ -114,6 +114,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                     channelId = "channel_two";
                 else
                     channelId = "channel_three";
+
                 String channelName = "Match_Channel";
                 if (Build.VERSION.SDK_INT >= 26) {
 
@@ -128,6 +129,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                         notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
                     else
                         notificationChannel.setVibrationPattern(new long[]{0L});
+
                     notificationManager.createNotificationChannel(notificationChannel);
                 }
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);

@@ -211,14 +211,14 @@ public class Repository {
 
 
     private boolean checkCompatibilityHelper(Profile profile, Profile otherProfile) {
-        float myAge = profile.getAge();
+        int myAge = profile.calculateCurrentAge();
         String myGender = profile.getGender();
-        Preferences otherPrefences = otherProfile.getPreferences();
+        Preferences otherPreferences = otherProfile.getPreferences();
         Preferences myPreferences=profile.getPreferences();
 
-        if (myAge < otherPrefences.getMinAge() || myAge > otherPrefences.getMaxAge()) {
+        if (myAge < otherPreferences.getMinAge() || myAge > otherPreferences.getMaxAge()) {
             return false;
-        } else if (!((otherPrefences.isLookingForMen() && TranslateString.checkMale(myGender)) || (otherPrefences.isLookingForWomen() && TranslateString.checkFemale(myGender)))) {
+        } else if (!((otherPreferences.isLookingForMen() && TranslateString.checkMale(myGender)) || (otherPreferences.isLookingForWomen() && TranslateString.checkFemale(myGender)))) {
             return false;
         } else if (profile.getCity() == null && otherProfile.getCity() != null) {
             return false;

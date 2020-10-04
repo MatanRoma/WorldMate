@@ -79,7 +79,7 @@ public class SwipeFlingAdapter extends BaseAdapter {
 
         Glide.with(mContext).load(currentProfile.getProfilePictureUri()).error(R.drawable.man_profile).into(profileIv);
         nameTv.setText(currentProfile.getFirstName()+",");
-        ageTv.setText((int)currentProfile.getAge()+"");
+        ageTv.setText((int)currentProfile.calculateCurrentAge()+"");
         if(currentProfile.getCity()!=null)
             cityTv.setText(currentProfile.getCity());
 
