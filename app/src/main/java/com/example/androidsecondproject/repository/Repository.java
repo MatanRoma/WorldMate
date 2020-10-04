@@ -207,7 +207,9 @@ public class Repository {
     }
 
 
-
+    public void removeSpecificChat(String chatId){
+        chatsTable.child(chatId).removeValue();
+    }
 
 
     private boolean checkCompatibilityHelper(Profile profile, Profile otherProfile) {

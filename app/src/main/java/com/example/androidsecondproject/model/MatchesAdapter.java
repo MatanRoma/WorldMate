@@ -114,6 +114,17 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         }
     };
 
+    public Profile getMatchProfile(int position) {
+        Chat chat=mChats.get(position);
+        if(mProfilesMap.containsKey(chat.getSecondUid())){
+            return mProfilesMap.get(chat.getSecondUid());
+        }
+        else{
+            return mProfilesMap.get(chat.getFirstUid());
+        }
+
+    }
+
 
     public interface MatchInterface
     {
