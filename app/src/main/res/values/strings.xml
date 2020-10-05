@@ -135,6 +135,7 @@
     <string name="send_message_str">Send message</string>
     <string name="search_chat">Search chat</string>
     <string name="account_setup">Account Setup</string>
+    <string name="unmatch_dialog">Are you sure you want to unmatch with</string>
 
 
 </resources>

@@ -177,7 +177,7 @@ public class MatchesFragment extends Fragment  {
                 if(direction==ItemTouchHelper.RIGHT||direction==ItemTouchHelper.LEFT)
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setMessage("Are you sure you want to unmatch with "+matcherProfile.getFirstName()+"?" )
+                    builder.setMessage(getString(R.string.unmatch_dialog)+" "+matcherProfile.getFirstName()+"?" )
                             .setCancelable(false).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

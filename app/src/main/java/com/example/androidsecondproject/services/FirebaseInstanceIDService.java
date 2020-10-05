@@ -45,7 +45,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Map<String,String> messageDataMap=remoteMessage.getData();
+        final Map<String,String> messageDataMap=remoteMessage.getData();
         Log.d("servicee","service");
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         boolean isMatchNotifAllowed=sharedPreferences.getBoolean("match_pref",true);
@@ -86,17 +86,28 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                     5, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.match_notif_layout);
-            remoteViews.setTextViewText(R.id.title_tv, getString(R.string.new_match_with) + messageDataMap.get("sender"));
+            remoteViews.setTextViewText(R.id.title_tv, getString(R.string.new_match_with) +" "+ messageDataMap.get("sender"));
 
-            //NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, builder.build(), NOTIF_ID);
+    /*        final NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, builder.build(), NOTIF_ID);
+*//*            Bitmap bitmap = new Bitmap();
+            Glide.with(this).asBitmap().load(messageDataMap.get("image")).error(R.drawable.man_profile).into(notificationTarget);*//*
 
-            //Glide.with(this).asBitmap().load(messageDataMap.get("image")).error(R.drawable.man_profile).into(notificationTarget);
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Glide.with(getApplicationContext()).asBitmap()
+                            .load(messageDataMap.get("image"))
+                            .error(R.drawable.man_profile)
+                            .into(notificationTarget);
+                }
+            });*/
+
             builder.setCustomContentView(remoteViews);
 
             builder.setAutoCancel(true);
             builder.setContentIntent(activityPendingIntent);
 
-            builder.setSmallIcon(R.drawable.ic_messages_icon);
+            builder.setSmallIcon(R.mipmap.ic_launcher_round);
 
             notificationManager.notify(NOTIF_ID, builder.build());
 
@@ -158,7 +169,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                 builder.setAutoCancel(true);
                 builder.setContentIntent(activityPendingIntent);
 
-                builder.setSmallIcon(R.drawable.ic_messages_icon);
+                builder.setSmallIcon(R.mipmap.ic_launcher_round);
 
                 notificationManager.notify(NOTIF_ID, builder.build());
 

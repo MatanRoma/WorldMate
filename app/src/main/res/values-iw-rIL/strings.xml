@@ -137,5 +137,6 @@
     <string name="send_message_str">שלח הודעה</string>
     <string name="search_chat">חפש שיחה</string>
     <string name="account_setup">הגדרת חשבון</string>
+    <string name="unmatch_dialog">האם אתה בטוח שאתה רוצה לבטל התאמה עם</string>
 
 </resources>
