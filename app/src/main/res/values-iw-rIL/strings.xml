@@ -104,8 +104,8 @@
     <string name="cant_filter_guest">אנחנו מצטערים, אבל אתה לא יכול לסנן בתור אורח</string>
     <string name="cant_menu_guest">אנחנו מצטערים, אבל אתה יכול ללחוץ רק על בית והתנתקות בתור אורח</string>
     <string name="ok">אישור</string>
-    <string name="no_more_people">אין עוד אנשים להראות לך</string>
-    <string name="no_mathces_yet">אין לך עדיין התאמות</string>
+    <string name="no_more_people">אין אנשים להראות לך</string>
+    <string name="no_mathces_yet">אין לך התאמות</string>
     <string name="man">גבר</string>
     <string name="woman">אישה</string>
     <string name="select_categories_desc">בחר איזה על קטגוריות של שאלות אתה רוצה לענות</string>
@@ -132,6 +132,10 @@
     <string name="about">אודות</string>
     <string name="we_are">אנחנו צוות פיתוח!</string>
     <string name="version">גרסה</string>
-    <string name="click_here_to_start_chating">לחץ כדי להתחיל שיחה</string>
+    <string name="click_here_to_start_chating">התחל שיחה</string>
+    <string name="go_to_chat">עבור לצ\'אט</string>
+    <string name="send_message_str">שלח הודעה</string>
+    <string name="search_chat">חפש שיחה</string>
+    <string name="account_setup">הגדרת חשבון</string>
 
 </resources>

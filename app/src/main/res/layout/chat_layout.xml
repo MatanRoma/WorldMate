@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@drawable/background_sign"
+    android:background="@color/colorPrimaryDark"
     android:clickable="true"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="@drawable/background_sign"
+        android:background="@color/colorPrimaryDark"
         android:id="@+id/chat_rl_layout">
 
         <ImageButton
@@ -49,7 +50,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/chat_rl_layout"
         android:layout_above="@id/write_send_text_layout"
-        android:background="@android:color/darker_gray"
+        android:background="#EDE9E9"
         android:id="@+id/messaging_recycler"/>
 
 
@@ -59,8 +60,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="5dp"
         android:layout_alignParentStart="true"
-        android:id="@+id/write_send_text_layout"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        android:id="@+id/write_send_text_layout">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -73,18 +73,19 @@
             app:cardCornerRadius="7dp"
             app:cardElevation="3dp">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:layout_marginEnd="65dp"
-            android:hint="@string/enter_your_text_here"
-            android:id="@+id/text_chat_et"/>
+            <EditText
+                android:id="@+id/text_chat_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+
+                android:hint="@string/enter_your_text_here" />
 
         </androidx.cardview.widget.CardView>
 
 
-        <androidx.cardview.widget.CardView
+        <!--<androidx.cardview.widget.CardView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="3dp"
@@ -94,19 +95,26 @@
             android:layout_centerInParent="true"
             android:layout_alignParentEnd="true"
             app:cardUseCompatPadding="true"
-            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardBackgroundColor="@color/colorPrimaryDark"
             app:cardCornerRadius="10dp"
-            app:cardElevation="3dp">
+            app:cardElevation="3dp">-->
 
             <ImageButton
                 android:id="@+id/send_message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/chat_button_selector"
-                android:src="@drawable/ic_send" />
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="3dp"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:layout_marginEnd="5dp"
+                android:layout_centerInParent="true"
+                android:layout_alignParentEnd="true"
 
-        </androidx.cardview.widget.CardView>
+                android:layout_gravity="center"
+                android:background="@color/transparent"
+                android:src="@drawable/send_selector" />
+
+        <!--</androidx.cardview.widget.CardView>-->
 
        <!-- <ImageButton
             android:layout_width="wrap_content"

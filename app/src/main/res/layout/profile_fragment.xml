@@ -23,8 +23,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:background="@drawable/done_btn_shape"
+                android:background="@drawable/btn_shape_no_stroke"
                 android:text="@string/done_str"
+                android:textColor="@color/white"
                 android:textAllCaps="false"
                 android:textSize="20sp" />
 
@@ -62,11 +63,12 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="-25dp"
                     android:layout_marginBottom="10dp"
-                    android:background="#9E9696"
+                    android:background="@drawable/btn_shape_no_stroke"
                     android:padding="8dp"
                     android:text="@string/change_profile_photo_str"
                     android:textAllCaps="false"
                     android:textSize="18sp"
+                    android:textColor="@color/white"
                     android:textStyle="bold" />
             </RelativeLayout>
 
@@ -407,7 +409,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <LinearLayout
+             <!--   <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -453,7 +455,7 @@
 
                     </RadioGroup>
 
-                </LinearLayout>
+                </LinearLayout>-->
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/about_me_edit_profile"

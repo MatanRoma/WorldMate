@@ -69,6 +69,8 @@ public class AccountSetupFragment extends Fragment {
                 manBtn.setSelected(true);
                 womanBtn.setSelected(false);
                 mViewModel.setGender(getString(R.string.male));
+                manBtn.setTextColor(getResources().getColor(R.color.white));
+                womanBtn.setTextColor(getResources().getColor(R.color.black));
 
             }
         });
@@ -79,6 +81,8 @@ public class AccountSetupFragment extends Fragment {
                 manBtn.setSelected(false);
                 womanBtn.setSelected(true);
                 mViewModel.setGender(getString(R.string.female));
+                manBtn.setTextColor(getResources().getColor(R.color.black));
+                womanBtn.setTextColor(getResources().getColor(R.color.white));
             }
         });
 

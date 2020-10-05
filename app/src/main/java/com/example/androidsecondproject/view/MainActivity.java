@@ -14,7 +14,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -76,7 +75,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface,
         AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface,
         ProfileFragment.UpdateDrawerFromProfileFragment,MatchesFragment.OnMoveToChat, SwipeFragment.SwipeInterface, ChatFragment.OnMoveToProfilePreviewFromChat,
-        ProfilePreviewFragment.OnMoveToPhotoPreview {
+        ProfilePreviewFragment.OnMoveToPhotoPreview, NewMatchDialogFragment.OnNewMatchDialogFragmentDialofListener {
     private final int REQUEST_CHECK_SETTINGS =2 ;
     private Geocoder mGeoCoder;
     private String mCityName;
@@ -950,6 +949,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     public void onLogoutFromSwipeFragment() {
         logoutUser();
 
+    }
+
+    @Override
+    public void onMoveToNewChat(Profile profile, String chatId,Profile otherProfile) {
+        moveToChat(profile,otherProfile,chatId);
     }
 }
 

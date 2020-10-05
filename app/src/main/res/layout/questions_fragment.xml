@@ -138,7 +138,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/sport_title"
                     android:textStyle="bold"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="30sp"
                     android:visibility="gone"
                     android:id="@+id/sport_title_tv"/>
@@ -162,7 +162,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/food_cap_lett"
                     android:textStyle="bold"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="30sp"
                     android:visibility="gone"
                     android:id="@+id/food_title_tv"/>
@@ -188,7 +188,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/culture_title"
                     android:textStyle="bold"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="30sp"
                     android:visibility="gone"
                     android:id="@+id/culture_title_tv"/>
@@ -213,7 +213,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/music_title"
                     android:textStyle="bold"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="30sp"
                     android:visibility="gone"
                     android:id="@+id/music_title_tv"/>

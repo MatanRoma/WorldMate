@@ -95,13 +95,13 @@
             app:civ_border_width="2dp" />-->
 
         <ImageButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/ic_thumb_down"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:src="@drawable/dislike_selector"
             android:scaleType="fitXY"
             android:layout_marginEnd="50dp"
             android:id="@+id/dislike_ib"
-            android:background="@drawable/like_dislike_shapes"
+            android:background="@color/transparent"
             android:padding="5dp"/>
 
 <!--        <ImageButton
@@ -116,9 +116,9 @@
             android:id="@+id/rewind_ib"/>-->
 
         <ImageButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/ic_thumbup1"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:src="@drawable/like_selector"
 
             android:scaleType="fitXY"
             android:padding="5dp"
@@ -140,7 +140,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/range_cicrle_green"
+        android:src="@drawable/range_cicrle_blue"
         android:background="@color/transparent"
         android:id="@+id/range_iv"/>
         <de.hdodenhof.circleimageview.CircleImageView
@@ -168,39 +168,45 @@
         android:visibility="gone"
         android:id="@+id/no_people_layout_guest"
         >
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="20dp"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/ic_launcher"
+            android:scaleType="fitXY"
+            android:background="@color/transparent"
+            android:id="@+id/no_people_guest_logo"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:id="@+id/no_people_guest_tv"
-            android:layout_margin="10dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:text="In order to see more people please login or register"/>
+            android:text="In order to see more people please login or register"
+            android:layout_below="@id/no_people_guest_logo"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAllCaps="false"
             android:text="Login/Register"
-            android:background="@drawable/btn_shape"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_shape_no_stroke"
             android:padding="10dp"
             android:layout_below="@id/no_people_guest_tv"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/no_people_guest_btn"
             />
     </RelativeLayout>
 
 
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:scaleType="fitXY"
-        android:layout_gravity="center"
-        android:src="@drawable/match_animation"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:id="@+id/match_anim"/>
+
 
 </RelativeLayout>

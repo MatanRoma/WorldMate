@@ -102,8 +102,8 @@
     <string name="cant_filter_guest">We are sorry, but you can\'t filter as a guest</string>
     <string name="cant_menu_guest">We are sorry, but you can only click home and logout as a guest</string>
     <string name="ok">OK</string>
-    <string name="no_more_people">There are no more people to show you</string>
-    <string name="no_mathces_yet">You don\'t have any matches yet</string>
+    <string name="no_more_people">There are no people to show you</string>
+    <string name="no_mathces_yet">You don\'t have any matches</string>
     <string name="man">Man</string>
     <string name="woman">Woman</string>
     <string name="select_categories_desc">Pick what categories of questions you want to answer</string>
@@ -126,11 +126,15 @@
     <string name="when_got_new_message">When you got a new meesage</string>
     <string name="vibrate">Vibrate</string>
     <string name="vibrate_new_notif">Vibrate on new notification</string>
-    <string name="new_match_with">you matched with</string>
+    <string name="new_match_with">You matched with</string>
     <string name="about">About</string>
     <string name="we_are">We are development team!</string>
     <string name="version">Version</string>
-    <string name="click_here_to_start_chating">Click to start chating</string>
+    <string name="click_here_to_start_chating">Start chating</string>
+    <string name="go_to_chat">Go to chat</string>
+    <string name="send_message_str">Send message</string>
+    <string name="search_chat">Search chat</string>
+    <string name="account_setup">Account Setup</string>
 
 
 </resources>

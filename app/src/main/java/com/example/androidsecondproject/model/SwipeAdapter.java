@@ -157,7 +157,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         }
         else
         {
-            Glide.with(mContext).load(currentProfile.getProfilePictureUri()).error(R.drawable.woman_profile).into(holder.mProfileIv);
+            Glide.with(mContext).load(currentProfile.getProfilePictureUri()).error(R.drawable.woman_profile_strech).into(holder.mProfileIv);
         }
         holder.mNameTv.setText(currentProfile.getFirstName()+", ");
         holder.mAgeTv.setText((int)currentProfile.calculateCurrentAge()+"");

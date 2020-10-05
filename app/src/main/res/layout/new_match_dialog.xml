@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_gravity="center"
     android:background="@color/transparent"
-    android:padding="0dp"
+    android:padding="20dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:padding="20dp"
         android:layout_centerInParent="true"
         android:visibility="gone"
         android:gravity="center_horizontal"
@@ -22,64 +24,123 @@
             android:layout_marginHorizontal="30dp"
             android:text="@string/new_match_with"
             android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
             android:padding="5dp"
             android:gravity="center"
             android:textSize="25sp"
             android:textColor="@color/black"
             android:id="@+id/new_match_title"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="30dp"
-            android:text="name"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:gravity="center"
-            android:textSize="25sp"
-            android:textColor="@color/black"
-            android:id="@+id/new_match_name"/>
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/colorPrimary"
             android:layout_marginVertical="10dp"
+            android:layout_below="@id/new_match_title"
             android:id="@+id/profile_new_match_image"/>
-
-
-        <View
-            android:id="@+id/divider"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="3dp"
+            android:paddingHorizontal="5dp"
+            app:cardUseCompatPadding="true"
+            app:cardBackgroundColor="@color/colorPrimaryDark"
+            app:cardCornerRadius="7dp"
+            app:cardElevation="3dp"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@id/profile_new_match_image"
+            android:id="@+id/message_card">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/profile_new_match_image"
+                android:id="@+id/message_layout">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/messege_et_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toStartOf="@id/send_btn"
+                    android:layout_gravity="center"
+
+                    android:hint="@string/send_message_str"
+                    android:textColorHint="#000">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/message_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:inputType="textPersonName"
+                        android:padding="15dp"
+                        android:textColor="#000"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginEnd="5dp"
+                    android:paddingTop="5dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/send_selector"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:id="@+id/send_btn"/>
+            </RelativeLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+
+
+
 
         <Button
             android:id="@+id/chat_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="50dp"
             android:layout_gravity="center"
             android:layout_marginBottom="5dp"
-            android:background="@color/transparent"
+            android:background="@drawable/btn_shape_no_stroke"
             android:gravity="center"
-            android:text="@string/click_here_to_start_chating"
-            android:textColor="@color/black"
-            android:textSize="15sp"/>
+            android:text="@string/go_to_chat"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textAllCaps="false"
+            android:layout_below="@id/message_card"/>
 
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
+
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="50dp"
             android:text="@string/close"
-            android:background="@color/transparent"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:background="@drawable/btn_shape_no_stroke"
+            android:layout_below="@id/chat_btn"
             android:id="@+id/close_btn"/>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 
