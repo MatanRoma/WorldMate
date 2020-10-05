@@ -201,9 +201,9 @@ public class Repository {
         if(!otherProfile.isDiscovery()){
             return false;
         }
-        else if(otherProfile.getLikes().contains(myProfile.getUid())||otherProfile.getDisLikes().contains(myProfile.getUid())){
+        /*else if(otherProfile.getLikes().contains(myProfile.getUid())||otherProfile.getDisLikes().contains(myProfile.getUid())){
             return false;
-        }
+        }*/
         if(checkCompatibilityHelper(myProfile,otherProfile)&&checkCompatibilityHelper(otherProfile,myProfile)){
             return true;
         }

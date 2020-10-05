@@ -55,6 +55,7 @@ public class StorageRepository {
                     @Override
                     public void onSuccess(Uri uri) {
                         Log.d("uri",uri+"");
+
                         if (isProfilePic)
                             mDownloadProfilePicListener.onSuccessDownloadProfilePic(uri);
                         else
