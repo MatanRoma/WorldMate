@@ -145,4 +145,8 @@ public class ProfileViewModel extends AndroidViewModel {
     public void updateDataBaseProfilePic(String s) {
         mRepository.updateProfile(mRepository.getCurrentUserId(),"profilePictureUri",s);
     }
+
+    public void deletePicture(String url) {
+        mRepository.deletePhotoFromStorage(url);
+    }
 }

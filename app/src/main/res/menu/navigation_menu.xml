@@ -25,10 +25,10 @@
             android:icon="@drawable/ic_information"
             android:title="@string/questions"/>
 
-        <item
+        <!--<item
             android:id="@+id/messages_item"
             android:icon="@drawable/ic_messages_icon"
-            android:title="@string/messages"/>
+            android:title="@string/messages"/>-->
 
         <item
             android:id="@+id/settings_item"

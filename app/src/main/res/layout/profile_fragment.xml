@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background_sign"
+    android:background="@color/colorPrimaryDark"
+    android:clickable="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
@@ -111,9 +112,9 @@
                         android:id="@+id/picture0_iv"
                         android:layout_width="100dp"
                         android:layout_height="120dp"
-                        android:background="#fff"
+                        android:background="@color/transparent"
                         android:scaleType="fitXY"
-                        android:src="@color/transparent" />
+                        android:src="@drawable/back_image_square" />
 
                     <com.github.ybq.android.spinkit.SpinKitView
                         android:id="@+id/spin_kit_loading0"
@@ -156,9 +157,9 @@
                         android:layout_alignParentTop="true"
                         android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:background="#fff"
+                        android:background="@color/transparent"
                         android:scaleType="fitXY"
-                        android:src="@color/transparent" />
+                        android:src="@drawable/back_image_square" />
 
                     <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/spin_kit_loading1"
@@ -197,9 +198,9 @@
                         android:id="@+id/picture2_iv"
                         android:layout_width="100dp"
                         android:layout_height="120dp"
-                        android:background="#fff"
+                        android:background="@color/transparent"
                         android:scaleType="fitXY"
-                        android:src="@color/transparent" />
+                        android:src="@drawable/back_image_square" />
 
                     <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/spin_kit_loading2"
@@ -246,9 +247,9 @@
                         android:id="@+id/picture3_iv"
                         android:layout_width="100dp"
                         android:layout_height="120dp"
-                        android:background="#fff"
+                        android:background="@color/transparent"
                         android:scaleType="fitXY"
-                        android:src="@color/transparent" />
+                        android:src="@drawable/back_image_square" />
 
                     <com.github.ybq.android.spinkit.SpinKitView
                         android:id="@+id/spin_kit_loading3"
@@ -286,9 +287,9 @@
                         android:id="@+id/picture4_iv"
                         android:layout_width="100dp"
                         android:layout_height="120dp"
-                        android:background="#fff"
+                        android:background="@color/transparent"
                         android:scaleType="fitXY"
-                        android:src="@color/transparent" />
+                        android:src="@drawable/back_image_square" />
 
                     <com.github.ybq.android.spinkit.SpinKitView
                         android:id="@+id/spin_kit_loading4"
@@ -326,9 +327,9 @@
                         android:id="@+id/picture5_iv"
                         android:layout_width="100dp"
                         android:layout_height="120dp"
-                        android:background="#fff"
+                        android:background="@color/transparent"
                         android:scaleType="fitXY"
-                        android:src="@color/transparent" />
+                        android:src="@drawable/back_image_square" />
 
                     <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/spin_kit_loading5"

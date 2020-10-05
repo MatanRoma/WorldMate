@@ -14,6 +14,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -171,6 +172,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         });
 
         ActionBar actionBar = getSupportActionBar();
+
+
         //   actionBar.setDefaultDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
@@ -290,9 +293,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             mViewModel.logout();
             mViewModel.setFirstTime(true);
             mViewModel.setFirstLocation(true);
+            getIntent().setAction("");
         } else {
             mViewModel.setLoginAsGuest(false);
-            navigationView.getMenu().getItem(6).setChecked(true);
+            navigationView.getMenu().getItem(5).setChecked(true);
 
         }
         clearStack(null);
@@ -314,8 +318,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.flContent_second, swipeFragment, SWIPE_FRAGMENT);
         transaction.commit();
+        setTitle(R.string.app_name);
         Log.d("call","mainActivity");
-
 
     }
 
@@ -841,7 +845,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     @Override
     public void onBackPressed() {
         final Menu menu = navigationView.getMenu();
-        if (menu.getItem(0).isChecked()||menu.getItem(6).isChecked()) {
+        if (menu.getItem(0).isChecked()||menu.getItem(5).isChecked()) {
             ProfilePreviewFragment profilePreviewFragment = (ProfilePreviewFragment) getSupportFragmentManager().findFragmentByTag(PROFILE_PREVIEW_FRAGMENT);
             if (profilePreviewFragment != null && profilePreviewFragment.isVisible()) {
                 setTitle(R.string.app_name);

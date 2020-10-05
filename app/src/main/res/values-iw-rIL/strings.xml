@@ -132,5 +132,6 @@
     <string name="about">אודות</string>
     <string name="we_are">אנחנו צוות פיתוח!</string>
     <string name="version">גרסה</string>
+    <string name="click_here_to_start_chating">לחץ כדי להתחיל שיחה</string>
 
 </resources>

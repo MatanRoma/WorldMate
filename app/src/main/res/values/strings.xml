@@ -114,8 +114,8 @@
     <string name="choose_filter_desc">Choose according to which categories to see the compability</string>
 
     <string name="private_str">Private</string>
-    <string name="min_age">Min age</string>
-    <string name="max_age">Max age</string>
+    <string name="min_age">Minimum age</string>
+    <string name="max_age">Maximum age</string>
     <string name="your_preferences">Your Preference</string>
     <string name="tap_to_change">Tap to change</string>
     <string name="max_distance_km">Max Distance (Km)</string>
@@ -130,6 +130,7 @@
     <string name="about">About</string>
     <string name="we_are">We are development team!</string>
     <string name="version">Version</string>
+    <string name="click_here_to_start_chating">Click to start chating</string>
 
 
 </resources>

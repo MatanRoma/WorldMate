@@ -2,7 +2,7 @@
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background_sign"
+    android:background="@color/colorPrimaryDark"
     android:clickable="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <ScrollView
@@ -47,7 +47,7 @@
                 android:layout_centerHorizontal="true"
                 android:paddingHorizontal="30dp"
                 android:background="@color/transparent"
-                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardBackgroundColor="@color/white"
                 android:layout_below="@id/select_category_desc_tv"
                 android:id="@+id/filter_card">
 
@@ -72,9 +72,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:gravity=""
                             android:text="@string/sport"
-                            android:layout_below="@id/filter_title"
                             android:id="@+id/sport_rb"/>
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -83,7 +81,6 @@
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
                             android:text="@string/food"
-                            android:layout_below="@id/filter_sport_cb"
                             android:id="@+id/food_rb"/>
 
 
@@ -132,15 +129,17 @@
                 android:id="@+id/sport_questions_layout">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="15dp"
+                    android:background="@drawable/title_shape"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/sport_title"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:textSize="40sp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="30sp"
                     android:visibility="gone"
                     android:id="@+id/sport_title_tv"/>
 
@@ -154,15 +153,17 @@
                 android:id="@+id/food_questions_layout">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="15dp"
+                    android:background="@drawable/title_shape"
+                    android:gravity="center"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/food_cap_lett"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:textSize="40sp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="30sp"
                     android:visibility="gone"
                     android:id="@+id/food_title_tv"/>
 
@@ -178,15 +179,17 @@
                 android:id="@+id/culture_questions_layout">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="15dp"
+                    android:background="@drawable/title_shape"
+                    android:gravity="center"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/culture_title"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:textSize="40sp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="30sp"
                     android:visibility="gone"
                     android:id="@+id/culture_title_tv"/>
 
@@ -201,15 +204,17 @@
                 android:id="@+id/music_questions_layout">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="15dp"
+                    android:background="@drawable/title_shape"
+                    android:gravity="center"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/music_title"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:textSize="40sp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="30sp"
                     android:visibility="gone"
                     android:id="@+id/music_title_tv"/>
 
