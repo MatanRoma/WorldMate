@@ -48,6 +48,7 @@ public class Repository {
     private ChatListener chatListener;
     private ProfilesForGuestListener profilesForGuestListener;
     private ValueEventListener mMyProfileValueEventListener;
+    private LikesListener mLikesListener;
 
     private static Repository repository;
     private QuestionsListener questionsListener;
@@ -141,10 +142,11 @@ public class Repository {
                 if(snapshot.exists()){
                     String myUid=myProfile.getUid();
                     List<Profile> profiles=new ArrayList<>();
+                    Set<String> matchesSet=generateMatchSet(myProfile);
                     for(DataSnapshot currSnapshot:snapshot.getChildren()){
                         if(!currSnapshot.getKey().equals(myUid)) {
                             Profile profile = currSnapshot.getValue(Profile.class);
-                            if(checkCompatibility(myProfile,profile)) {
+                            if(checkCompatibility(myProfile,profile,matchesSet)) {
                                 profiles.add(profile);
 
                             }
@@ -163,6 +165,14 @@ public class Repository {
 
             }
         });
+    }
+
+    private Set<String> generateMatchSet(Profile myProfile) {
+        Set<String> matchSet=new HashSet<>();
+        for(Match match:myProfile.getMatches()){
+            matchSet.add(match.getOtherUid());
+        }
+        return matchSet;
     }
 
     public void readMatches(final Profile myProfile){
@@ -200,11 +210,11 @@ public class Repository {
         });
     }
 
-    private boolean checkCompatibility(Profile myProfile, Profile otherProfile) {
+    private boolean checkCompatibility(Profile myProfile, Profile otherProfile,Set<String> myMatchesSet) {
         if(!otherProfile.isDiscovery()){
             return false;
         }
-        /*else if(otherProfile.getLikes().contains(myProfile.getUid())||otherProfile.getDisLikes().contains(myProfile.getUid())){
+       /* else if(otherProfile.getLikes().contains(myProfile.getUid())||otherProfile.getDisLikes().contains(myProfile.getUid())||myMatchesSet.contains(otherProfile.getUid())){
             return false;
         }*/
         if(checkCompatibilityHelper(myProfile,otherProfile)&&checkCompatibilityHelper(otherProfile,myProfile)){
@@ -253,17 +263,6 @@ public class Repository {
         map.put(key,objectToUpdate);
         profilesTable.child((uid)).updateChildren(map);
     }
-  /*  public void updateSpecificQuestion(){
-
-    }
-
-    public void writeChat(String chatid)
-    {
-        Log.d("chat",chatid);
-        chatsTable.child(chatid).push().setValue(null);
-    }*/
-
-
 
     public String getCurrentUserId(){
         return authRepository.getCurrentUserUid();
@@ -505,7 +504,42 @@ public class Repository {
     public void deletePhotoFromStorage(String url){
         mStorageRepository.deletePhotoFromStorage(url);
     }
-    public void readLikedProfiles(){
-        
+    public void readLikedProfiles(final Profile myProfile){
+        profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("call","call2");
+                if(snapshot.exists()){
+                    String myUid=myProfile.getUid();
+                    List<Profile> profiles=new ArrayList<>();
+                    for(DataSnapshot currSnapshot:snapshot.getChildren()){
+                        if(!currSnapshot.getKey().equals(myUid)) {
+                            Profile otherProfile = currSnapshot.getValue(Profile.class);
+                            if(otherProfile.getLikes().contains(myUid)) {
+                                profiles.add(otherProfile);
+
+                            }
+                        }
+                    }
+                    if(mLikesListener!=null) {
+                        mLikesListener.onProfileLikedDataChangeSuccess(profiles);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+    public interface LikesListener{
+        void onProfileLikedDataChangeSuccess(List<Profile> profiles);
+        void onProfileLikedDataChangeFail(String error);
+    }
+    public void setLikesListener(LikesListener likesListener){
+        this.mLikesListener=likesListener;
     }
 }

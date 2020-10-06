@@ -155,10 +155,17 @@ public class SwipeViewModel extends AndroidViewModel {
 
         mProfile.getMatches().add(myMatch);
         mRepository.updateProfile(mProfile.getUid(),MATCHES,mProfile.getMatches());
+
         otherPofile.getMatches().add(otherMatch);
         mRepository.updateProfile(otherPofile.getUid(),MATCHES,otherPofile.getMatches());
+
         Chat chat =new Chat(chatKeyId,mProfile.getUid(),otherPofile.getUid());
         mRepository.writeChat(chat);
+
+        mProfile.getLikes().remove(otherPofile.getUid());
+        otherPofile.getLikes().remove(mProfile.getUid());
+        mRepository.updateProfile(mProfile.getUid(),"likes",mProfile.getLikes());
+        mRepository.updateProfile(otherPofile.getUid(),"likes",otherPofile.getLikes());
 
 
         notifyOtherProfile(otherPofile.getMessageToken()); // only for test
