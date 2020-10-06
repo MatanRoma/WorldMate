@@ -40,7 +40,7 @@
     <string name="confirm">confirm</string>
     <string name="match">Match!</string>
     <string name="you_got_a_new_match">You got a new match!</string>
-    <string name="choose_your_profile_picture">Choose your profile picture</string>
+    <string name="choose_your_profile_picture">Profile Picture</string>
     <string name="from_gallery">From Gallery</string>
     <string name="take_picture">Take Picture</string>
     <string name="prefernce_str">Prefernces</string>

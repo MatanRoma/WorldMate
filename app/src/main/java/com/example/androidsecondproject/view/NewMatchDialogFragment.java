@@ -91,6 +91,7 @@ public class NewMatchDialogFragment extends DialogFragment {
         mViewModel.setmOtherProfile((Profile) getArguments().getSerializable("other_profile"));
         mViewModel.setmMyProfile((Profile) getArguments().getSerializable("my_profile"));
         mViewModel.setmChatId();
+        mViewModel.setContext(getContext());
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         final RelativeLayout matchLayout = view.findViewById(R.id.new_match_layout);
         Button chatBtn = view.findViewById(R.id.chat_btn);
