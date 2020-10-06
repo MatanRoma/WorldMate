@@ -47,6 +47,7 @@ public class Repository {
     private ChatListener chatListener;
     private ProfilesForGuestListener profilesForGuestListener;
     private ValueEventListener mMyProfileValueEventListener;
+    private ValueEventListener mIsOnlineEventListener;
     private LikesListener mLikesListener;
 
     private static Repository repository;
@@ -556,7 +557,9 @@ public class Repository {
 
     public void readProfileIsOnline(String uid)
     {
-        profilesTable.child(uid).child("online").addValueEventListener(new ValueEventListener() {
+        if(mIsOnlineEventListener!=null)
+            profilesTable.child(uid).child("online").removeEventListener(mIsOnlineEventListener);
+        mIsOnlineEventListener=new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists())
@@ -573,6 +576,25 @@ public class Repository {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        profilesTable.child(uid).child("online").addValueEventListener(mIsOnlineEventListener);
+        /*profilesTable.child(uid).child("online").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists())
+                {
+                    Log.d("online",snapshot.getValue()+"");
+                    if(onlineListener != null)
+                    {
+                        onlineListener.onOnlineChangeSuccess((Boolean) snapshot.getValue());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });*/
     }
 }

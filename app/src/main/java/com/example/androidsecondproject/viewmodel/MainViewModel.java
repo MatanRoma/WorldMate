@@ -125,7 +125,7 @@ public class MainViewModel extends AndroidViewModel {
         if(mMyProfile!=null){
             mMyProfile.setMessageToken(token);
             messageToken=null;
-            mRepository.writeMyProfile(mMyProfile);
+            mRepository.updateProfile(mMyProfile.getUid(),"messageToken",token);
         }
         else{
             messageToken=token;

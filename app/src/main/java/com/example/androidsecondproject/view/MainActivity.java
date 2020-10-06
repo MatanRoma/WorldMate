@@ -306,8 +306,9 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         if (!mViewModel.isLoginAsGuest()) {
 
            mViewModel.removeProfileListener();
-            mViewModel.updateIsOnline(false);
             mViewModel.setToken("");
+            mViewModel.updateIsOnline(false);
+
             LocationViewModel.getInstance(getApplicationContext()).removeObservers(this);
          //   mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
 
@@ -986,7 +987,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     protected void onStart() {
         super.onStart();
         if((mViewModel.getMyProfile()!=null)&&(mViewModel.getMyProfile().getUid() != null)&&(!mViewModel.isLoginAsGuest())){
-            mViewModel.updateIsOnline(true);
+            if(!mViewModel.isFirstTime())
+                mViewModel.updateIsOnline(true);
         }
     }
 
@@ -994,7 +996,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     protected void onStop() {
         super.onStop();
         if((mViewModel.getMyProfile()!=null)&&(mViewModel.getMyProfile().getUid() != null)&&(!mViewModel.isLoginAsGuest())){
-            mViewModel.updateIsOnline(false);
+            if(!mViewModel.isFirstTime())
+                mViewModel.updateIsOnline(false);
         }
     }
 }
