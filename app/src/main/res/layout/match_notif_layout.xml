@@ -7,6 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layoutDirection="ltr"
         android:id="@+id/title_layout">
 
         <ImageView
@@ -20,7 +21,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="10dp"
             android:text="@string/match"
             android:textSize="20sp"
             android:textColor="@color/black"
@@ -33,7 +35,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="10dp"
         android:text="@string/you_got_a_new_match"
         android:textColor="@color/black"
         android:textSize="15sp"

@@ -26,7 +26,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/green_circle_selector"
+                    android:src="@drawable/blue_circle_selector"
                     android:scaleType="fitXY"
                     android:background="@color/transparent"
                     android:visibility="gone"
@@ -34,7 +34,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/green_circle_selector"
+                    android:src="@drawable/blue_circle_selector"
                     android:scaleType="fitXY"
                     android:background="@color/transparent"
                     android:visibility="gone"
@@ -42,7 +42,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/green_circle_selector"
+                    android:src="@drawable/blue_circle_selector"
                     android:scaleType="fitXY"
                     android:background="@color/transparent"
                     android:visibility="gone"
@@ -50,7 +50,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/green_circle_selector"
+                    android:src="@drawable/blue_circle_selector"
                     android:scaleType="fitXY"
                     android:background="@color/transparent"
                     android:visibility="gone"
@@ -58,7 +58,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/green_circle_selector"
+                    android:src="@drawable/blue_circle_selector"
                     android:scaleType="fitXY"
                     android:background="@color/transparent"
                     android:visibility="gone"
@@ -66,7 +66,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/green_circle_selector"
+                    android:src="@drawable/blue_circle_selector"
                     android:scaleType="fitXY"
                     android:background="@color/transparent"
                     android:visibility="gone"
@@ -74,7 +74,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/green_circle_selector"
+                    android:src="@drawable/blue_circle_selector"
                     android:scaleType="fitXY"
                     android:background="@color/transparent"
                     android:visibility="gone"

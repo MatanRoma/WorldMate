@@ -18,9 +18,9 @@ import org.json.JSONObject;
 
 public class ChatViewModel extends AndroidViewModel {
     private Repository mRepository;
-    private String chatId;
-    private Profile myProfile;
-    private Profile otherProfile;
+    private String mChatId;
+    private Profile mMyProfile;
+    private Profile mOtherProfile;
     private Context context;
 
     public ChatViewModel(@NonNull Application application) {
@@ -29,19 +29,19 @@ public class ChatViewModel extends AndroidViewModel {
     }
 
     public Query readAllMessages() {
-        return mRepository.readAllMessages(chatId);
+        return mRepository.readAllMessages(mChatId);
     }
 
     public void setChatId(String chatId) {
-        this.chatId=chatId;
+        this.mChatId =chatId;
     }
 
     public String getChatId() {
-        return chatId;
+        return mChatId;
     }
 
     public void writeMessage(String text) {
-        mRepository.writeMessage(chatId,new Message(mRepository.getCurrentUserId(),text,otherProfile.getUid()));
+        mRepository.writeMessage(mChatId,new Message(mRepository.getCurrentUserId(),text, mOtherProfile.getUid()));
     }
 
     public String getMyUid() {
@@ -55,12 +55,13 @@ public class ChatViewModel extends AndroidViewModel {
                 JSONObject rootObject=new JSONObject();
                 JSONObject dataObject=new JSONObject();
                 try {
-                    rootObject.put("to",otherProfile.getMessageToken());
-                    dataObject.put("other_uid",myProfile.getUid());
-                    dataObject.put("chat_id",chatId);
+                    Log.d("message","chat");
+                    rootObject.put("to", mOtherProfile.getMessageToken());
+                    dataObject.put("other_uid", mMyProfile.getUid());
+                    dataObject.put("chat_id", mChatId);
                     dataObject.put("text_message",message.getText());
-                    dataObject.put("fullname",myProfile.getFirstName()+" "+myProfile.getLastName());
-                    dataObject.put("image",myProfile.getProfilePictureUri());
+                    dataObject.put("fullname", mMyProfile.getFirstName()+" "+ mMyProfile.getLastName());
+                    dataObject.put("image", mMyProfile.getProfilePictureUri());
                     rootObject.put("data",dataObject);
 
                     NotificationManager.sendNotification(context,rootObject);
@@ -97,15 +98,15 @@ public class ChatViewModel extends AndroidViewModel {
     }
 
     public Profile getMyProfile() {
-        return myProfile;
+        return mMyProfile;
     }
 
     public void setMyProfile(Profile myProfile) {
-        this.myProfile = myProfile;
+        this.mMyProfile = myProfile;
     }
 
     public Profile getOtherProfile() {
-        return otherProfile;
+        return mOtherProfile;
     }
     public void setContext(Context context){
         this.context=context;
@@ -113,6 +114,6 @@ public class ChatViewModel extends AndroidViewModel {
     }
 
     public void setOtherProfile(Profile otherProfile) {
-        this.otherProfile = otherProfile;
+        this.mOtherProfile = otherProfile;
     }
 }

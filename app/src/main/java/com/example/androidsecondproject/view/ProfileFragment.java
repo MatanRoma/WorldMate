@@ -118,8 +118,8 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
         final TextInputEditText descriptionAboutMe = rootView.findViewById(R.id.about_me_edit_profile_et);
         final TextInputEditText myHobbies = rootView.findViewById(R.id.hobbies_edit_profile_et);
         final TextInputEditText lookingFor = rootView.findViewById(R.id.looking_for_edit_profile_et);
-        final RadioButton menRb = rootView.findViewById(R.id.men_rb);
-        final RadioButton womenRb = rootView.findViewById(R.id.women_rb);
+        //final RadioButton menRb = rootView.findViewById(R.id.men_rb);
+        //final RadioButton womenRb = rootView.findViewById(R.id.women_rb);
         final ImageButton galleryBtn=rootView.findViewById(R.id.gallery_btn);
         final ImageButton cameraBtn=rootView.findViewById(R.id.camera_btn);
 
@@ -201,14 +201,14 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
         lookingFor.setText(mViewModel.getmProfile().getLookingFor());
         Toast.makeText(getContext(), mViewModel.getImageUri()+"", Toast.LENGTH_SHORT).show();
         Glide.with(this).load(mViewModel.getImageUri()).error(R.drawable.man_profile).into(profilePicture);
-        if(TranslateString.checkMale(mViewModel.getmProfile().getGender()))
+        /*if(TranslateString.checkMale(mViewModel.getmProfile().getGender()))
         {
             menRb.setChecked(true);
         }
         else
         {
             womenRb.setChecked(true);
-        }
+        }*/
 
 
         changePicBtn.setOnClickListener(new View.OnClickListener() {
@@ -233,14 +233,14 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
                 mViewModel.getmProfile().setHobbies(Objects.requireNonNull(myHobbies.getText()).toString());
                 mViewModel.getmProfile().setLookingFor(Objects.requireNonNull(lookingFor.getText()).toString());
                 mViewModel.getmProfile().setDescription(Objects.requireNonNull(descriptionAboutMe.getText()).toString());
-                if(menRb.isChecked()){
+               /* if(menRb.isChecked()){
                     mViewModel.getmProfile().setGender("male");
                 }
                 else if(womenRb.isChecked()){
                     mViewModel.getmProfile().setGender("female");
-                }
+                }*/
                 mViewModel.writeProfile();
-                mViewModel.readProfiles();
+                //mViewModel.readProfiles();
             //    mUpdateDrawerListener.onUpdateProfile(mViewModel.getmProfile());
                 Objects.requireNonNull(getActivity()).onBackPressed();
             }

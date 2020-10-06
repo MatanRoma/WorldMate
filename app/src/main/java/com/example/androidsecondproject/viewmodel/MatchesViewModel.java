@@ -192,12 +192,12 @@ public class MatchesViewModel extends AndroidViewModel {
     }
 
     public void updateLikes(Profile matchProfile) {
-        matchProfile.getLikes().remove(mProfile.getUid());
-        mProfile.getLikes().remove(matchProfile.getUid());
+       /* matchProfile.getLikes().remove(mProfile.getUid());
+        mProfile.getLikes().remove(matchProfile.getUid());*/
         matchProfile.getDisLikes().add(mProfile.getUid());
         mProfile.getDisLikes().add(matchProfile.getUid());
-        mRepository.updateProfile(matchProfile.getUid(),"likes",matchProfile.getLikes());
-        mRepository.updateProfile(mProfile.getUid(),"likes",mProfile.getLikes());
+        /*mRepository.updateProfile(matchProfile.getUid(),"likes",matchProfile.getLikes());
+        mRepository.updateProfile(mProfile.getUid(),"likes",mProfile.getLikes());*/
         mRepository.updateProfile(matchProfile.getUid(),"disLikes",matchProfile.getDisLikes());
         mRepository.updateProfile(mProfile.getUid(),"disLikes",mProfile.getDisLikes());
     }

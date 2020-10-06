@@ -13,8 +13,7 @@
                 android:top="1dp"
                 android:bottom="1dp"/>
 
-            <stroke
-                android:width="2dp"/>
+
 
             <gradient
                 android:startColor="#2494C6"
@@ -36,8 +35,7 @@
                 android:top="1dp"
                 android:bottom="1dp"/>
 
-            <stroke
-                android:width="2dp"/>
+
             <gradient
                 android:startColor="@color/colorPrimary"
                 android:endColor="@color/colorPrimary"

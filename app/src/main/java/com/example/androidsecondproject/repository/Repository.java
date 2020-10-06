@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -47,6 +48,7 @@ public class Repository {
     private ChatListener chatListener;
     private ProfilesForGuestListener profilesForGuestListener;
     private ValueEventListener mMyProfileValueEventListener;
+    private LikesListener mLikesListener;
 
     private static Repository repository;
     private QuestionsListener questionsListener;
@@ -79,31 +81,31 @@ public class Repository {
     public void readProfile(String uid){
         if(mMyProfileValueEventListener!=null)
             profilesTable.child(uid).removeEventListener(mMyProfileValueEventListener);
-                 mMyProfileValueEventListener=new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            Profile profile=snapshot.getValue(Profile.class);
-                            Log.d("prof","tst2");
-                            if(profileListener!=null) {
-                                Log.d("prof", "tst3");
-                                profileListener.onProfileDataChangeSuccess(profile);
-                            }
-                        }
-                        else {
-                            if(profileListener!=null)
-                                profileListener.onProfileDataChangeFail("not_exist");
-                        }
+        mMyProfileValueEventListener=new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    Profile profile=snapshot.getValue(Profile.class);
+                    Log.d("prof","tst2");
+                    if(profileListener!=null) {
+                        Log.d("prof", "tst3");
+                        profileListener.onProfileDataChangeSuccess(profile);
                     }
+                }
+                else {
+                    if(profileListener!=null)
+                        profileListener.onProfileDataChangeFail("not_exist");
+                }
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        if(profileListener!=null)
-                            profileListener.onProfileDataChangeFail(error.getMessage());
-                        //TODO
-                    }
-                };
-                profilesTable.child(uid).addValueEventListener(mMyProfileValueEventListener);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                if(profileListener!=null)
+                    profileListener.onProfileDataChangeFail(error.getMessage());
+                //TODO
+            }
+        };
+        profilesTable.child(uid).addValueEventListener(mMyProfileValueEventListener);
               /*  profilesTable.child(uid).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -140,17 +142,20 @@ public class Repository {
                 if(snapshot.exists()){
                     String myUid=myProfile.getUid();
                     List<Profile> profiles=new ArrayList<>();
+                    Set<String> matchesSet=generateMatchSet(myProfile);
                     for(DataSnapshot currSnapshot:snapshot.getChildren()){
-                       if(!currSnapshot.getKey().equals(myUid)) {
-                           Profile profile = currSnapshot.getValue(Profile.class);
-                           if(checkCompatibility(myProfile,profile)) {
-                               profiles.add(profile);
+                        if(!currSnapshot.getKey().equals(myUid)) {
+                            Profile profile = currSnapshot.getValue(Profile.class);
+                            if(checkCompatibility(myProfile,profile,matchesSet)) {
+                                profiles.add(profile);
 
-                           }
-                       }
+                            }
+                        }
                     }
-                    if(profilesListener!=null)
-                         profilesListener.onProfilesDataChangeSuccess(profiles);
+                    if(profilesListener!=null) {
+                        Collections.shuffle(profiles);
+                        profilesListener.onProfilesDataChangeSuccess(profiles);
+                    }
                 }
 
             }
@@ -160,6 +165,14 @@ public class Repository {
 
             }
         });
+    }
+
+    private Set<String> generateMatchSet(Profile myProfile) {
+        Set<String> matchSet=new HashSet<>();
+        for(Match match:myProfile.getMatches()){
+            matchSet.add(match.getOtherUid());
+        }
+        return matchSet;
     }
 
     public void readMatches(final Profile myProfile){
@@ -197,11 +210,11 @@ public class Repository {
         });
     }
 
-    private boolean checkCompatibility(Profile myProfile, Profile otherProfile) {
+    private boolean checkCompatibility(Profile myProfile, Profile otherProfile,Set<String> myMatchesSet) {
         if(!otherProfile.isDiscovery()){
             return false;
         }
-        /*else if(otherProfile.getLikes().contains(myProfile.getUid())||otherProfile.getDisLikes().contains(myProfile.getUid())){
+       /* else if(otherProfile.getLikes().contains(myProfile.getUid())||otherProfile.getDisLikes().contains(myProfile.getUid())||myMatchesSet.contains(otherProfile.getUid())){
             return false;
         }*/
         if(checkCompatibilityHelper(myProfile,otherProfile)&&checkCompatibilityHelper(otherProfile,myProfile)){
@@ -250,20 +263,9 @@ public class Repository {
         map.put(key,objectToUpdate);
         profilesTable.child((uid)).updateChildren(map);
     }
-  /*  public void updateSpecificQuestion(){
-
-    }
-
-    public void writeChat(String chatid)
-    {
-        Log.d("chat",chatid);
-        chatsTable.child(chatid).push().setValue(null);
-    }*/
-
-
 
     public String getCurrentUserId(){
-       return authRepository.getCurrentUserUid();
+        return authRepository.getCurrentUserUid();
     }
     public void setDownloadProfilePicListener(StorageRepository.StorageDownloadProfilePicListener downloadListener){
         mStorageRepository.setDownloadListener(downloadListener);
@@ -301,7 +303,7 @@ public class Repository {
             @Override
             public void onSuccess(Void aVoid) {
                 if(messageListener!=null)
-                        messageListener.onMessageSentSuccess(message);
+                    messageListener.onMessageSentSuccess(message);
             }
         });
     }
@@ -323,12 +325,12 @@ public class Repository {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Chat> chats=new ArrayList<>();
 
-               for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-                   ChatAndMessages chatAndMessages=snapshot.getValue(ChatAndMessages.class);
-                   if(chatIds.contains(chatAndMessages.getChat().getId()))
+                for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                    ChatAndMessages chatAndMessages=snapshot.getValue(ChatAndMessages.class);
+                    if(chatIds.contains(chatAndMessages.getChat().getId()))
                         chats.add(chatAndMessages.getChat());
-               }
-               Log.d("chat_size",chats.size()+"");
+                }
+                Log.d("chat_size",chats.size()+"");
                 if(chatListener!=null){
                     chatListener.onChatDataChanged(chats);
                 }
@@ -443,7 +445,7 @@ public class Repository {
                         questions.add(question);
                     }
                     if(questionsListener!=null)
-                         questionsListener.onQuestionsDataChangeSuccess(questions);
+                        questionsListener.onQuestionsDataChangeSuccess(questions);
                 }
 
             }
@@ -501,5 +503,43 @@ public class Repository {
 
     public void deletePhotoFromStorage(String url){
         mStorageRepository.deletePhotoFromStorage(url);
+    }
+    public void readLikedProfiles(final Profile myProfile){
+        profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("call","call2");
+                if(snapshot.exists()){
+                    String myUid=myProfile.getUid();
+                    List<Profile> profiles=new ArrayList<>();
+                    for(DataSnapshot currSnapshot:snapshot.getChildren()){
+                        if(!currSnapshot.getKey().equals(myUid)) {
+                            Profile otherProfile = currSnapshot.getValue(Profile.class);
+                            if(otherProfile.getLikes().contains(myUid)) {
+                                profiles.add(otherProfile);
+
+                            }
+                        }
+                    }
+                    if(mLikesListener!=null) {
+                        mLikesListener.onProfileLikedDataChangeSuccess(profiles);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+    public interface LikesListener{
+        void onProfileLikedDataChangeSuccess(List<Profile> profiles);
+        void onProfileLikedDataChangeFail(String error);
+    }
+    public void setLikesListener(LikesListener likesListener){
+        this.mLikesListener=likesListener;
     }
 }

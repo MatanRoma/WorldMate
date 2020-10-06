@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.LinearLayout;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,7 +32,6 @@ import com.example.androidsecondproject.viewmodel.MatchesViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 import com.github.ybq.android.spinkit.SpinKitView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MatchesFragment extends Fragment  {
@@ -76,6 +74,8 @@ public class MatchesFragment extends Fragment  {
         mLoadingAnimation.setVisibility(View.VISIBLE);
         mSearchView = rootView.findViewById(R.id.search_view);
         mNoMatchesLayout = rootView.findViewById(R.id.no_matches_layout);
+
+
 
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -177,7 +177,7 @@ public class MatchesFragment extends Fragment  {
                 if(direction==ItemTouchHelper.RIGHT||direction==ItemTouchHelper.LEFT)
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setMessage("Are you sure you want to unmatch with "+matcherProfile.getFirstName()+"?" )
+                    builder.setMessage(getString(R.string.unmatch_dialog)+" "+matcherProfile.getFirstName()+"?" )
                             .setCancelable(false).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

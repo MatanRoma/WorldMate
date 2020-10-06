@@ -1,10 +1,7 @@
 package com.example.androidsecondproject.view;
 
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +19,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,7 +63,7 @@ public class SwipeFragment extends Fragment {
 
     private SwipeFlingAdapter mSwipeFlingAdapter;
 
-    private ImageView mMatchAnimation;
+
 
     private LinearLayout btnsLayout;
     private RelativeLayout mNoPeopleMainLayout, mNoPeopleGuestLayout;
@@ -136,7 +134,6 @@ public class SwipeFragment extends Fragment {
 
         mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
         mLoadingAnimation.setVisibility(View.VISIBLE);
-        mMatchAnimation = rootView.findViewById(R.id.match_anim);
         mNoPeopleGuestLayout =rootView.findViewById(R.id.no_people_layout_guest);
 
         //((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
@@ -453,7 +450,11 @@ public class SwipeFragment extends Fragment {
 
 
         if(mViewModel.checkIfMatch(position)){
-            mMatchAnimation.setVisibility(View.VISIBLE);
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            NewMatchDialogFragment alertDialog = NewMatchDialogFragment.newInstance(mSwipeAdapter.getmProfiles().get(position),mViewModel.getProfile());
+            alertDialog.show(fm, "fragment_alert");
+
+  /*          mMatchAnimation.setVisibility(View.VISIBLE);
             AnimationDrawable animationDrawable = (AnimationDrawable) mMatchAnimation.getDrawable();
             animationDrawable.start();
             MediaPlayer matchSound = MediaPlayer.create(getActivity(),R.raw.match);
@@ -464,7 +465,7 @@ public class SwipeFragment extends Fragment {
                 public void run() {
                     mMatchAnimation.setVisibility(View.GONE);
                 }
-            },3000);
+            },3000);*/
             mViewModel.updateMatch(position);
             //   mViewModel.writeOtherProfile(position);
         }

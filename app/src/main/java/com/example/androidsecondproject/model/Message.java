@@ -59,4 +59,5 @@ public class Message implements Serializable {
     public void setRecipientUid(String recipientUid) {
         this.recipientUid = recipientUid;
     }
+
 }

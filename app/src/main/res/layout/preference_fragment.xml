@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_sign"
+    android:background="@color/colorPrimaryDark"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -11,14 +11,14 @@
         android:id="@+id/prefernce_text"
         android:text="@string/preferences"
         android:textStyle="bold"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:gravity="center"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="15dp"
         android:padding="5dp"
-        android:textColor="@color/colorPrimary"
-        android:background="@drawable/title_shape"/>
+        android:textColor="@color/white"
+        android:background="@drawable/btn_shape_no_stroke"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 android:layout_marginTop="20dp"
                 app:cardUseCompatPadding="true"
                 app:contentPadding="10dp"
-                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="10dp"
                 android:paddingHorizontal="10dp"
                 android:id="@+id/discovery_card_view">
@@ -104,7 +104,7 @@
                 app:contentPadding="10dp"
                 app:cardCornerRadius="10dp"
                 android:paddingHorizontal="10dp"
-                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardBackgroundColor="@color/white"
                 android:layout_below="@id/looking_for_tv"
                 android:id="@+id/looking_for_card_view">
                 <RelativeLayout
@@ -238,7 +238,7 @@
                 app:contentPadding="10dp"
                 app:cardCornerRadius="10dp"
                 android:paddingHorizontal="10dp"
-                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardBackgroundColor="@color/white"
                 android:layout_below="@id/distance_desc_tv"
                 android:id="@+id/distance_card_view">
 
@@ -294,7 +294,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/age_desc_tv"
                 android:paddingHorizontal="10dp"
-                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="10dp"
                 app:cardUseCompatPadding="true"
                 app:contentPadding="10dp">
@@ -338,9 +338,10 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="15dp"
                 android:textAllCaps="false"
-                android:background="@drawable/btn_shape"
+                android:background="@drawable/btn_shape_no_stroke"
                 android:padding="5dp"
                 android:textSize="20sp"
+                android:textColor="@color/white"
                 android:text="@string/continue_str" />
 
 

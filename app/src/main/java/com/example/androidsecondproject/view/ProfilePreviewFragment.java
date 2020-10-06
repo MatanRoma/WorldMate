@@ -78,10 +78,10 @@ public class ProfilePreviewFragment extends Fragment {
         ageTv.setText((int)mViewModel.getOtherProfile().calculateCurrentAge()+"");
         if(TranslateString.checkMale(mViewModel.getOtherProfile().getGender()))
         {
-            genderTv.setText(getString(R.string.man));
+            genderTv.setText(getString(R.string.men));
         }
         else {
-            genderTv.setText(getString(R.string.woman));
+            genderTv.setText(getString(R.string.women));
         }
         //genderTv.setText(mViewModel.getOtherProfile().getGender()+"");
         cityTv.setText(mViewModel.getOtherProfile().getCity()+"");
