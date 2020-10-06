@@ -14,6 +14,14 @@
             android:defaultValue="true"
             android:summary="@string/discovery_desc"/>
 
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/your_preferences"
+        android:key="your_preference_category">
+
         <SeekBarPreference
             android:title="@string/min_age"
             android:key="min_age_pref1"
@@ -29,12 +37,6 @@
             app:showSeekBarValue="true"
             app:min="18"
             app:seekBarIncrement="1" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/your_preferences"
-        android:key="your_preference_category">
 
         <MultiSelectListPreference
             android:entries="@array/multi_entries"

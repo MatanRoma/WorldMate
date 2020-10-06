@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.services;
 
 import android.app.ActivityManager;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -108,9 +109,11 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
             builder.setAutoCancel(true);
             builder.setContentIntent(activityPendingIntent);
 
-            builder.setSmallIcon(R.mipmap.ic_launcher_round);
-
-            notificationManager.notify(notifId, builder.build());
+            builder.setSmallIcon(R.drawable.ic_world_mate_icon_bw);
+            Notification notification = builder.build();
+            NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, notification, notifId);
+            //Glide.with(this).asBitmap().load(messageDataMap.get("image")).error(R.drawable.man_profile).into(notificationTarget);
+            notificationManager.notify(notifId, notification);
 
 
 
@@ -155,7 +158,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                 final int notifId = messageDataMap.get("chat_id").hashCode();
 
                 RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.match_notif_layout);
-                remoteViews.setTextViewText(R.id.title_tv, messageDataMap.get("fullname"));
+                remoteViews.setTextViewText(R.id.title_tv, messageDataMap.get("fullname")+" "+ getString(R.string.sent_you));
                 if(messageDataMap.get("text_message").length()>15)
                 {
                     String subLastMessage = messageDataMap.get("text_message").substring(0,15) + "...";
@@ -166,16 +169,19 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                     remoteViews.setTextViewText(R.id.text_id, messageDataMap.get("text_message"));
                 }
 
-                NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, builder.build(), NOTIF_ID);
+                //NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, builder.build(), NOTIF_ID);
 
                 builder.setCustomContentView(remoteViews);
 
                 builder.setAutoCancel(true);
                 builder.setContentIntent(activityPendingIntent);
 
-                builder.setSmallIcon(R.mipmap.ic_launcher_round);
 
-                notificationManager.notify(notifId, builder.build());
+                builder.setSmallIcon(R.drawable.ic_world_mate_icon_bw);
+                Notification notification = builder.build();
+                NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, notification, notifId);
+                //Glide.with(this).asBitmap().load(R.drawable.ic_world_mate_icon).error(R.drawable.man_profile).into(notificationTarget);
+                notificationManager.notify(notifId, notification);
 
             }
         }

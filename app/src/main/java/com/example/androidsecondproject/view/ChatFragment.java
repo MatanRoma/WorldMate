@@ -1,6 +1,7 @@
 package com.example.androidsecondproject.view;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -130,6 +131,9 @@ public class ChatFragment extends Fragment {
         mChatAdapter=new ChatAdapter(recyclerOptions,mViewModel.getMyUid());
         mRecyclerView.setAdapter(mChatAdapter);
         mRecyclerView.scrollToPosition(mChatAdapter.getItemCount());
+        if(!checkDirection()){
+            sendButton.setRotation(180);
+        }
 
 
         mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -262,7 +266,24 @@ public class ChatFragment extends Fragment {
     }*/
 
 
+
+
     }
+
+    private boolean checkDirection() {
+        boolean isLtr;
+        Configuration config = getResources().getConfiguration();
+        if(config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            isLtr = false;
+        }
+        else {
+            isLtr = true;
+        }
+        return  isLtr;
+    }
+
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

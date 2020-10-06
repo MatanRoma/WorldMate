@@ -147,7 +147,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerInParent="true"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_worlmate_logo"
             android:background="@color/transparent"
             android:id="@+id/no_people_logo"/>
         <TextView
@@ -174,7 +174,7 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="20dp"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_worlmate_logo"
             android:scaleType="fitXY"
             android:background="@color/transparent"
             android:id="@+id/no_people_guest_logo"/>

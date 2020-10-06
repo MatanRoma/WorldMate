@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AndroidSecondProject</string>
+    <string name="app_name">WorldMate</string>
     <string name="home">ראשי</string>
     <string name="my_profile">הפרופיל שלי</string>
     <string name="your_matches">ההתאמות שלי</string>
@@ -147,5 +147,6 @@
     <string name="travel">טיול</string>
     <string name="religion_cap">דת</string>
     <string name="travel_cap">טיול</string>
+    <string name="sent_you">שלח לך:</string>
 
 </resources>

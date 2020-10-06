@@ -25,7 +25,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_worlmate_logo"
             android:layout_marginStart="20dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/back_to_chats_ib"
