@@ -138,5 +138,6 @@
     <string name="search_chat">חפש שיחה</string>
     <string name="account_setup">הגדרת חשבון</string>
     <string name="unmatch_dialog">האם אתה בטוח שאתה רוצה לבטל התאמה עם</string>
+    <string name="no_like">אין אנשים להציג לך</string>
 
 </resources>
