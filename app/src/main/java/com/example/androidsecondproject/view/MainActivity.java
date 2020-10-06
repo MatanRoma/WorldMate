@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                    // loaderIv.setVisibility(View.GONE);
                     mLoadingAnimation.setVisibility(View.GONE);
                 } else if (mViewModel.isFirstTime()) {
+                    Log.d("first_time","first time");
                     mNameTv.setText(profile.getFirstName());
                     Glide.with(MainActivity.this).load(profile.getProfilePictureUri()).error(R.drawable.man_profile).into(mProfileIv);
                     getTokenWhenLogin();
@@ -201,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                     handleReturnFromNotif();
                   // loaderIv.setVisibility(View.GONE);
                     mLoadingAnimation.setVisibility(View.GONE);
+                    mViewModel.updateIsOnline(true);
 
                 } else {
                     Log.d("observer","in");
@@ -265,12 +267,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 if (profileFragment == null || !profileFragment.isVisible()) {
                     moveToProfileFragment();
                 }
-            } else if (getString(R.string.your_matches).equals(title)) {
+            } else if (getString(R.string.matches_and_chat).equals(title)) {
                 MatchesFragment matchesFragment = (MatchesFragment) getSupportFragmentManager().findFragmentByTag(MATCHES_FRAGMENT);
                 if (matchesFragment == null || !matchesFragment.isVisible()) {
                     moveToMatchesFragment();
                 }
-            }else if("Your Likes".equals(title)){
+            }else if(getString(R.string.your_likes).equals(title)){
                 LikesFragment likesFragment = (LikesFragment) getSupportFragmentManager().findFragmentByTag(LIKES_FRAGMENT);
                 if (likesFragment == null || !likesFragment.isVisible()) {
                     moveToLikesFragment();
@@ -297,12 +299,14 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.replace(R.id.flContent,likesFragment,LIKES_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
-        setTitle("Your Likes");
+        setTitle(getString(R.string.your_likes));
     }
 
     private void logoutUser(){
         if (!mViewModel.isLoginAsGuest()) {
+
            mViewModel.removeProfileListener();
+            mViewModel.updateIsOnline(false);
             mViewModel.setToken("");
             LocationViewModel.getInstance(getApplicationContext()).removeObservers(this);
          //   mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
@@ -313,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             getIntent().setAction("");
         } else {
             mViewModel.setLoginAsGuest(false);
-            navigationView.getMenu().getItem(5).setChecked(true);
+            navigationView.getMenu().getItem(6).setChecked(true);
 
         }
         clearStack(null);
@@ -865,7 +869,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     @Override
     public void onBackPressed() {
         final Menu menu = navigationView.getMenu();
-        if (menu.getItem(0).isChecked()||menu.getItem(5).isChecked()) {
+        if (menu.getItem(0).isChecked()||menu.getItem(6).isChecked()) {
             ProfilePreviewFragment profilePreviewFragment = (ProfilePreviewFragment) getSupportFragmentManager().findFragmentByTag(PROFILE_PREVIEW_FRAGMENT);
             if (profilePreviewFragment != null && profilePreviewFragment.isVisible()) {
                 setTitle(R.string.app_name);
@@ -975,6 +979,23 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     @Override
     public void onMoveToNewChat(Profile profile, String chatId,Profile otherProfile) {
         moveToChat(profile,otherProfile,chatId);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if((mViewModel.getMyProfile()!=null)&&(mViewModel.getMyProfile().getUid() != null)&&(!mViewModel.isLoginAsGuest())){
+            mViewModel.updateIsOnline(true);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if((mViewModel.getMyProfile()!=null)&&(mViewModel.getMyProfile().getUid() != null)&&(!mViewModel.isLoginAsGuest())){
+            mViewModel.updateIsOnline(false);
+        }
     }
 }
 

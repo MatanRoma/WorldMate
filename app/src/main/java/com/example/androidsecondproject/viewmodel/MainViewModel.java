@@ -230,9 +230,14 @@ public class MainViewModel extends AndroidViewModel {
         mMyProfile.setPictures(newProfile.getPictures());
         mMyProfile.setQuestionResponds(newProfile.getQuestionResponds());
         mMyProfile.setUid(newProfile.getUid());
+        mMyProfile.setOnline(newProfile.isOnline());
     }
 
     public void removeProfileListener() {
         mRepository.remveProfileListener(mMyProfile.getUid());
+    }
+
+    public void updateIsOnline(boolean isOnline) {
+        mRepository.updateProfile(mMyProfile.getUid(),"online",isOnline);
     }
 }

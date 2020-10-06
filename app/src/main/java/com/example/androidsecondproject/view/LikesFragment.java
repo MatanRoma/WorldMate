@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -35,6 +36,7 @@ public class LikesFragment extends Fragment {
     private LikesAdapter mLikesAdapter;
     private RecyclerView mLikesRecycler;
     private LikesFragmentInterface mLikesFragmentInteface;
+    private SearchView mSearchView;
 
     public interface LikesFragmentInterface{
         public void OnMoveToProfilePreviewFromLikes(Profile myProfile,int compatability);
@@ -62,12 +64,31 @@ public class LikesFragment extends Fragment {
         mViewModel =new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Likes)).get(LikesViewModel.class);
         mViewModel.setMyProfile((Profile) getArguments().get("my_profile"));
 
+        mSearchView = rootView.findViewById(R.id.search_view);
+        mLikesRecycler = rootView.findViewById(R.id.likes_recycler);
+        mLikesRecycler.setHasFixedSize(true);
+        mLikesRecycler.setLayoutManager(new GridLayoutManager(getContext(),2));
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mLikesAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
         Observer<List<Profile>> likesObserver=new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
                 Log.d("likes",mLikesAdapter+"");
                 if(mLikesAdapter==null) {
                     mLoadingAnimation.setVisibility(View.GONE);
+                    mSearchView.setVisibility(View.VISIBLE);
                     mLikesAdapter = new LikesAdapter(profiles, mViewModel.getMyProfile(),getContext());
                     mLikesAdapter.setProfilePressedListener(new LikesAdapter.LikedProfilePressedListener() {
                         @Override
@@ -89,9 +110,7 @@ public class LikesFragment extends Fragment {
         mLoadingAnimation=rootView.findViewById(R.id.spin_kit);
         mLoadingAnimation.setVisibility(View.VISIBLE);
 
-        mLikesRecycler = rootView.findViewById(R.id.likes_recycler);
-        mLikesRecycler.setHasFixedSize(true);
-        mLikesRecycler.setLayoutManager(new GridLayoutManager(getContext(),2));
+
 
 
         mViewModel.getProfilesResultSuccess().observe(this,likesObserver);

@@ -21,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +54,7 @@ public class Repository {
     private ReadOtherProfileListener readOtherProfileListener;
     private MatchesListener matchesListener;
     private Context mContext;
+    private OnlineListener onlineListener;
 
 
     private Repository(Context context) {
@@ -259,6 +259,7 @@ public class Repository {
         profilesTable.child((profile.getUid())).setValue(profile);
     }
     public void updateProfile(String uid, String key, Object objectToUpdate){
+        Log.d("first_time",objectToUpdate +"");
         Map<String,Object> map =new HashMap<>();
         map.put(key,objectToUpdate);
         profilesTable.child((uid)).updateChildren(map);
@@ -541,5 +542,37 @@ public class Repository {
     }
     public void setLikesListener(LikesListener likesListener){
         this.mLikesListener=likesListener;
+    }
+
+    public interface OnlineListener{
+        void onOnlineChangeSuccess(boolean isOnline);
+    }
+
+    public void setOnlineListener(OnlineListener onlineListener){
+        this.onlineListener = onlineListener;
+    }
+
+
+
+    public void readProfileIsOnline(String uid)
+    {
+        profilesTable.child(uid).child("online").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists())
+                {
+                    Log.d("online",snapshot.getValue()+"");
+                    if(onlineListener != null)
+                    {
+                        onlineListener.onOnlineChangeSuccess((Boolean) snapshot.getValue());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

@@ -139,5 +139,9 @@
     <string name="account_setup">הגדרת חשבון</string>
     <string name="unmatch_dialog">האם אתה בטוח שאתה רוצה לבטל התאמה עם</string>
     <string name="no_like">אין אנשים להציג לך</string>
+    <string name="your_likes">הלייקים שלך</string>
+    <string name="matches_and_chat">התאמות ושיחות</string>
+    <string name="online_str">מחובר</string>
+    <string name="offline_str">לא מחובר</string>
 
 </resources>

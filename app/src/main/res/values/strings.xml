@@ -137,6 +137,10 @@
     <string name="account_setup">Account Setup</string>
     <string name="unmatch_dialog">Are you sure you want to unmatch with</string>
     <string name="no_like">You have no people to show</string>
+    <string name="your_likes">Your Likes</string>
+    <string name="matches_and_chat">Matches &amp; Chats</string>
+    <string name="online_str">Online</string>
+    <string name="offline_str">Offline</string>
 
 
 </resources>

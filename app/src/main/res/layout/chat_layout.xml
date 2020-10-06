@@ -31,17 +31,33 @@
             android:layout_toEndOf="@id/back_to_chats_ib"
             android:id="@+id/profile_image_chat"/>
 
-        <TextView
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/profile_image_chat"
-            android:layout_centerVertical="true"
-            android:text="@string/name_of_profile"
-            android:padding="20dp"
-            android:id="@+id/profile_name_chat"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:layout_marginTop="2dp"
+            android:padding="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/profile_name_chat"
+                android:textColor="@color/black"
+                android:layout_marginTop="3dp"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/is_online_tv"
+                android:layout_below="@id/profile_name_chat"
+                android:text="@string/online_str"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                android:layout_marginTop="5dp"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -99,33 +115,33 @@
             app:cardCornerRadius="10dp"
             app:cardElevation="3dp">-->
 
-            <ImageButton
-                android:id="@+id/send_message"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="3dp"
-                android:padding="5dp"
-                android:scaleType="fitCenter"
-                android:layout_marginEnd="5dp"
-                android:layout_centerInParent="true"
-                android:layout_alignParentEnd="true"
+        <ImageButton
+            android:id="@+id/send_message"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="3dp"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="5dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
 
-                android:layout_gravity="center"
-                android:background="@color/transparent"
-                android:src="@drawable/send_selector" />
+            android:layout_gravity="center"
+            android:background="@color/transparent"
+            android:src="@drawable/send_selector" />
 
         <!--</androidx.cardview.widget.CardView>-->
 
-       <!-- <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_send"
-            android:scaleType="fitCenter"
-            android:layout_marginStart="3dp"
-            android:layout_marginEnd="7dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/send_message"/>-->
+        <!-- <ImageButton
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:src="@drawable/ic_send"
+             android:scaleType="fitCenter"
+             android:layout_marginStart="3dp"
+             android:layout_marginEnd="7dp"
+             android:layout_centerVertical="true"
+             android:layout_alignParentEnd="true"
+             android:id="@+id/send_message"/>-->
 
 
     </RelativeLayout>

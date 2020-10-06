@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,6 +22,8 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginTop="10dp"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_border_width="2dp"
             android:layout_centerHorizontal="true"
             android:id="@+id/card_profile_iv" />
 
@@ -48,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/age_int"
+                android:visibility="gone"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginHorizontal="10dp"

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.androidsecondproject.model.Message;
 import com.example.androidsecondproject.model.NotificationManager;
@@ -22,6 +23,7 @@ public class ChatViewModel extends AndroidViewModel {
     private Profile mMyProfile;
     private Profile mOtherProfile;
     private Context context;
+    private MutableLiveData<Boolean> mIsOnlineLiveData;
 
     public ChatViewModel(@NonNull Application application) {
         super(application);
@@ -115,5 +117,28 @@ public class ChatViewModel extends AndroidViewModel {
 
     public void setOtherProfile(Profile otherProfile) {
         this.mOtherProfile = otherProfile;
+    }
+
+    public MutableLiveData<Boolean> getIsOnline()
+    {
+        if(mIsOnlineLiveData == null)
+        {
+            mIsOnlineLiveData = new MutableLiveData<>();
+            loadIsOnline();
+        }
+        return mIsOnlineLiveData;
+    }
+
+    private void loadIsOnline() {
+        mRepository.setOnlineListener(new Repository.OnlineListener() {
+            @Override
+            public void onOnlineChangeSuccess(boolean isOnline) {
+                mIsOnlineLiveData.setValue(isOnline);
+            }
+        });
+    }
+
+    public void readIsOnline(){
+        mRepository.readProfileIsOnline(getOtherProfile().getUid());
     }
 }

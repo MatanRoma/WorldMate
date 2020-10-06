@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +33,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Observable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -83,6 +85,7 @@ public class ChatFragment extends Fragment {
         final EditText chatEt=rootView.findViewById(R.id.text_chat_et);
         TextView nameTv=rootView.findViewById(R.id.profile_name_chat);
         CircleImageView profileImage=rootView.findViewById(R.id.profile_image_chat);
+        final TextView isOnlineTv = rootView.findViewById(R.id.is_online_tv);
 
         RelativeLayout chatHeader = rootView.findViewById(R.id.chat_rl_layout);
 
@@ -157,8 +160,16 @@ public class ChatFragment extends Fragment {
         nameTv.setText(otherProfile.getFirstName() + " " + otherProfile.getLastName());
         Glide.with(getContext()).load(otherProfile.getProfilePictureUri()).error(R.drawable.man_profile).into(profileImage);
 
+        Observer<Boolean> isOnlineObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                isOnlineTv.setVisibility(View.VISIBLE);
+                isOnlineTv.setText(aBoolean?getString(R.string.online_str):getString(R.string.offline_str));
+            }
+        };
+        mViewModel.getIsOnline().observe(this,isOnlineObserver);
 
-
+        mViewModel.readIsOnline();
         return rootView;
     }
 
