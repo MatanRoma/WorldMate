@@ -81,6 +81,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 
             Intent activityIntent = new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             activityIntent.setAction("&k&" + messageDataMap.get("match_uid"));
+            final int notifId = messageDataMap.get("match_uid").hashCode();
 
             PendingIntent activityPendingIntent = PendingIntent.getActivity(this,
                     5, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -109,7 +110,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 
             builder.setSmallIcon(R.mipmap.ic_launcher_round);
 
-            notificationManager.notify(NOTIF_ID, builder.build());
+            notificationManager.notify(notifId, builder.build());
 
         }
         else if(messageDataMap.get("chat_id")!=null&&isMessageNotifAllowed){
@@ -148,7 +149,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                 PendingIntent activityPendingIntent = PendingIntent.getActivity(this,
                         1, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 activityIntent.putExtra("chat_id", messageDataMap.get("chat_id"));
-
+                final int notifId = messageDataMap.get("chat_id").hashCode();
 
                 RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.match_notif_layout);
                 remoteViews.setTextViewText(R.id.title_tv, messageDataMap.get("fullname"));
@@ -171,7 +172,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 
                 builder.setSmallIcon(R.mipmap.ic_launcher_round);
 
-                notificationManager.notify(NOTIF_ID, builder.build());
+                notificationManager.notify(notifId, builder.build());
 
             }
         }
