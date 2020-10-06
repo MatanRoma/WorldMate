@@ -30,6 +30,7 @@
             android:layout_marginHorizontal="5dp">
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
+                android:layout_centerHorizontal="true"
                 android:layout_height="wrap_content"
                 android:id="@+id/likes_recycler"/>
 

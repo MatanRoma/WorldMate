@@ -75,7 +75,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface,
         AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface,
         ProfileFragment.UpdateDrawerFromProfileFragment,MatchesFragment.OnMoveToChat, SwipeFragment.SwipeInterface, ChatFragment.OnMoveToProfilePreviewFromChat,
-        ProfilePreviewFragment.OnMoveToPhotoPreview, NewMatchDialogFragment.OnNewMatchDialogFragmentDialofListener {
+        ProfilePreviewFragment.OnMoveToPhotoPreview, NewMatchDialogFragment.OnNewMatchDialogFragmentDialofListener, LikesFragment.LikesFragmentInterface {
     private final int REQUEST_CHECK_SETTINGS =2 ;
     private Geocoder mGeoCoder;
     private String mCityName;
@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private final String PROFILE_PREVIEW_FRAGMENT = "profile_preview_fragment";
     private final String PHOTO_PREVIEW_FRAGMENT = "photo_preview_fragment";
     private  final String SETTINGS_FRAGMENT="settings_fragment";
+    private final String LIKES_FRAGMENT="likes_fragment";
 
     private final String STACK ="secondary_stack";
 
@@ -269,7 +270,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 if (matchesFragment == null || !matchesFragment.isVisible()) {
                     moveToMatchesFragment();
                 }
-            } else if (getString(R.string.questions).equals(title)) {
+            }else if("Your Likes".equals(title)){
+                LikesFragment likesFragment = (LikesFragment) getSupportFragmentManager().findFragmentByTag(LIKES_FRAGMENT);
+                if (likesFragment == null || !likesFragment.isVisible()) {
+                    moveToLikesFragment();
+                }
+            }
+            else if (getString(R.string.questions).equals(title)) {
                 QuestionsFragment questionsFragment = (QuestionsFragment) getSupportFragmentManager().findFragmentByTag(QUESTIONS_FRAGMENT);
                 if (questionsFragment == null || !questionsFragment.isVisible()) {
                     moveToQuestionsFragment();
@@ -282,6 +289,17 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             }
         }
     }
+
+    private void moveToLikesFragment() {
+        LikesFragment likesFragment = LikesFragment.newInstance(mViewModel.getMyProfile());
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.flContent,likesFragment,LIKES_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        setTitle("Your Likes");
+    }
+
     private void logoutUser(){
         if (!mViewModel.isLoginAsGuest()) {
            mViewModel.removeProfileListener();
@@ -657,6 +675,19 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     @Override
     public void onClickMoveToProfilePreview(Profile otherProfile,int compability) {
+        onMoveToProfilePreview(otherProfile,compability);
+    }
+
+    @Override
+    public void onClickMoveToProfilePreviewFromChat(Profile otherProfile, int compability) {
+        onMoveToProfilePreview(otherProfile,compability);
+    }
+
+    @Override
+    public void OnMoveToProfilePreviewFromLikes(Profile otherProfile, int compability) {
+        onMoveToProfilePreview(otherProfile,compability);
+    }
+    private void onMoveToProfilePreview(Profile otherProfile, int compability){
         ProfilePreviewFragment profilePreviewFragment = ProfilePreviewFragment.newInstance(otherProfile,compability);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -666,16 +697,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         setTitle(otherProfile.getFirstName()+" "+otherProfile.getLastName());
     }
 
-    @Override
-    public void onClickMoveToProfilePreviewFromChat(Profile otherProfile, int compability) {
-        ProfilePreviewFragment profilePreviewFragment = ProfilePreviewFragment.newInstance(otherProfile,compability);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.flContent, profilePreviewFragment, PROFILE_PREVIEW_FRAGMENT);
-        transaction.addToBackStack(null);
-        transaction.commit();
-        setTitle(otherProfile.getFirstName()+" "+otherProfile.getLastName());
-    }
     @Override
     public void onClickMoveToPhotoPreviewListener(String uri) {
         PhotoPreviewFragment photoPreviewFragment = PhotoPreviewFragment.newInstance(uri);

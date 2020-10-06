@@ -143,7 +143,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
     @Override
     public SwipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.profile_card,parent,false);
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.test_swipe_card,parent,false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.swipe_profile_card,parent,false);
         SwipeViewHolder swipeViewHolder=new SwipeViewHolder(view);
         return swipeViewHolder;
     }

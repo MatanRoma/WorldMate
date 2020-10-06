@@ -21,14 +21,15 @@
             android:title="@string/your_matches"/>
 
         <item
+            android:id="@+id/messages_item"
+            android:title="Your Likes"/>
+
+        <item
             android:id="@+id/questions_item"
             android:icon="@drawable/ic_information"
             android:title="@string/questions"/>
 
-        <!--<item
-            android:id="@+id/messages_item"
-            android:icon="@drawable/ic_messages_icon"
-            android:title="@string/messages"/>-->
+
 
         <item
             android:id="@+id/settings_item"

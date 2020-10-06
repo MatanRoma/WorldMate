@@ -12,7 +12,9 @@ import com.example.androidsecondproject.repository.Repository;
 import java.util.List;
 
 public class LikesViewModel extends AndroidViewModel {
+
     private Repository mRepository;
+    private Profile mMyProfile;
     private MutableLiveData<List<Profile>> mLikesMutableLiveData;
 
     public LikesViewModel(@NonNull Application application) {
@@ -23,26 +25,34 @@ public class LikesViewModel extends AndroidViewModel {
     public MutableLiveData<List<Profile>> getProfilesResultSuccess(){
         if (mLikesMutableLiveData == null) {
             mLikesMutableLiveData = new MutableLiveData<>();
-            //loadProfilesData();
+            loadLikesData();
         }
         return mLikesMutableLiveData;
     }
 
-   /* private void loadProfilesData() {
+    private void loadLikesData() {
         mRepository.setLikesListener(new Repository.LikesListener() {
             @Override
-            public void onLikesDataChangeSuccess(List<Profile> Likes) {
-                mLikesMutableLiveData.setValue(likes);
+            public void onProfileLikedDataChangeSuccess(List<Profile> profiles) {
+                mLikesMutableLiveData.setValue(profiles);
             }
 
             @Override
-            public void onLikesDataChangeFail(String error) {
+            public void onProfileLikedDataChangeFail(String error) {
 
             }
         });
     }
 
     public void readLikes(){
-        mRepository.readLikes(mProfile);
-    }*/
+        mRepository.readLikedProfiles(mMyProfile);
+    }
+
+    public Profile getMyProfile() {
+        return mMyProfile;
+    }
+
+    public void setMyProfile(Profile mMyProfile) {
+        this.mMyProfile = mMyProfile;
+    }
 }
