@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="30dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="10dp"
+        app:cardCornerRadius="10dp"
+        android:paddingHorizontal="10dp"
+        android:id="@+id/discovery_card_view">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/black"
+                android:text="Discovery"/>
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:buttonTint="@color/colorAccent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginHorizontal="5dp" />
+
+
+
+
+        </RelativeLayout>
+
+
+
+
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:text="allowing other users to see you"
+        android:layout_below="@id/discovery_card_view"
+        android:textColor="@color/black"
+        android:id="@+id/discovey_tv"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Looking For:"
+        android:textSize="25dp"
+        android:layout_below="@id/discovey_tv"
+        android:textColor="@color/black"
+        android:id="@+id/looking_for_tv"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="10dp"
+        app:cardCornerRadius="10dp"
+        android:paddingHorizontal="10dp"
+        android:layout_below="@id/looking_for_tv"
+        android:id="@+id/looking_for_card_view">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/men_relative_layout">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|center_vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:textColor="@color/black"
+                    android:text="Men"/>
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:buttonTint="@color/colorAccent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="5dp"
+                    android:id="@+id/men_cb"/>
+
+
+
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerHorizontal="true"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@+id/men_relative_layout"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/divider">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|center_vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:textColor="@color/black"
+                    android:text="Women"/>
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:buttonTint="@color/colorAccent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="5dp"
+                    android:id="@+id/women_cb"/>
+
+
+
+
+            </RelativeLayout>
+
+
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Distance:"
+        android:textSize="25dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/looking_for_card_view"
+        android:textColor="@color/black"
+        android:id="@+id/distance_tv"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="20 Km"
+        android:textSize="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/looking_for_card_view"
+        android:textColor="@color/black"
+        android:id="@+id/distance_res_tv"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="10dp"
+        app:cardCornerRadius="10dp"
+        android:paddingHorizontal="10dp"
+        android:layout_below="@id/distance_tv"
+        android:id="@+id/distance_card_view">
+
+        <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+            android:id="@+id/distance_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:corner_radius="10"
+            app:min_value="0"
+            app:max_value="200"
+            app:steps="5"
+            app:bar_color="@color/colorPrimaryDark"
+            app:bar_highlight_color="@color/colorAccent"
+            app:left_thumb_image="@drawable/thumb_range"
+            app:left_thumb_image_pressed="@drawable/thumb_range_pressed"
+            app:data_type="_integer"/>
+
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Age:"
+        android:textSize="25dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/distance_card_view"
+        android:textColor="@color/black"
+        android:id="@+id/age_tv"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="20 Km"
+        android:textSize="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/distance_card_view"
+        android:textColor="@color/black"
+        android:id="@+id/age_res_tv"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="10dp"
+        app:cardCornerRadius="10dp"
+        android:paddingHorizontal="10dp"
+        android:layout_below="@id/age_tv"
+        android:id="@+id/age_card_view">
+
+        <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+            android:id="@+id/age_range_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:left_thumb_image="@drawable/thumb_range"
+            app:right_thumb_image="@drawable/thumb_range"
+            app:right_thumb_image_pressed="@drawable/thumb_range_pressed"
+            app:left_thumb_image_pressed="@drawable/thumb_range_pressed"
+            app:bar_highlight_color="@color/colorAccent"
+            app:bar_color="@color/colorPrimaryDark"/>
+        <!-- <com.crystal.crystalrangeseekbar.widgets.BubbleThumbRangeSeekbar
+             android:id="@+id/rangeSeekbar5"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             app:corner_radius="10"
+             app:min_value="0"
+             app:max_value="100"
+             app:steps="5"
+             app:bar_color="@color/colorPrimaryDark"
+             app:bar_highlight_color="@color/colorPrimary"
+             app:left_thumb_image="@drawable/thumb"
+             app:right_thumb_image="@drawable/thumb"
+             app:left_thumb_image_pressed="@drawable/thumb"
+             app:right_thumb_image_pressed="@drawable/thumb"
+             app:data_type="_integer"/>-->
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>
