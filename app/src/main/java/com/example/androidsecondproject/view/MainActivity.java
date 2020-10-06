@@ -881,17 +881,23 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         else{
             ChatFragment chatFragment = (ChatFragment) getSupportFragmentManager().findFragmentByTag(CHAT_FRAGMENT);
             ProfilePreviewFragment profilePreviewFragment = (ProfilePreviewFragment) getSupportFragmentManager().findFragmentByTag(PROFILE_PREVIEW_FRAGMENT);
+            LikesFragment likesFragment = (LikesFragment) getSupportFragmentManager().findFragmentByTag(LIKES_FRAGMENT);
             if (profilePreviewFragment != null && profilePreviewFragment.isVisible()) {
-                setTitle("Chat");
+                if(chatFragment!=null&&chatFragment.isVisible()) {
+                    setTitle("Chat");
+                }
+                else{
+                    setTitle(getString(R.string.your_likes));
+                }
                 super.onBackPressed();
             }
             else if (chatFragment != null && chatFragment.isVisible()) {
                 MatchesFragment matchesFragment = (MatchesFragment) getSupportFragmentManager().findFragmentByTag(MATCHES_FRAGMENT);
                 if(matchesFragment!=null&&matchesFragment.isVisible()){
-                    setTitle("Matches");
+                    setTitle(getString(R.string.your_matches));
                 }
                 else{
-                    setTitle("Home");
+                    setTitle(getString(R.string.app_name));
                     navigationView.getMenu().getItem(0).setChecked(true);
                 }
                 super.onBackPressed();
