@@ -33,7 +33,7 @@ public class MainViewModel extends AndroidViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
         mRepository=Repository.getInstance(application.getApplicationContext());
-        isCategoryChecked = new boolean[]{true,true,true,true};
+        isCategoryChecked = new boolean[]{true,true,true,true,true,true};
     }
     public MutableLiveData<Profile> getProfileResultSuccess(){
         if (mProfileSuccessLiveData == null) {

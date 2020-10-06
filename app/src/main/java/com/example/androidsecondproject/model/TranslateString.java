@@ -72,6 +72,10 @@ public class TranslateString {
                 return "culture";
             case "מוזיקה":
                 return "music";
+            case "דת":
+                return "religion";
+            case "טיול":
+                return "travel";
         }
         return str;
     }

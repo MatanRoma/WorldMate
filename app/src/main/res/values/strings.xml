@@ -141,6 +141,10 @@
     <string name="matches_and_chat">Matches &amp; Chats</string>
     <string name="online_str">Online</string>
     <string name="offline_str">Offline</string>
+    <string name="religion">religion</string>
+    <string name="travel">travel</string>
+    <string name="religion_cap">Religion</string>
+    <string name="travel_cap">Travel</string>
 
 
 </resources>

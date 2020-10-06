@@ -195,9 +195,10 @@ public class ChatFragment extends Fragment {
             add("food");
             add("culture");
             add("music");
+            add("religion");
+            add("travel");
         }};
-        CompabilityCalculator compabilityCalculator = new CompabilityCalculator(categories,myProfile.getQuestionResponds(),otherProfile.getQuestionResponds());
-        return compabilityCalculator.getCompability();
+        return CompabilityCalculator.caculateCompability(categories,otherProfile.getQuestionResponds(),myProfile.getQuestionResponds());
     }
 
     public void sendMessage(String text)  {

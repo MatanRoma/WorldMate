@@ -143,5 +143,9 @@
     <string name="matches_and_chat">התאמות ושיחות</string>
     <string name="online_str">מחובר</string>
     <string name="offline_str">לא מחובר</string>
+    <string name="religion">דת</string>
+    <string name="travel">טיול</string>
+    <string name="religion_cap">דת</string>
+    <string name="travel_cap">טיול</string>
 
 </resources>

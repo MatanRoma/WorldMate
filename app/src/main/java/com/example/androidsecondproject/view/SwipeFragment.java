@@ -191,6 +191,9 @@ public class SwipeFragment extends Fragment {
         categories.add("sport");
         categories.add("food");
         categories.add("culture");
+        categories.add("music");
+        categories.add("religion");
+        categories.add("travel");
 
         if(!mViewModel.isLoginAsGuest()) {
             Observer<List<Profile>> profileSuccessObserver = new Observer<List<Profile>>() {
@@ -491,7 +494,7 @@ public class SwipeFragment extends Fragment {
     public void updateCategories(boolean[] checkeds)
     {
         List<String> categories = mSwipeAdapter.getmCategories();
-        String[] filterCategories = {"sport","food","culture","music"};
+        String[] filterCategories = {"sport","food","culture","music","religion","travel"};
         categories.clear();
         for(int i = 0; i < checkeds.length;i++)
         {
