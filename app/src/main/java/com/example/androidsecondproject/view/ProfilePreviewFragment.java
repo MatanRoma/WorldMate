@@ -86,6 +86,7 @@ public class ProfilePreviewFragment extends Fragment {
         //genderTv.setText(mViewModel.getOtherProfile().getGender()+"");
         cityTv.setText(mViewModel.getOtherProfile().getCity()+"");
         int compability = getArguments().getInt("compability");
+
         if(compability !=0)
         {
             compabilityTv.setText(compability+"%");

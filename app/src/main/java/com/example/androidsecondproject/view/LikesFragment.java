@@ -96,8 +96,8 @@ public class LikesFragment extends Fragment {
                         public void OnLikedProfiledPressedListener(Profile likedProfile) {
                             List<String> categories=new ArrayList<>();
                             addCategories(categories);
-                            CompabilityCalculator compabilityCalculator=new CompabilityCalculator(categories,mViewModel.getMyProfile().getQuestionResponds(),likedProfile.getQuestionResponds());
-                            mLikesFragmentInteface.OnMoveToProfilePreviewFromLikes(likedProfile,compabilityCalculator.getCompability());
+                            int compability = CompabilityCalculator.caculateCompability(categories,likedProfile.getQuestionResponds(),mViewModel.getMyProfile().getQuestionResponds());
+                            mLikesFragmentInteface.OnMoveToProfilePreviewFromLikes(likedProfile,compability);
                         }
                     });
                     mLikesRecycler.setAdapter(mLikesAdapter);
@@ -127,6 +127,8 @@ public class LikesFragment extends Fragment {
         categories.add("food");
         categories.add("culture");
         categories.add("music");
+        categories.add("religion");
+        categories.add("travel");
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

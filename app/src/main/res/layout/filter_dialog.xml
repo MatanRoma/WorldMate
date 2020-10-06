@@ -72,6 +72,15 @@
             android:text="@string/food"
             android:textSize="17sp"
             android:id="@+id/filter_food_cb"/>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:gravity="center"
+            android:text="@string/religion"
+            android:textSize="17sp"
+            android:id="@+id/filter_religion_cb"/>
 
 
     </LinearLayout>
@@ -97,6 +106,16 @@
             android:text="@string/music"
             android:textSize="17sp"
             android:id="@+id/filter_music_cb"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:gravity="center"
+            android:text="@string/travel"
+            android:textSize="17sp"
+            android:id="@+id/filter_travel_cb"/>
 
 
     </LinearLayout>

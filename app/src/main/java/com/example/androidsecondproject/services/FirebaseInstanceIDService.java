@@ -112,6 +112,9 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 
             notificationManager.notify(notifId, builder.build());
 
+
+
+
         }
         else if(messageDataMap.get("chat_id")!=null&&isMessageNotifAllowed){
             if(!(ChatFragment.chatId!=null&&ChatFragment.chatId.equals(messageDataMap.get("chat_id")))) {

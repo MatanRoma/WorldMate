@@ -63,7 +63,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         int mCompability;
         /*        ImageButton likeBtn;
                 ImageButton dislikeBtn;*/
-        View mItemView;
+
         boolean isSwiped;
 
         public SwipeViewHolder(@NonNull View itemView) {
@@ -73,11 +73,12 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
             mCompabilityTv = itemView.findViewById(R.id.compability_tv);
             mCityTv=itemView.findViewById(R.id.location_tv);
             mAgeTv=itemView.findViewById(R.id.card_age_tv);
+
 /*            likeBtn = itemView.findViewById(R.id.like_ib);
             dislikeBtn = itemView.findViewById(R.id.dislike_ib);*/
-            mItemView = itemView;
 
-            mItemView.setOnClickListener(new View.OnClickListener() {
+
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mProfilePressedListener.OnProfiledPressedListener(mProfiles.get(getAdapterPosition()),mCompability);               }
@@ -109,6 +110,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
     private  Profile mMyProfile;
     private Context mContext;
     private boolean mIsGuestLogin;
+    CompabilityCalculator mCompability;
 
     public List<String> getmCategories() {
         return mCategories;
@@ -168,13 +170,16 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         if(mCategories.size() != 0&&!mIsGuestLogin)
         {
 
-            CompabilityCalculator compabilityCalculator = new CompabilityCalculator(mCategories, mMyProfile.getQuestionResponds(),getmProfiles().get(position).getQuestionResponds());
-            holder.mCompability = compabilityCalculator.getCompability();
+
+            holder.mCompability = CompabilityCalculator.caculateCompability(getmCategories(),currentProfile.getQuestionResponds(),mMyProfile.getQuestionResponds());
             if(holder.mCompability != 0)
             {
                 holder.mCompabilityTv.setText(holder.mCompability+"%");
                 holder.mCompabilityTv.setVisibility(View.VISIBLE);
-                holder.mCompabilityTv.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                holder.mCompabilityTv.setVisibility(View.GONE);
             }
 
         }
