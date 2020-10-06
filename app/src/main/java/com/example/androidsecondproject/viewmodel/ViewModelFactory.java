@@ -103,6 +103,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                     objectToReturn= (T) (new NewMatchDialogViewModel(mApplication));
                 }
                 break;
+            case Likes:
+                if (modelClass.isAssignableFrom(LikesViewModel.class)) {
+                    objectToReturn= (T) (new LikesViewModel(mApplication));
+                }
+                break;
 
         }
         return objectToReturn;
