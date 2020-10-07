@@ -512,7 +512,7 @@ public class SwipeFragment extends Fragment {
     {
         if(!mViewModel.isLoginAsGuest()) {
             mNoPeopleMainLayout.setVisibility(View.VISIBLE);
-            Glide.with(getContext()).load(mViewModel.getProfile().getProfilePictureUri()).error(R.mipmap.ic_launcher).into(mNoPeopleLogo);
+            Glide.with(getContext()).load(mViewModel.getProfile().getProfilePictureUri()).error(R.drawable.ic_worlmate_logo).into(mNoPeopleLogo);
             Animation rangeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.range_animation);
             rangeAnimation.setRepeatMode(Animation.REVERSE);
             rangeIv.startAnimation(rangeAnimation);

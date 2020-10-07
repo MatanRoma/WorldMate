@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,6 +70,7 @@ public class LikesFragment extends Fragment {
         mLikesRecycler = rootView.findViewById(R.id.likes_recycler);
         mLikesRecycler.setHasFixedSize(true);
         mLikesRecycler.setLayoutManager(new GridLayoutManager(getContext(),2));
+        final LinearLayout noLikesLayout = rootView.findViewById(R.id.no_likes_layout);
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -86,7 +88,14 @@ public class LikesFragment extends Fragment {
         Observer<List<Profile>> likesObserver=new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profiles) {
-                Log.d("likes",mLikesAdapter+"");
+                if(profiles.isEmpty())
+                {
+                    noLikesLayout.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    noLikesLayout.setVisibility(View.GONE);
+                }
                 if(mLikesAdapter==null) {
                     mLoadingAnimation.setVisibility(View.GONE);
                     mSearchView.setVisibility(View.VISIBLE);

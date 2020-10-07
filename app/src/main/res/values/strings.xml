@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidSecondProject</string>
+    <string name="app_name">WorldMate</string>
     <string name="home">Home</string>
     <string name="my_profile">My Profile</string>
     <string name="your_matches">Your Matches</string>
@@ -145,6 +145,7 @@
     <string name="travel">travel</string>
     <string name="religion_cap">Religion</string>
     <string name="travel_cap">Travel</string>
+    <string name="sent_you">sent you:</string>
 
 
 </resources>

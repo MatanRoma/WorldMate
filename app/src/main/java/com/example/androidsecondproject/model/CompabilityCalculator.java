@@ -6,10 +6,6 @@ import java.util.List;
 public class CompabilityCalculator {
 
 
-
-
-
-
     private static List<QuestionRespond> createFilteredList(List<String> categories, List<QuestionRespond> myQuestions) {
 
         List<QuestionRespond> filteredQuestions = new ArrayList<>();
