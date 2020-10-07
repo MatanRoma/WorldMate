@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
@@ -35,7 +34,6 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-        Log.d("token",s);
         Intent intent=new Intent("token_changed");
         intent.putExtra("token",s);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
@@ -47,7 +45,6 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         final Map<String,String> messageDataMap=remoteMessage.getData();
-        Log.d("servicee","service");
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         boolean isMatchNotifAllowed=sharedPreferences.getBoolean("match_pref",true);
         boolean isMessageNotifAllowed=sharedPreferences.getBoolean("message_pref",true);
@@ -56,8 +53,6 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 
         if(messageDataMap.get("sender")!=null&&isMatchNotifAllowed) {
             final int NOTIF_ID = 1;
-            Log.d("other_match_uid", messageDataMap.get("match_uid"));
-
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             String channelId;
             if(isVibrateNotif)
@@ -90,20 +85,6 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
             RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.match_notif_layout);
             remoteViews.setTextViewText(R.id.title_tv, getString(R.string.new_match_with) +" "+ messageDataMap.get("sender"));
 
-    /*        final NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, builder.build(), NOTIF_ID);
-*//*            Bitmap bitmap = new Bitmap();
-            Glide.with(this).asBitmap().load(messageDataMap.get("image")).error(R.drawable.man_profile).into(notificationTarget);*//*
-
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Glide.with(getApplicationContext()).asBitmap()
-                            .load(messageDataMap.get("image"))
-                            .error(R.drawable.man_profile)
-                            .into(notificationTarget);
-                }
-            });*/
-
             builder.setCustomContentView(remoteViews);
 
             builder.setAutoCancel(true);
@@ -122,7 +103,6 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
         else if(messageDataMap.get("chat_id")!=null&&isMessageNotifAllowed){
             if(!(ChatFragment.chatId!=null&&ChatFragment.chatId.equals(messageDataMap.get("chat_id")))) {
                 final int NOTIF_ID = 2;
-                Log.d("chat_notif", messageDataMap.get("fullname"));
                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 String channelId;
                 if (isVibrateNotif)
@@ -139,7 +119,6 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                     notificationChannel.enableLights(true);
                     notificationChannel.setLightColor(Color.RED);
                     notificationChannel.enableVibration(true);
-                    Log.d("vib", isVibrateNotif + "");
                     if (isVibrateNotif)
                         notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
                     else

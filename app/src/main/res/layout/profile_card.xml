@@ -9,6 +9,8 @@
     app:cardBackgroundColor="@color/white"
     android:layout_gravity="center"
     app:contentPadding="10dp"
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginVertical="5dp"
     android:id="@+id/card_view"
     app:cardCornerRadius="10dp">
 
@@ -19,8 +21,8 @@
         android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_marginTop="10dp"
             app:civ_border_color="@color/colorPrimary"
             app:civ_border_width="2dp"

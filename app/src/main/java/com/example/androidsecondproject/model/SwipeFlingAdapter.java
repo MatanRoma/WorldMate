@@ -2,7 +2,6 @@ package com.example.androidsecondproject.model;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,10 +60,8 @@ public class SwipeFlingAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        Log.d("fling","test1");
         if(view ==null)
         {
-            Log.d("fling","test2");
             LayoutInflater layoutInflater =(LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = layoutInflater.inflate(R.layout.profile_card,parent,false);
         }

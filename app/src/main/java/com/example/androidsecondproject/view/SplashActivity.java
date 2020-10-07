@@ -3,7 +3,6 @@ package com.example.androidsecondproject.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,7 +45,6 @@ public class SplashActivity extends AppCompatActivity {
                 if(isAuth){
                     String uid=mViewModel.getUserUid();
                     mIntent.putExtra("uid",uid);
-                    Toast.makeText(SplashActivity.this, uid, Toast.LENGTH_SHORT).show();
                 }
 
                 new Handler().postDelayed(new Runnable(){

@@ -10,7 +10,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -172,7 +171,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         else{
             holder.mProfileNameTv.setTextColor(Color.BLACK);
         }
-        Toast.makeText(mContext, currChat.getLastMessage().getText()+"", Toast.LENGTH_SHORT).show();
         if(currChat.getLastMessage()!=null) {
             if(!currChat.getLastMessage().getText().equals(""))
             {
@@ -202,7 +200,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
 
       //  setLastMessage(curProfile,holder.mLastMessageTv);
       /*  for (Match match: curProfile.getMatches()) {
-            //Toast.makeText(mContext, mMyProfile.getEmail()+"", Toast.LENGTH_SHORT).show();
             if(match.getOtherUid().equals(mMyProfile.getUid()))
             {
                 holder.mChatId = match.getId();
@@ -293,7 +290,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "set adapter listener", Toast.LENGTH_SHORT).show();
                     if(matchClickListener !=null)
                     {
                         Chat currChat=mChats.get(getAdapterPosition());

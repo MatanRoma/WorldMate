@@ -120,7 +120,7 @@
     <string name="tap_to_change">Tap to change</string>
     <string name="max_distance_km">Max Distance (Km)</string>
     <string name="notification">Notification</string>
-    <string name="new_match_notif">New Match notification</string>
+    <string name="new_match_notif">New match notification</string>
     <string name="when_got_new_match">When you got a new match</string>
     <string name="new_message_notif">New message notification</string>
     <string name="when_got_new_message">When you got a new meesage</string>

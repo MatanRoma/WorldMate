@@ -167,9 +167,9 @@ private View mSportView;
                         @Override
                         public void onClick(View v) {
                             questionsLayout.removeView(child);
-                            checkBox.setChecked(false);
                             if(questionsLayout.getChildCount() == 1)
                             {
+                                checkBox.setChecked(false);
                                 titleTv.setVisibility(View.GONE);
                                 questionsLayout.setVisibility(View.GONE);
                             }
@@ -267,7 +267,6 @@ private View mSportView;
                             if(isChecked)
                             {
                                 int index = answersRadioGroup.indexOfChild(checkedRadioButton);
-                                Toast.makeText(getContext(), question.getId()+"", Toast.LENGTH_SHORT).show();
                                 QuestionRespond questionRespond = new QuestionRespond(question.getId(),index,question.getCategory());
                                 List<QuestionRespond> questionResponds = mViewModel.getProfile().getQuestionResponds();
                                 boolean exist = false;
@@ -280,14 +279,12 @@ private View mSportView;
                                         existIndex = questionResponds.indexOf(question);
 
                                         boolean tst =questionResponds.remove(respond);
-                                        Toast.makeText(getContext(), tst+"", Toast.LENGTH_SHORT).show();
                                         //questionResponds.add(existIndex,questionRespond);
                                     }
 
                                 }
                                 mViewModel.getProfile().getQuestionResponds().add(questionRespond);
                                 mViewModel.updateQuestion();
-                                Toast.makeText(getContext(), "size is "+questionResponds.size(), Toast.LENGTH_SHORT).show();
 
 
                             }

@@ -72,7 +72,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="@string/sport"
+                            android:text="@string/sport_cap_lett"
                             android:id="@+id/sport_rb"/>
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="@string/food"
+                            android:text="@string/food_cap_lett"
                             android:id="@+id/food_rb"/>
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -88,7 +88,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="@string/religion"
+                            android:text="@string/religion_cap"
                             android:id="@+id/religion_rb"/>
 
 
@@ -103,8 +103,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="@string/culture"
-                            android:layout_below="@+id/filter_food_cb"
+                            android:text="@string/culture_cap_lett"
                             android:id="@+id/culture_rb"/>
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -112,8 +111,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="@string/music"
-                            android:layout_below="@+id/filter_food_cb"
+                            android:text="@string/music_cap_lett"
                             android:id="@+id/music_rb"/>
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -121,8 +119,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="@string/travel"
-                            android:layout_below="@+id/filter_food_cb"
+                            android:text="@string/travel_cap"
                             android:id="@+id/travel_rb"/>
 
 

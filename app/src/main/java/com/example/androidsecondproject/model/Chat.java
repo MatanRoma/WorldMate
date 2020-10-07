@@ -1,6 +1,5 @@
 package com.example.androidsecondproject.model;
 
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,6 @@ public class Chat implements Comparable<Chat> {
 
     @Override
     public int compareTo(Chat o) {
-        Log.d("cmp","cmp");
         return this.getLastMessage().getMessageDate().compareTo(o.getLastMessage().getMessageDate());
     }
 

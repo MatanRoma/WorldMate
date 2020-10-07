@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -199,7 +198,6 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
         descriptionAboutMe.setText(mViewModel.getmProfile().getDescription());
         myHobbies.setText(mViewModel.getmProfile().getHobbies());
         lookingFor.setText(mViewModel.getmProfile().getLookingFor());
-        Toast.makeText(getContext(), mViewModel.getImageUri()+"", Toast.LENGTH_SHORT).show();
         Glide.with(this).load(mViewModel.getImageUri()).error(R.drawable.man_profile).into(profilePicture);
         /*if(TranslateString.checkMale(mViewModel.getmProfile().getGender()))
         {

@@ -2,7 +2,6 @@ package com.example.androidsecondproject.repository;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 
 import androidx.annotation.NonNull;
@@ -37,11 +36,9 @@ public class AuthRepository {
     public boolean checkIfAuth(){
         FirebaseUser firebaseUser= mAuth.getCurrentUser();
         if(firebaseUser!=null) {
-            // Toast.makeText(mContext, firebaseUser.getUid(), Toast.LENGTH_SHORT).show();
             return true;
         }
         else{
-            //  Toast.makeText(mContext, "User NOT!! EXISTS", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -83,7 +80,6 @@ public class AuthRepository {
     }
 
     public void loginUser(String email,String password){
-        Log.d("test","loginuser2");
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener((Activity)mContext, new OnCompleteListener<AuthResult>() {
                     @Override

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -180,7 +179,6 @@ public class ProfilePreviewFragment extends Fragment {
     {
         if(position != 0)
         {
-            Toast.makeText(getContext(), position+"", Toast.LENGTH_SHORT).show();
             mViewPager.setCurrentItem(position-1,true);
 /*            mViewModel.getmCirclesIv().get(position).setSelected(false);
             mViewModel.getmCirclesIv().get(position-1).setSelected(true);*/
@@ -191,7 +189,6 @@ public class ProfilePreviewFragment extends Fragment {
     {
         if(position != mViewPagerAdapter.getCount()-1)
         {
-            Toast.makeText(getContext(), position+"", Toast.LENGTH_SHORT).show();
             mViewPager.setCurrentItem(position+1,true);
 /*            mViewModel.getmCirclesIv().get(position).setSelected(false);
             mViewModel.getmCirclesIv().get(position+1).setSelected(true);*/

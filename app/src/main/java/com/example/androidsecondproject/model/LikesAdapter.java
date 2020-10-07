@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,10 +53,8 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesAdapter.LikesViewHol
     private Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            Toast.makeText(mContext, "size "+mAllLikes.size(), Toast.LENGTH_SHORT).show();
             List<Profile> filteredList = new ArrayList<>();
             if(constraint.toString().isEmpty()){
-                Toast.makeText(mContext, "empty", Toast.LENGTH_SHORT).show();
                 filteredList.addAll(mAllLikes);
             }
             else {

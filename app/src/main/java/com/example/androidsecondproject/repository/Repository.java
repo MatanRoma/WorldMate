@@ -2,7 +2,6 @@ package com.example.androidsecondproject.repository;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -87,9 +86,7 @@ public class Repository {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     Profile profile=snapshot.getValue(Profile.class);
-                    Log.d("prof","tst2");
                     if(profileListener!=null) {
-                        Log.d("prof", "tst3");
                         profileListener.onProfileDataChangeSuccess(profile);
                     }
                 }
@@ -107,31 +104,6 @@ public class Repository {
             }
         };
         profilesTable.child(uid).addValueEventListener(mMyProfileValueEventListener);
-              /*  profilesTable.child(uid).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                                Profile profile=snapshot.getValue(Profile.class);
-                            Log.d("prof","tst2");
-                                if(profileListener!=null) {
-                                    Log.d("prof", "tst3");
-                                    profileListener.onProfileDataChangeSuccess(profile);
-                                }
-                        }
-                        else {
-                            if(profileListener!=null)
-                                profileListener.onProfileDataChangeFail("not_exist");
-                        }
-                    }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                        if(profileListener!=null)
-                            profileListener.onProfileDataChangeFail(error.getMessage());
-                        //TODO
-                    }
-        });
-*/
     }
 
     public void readProfiles(final Profile myProfile){
@@ -139,7 +111,6 @@ public class Repository {
         profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("call","call");
                 if(snapshot.exists()){
                     String myUid=myProfile.getUid();
                     List<Profile> profiles=new ArrayList<>();
@@ -188,7 +159,6 @@ public class Repository {
                     List<Match> matches=myProfile.getMatches();
                     for(DataSnapshot currSnapshot:snapshot.getChildren()){
                         String otherUid=currSnapshot.getKey();
-                        Log.d("uid",otherUid);
                         if(!otherUid.equals(myUid)) {
                             Profile profile = currSnapshot.getValue(Profile.class);
                             for(Match match:matches){
@@ -198,7 +168,6 @@ public class Repository {
                             ;
                         }
                     }
-                    Log.d("size",profiles.size()+"");
                     matchesListener.onMatchesDataChangeSuccess(profiles);
                 }
 
@@ -244,7 +213,6 @@ public class Repository {
             return false;
         }
         else if(profile.getLocation()!=null&&otherProfile.getLocation()!=null){
-            Log.d("dist",profile.getLocation().calculateDistance(otherProfile.getLocation())+"");
             if(profile.getLocation().calculateDistance(otherProfile.getLocation())>myPreferences.getMaxDistance())
                 return false;
         }
@@ -252,7 +220,6 @@ public class Repository {
     }
 
     public void writeMyProfile(Profile profile){
-        Log.d("prof","tst1");
         profilesTable.child(profile.getUid()).setValue(profile);
         //TODO
     }
@@ -260,7 +227,6 @@ public class Repository {
         profilesTable.child((profile.getUid())).setValue(profile);
     }
     public void updateProfile(String uid, String key, Object objectToUpdate){
-        Log.d("first_time",objectToUpdate +"");
         Map<String,Object> map =new HashMap<>();
         map.put(key,objectToUpdate);
         profilesTable.child((uid)).updateChildren(map);
@@ -332,7 +298,6 @@ public class Repository {
                     if(chatIds.contains(chatAndMessages.getChat().getId()))
                         chats.add(chatAndMessages.getChat());
                 }
-                Log.d("chat_size",chats.size()+"");
                 if(chatListener!=null){
                     chatListener.onChatDataChanged(chats);
                 }
@@ -510,7 +475,6 @@ public class Repository {
         profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("call","call2");
                 if(snapshot.exists()){
                     String myUid=myProfile.getUid();
                     List<Profile> profiles=new ArrayList<>();
@@ -564,7 +528,6 @@ public class Repository {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists())
                 {
-                    Log.d("online",snapshot.getValue()+"");
                     if(onlineListener != null)
                     {
                         onlineListener.onOnlineChangeSuccess((Boolean) snapshot.getValue());
@@ -578,23 +541,6 @@ public class Repository {
             }
         };
         profilesTable.child(uid).child("online").addValueEventListener(mIsOnlineEventListener);
-        /*profilesTable.child(uid).child("online").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists())
-                {
-                    Log.d("online",snapshot.getValue()+"");
-                    if(onlineListener != null)
-                    {
-                        onlineListener.onOnlineChangeSuccess((Boolean) snapshot.getValue());
-                    }
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
     }
 }

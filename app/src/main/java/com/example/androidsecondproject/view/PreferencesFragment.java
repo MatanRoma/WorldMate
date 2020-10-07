@@ -2,7 +2,6 @@ package com.example.androidsecondproject.view;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +82,6 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
                 preferences.setMaxDistance(distanceSb.getSelectedMinValue().intValue());
                 profile.setPreferences(preferences);
                 profile.setDiscovery(discoveryCb.isChecked());
-                Log.d("prof","pref");
                 mViewModel.writeProfile(profile);
                 mListener.OnClickContinueToApp();
 

@@ -23,7 +23,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -651,7 +650,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 String newToken = instanceIdResult.getToken();
-                Toast.makeText(MainActivity.this, newToken, Toast.LENGTH_SHORT).show();
                 mViewModel.setToken(newToken);
             }
         });
@@ -758,11 +756,9 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
             } else {
                 startLocation();
-                //getUserLocation();
             }
         } else {
             startLocation();
-            //getUserLocation();
         }
     }
 
@@ -775,28 +771,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             @Override
             public void onLocationResult(final LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-                /*mHandler = new Handler();
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            List<Address> addressList = mGeoCoder.getFromLocation(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude(), 1);
-                            mCityName = addressList.get(0).getLocality();
-                            if (mCityName != null) {
-                                    mHandler.removeCallbacks(this);
-                                    mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
-                                    mViewModel.getProfile().setCity(mCityName);
-                                    mViewModel.getProfile().setLocation(new LocationPoint(locationResult.getLastLocation().getLatitude(),locationResult.getLastLocation().getLongitude()));
-                                    moveToSwipeFragment();
-                                    mViewModel.writeProfile();
-
-                                    Log.d("locc",mCityName);
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });*/
+              
                 mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
                 getUserLocation();
             }
@@ -872,6 +847,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     @Override
     public void onBackPressed() {
         final Menu menu = navigationView.getMenu();
+        PhotoPreviewFragment photoPreviewFragment = (PhotoPreviewFragment) getSupportFragmentManager().findFragmentByTag(PHOTO_PREVIEW_FRAGMENT);
+        if(photoPreviewFragment!=null&&photoPreviewFragment.isVisible()){
+            super.onBackPressed();
+            return;
+        }
         if (menu.getItem(0).isChecked()||menu.getItem(6).isChecked()) {
             ProfilePreviewFragment profilePreviewFragment = (ProfilePreviewFragment) getSupportFragmentManager().findFragmentByTag(PROFILE_PREVIEW_FRAGMENT);
             if (profilePreviewFragment != null && profilePreviewFragment.isVisible()) {
