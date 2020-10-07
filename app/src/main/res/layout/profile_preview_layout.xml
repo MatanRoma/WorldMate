@@ -92,18 +92,19 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/profile_name_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/name_of_profile"
+                    android:textColor="@color/black"
                     android:textSize="25sp"
-                    android:textStyle="bold"
-                    android:id="@+id/profile_name_tv"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/age_int"
                     android:textSize="25sp"
+                    android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_marginStart="10dp"
                     android:id="@+id/profile_age_tv"/>

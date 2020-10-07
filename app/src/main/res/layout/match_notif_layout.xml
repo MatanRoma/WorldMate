@@ -63,5 +63,19 @@
         android:layout_toEndOf="@id/profile_image_notif"
         android:layout_marginTop="5dp"
         android:layout_marginStart="3dp"
-        android:text="@string/app_name"/>
+        android:text="@string/app_name"
+        android:id="@+id/app_name_notif"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="end"
+        android:layout_toEndOf="@id/app_name_notif"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="8dp"
+        android:text="hey"
+        android:id="@+id/date_tv"/>
 </RelativeLayout>

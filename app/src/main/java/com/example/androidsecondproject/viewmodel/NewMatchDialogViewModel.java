@@ -90,6 +90,7 @@ public class NewMatchDialogViewModel extends AndroidViewModel {
                     dataObject.put("text_message",message.getText());
                     dataObject.put("fullname",mMyProfile.getFirstName()+" "+mMyProfile.getLastName());
                     dataObject.put("image",mMyProfile.getProfilePictureUri());
+                    dataObject.put("date",message.getFormattedDate());
                     rootObject.put("data",dataObject);
 
                     NotificationManager.sendNotification(mContext,rootObject);
