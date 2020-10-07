@@ -26,9 +26,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/message_content"
                 android:text="@string/send_message"
-                android:layout_toEndOf="@id/message_time"
-                android:layout_centerVertical="true"
+
                 android:textColor="@color/black"
+
                 android:textSize="20sp"
                 android:layout_margin="5dp"/>
 
@@ -36,10 +36,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/message_time"
-                android:layout_alignBottom="@id/message_content"
+                android:layout_below="@id/message_content"
                 android:text="@string/date_and_hour"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/black"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:layout_margin="5dp"/>
 
         </RelativeLayout>

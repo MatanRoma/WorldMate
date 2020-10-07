@@ -51,8 +51,8 @@ public class LocationViewModel extends MutableLiveData<Location> {
 
     private void addLocationRequest(){
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(60*1000);
-        mLocationRequest.setFastestInterval(10*1000);
+        mLocationRequest.setInterval(5*60*1000);
+        mLocationRequest.setFastestInterval(60*1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setNumUpdates(3);
 

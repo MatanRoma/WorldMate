@@ -70,7 +70,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@id/name_message_layout"
                 android:textColor="@color/black"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 android:layout_marginStart="20dp"
                 android:id="@+id/date_tv_chat_card"/>

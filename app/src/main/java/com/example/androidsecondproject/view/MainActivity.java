@@ -771,7 +771,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             @Override
             public void onLocationResult(final LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-              
+
                 mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
                 getUserLocation();
             }

@@ -14,15 +14,7 @@
         android:roundIcon="@drawable/ic_worlmate_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<!--
-        <activity android:name=".view.SplashActivity" android:screenOrientation="portrait"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
--->
+
         <service
             android:name=".services.FirebaseInstanceIDService" >
             <intent-filter>
@@ -30,7 +22,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".view.MainActivity" android:screenOrientation="portrait" android:launchMode="singleTask"  >
+        <activity android:name=".view.MainActivity" android:screenOrientation="portrait"
+            android:launchMode="singleTask" android:windowSoftInputMode="adjustPan"  >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER"/>
