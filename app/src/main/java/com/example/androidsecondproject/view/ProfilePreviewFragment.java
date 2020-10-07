@@ -74,8 +74,8 @@ public class ProfilePreviewFragment extends Fragment {
         TextView myHobbiesDesTv = rootView.findViewById(R.id.my_hobbies_des_tv);
         TextView compabilityTv = rootView.findViewById(R.id.compability_tv);
 
-        nameTv.setText(mViewModel.getOtherProfile().getFirstName()+" "+mViewModel.getOtherProfile().getLastName());
-        ageTv.setText((int)mViewModel.getOtherProfile().calculateCurrentAge()+"");
+        nameTv.setText(mViewModel.getOtherProfile().getFirstName()+" "+mViewModel.getOtherProfile().getLastName()+", "+mViewModel.getOtherProfile().calculateCurrentAge());
+        //ageTv.setText((int)mViewModel.getOtherProfile().calculateCurrentAge()+"");
         if(TranslateString.checkMale(mViewModel.getOtherProfile().getGender()))
         {
             genderTv.setText(getString(R.string.men));

@@ -152,6 +152,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                 Intent activityIntent = new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 activityIntent.setAction("&s&" + messageDataMap.get("chat_id"));
 
+
                 PendingIntent activityPendingIntent = PendingIntent.getActivity(this,
                         1, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 activityIntent.putExtra("chat_id", messageDataMap.get("chat_id"));
@@ -168,6 +169,8 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                 {
                     remoteViews.setTextViewText(R.id.text_id, messageDataMap.get("text_message"));
                 }
+
+                remoteViews.setTextViewText(R.id.date_tv,messageDataMap.get("date"));
 
                 //NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, builder.build(), NOTIF_ID);
 
