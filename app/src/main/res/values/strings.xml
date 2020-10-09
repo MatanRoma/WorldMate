@@ -146,6 +146,9 @@
     <string name="religion_cap">Religion</string>
     <string name="travel_cap">Travel</string>
     <string name="sent_you">sent you:</string>
+    <string name="chat">Chat</string>
+    <string name="in_order_to_see_more_people_please_login_or_register">In order to see more people please login or register</string>
+    <string name="login_register">Login/Register</string>
 
 
 </resources>

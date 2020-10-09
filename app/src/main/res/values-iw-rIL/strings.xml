@@ -148,5 +148,8 @@
     <string name="religion_cap">דת</string>
     <string name="travel_cap">טיול</string>
     <string name="sent_you">שלח לך:</string>
+    <string name="chat">צ\'אט</string>
+    <string name="in_order_to_see_more_people_please_login_or_register">בשביל לראות אנשים נוספים בבקשה תתחבר או תרשם</string>
+    <string name="login_register">התחבר/הרשם</string>
 
 </resources>

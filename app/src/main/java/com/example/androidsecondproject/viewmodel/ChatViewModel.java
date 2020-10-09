@@ -73,30 +73,6 @@ public class ChatViewModel extends AndroidViewModel {
                     e.printStackTrace();
                 }
 
-               /* String text=message.getText();
-                final JSONObject rootObject=new JSONObject();
-                JSONObject notificationObject=new JSONObject();
-                JSONObject dataObject=new JSONObject();
-
-                try {
-                    rootObject.put("to",otherProfile.getMessageToken());// for test
-                    Log.d("token",otherProfile.getMessageToken());
-                    notificationObject.put("title",myProfile.getFirstName()+" "+myProfile.getLastName());
-                    notificationObject.put("body",text);
-                    notificationObject.put("tag",myProfile.getEmail());
-
-                    //notificationObject.put("icon", R.drawable.ic_messages_icon);
-             //       notificationObject.put("icon", R.drawable.ic_messages_icon);
-                 //   notificationObject.put("image",myProfile.getProfilePictureUri());
-                    dataObject.put("chat_id",chatId);
-                    rootObject.put("notification",notificationObject);
-                    rootObject.put("data",dataObject);
-                    NotificationManager.sendNotification(context,rootObject);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
-
             }
         });
     }

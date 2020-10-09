@@ -27,12 +27,8 @@ import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
 public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
 
-    /*private int minAge;
-    private int maxAge;*/
     private PreferencesViewModel mViewModel;
     private TextView mWarningTv;
-
-
     private PreferencesFragmentInterface mListener;
 
     interface PreferencesFragmentInterface{

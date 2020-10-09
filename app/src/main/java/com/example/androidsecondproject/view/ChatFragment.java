@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -40,11 +41,12 @@ import java.util.Observable;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatFragment extends Fragment {
+
     private ChatAdapter mChatAdapter;
     private ChatViewModel mViewModel;
     private LinearLayoutManager mLinearLayoutManager;
     public static String chatId;
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
 
     public OnMoveToProfilePreviewFromChat onMoveToProfilePreviewFromChat;
 
@@ -91,7 +93,6 @@ public class ChatFragment extends Fragment {
 
         RelativeLayout chatHeader = rootView.findViewById(R.id.chat_rl_layout);
 
-        Log.d("other_match_uid",getArguments().getString("chat_id")+"");
         mViewModel.setChatId(getArguments().getString("chat_id"));
         mViewModel.setMyProfile((Profile)getArguments().getSerializable("profile"));
         mViewModel.setOtherProfile((Profile)getArguments().getSerializable("other_profile"));
@@ -113,17 +114,13 @@ public class ChatFragment extends Fragment {
             }
         });
 
-
-
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text=chatEt.getText().toString();
                 if(text.length()>0){
-
                     mViewModel.writeMessage(text);
                     chatEt.setText("");
-
                 }
             }
         });
@@ -134,7 +131,6 @@ public class ChatFragment extends Fragment {
         if(!checkDirection()){
             sendButton.setRotation(180);
         }
-
 
         mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -205,71 +201,6 @@ public class ChatFragment extends Fragment {
         return CompabilityCalculator.caculateCompability(categories,otherProfile.getQuestionResponds(),myProfile.getQuestionResponds());
     }
 
-    public void sendMessage(String text)  {
-       /* Profile otherProfile=(Profile) getArguments().get("other_profile");
-        Profile myProfile=(Profile) getArguments().get("profile");*/
-        /*{
-            "message":{
-            "token":"bk3RNwTe3H0:CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1...",
-                    "data":{
-                "Nick" : "Mario",
-                        "body" : "great match!",
-                        "Room" : "PortugalVSDenmark"
-            }
-        }
-        }*/
-        /*JSONObject rootObject=new JSONObject();
-        JSONObject messageObject=new JSONObject();
-        JSONObject dataObject=new JSONObject();
-        try {
-            messageObject.put("token",otherProfile.getMessageToken());
-            dataObject.put("body",text);
-            dataObject.put("sender",myProfile.getUid());
-            messageObject.put("data",dataObject);
-            rootObject.put("message",messageObject);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        final String url = "https://fcm.googleapis.com/fcm/send";
-
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        StringRequest request = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", "your app key");
-                return headers;
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return rootObject.toString().getBytes();
-            }
-        };
-        queue.add(request);
-        queue.start();
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }*/
-
-
-
-
-    }
-
     private boolean checkDirection() {
         boolean isLtr;
         Configuration config = getResources().getConfiguration();
@@ -282,8 +213,6 @@ public class ChatFragment extends Fragment {
         return  isLtr;
     }
 
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -295,5 +224,10 @@ public class ChatFragment extends Fragment {
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.removeItem(R.id.filter_id);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 }

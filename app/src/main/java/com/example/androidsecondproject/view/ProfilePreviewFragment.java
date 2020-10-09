@@ -180,8 +180,6 @@ public class ProfilePreviewFragment extends Fragment {
         if(position != 0)
         {
             mViewPager.setCurrentItem(position-1,true);
-/*            mViewModel.getmCirclesIv().get(position).setSelected(false);
-            mViewModel.getmCirclesIv().get(position-1).setSelected(true);*/
         }
     }
 
@@ -190,8 +188,6 @@ public class ProfilePreviewFragment extends Fragment {
         if(position != mViewPagerAdapter.getCount()-1)
         {
             mViewPager.setCurrentItem(position+1,true);
-/*            mViewModel.getmCirclesIv().get(position).setSelected(false);
-            mViewModel.getmCirclesIv().get(position+1).setSelected(true);*/
         }
     }
 

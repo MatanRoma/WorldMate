@@ -59,11 +59,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
         TextView mCompabilityTv;
         TextView mCityTv;
         TextView mAgeTv;
-
         int mCompability;
-        /*        ImageButton likeBtn;
-                ImageButton dislikeBtn;*/
-
         boolean isSwiped;
 
         public SwipeViewHolder(@NonNull View itemView) {
@@ -74,8 +70,6 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
             mCityTv=itemView.findViewById(R.id.location_tv);
             mAgeTv=itemView.findViewById(R.id.card_age_tv);
 
-/*            likeBtn = itemView.findViewById(R.id.like_ib);
-            dislikeBtn = itemView.findViewById(R.id.dislike_ib);*/
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -83,24 +77,6 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeViewHol
                 public void onClick(View v) {
                     mProfilePressedListener.OnProfiledPressedListener(mProfiles.get(getAdapterPosition()),mCompability);               }
             });
-
-/*            likeBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!isSwiped) {
-                        mLikeDislikeListener.OnLikeListener(mItemView,getAdapterPosition());
-                    }
-                    isSwiped=true;
-                }
-            });
-            dislikeBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                        mLikeDislikeListener.OnDislikeListener(mItemView,getAdapterPosition());
-
-                }
-            });*/
 
         }
     }

@@ -150,15 +150,9 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                 }
 
                 remoteViews.setTextViewText(R.id.date_tv,messageDataMap.get("date"));
-
-                //NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, builder.build(), NOTIF_ID);
-
                 builder.setCustomContentView(remoteViews);
-
                 builder.setAutoCancel(true);
                 builder.setContentIntent(activityPendingIntent);
-
-
                 builder.setSmallIcon(R.drawable.ic_world_mate_icon_bw);
                 Notification notification = builder.build();
                 NotificationTarget notificationTarget = new NotificationTarget(this, R.id.profile_image_notif, remoteViews, notification, notifId);

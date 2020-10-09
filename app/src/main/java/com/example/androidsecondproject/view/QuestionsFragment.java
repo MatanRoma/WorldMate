@@ -219,12 +219,6 @@ private View mSportView;
                         radioGroup.addView(radioButton);
                     }
 
-/*                    RadioButton option1Rb = child.findViewById(R.id.option1_rb);
-                    RadioButton option2Rb = child.findViewById(R.id.option2_rb);*/
-
-
- /*                   option1Rb.setText(question.getAnswers().get(0));
-                    option2Rb.setText(question.getAnswers().get(1));*/
                     List<QuestionRespond> responds = mViewModel.getProfile().getQuestionResponds();
                     for (int i = 0; i < responds.size(); i++)
                     {
@@ -241,60 +235,6 @@ private View mSportView;
                             }
                         }
                     }
-
-/*                    for (QuestionRespond response: mViewModel.getProfile().getQuestionResponds()) {
-                        if(response.getId() == question.getId())
-                        {
-
-         *//*                   if(response.getResponse()==0)
-                            {
-                                option1Rb.setChecked(true);
-                                option2Rb.setChecked(false);
-                            }
-                            else
-                            {
-                                option1Rb.setChecked(false);
-                                option2Rb.setChecked(true);
-                            }*//*
-                        }
-                    }*/
-                    /*final RadioGroup answersRadioGroup = child.findViewById(R.id.answers_radio_group);
-                    answersRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
-                            boolean isChecked = checkedRadioButton.isChecked();
-                            if(isChecked)
-                            {
-                                int index = answersRadioGroup.indexOfChild(checkedRadioButton);
-                                QuestionRespond questionRespond = new QuestionRespond(question.getId(),index,question.getCategory());
-                                List<QuestionRespond> questionResponds = mViewModel.getProfile().getQuestionResponds();
-                                boolean exist = false;
-                                int existIndex = -1;
-                                for (int i = 0; i < questionResponds.size(); i++) {
-                                    QuestionRespond respond = questionResponds.get(i);
-                                    if(respond.getId()==question.getId())
-                                    {
-                                        exist = true;
-                                        existIndex = questionResponds.indexOf(question);
-
-                                        boolean tst =questionResponds.remove(respond);
-                                        //questionResponds.add(existIndex,questionRespond);
-                                    }
-
-                                }
-                                mViewModel.getProfile().getQuestionResponds().add(questionRespond);
-                                mViewModel.updateQuestion();
-
-
-                            }
-                        }
-                    });*/
-                    //int index = answersRadioGroup.indexOfChild(child.findViewById(answersRadioGroup.getCheckedRadioButtonId()));
-
-
-
-
                     questionsLayout.addView(child);
                 }
 

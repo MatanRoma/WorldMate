@@ -65,11 +65,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
                 return (o1.getLastMessage().getMessageDate().compareTo(o2.getLastMessage().getMessageDate()))*(-1);
             }
         });
-        /*mProfilesMap=new HashMap<>();
-        for(Profile profile:mMatches){
-            mProfilesMap.put(profile.getUid(),profile);
-
-        }*/
         this.mAllChats = new ArrayList<>(mChats);
     }
 
@@ -144,16 +139,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
 
     @Override
     public void onBindViewHolder(@NonNull MatchesViewHolder holder, int position) {
-       /* Profile curProfile = mProfiles.get(position);
-        holder.mProfileNameTv.setText(curProfile.getFirstName()+" "+curProfile.getLastName());
-        Glide.with(mContext).load(curProfile.getProfilePictureUri()).error(R.drawable.man_profile).into(holder.mProfileIv);
-        if(newMatchUid!=null&&newMatchUid.equals(curProfile.getUid()))
-        {
-            holder.mProfileNameTv.setTextColor(Color.RED);
-        }
-        else{
-            holder.mProfileNameTv.setTextColor(Color.BLACK);
-        }*/
+
        Chat currChat=mChats.get(position);
         Profile currProfile;
        if(mProfilesMap.containsKey(currChat.getFirstUid())){
@@ -195,79 +181,8 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             }
         }
 
-
-
-
-      //  setLastMessage(curProfile,holder.mLastMessageTv);
-      /*  for (Match match: curProfile.getMatches()) {
-            if(match.getOtherUid().equals(mMyProfile.getUid()))
-            {
-                holder.mChatId = match.getId();
-            }
-        }*/
     }
-/*    public void setLastMessage(Profile currProfile, final TextView textView){
-        final String chatKeyId;
-        Log.d("chat3",currProfile.getUid()+"     "+mMyProfile);
-        if(mMyProfile.getUid().compareTo(currProfile.getUid())>0){
-            chatKeyId=mMyProfile.getUid()+currProfile.getUid();
-        }
-        else{
-            chatKeyId=currProfile.getUid()+mMyProfile.getUid();
-        }
-       *//* Query recentPostsQuery = FirebaseDatabase.getInstance().getReference().child("chats_table").child(chatKeyId)
-                .limitToLast(1);
 
-        recentPostsQuery.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("chat008",snapshot.getKey());
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*//*
-        FirebaseDatabase.getInstance().getReference().child("chats_table").child(chatKeyId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String lastMessage="no_message";
-                Log.d("chat",snapshot.getKey()+"1");
-
-                for(DataSnapshot snapshot1:snapshot.getChildren()){
-                    Log.d("chat",snapshot1.getKey()+" "+chatKeyId);
-                       Message message=snapshot1.getValue(Message.class);
-                       lastMessage=message.getText();
-                      *//*  List<Message> messages=chat.getMessages();
-                        Log.d("cha2", messages+""+messages.size());
-                        if(messages!=null && !messages.isEmpty()){
-
-                            lastMessage=messages.get(messages.size()-1).getText();
-                        }
-                        break;*//*
-
-                }
-
-                if(lastMessage.equals("no_message")){
-                    textView.setText("No Messages Sent");
-                }
-                else{
-                    textView.setText(lastMessage);
-                }
-                Log.d("chat007",snapshot.getKey());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-    }*/
 
     @Override
     public int getItemCount() {

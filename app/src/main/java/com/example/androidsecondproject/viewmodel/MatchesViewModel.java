@@ -60,29 +60,6 @@ public class MatchesViewModel extends AndroidViewModel {
         });
     }
 
- /*   public MutableLiveData<Profile> getMyProfileResultSuccess(){
-        if (mMyProfileMutableLiveData == null) {
-            mMyProfileMutableLiveData = new MutableLiveData<>();
-            loadMyProfileData();
-        }
-        return mMyProfileMutableLiveData;
-    }
-
-    private void loadMyProfileData() {
-        mRepository.setProfileListener(new Repository.ProfileListener() {
-            @Override
-            public void onProfileDataChangeSuccess(Profile profile) {
-                mMyProfileMutableLiveData.setValue(profile);
-            }
-
-            @Override
-            public void onProfileDataChangeFail(String error) {
-
-            }
-        });
-    }*/
-
-
     private void loadProfilesData() {
        mRepository.setMatchesListener(new Repository.MatchesListener() {
            @Override
@@ -101,29 +78,13 @@ public class MatchesViewModel extends AndroidViewModel {
         mRepository.readMatches(mProfile);
     }
 
-
-
-
-
-
     public List<Profile> getMatches() {
-/*        for (String email: mProfile.getMatches()) {
-        }*/
         return mMatchesMutableLiveData.getValue();
     }
-
-
 
     public void setProfile(Profile profile) {
         this.mProfile = profile;
     }
-
-   /* public Profile getProfile()
-    {
-        return mProfile;
-    }*/
-
-
 
     public int getCurrentChatPosition() {
         return currentChatPosition;
@@ -134,11 +95,6 @@ public class MatchesViewModel extends AndroidViewModel {
     }
 
     public String getChatId(String otherUid) {
-       /* for(Match match:mMyProfileMutableLiveData.getValue().getMatches()){
-            if(match.getOtherUid().equals(otherUid))
-                return match.getId();
-        }
-        return "";*/
        if(mProfile.getUid().compareTo(otherUid)>0){
             return mProfile.getUid()+otherUid;
        }
@@ -192,12 +148,8 @@ public class MatchesViewModel extends AndroidViewModel {
     }
 
     public void updateLikes(Profile matchProfile) {
-       /* matchProfile.getLikes().remove(mProfile.getUid());
-        mProfile.getLikes().remove(matchProfile.getUid());*/
         matchProfile.getDisLikes().add(mProfile.getUid());
         mProfile.getDisLikes().add(matchProfile.getUid());
-        /*mRepository.updateProfile(matchProfile.getUid(),"likes",matchProfile.getLikes());
-        mRepository.updateProfile(mProfile.getUid(),"likes",mProfile.getLikes());*/
         mRepository.updateProfile(matchProfile.getUid(),"disLikes",matchProfile.getDisLikes());
         mRepository.updateProfile(mProfile.getUid(),"disLikes",mProfile.getDisLikes());
     }

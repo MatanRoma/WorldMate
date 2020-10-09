@@ -85,37 +85,6 @@ public class SwipeViewModel extends AndroidViewModel {
         });
     }
 
-
-   /* public void addLikedProfile(int position) {
-        List<String> likes=mProfile.getLikes();
-    //    likes.add((mProfilesMutableLiveData.getValue().get(position).getUid()));
-        likes.add((mProfiles.get(position).getUid()));
-        mRepository.updateProfile(mProfile.getUid(),"likes",likes);
-
-    public void addLikedProfile(int position) {
-
-        List<String> likes=mProfiles.get(position).getLikes();
-        likes.add(mProfile.getUid());
-        mRepository.updateProfile(mProfiles.get(position).getUid(),"likes",likes);
-
-
-    }
-
-    public void addDislikedProfile(int position){
-      //  mProfile.getDisLikes().add((mProfilesMutableLiveData.getValue().get(position).getUid()));
-        mProfiles.get(position).getDisLikes().add((mProfile.getUid()));
-        mRepository.updateProfile(mProfiles.get(position).getUid(),"disLikes",mProfile.getDisLikes());
-    }
-
-
-    public boolean checkIfMatch(int position) {
-        String otherUid=mProfiles.get(position).getUid();
-       // List<String> likeUids=mProfilesMutableLiveData.getValue().get(position).getLikes();
-
-        List<String> likeUids=mProfiles.get(position).getLikes();
-        return likeUids.contains(myUid);
-    }*/
-
     public void addLikedProfile(int position) {
 
         List<String> likes=mProfiles.get(position).getLikes();
@@ -175,9 +144,6 @@ public class SwipeViewModel extends AndroidViewModel {
         mRepository.writeMyProfile(mProfile);
     }
 
-  /*  public void writeOtherProfile(int position) {
-        mRepository.writeOtherProfile(mProfilesMutableLiveData.getValue().get(position));
-    }*/
     public Profile getProfile()
     {
         return mProfile;
@@ -211,28 +177,6 @@ public class SwipeViewModel extends AndroidViewModel {
         return mProfiles;
     }
 
-   /* public boolean isFirstTime() {
-        return isFirstTime;
-    }
-
-    public void setFirstTime(boolean firstTime) {
-        isFirstTime = firstTime;
-
-    }
-
-    public List<String> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<String> categories) {
-        this.categories = categories;
-    }
-
-    }*/
-
-   /* public void updateProfile() {
-        mRepository.updateProfie(mRepository.getCurrentUserId(),);
-    }*/
    public void readProfilesForGuest(){
        mRepository.readProfilesForGuest();
    }

@@ -93,12 +93,6 @@ public class MainViewModel extends AndroidViewModel {
         mRepository.readProfile(mRepository.getCurrentUserId());
     }
 
-
-
-   /* public Profile getProfile(){
-        return mProfileSuccessLiveData.getValue();
-    }
-*/
     public void setProfile(Profile profile)
     {
         mProfileSuccessLiveData.setValue(profile);

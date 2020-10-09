@@ -2,9 +2,7 @@ package com.example.androidsecondproject.repository;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-
 import androidx.annotation.NonNull;
-
 import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.ChatAndMessages;
 import com.example.androidsecondproject.model.Match;
@@ -20,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,36 +32,34 @@ public class Repository {
     private final String QUESTIONS_TABLE = "questions_table";
     private final String CHATS_TABLE = "chats_table";
     private FirebaseDatabase database;
-    private AuthRepository authRepository;
+    private AuthRepository mAuthRepository;
     private StorageRepository mStorageRepository;
-    private DatabaseReference profilesTable;
-    private DatabaseReference questionsTable;
-    private DatabaseReference chatsTable;
-    private ProfileListener profileListener;
-    private ProfilesListener profilesListener;
-    private  MessageListener messageListener;
-    private ChatListener chatListener;
-    private ProfilesForGuestListener profilesForGuestListener;
+    private DatabaseReference mProfilesTable;
+    private DatabaseReference mQuestionsTable;
+    private DatabaseReference mChatsTable;
+    private ProfileListener mProfileListener;
+    private ProfilesListener mProfilesListener;
+    private MessageListener mMessageListener;
+    private ChatListener mChatListener;
+    private ProfilesForGuestListener mProfilesForGuestListener;
     private ValueEventListener mMyProfileValueEventListener;
     private ValueEventListener mIsOnlineEventListener;
     private LikesListener mLikesListener;
-
     private static Repository repository;
-    private QuestionsListener questionsListener;
-    private ReadOtherProfileListener readOtherProfileListener;
-    private MatchesListener matchesListener;
+    private QuestionsListener mQuestionsListener;
+    private ReadOtherProfileListener mReadOtherProfileListener;
+    private MatchesListener mMatchesListener;
     private Context mContext;
-    private OnlineListener onlineListener;
-
+    private OnlineListener mOnlineListener;
 
     private Repository(Context context) {
         database=FirebaseDatabase.getInstance();
         database.setPersistenceEnabled(false);
-        profilesTable=database.getReference(PROFILE_TABLE);
-        questionsTable=database.getReference(QUESTIONS_TABLE);
-        chatsTable = database.getReference(CHATS_TABLE);
-        chatsTable.keepSynced(true);
-        authRepository=AuthRepository.getInstance(context);
+        mProfilesTable =database.getReference(PROFILE_TABLE);
+        mQuestionsTable =database.getReference(QUESTIONS_TABLE);
+        mChatsTable = database.getReference(CHATS_TABLE);
+        mChatsTable.keepSynced(true);
+        mAuthRepository =AuthRepository.getInstance(context);
         mStorageRepository =StorageRepository.getInstance();
         mContext = context;
 
@@ -76,39 +71,37 @@ public class Repository {
         return repository;
     }
 
-
-
     public void readProfile(String uid){
         if(mMyProfileValueEventListener!=null)
-            profilesTable.child(uid).removeEventListener(mMyProfileValueEventListener);
+            mProfilesTable.child(uid).removeEventListener(mMyProfileValueEventListener);
         mMyProfileValueEventListener=new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     Profile profile=snapshot.getValue(Profile.class);
-                    if(profileListener!=null) {
-                        profileListener.onProfileDataChangeSuccess(profile);
+                    if(mProfileListener !=null) {
+                        mProfileListener.onProfileDataChangeSuccess(profile);
                     }
                 }
                 else {
-                    if(profileListener!=null)
-                        profileListener.onProfileDataChangeFail("not_exist");
+                    if(mProfileListener !=null)
+                        mProfileListener.onProfileDataChangeFail("not_exist");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                if(profileListener!=null)
-                    profileListener.onProfileDataChangeFail(error.getMessage());
+                if(mProfileListener !=null)
+                    mProfileListener.onProfileDataChangeFail(error.getMessage());
                 //TODO
             }
         };
-        profilesTable.child(uid).addValueEventListener(mMyProfileValueEventListener);
+        mProfilesTable.child(uid).addValueEventListener(mMyProfileValueEventListener);
     }
 
     public void readProfiles(final Profile myProfile){
 
-        profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
+        mProfilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
@@ -120,13 +113,12 @@ public class Repository {
                             Profile profile = currSnapshot.getValue(Profile.class);
                             if(checkCompatibility(myProfile,profile,matchesSet)) {
                                 profiles.add(profile);
-
                             }
                         }
                     }
-                    if(profilesListener!=null) {
+                    if(mProfilesListener !=null) {
                         Collections.shuffle(profiles);
-                        profilesListener.onProfilesDataChangeSuccess(profiles);
+                        mProfilesListener.onProfilesDataChangeSuccess(profiles);
                     }
                 }
 
@@ -149,7 +141,7 @@ public class Repository {
 
     public void readMatches(final Profile myProfile){
 
-        profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
+        mProfilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -168,7 +160,7 @@ public class Repository {
                             ;
                         }
                     }
-                    matchesListener.onMatchesDataChangeSuccess(profiles);
+                    mMatchesListener.onMatchesDataChangeSuccess(profiles);
                 }
 
             }
@@ -195,9 +187,8 @@ public class Repository {
 
 
     public void removeSpecificChat(String chatId){
-        chatsTable.child(chatId).removeValue();
+        mChatsTable.child(chatId).removeValue();
     }
-
 
     private boolean checkCompatibilityHelper(Profile profile, Profile otherProfile) {
         int myAge = profile.calculateCurrentAge();
@@ -220,58 +211,67 @@ public class Repository {
     }
 
     public void writeMyProfile(Profile profile){
-        profilesTable.child(profile.getUid()).setValue(profile);
+        mProfilesTable.child(profile.getUid()).setValue(profile);
         //TODO
     }
+
     public void writeOtherProfile(Profile profile){
-        profilesTable.child((profile.getUid())).setValue(profile);
+        mProfilesTable.child((profile.getUid())).setValue(profile);
     }
+
     public void updateProfile(String uid, String key, Object objectToUpdate){
         Map<String,Object> map =new HashMap<>();
         map.put(key,objectToUpdate);
-        profilesTable.child((uid)).updateChildren(map);
+        mProfilesTable.child((uid)).updateChildren(map);
     }
 
     public String getCurrentUserId(){
-        return authRepository.getCurrentUserUid();
+        return mAuthRepository.getCurrentUserUid();
     }
+
     public void setDownloadProfilePicListener(StorageRepository.StorageDownloadProfilePicListener downloadListener){
         mStorageRepository.setDownloadListener(downloadListener);
     }
+
     public void setDownloadMainPicListener(StorageRepository.StorageDownloadMainPicListener downloadMainPicListener){
         mStorageRepository.setDownloadMainPicListener(downloadMainPicListener);
     }
+
     public void setUploadListener(StorageRepository.StorageUploadPicListener uploadListener){
         mStorageRepository.setUploadListener(uploadListener);
     }
+
     public void writePictureToStorage(Bitmap bitmap){
-        mStorageRepository.writePictureToStorage(bitmap,authRepository.getCurrentUserUid());
+        mStorageRepository.writePictureToStorage(bitmap, mAuthRepository.getCurrentUserUid());
     }
+
     public void readMyProfilePictureFromStorage(){
-        mStorageRepository.readPictureFromStorage(authRepository.getCurrentUserUid());
+        mStorageRepository.readPictureFromStorage(mAuthRepository.getCurrentUserUid());
     }
+
     public void readPictureFromStorage(String uid){
         mStorageRepository.readPictureFromStorage(uid);
     }
 
     public boolean checkIfAuth() {
-        return authRepository.checkIfAuth();
+        return mAuthRepository.checkIfAuth();
     }
 
     public String getCurrenUserEmail() {
-        return authRepository.getCurrentUserEmail();
+        return mAuthRepository.getCurrentUserEmail();
     }
 
     public Query readAllMessages(String chatId) {
-        return chatsTable.child(chatId).child("Messages");
+        return mChatsTable.child(chatId).child("Messages");
     }
+
     public void writeMessage(String chatId, final Message message){
-        chatsTable.child(chatId).child("chat").setValue(new Chat(chatId,message.getRecipientUid(),message.getSenderUid(),message));
-        chatsTable.child(chatId).child("Messages").push().setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mChatsTable.child(chatId).child("chat").setValue(new Chat(chatId,message.getRecipientUid(),message.getSenderUid(),message));
+        mChatsTable.child(chatId).child("Messages").push().setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                if(messageListener!=null)
-                    messageListener.onMessageSentSuccess(message);
+                if(mMessageListener !=null)
+                    mMessageListener.onMessageSentSuccess(message);
             }
         });
     }
@@ -288,7 +288,7 @@ public class Repository {
         for(Match match:profile.getMatches()){
             chatIds.add(match.getId());
         }
-        chatsTable.addValueEventListener(new ValueEventListener() {
+        mChatsTable.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Chat> chats=new ArrayList<>();
@@ -298,8 +298,8 @@ public class Repository {
                     if(chatIds.contains(chatAndMessages.getChat().getId()))
                         chats.add(chatAndMessages.getChat());
                 }
-                if(chatListener!=null){
-                    chatListener.onChatDataChanged(chats);
+                if(mChatListener !=null){
+                    mChatListener.onChatDataChanged(chats);
                 }
             }
 
@@ -312,16 +312,16 @@ public class Repository {
 
     public void writeChat(Chat chat) {
         chat.setLastMessage(new Message(chat.getFirstUid(),"",chat.getSecondUid()));
-        chatsTable.child(chat.getId()).child("chat").setValue(chat);
+        mChatsTable.child(chat.getId()).child("chat").setValue(chat);
     }
 
     public void readProfilesForGuest() {
-        profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
+        mProfilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 if(snapshot.exists()){
-                    final int MAX_PROFILES_TO_SHOW=4;
+                    final int MAX_PROFILES_TO_SHOW=3;
                     int i=0;
                     List<Profile> profiles=new ArrayList<>();
                     for(DataSnapshot currSnapshot:snapshot.getChildren()){
@@ -330,8 +330,8 @@ public class Repository {
                         profiles.add(currSnapshot.getValue(Profile.class));
                         i++;
                     }
-                    if(profilesForGuestListener!=null)
-                        profilesForGuestListener.onGuestProfilesChangedSuccess(profiles);
+                    if(mProfilesForGuestListener !=null)
+                        mProfilesForGuestListener.onGuestProfilesChangedSuccess(profiles);
                 }
 
             }
@@ -345,7 +345,7 @@ public class Repository {
 
     public void remveProfileListener(String uid) {
         if (mMyProfileValueEventListener!=null){
-            profilesTable.child(uid).removeEventListener(mMyProfileValueEventListener);
+            mProfilesTable.child(uid).removeEventListener(mMyProfileValueEventListener);
         }
     }
 
@@ -353,7 +353,7 @@ public class Repository {
         void onGuestProfilesChangedSuccess(List<Profile> guestProfiles);
     }
     public void setProfileGuestListener(ProfilesForGuestListener profileGuestListener){
-        this.profilesForGuestListener=profileGuestListener;
+        this.mProfilesForGuestListener =profileGuestListener;
     }
 
 
@@ -367,7 +367,7 @@ public class Repository {
         void onProfileDataChangeFail(String error);
     }
     public void setProfileListener(ProfileListener profileListener) {
-        this.profileListener = profileListener;
+        this.mProfileListener = profileListener;
     }
     public interface ProfilesListener{
         void onProfilesDataChangeSuccess(List<Profile> profiles);
@@ -375,10 +375,10 @@ public class Repository {
     }
 
     public void setProfilesListener(ProfilesListener profilesListener) {
-        this.profilesListener = profilesListener;
+        this.mProfilesListener = profilesListener;
     }
     public void setMatchesListener(MatchesListener matchesListener){
-        this.matchesListener=matchesListener;
+        this.mMatchesListener =matchesListener;
     }
 
     public interface  MatchesListener{
@@ -394,15 +394,15 @@ public class Repository {
         void onChatDataChanged(List<Chat> chats);
     }
     public void setQuestionsListener(QuestionsListener questionsListener) {
-        this.questionsListener = questionsListener;
+        this.mQuestionsListener = questionsListener;
     }
     public void logout(){
-        authRepository.logoutUser();
+        mAuthRepository.logoutUser();
     }
 
     public void readQuestions(String language){
 
-        questionsTable.child(language).addListenerForSingleValueEvent(new ValueEventListener() {
+        mQuestionsTable.child(language).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
@@ -411,8 +411,8 @@ public class Repository {
                         Question question=currSnapshot.getValue(Question.class);
                         questions.add(question);
                     }
-                    if(questionsListener!=null)
-                        questionsListener.onQuestionsDataChangeSuccess(questions);
+                    if(mQuestionsListener !=null)
+                        mQuestionsListener.onQuestionsDataChangeSuccess(questions);
                 }
 
             }
@@ -427,36 +427,36 @@ public class Repository {
     }
 
     public MessageListener getMessageListener() {
-        return messageListener;
+        return mMessageListener;
     }
 
     public void setMessageListener(MessageListener messageListener) {
-        this.messageListener = messageListener;
+        this.mMessageListener = messageListener;
     }
 
     public interface ReadOtherProfileListener{
         void onOtherProfileChange(Profile profile);
     }
     public void setOtherProfileListener(ReadOtherProfileListener readOtherProfileListener){
-        this.readOtherProfileListener=readOtherProfileListener;
+        this.mReadOtherProfileListener =readOtherProfileListener;
     }
     public void readOtherProfile(String uid) {
 
-        profilesTable.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mProfilesTable.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     Profile profile = snapshot.getValue(Profile.class);
-                    if (profileListener != null) {
-                        readOtherProfileListener.onOtherProfileChange(profile);
+                    if (mProfileListener != null) {
+                        mReadOtherProfileListener.onOtherProfileChange(profile);
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                if (profileListener != null)
-                    profileListener.onProfileDataChangeFail(error.getMessage());
+                if (mProfileListener != null)
+                    mProfileListener.onProfileDataChangeFail(error.getMessage());
             }
         });
     }
@@ -465,14 +465,14 @@ public class Repository {
 
     }
     public void setChatListener(ChatListener chatListener){
-        this.chatListener=chatListener;
+        this.mChatListener =chatListener;
     }
 
     public void deletePhotoFromStorage(String url){
         mStorageRepository.deletePhotoFromStorage(url);
     }
     public void readLikedProfiles(final Profile myProfile){
-        profilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
+        mProfilesTable.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
@@ -514,7 +514,7 @@ public class Repository {
     }
 
     public void setOnlineListener(OnlineListener onlineListener){
-        this.onlineListener = onlineListener;
+        this.mOnlineListener = onlineListener;
     }
 
 
@@ -522,15 +522,15 @@ public class Repository {
     public void readProfileIsOnline(String uid)
     {
         if(mIsOnlineEventListener!=null)
-            profilesTable.child(uid).child("online").removeEventListener(mIsOnlineEventListener);
+            mProfilesTable.child(uid).child("online").removeEventListener(mIsOnlineEventListener);
         mIsOnlineEventListener=new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists())
                 {
-                    if(onlineListener != null)
+                    if(mOnlineListener != null)
                     {
-                        onlineListener.onOnlineChangeSuccess((Boolean) snapshot.getValue());
+                        mOnlineListener.onOnlineChangeSuccess((Boolean) snapshot.getValue());
                     }
                 }
             }
@@ -540,7 +540,7 @@ public class Repository {
 
             }
         };
-        profilesTable.child(uid).child("online").addValueEventListener(mIsOnlineEventListener);
+        mProfilesTable.child(uid).child("online").addValueEventListener(mIsOnlineEventListener);
 
     }
 }

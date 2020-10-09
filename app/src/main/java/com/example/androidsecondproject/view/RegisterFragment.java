@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,9 +39,6 @@ public class RegisterFragment extends Fragment {
     public static RegisterFragment newInstance()
     {
         RegisterFragment registerFragment = new RegisterFragment();
-            /*Bundle bundle = new Bundle();
-            bundle.putString("user_name",username);
-            loginFragment.setArguments(bundle);*/
         return registerFragment;
     }
 
@@ -135,5 +133,10 @@ public class RegisterFragment extends Fragment {
 
         mViewModel.setEmail(email);
         mViewModel.setPassword(password);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 }

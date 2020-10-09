@@ -86,14 +86,14 @@
                     android:layout_height="60dp"
                     android:layout_marginHorizontal="10dp"
                     android:background="@color/transparent"
-                    android:src="@drawable/ic_baseline_photo_camera_24" />
+                    android:src="@drawable/camera_selector" />
 
                 <ImageButton
                     android:id="@+id/gallery_btn"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@color/transparent"
-                    android:src="@drawable/ic_baseline_gallery" />
+                    android:src="@drawable/galery_selector" />
             </LinearLayout>
 
             <RelativeLayout
