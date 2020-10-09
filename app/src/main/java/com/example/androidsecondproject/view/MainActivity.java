@@ -74,7 +74,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentInterface, RegisterFragment.RegisterFragmentInterface,
         AccountSetupFragment.AccountSetupFragmentInterface, PreferencesFragment.PreferencesFragmentInterface, ProfilePhotoFragment.PhotoFragmentInterface,
         ProfileFragment.UpdateDrawerFromProfileFragment,MatchesFragment.OnMoveToChat, SwipeFragment.SwipeInterface, ChatFragment.OnMoveToProfilePreviewFromChat,
-        ProfilePreviewFragment.OnMoveToPhotoPreview, NewMatchDialogFragment.OnNewMatchDialogFragmentDialofListener, LikesFragment.LikesFragmentInterface {
+        ProfilePreviewFragment.OnMoveToPhotoPreview, NewMatchDialogFragment.OnNewMatchDialogFragmentDialofListener, LikesFragment.LikesFragmentInterface, QuestionsFragment.QuestionsInterface {
     private final int REQUEST_CHECK_SETTINGS =2 ;
     private Geocoder mGeoCoder;
     private String mCityName;
@@ -831,6 +831,14 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    @Override
+    public void onNotifyPrecentChange() {
+       SwipeFragment swipeFragment =(SwipeFragment) getSupportFragmentManager().findFragmentByTag(SWIPE_FRAGMENT);
+       if (swipeFragment!=null){
+           swipeFragment.notifyDataSetChange();
+       }
     }
 
     @Override

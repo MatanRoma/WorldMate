@@ -74,6 +74,8 @@ public class SwipeFragment extends Fragment {
         return swipeFragment;
     }
 
+
+
     public interface SwipeInterface
     {
         void onClickMoveToProfilePreview(Profile otherProfile,int compability);
@@ -319,6 +321,11 @@ public class SwipeFragment extends Fragment {
             NewMatchDialogFragment alertDialog = NewMatchDialogFragment.newInstance(mSwipeAdapter.getmProfiles().get(position),mViewModel.getProfile());
             alertDialog.show(fm, "fragment_alert");
             mViewModel.updateMatch(position);
+        }
+    }
+    public void notifyDataSetChange() {
+        if(mSwipeAdapter!=null){
+            mSwipeAdapter.notifyDataSetChanged();
         }
     }
 

@@ -21,33 +21,64 @@ public class CompabilityCalculator {
 
         int matchedQuestions = 0;
         int matchedAnswer = 0;
-
-
+        final int POINTS_PER_QUESTION_LESS_ANSWERS=5;
+        final int POINTS_PER_QUESTION_MORE_ANSWERS=5;
         List<QuestionRespond> filteredQuestions  = createFilteredList(categories, myQuestions);
 
         for (QuestionRespond myQuestion : filteredQuestions) {
             for (QuestionRespond otherQuestion : otherQuestions) {
 
                 if (myQuestion.getId() == otherQuestion.getId()) {
-                    matchedQuestions++;
-                    {
-                        if(myQuestion.getAnswersNum() > 2 &&Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) <=1)
+                    switch (myQuestion.getAnswersNum()) {
+                        case 2:
+                            matchedQuestions += POINTS_PER_QUESTION_LESS_ANSWERS;
+                            if (myQuestion.getResponse() == otherQuestion.getResponse()) {
+                                matchedAnswer += POINTS_PER_QUESTION_LESS_ANSWERS;
+                            }
+                            break;
+                        case 3:
+                            matchedQuestions += POINTS_PER_QUESTION_LESS_ANSWERS;
+                            if (myQuestion.getResponse() == otherQuestion.getResponse()) {
+                                matchedAnswer += POINTS_PER_QUESTION_LESS_ANSWERS;
+                            } else if (Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) == 1) {
+                                matchedAnswer += 2;
+                            }
+                            break;
+                        case 4:
+                            matchedQuestions += POINTS_PER_QUESTION_MORE_ANSWERS;
+                            if (myQuestion.getResponse() == otherQuestion.getResponse()) {
+                                matchedAnswer += POINTS_PER_QUESTION_MORE_ANSWERS;
+                            } else if (Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) == 1) {
+                                matchedAnswer += 5;
+                            }
+                            break;
+                        case 5:
+                            matchedQuestions += POINTS_PER_QUESTION_MORE_ANSWERS;
+                            if (myQuestion.getResponse() == otherQuestion.getResponse()) {
+                                matchedAnswer += POINTS_PER_QUESTION_MORE_ANSWERS;
+                            } else if (Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) == 1) {
+                                matchedAnswer += 6;
+                            } else if (Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) == 2) {
+                                matchedAnswer += 3;
+                            }
+                            break;
+                    }
+                }
+
+            }
+        }
+        int compability = 0;
+        if(matchedQuestions != 0){
+            compability = matchedAnswer * 100/matchedQuestions;
+        }
+        return compability==100?99:compability;
+    }
+}
+ /*if(myQuestion.getAnswersNum() > 2 &&Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) <=1)
                         {
                             matchedAnswer++;
                         }
                         else if(myQuestion.getResponse() == otherQuestion.getResponse())
                         {
                             matchedAnswer++;
-                        }
-                    }
-                }
-            }
-
-        }
-        int compability = 0;
-        if(matchedQuestions != 0){
-            compability = matchedAnswer * 100/matchedQuestions;
-        }
-        return compability;
-    }
-}
+                        }*/

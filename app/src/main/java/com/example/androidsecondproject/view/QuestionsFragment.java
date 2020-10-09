@@ -34,8 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionsFragment extends Fragment {
-private QuestionsViewModel mViewModel;
-private View mSportView;
+    private QuestionsViewModel mViewModel;
+    private View mSportView;
+    private QuestionsInterface questionsInterface;
     public static QuestionsFragment newInstance(Profile profile)
     {
         Bundle bundle=new Bundle();
@@ -44,10 +45,14 @@ private View mSportView;
         questionsFragment.setArguments(bundle);
         return questionsFragment;
     }
+    public interface  QuestionsInterface{
+        public void onNotifyPrecentChange();
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        questionsInterface=(QuestionsInterface)getActivity();
     }
 
     @Nullable
@@ -210,6 +215,7 @@ private View mSportView;
                                     }
                                     mViewModel.getProfile().getQuestionResponds().add(questionRespond);
                                     mViewModel.updateQuestion();
+                                    questionsInterface.onNotifyPrecentChange();
 
 
 
