@@ -149,6 +149,7 @@
     <string name="chat">Chat</string>
     <string name="in_order_to_see_more_people_please_login_or_register">In order to see more people please login or register</string>
     <string name="login_register">Login/Register</string>
+    <string name="gender_dialog_error">You must choose at least one field</string>
 
 
 </resources>

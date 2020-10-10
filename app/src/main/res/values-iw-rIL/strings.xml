@@ -151,5 +151,6 @@
     <string name="chat">צ\'אט</string>
     <string name="in_order_to_see_more_people_please_login_or_register">בשביל לראות אנשים נוספים בבקשה תתחבר או תרשם</string>
     <string name="login_register">התחבר/הרשם</string>
+    <string name="gender_dialog_error">אתה חייב לבחור לפחות שדה אחד</string>
 
 </resources>
