@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     private TextView mNameTv;
     private Toolbar mToolbar;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
+    private NavigationView mNavigationView;
     private View headerView;
     Observer<Location> mLocationObserver;
     private AlertDialog show;
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         initializeViewComponents();
         setObservers();
         onMessageTokenReceived();
-        navigationView.getMenu().getItem(0).setChecked(true);
+        mNavigationView.getMenu().getItem(0).setChecked(true);
 
         if (mViewModel.checkIfAuth()) {
             fetchProfileData();
@@ -129,15 +129,15 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     private void initializeViewComponents() {
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.navigation_view);
-        headerView = navigationView.getHeaderView(0);
+        mNavigationView = findViewById(R.id.navigation_view);
+        headerView = mNavigationView.getHeaderView(0);
         mToolbar = findViewById(R.id.toolbar);
         mToolbar.setVisibility(View.GONE);
         mProfileIv = headerView.findViewById(R.id.profile_image);
         mNameTv = headerView.findViewById(R.id.username_tv);
         setSupportActionBar(mToolbar);
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 if(!mViewModel.isLoginAsGuest())
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             getIntent().setAction("");
         } else {
             mViewModel.setLoginAsGuest(false);
-            navigationView.getMenu().getItem(6).setChecked(true);
+            mNavigationView.getMenu().getItem(6).setChecked(true);
 
         }
         clearStack(null);
@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.remove(preferenceFragment);
         transaction.commit();
-        navigationView.getMenu().getItem(0).setChecked(true);
+        mNavigationView.getMenu().getItem(0).setChecked(true);
         fetchProfileData();
     }
 
@@ -383,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     public void onLoginToApp() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().remove(fragmentManager.findFragmentByTag(LOGIN_FRAGMENT)).commit();
-        navigationView.getMenu().getItem(0).setChecked(true);
+        mNavigationView.getMenu().getItem(0).setChecked(true);
         fetchProfileData();
     }
 
@@ -483,7 +483,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.addToBackStack(null);
         transaction.commit();
         setTitle(getString(R.string.your_matches));
-        navigationView.getMenu().getItem(2).setChecked(true);
+        mNavigationView.getMenu().getItem(2).setChecked(true);
     }
     private void moveToMatchesFragment(String matcherUid) {
         MatchesFragment matchesFragment = MatchesFragment.newInstance(mViewModel.getMyProfile());
@@ -573,7 +573,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         transaction.addToBackStack(null);
         transaction.commit();
         setTitle(getString(R.string.chat));
-        navigationView.getMenu().getItem(2).setChecked(true);
+        mNavigationView.getMenu().getItem(2).setChecked(true);
     }
 
     @Override
@@ -618,7 +618,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     public void handleReturnFromNotif() {
         String action=getIntent().getAction();
-        final Menu menu = navigationView.getMenu();
+        final Menu menu = mNavigationView.getMenu();
         if (action.startsWith("&s&")) {
             Log.d("other_match_uid",action.substring(3)+"");
             clearStack(null);
@@ -727,7 +727,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     @Override
     public void onBackPressed() {
-        final Menu menu = navigationView.getMenu();
+        final Menu menu = mNavigationView.getMenu();
         PhotoPreviewFragment photoPreviewFragment = (PhotoPreviewFragment) getSupportFragmentManager().findFragmentByTag(PHOTO_PREVIEW_FRAGMENT);
         if(photoPreviewFragment!=null&&photoPreviewFragment.isVisible()){
             super.onBackPressed();
@@ -761,14 +761,14 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 }
                 else{
                     setTitle(getString(R.string.app_name));
-                    navigationView.getMenu().getItem(0).setChecked(true);
+                    mNavigationView.getMenu().getItem(0).setChecked(true);
                 }
                 super.onBackPressed();
 
             }
             else {
                 clearStack(null);
-                navigationView.getMenu().getItem(0).setChecked(true);
+                mNavigationView.getMenu().getItem(0).setChecked(true);
                 setTitle(R.string.app_name);
             }
             }
@@ -806,7 +806,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     public void onLoginAsGuest() {
         mViewModel.setLoginAsGuest(true);
         setTitle(getString(R.string.app_name));
-        navigationView.getMenu().getItem(0).setChecked(true);
+        mNavigationView.getMenu().getItem(0).setChecked(true);
         Glide.with(MainActivity.this).load(R.drawable.man_profile).error(R.drawable.man_profile).into(mProfileIv);
         mNameTv.setText(getString(R.string.hello_guest));
         getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentByTag(LOGIN_FRAGMENT)).commit();

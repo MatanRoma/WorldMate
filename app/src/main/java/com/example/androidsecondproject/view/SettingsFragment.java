@@ -112,8 +112,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         minAgeSk = getPreferenceScreen().findPreference("min_age_pref1");
         maxAgeSk = getPreferenceScreen().findPreference("max_age_pref1");
 
-
-
     }
     @Override
     public void onResume() {
