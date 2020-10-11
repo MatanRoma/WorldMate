@@ -29,6 +29,7 @@ import com.example.androidsecondproject.model.TranslateString;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.QuestionsViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class QuestionsFragment extends Fragment {
     private QuestionsViewModel mViewModel;
     private View mSportView;
     private QuestionsInterface questionsInterface;
+    private SpinKitView mLoadingAnimation;
     public static QuestionsFragment newInstance(Profile profile)
     {
         Bundle bundle=new Bundle();
@@ -59,6 +61,8 @@ public class QuestionsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.questions_fragment,container,false);
+        mLoadingAnimation=rootView.findViewById(R.id.spin_kit_questions);
+        mLoadingAnimation.setVisibility(View.VISIBLE);
         final RelativeLayout relativeLayoutQuestions =rootView.findViewById(R.id.relative_questions);
 
 
@@ -68,6 +72,7 @@ public class QuestionsFragment extends Fragment {
         Observer<List<Question>> questionsObserverSuccess=new Observer<List<Question>>() {
             @Override
             public void onChanged(List<Question> questions) {
+                mLoadingAnimation.setVisibility(View.GONE);
                 relativeLayoutQuestions.setVisibility(View.VISIBLE);
             }
         };

@@ -23,7 +23,7 @@
         </service>
 
         <activity android:name=".view.MainActivity" android:screenOrientation="portrait"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

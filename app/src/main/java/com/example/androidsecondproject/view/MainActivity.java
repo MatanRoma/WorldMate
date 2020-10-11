@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         mLoadingAnimation =findViewById(R.id.spin_kit);
 
@@ -266,6 +268,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     }
 
     private void logoutUser(){
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         if (!mViewModel.isLoginAsGuest()) {
 
             mViewModel.removeProfileListener();
@@ -867,5 +870,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
             if(!mViewModel.isFirstTime())
                 mViewModel.updateIsOnline(false);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
