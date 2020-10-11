@@ -176,10 +176,10 @@ public class Repository {
         if(!otherProfile.isDiscovery()){
             return false;
         }
-       /* else if(otherProfile.getLikes().contains(myProfile.getUid())||otherProfile.getDisLikes().contains(myProfile.getUid())||myMatchesSet.contains(otherProfile.getUid())){
+        else if(otherProfile.getLikes().contains(myProfile.getUid())||otherProfile.getDisLikes().contains(myProfile.getUid())||myMatchesSet.contains(otherProfile.getUid())){
             return false;
-        }*/
-        if(checkCompatibilityHelper(myProfile,otherProfile)&&checkCompatibilityHelper(otherProfile,myProfile)){
+        }
+       else if(checkCompatibilityHelper(myProfile,otherProfile)&&checkCompatibilityHelper(otherProfile,myProfile)){
             return true;
         }
         return false;

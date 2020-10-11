@@ -143,6 +143,6 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+     //   getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 }
