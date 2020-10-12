@@ -52,24 +52,16 @@ public class SwipeFragment extends Fragment {
 
     private SwipeAdapter mSwipeAdapter;
     private SwipeViewModel mViewModel;
-    private RecyclerView mRecyclerView;
     private CardStackView mCardStackView;
     private SpinKitView mLoadingAnimation;
-    SwipeFlingAdapterView swipeProfile;
-    Boolean isWhat;
 
-    SwipeAnimationSetting mSettingRight, mSettingLeft;
-    CardStackLayoutManager mCardStackLayoutManager;
-
-    private SwipeFlingAdapter mSwipeFlingAdapter;
-
-
+    private SwipeAnimationSetting mSettingRight, mSettingLeft;
+    private CardStackLayoutManager mCardStackLayoutManager;
 
     private LinearLayout btnsLayout;
     private RelativeLayout mNoPeopleMainLayout, mNoPeopleGuestLayout;
     private ImageView rangeIv;
     private CircleImageView mNoPeopleLogo;
-    //ImageView rewindBtn;
 
     private SwipeInterface mSwipeListener;
 
@@ -81,6 +73,8 @@ public class SwipeFragment extends Fragment {
         swipeFragment.setArguments(bundle);
         return swipeFragment;
     }
+
+
 
     public interface SwipeInterface
     {
@@ -118,9 +112,6 @@ public class SwipeFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-/*        if(item.getItemId() == R.id.filter_id){
-            Toast.makeText(getContext(), "Filter", Toast.LENGTH_SHORT).show();
-        }*/
         return super.onOptionsItemSelected(item);
 
     }
@@ -136,17 +127,11 @@ public class SwipeFragment extends Fragment {
         mLoadingAnimation.setVisibility(View.VISIBLE);
         mNoPeopleGuestLayout =rootView.findViewById(R.id.no_people_layout_guest);
 
-        //((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
-
-        //  swipeProfile=rootView.findViewById(R.id.swipe_fling);
-        mRecyclerView=rootView.findViewById(R.id.swipe_recycle_view);
         mCardStackView = rootView.findViewById(R.id.stack_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        //     mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
 
         ImageView likeBtn = rootView.findViewById(R.id.like_ib);
         ImageView dislikeBtn = rootView.findViewById(R.id.dislike_ib);
-        //rewindBtn = rootView.findViewById(R.id.rewind_ib);
+
         btnsLayout = rootView.findViewById(R.id.btns_layout);
         btnsLayout.setVisibility(View.GONE);
 
@@ -170,27 +155,15 @@ public class SwipeFragment extends Fragment {
             }
         });
 
-       /* rewindBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!mViewModel.getProfile().getDisLikes().isEmpty())
-                {
-
-                    mViewModel.getProfile().getDisLikes().remove(mViewModel.getProfile().getDisLikes().size()-1);
-                    mCardStackView.rewind();
-
-                }
-            }
-        });*/
-
-
-
 
         mViewModel.setContext(getContext());
         final List<String> categories = new ArrayList<>();
         categories.add("sport");
         categories.add("food");
         categories.add("culture");
+        categories.add("music");
+        categories.add("religion");
+        categories.add("travel");
 
         if(!mViewModel.isLoginAsGuest()) {
             Observer<List<Profile>> profileSuccessObserver = new Observer<List<Profile>>() {
@@ -239,46 +212,8 @@ public class SwipeFragment extends Fragment {
             mViewModel.readProfilesForGuest();
         }
 
-
         setTouchHelper();
         Log.d("testtt","testt0");
-
-
-
-
-
-        /*final CheckBox sportCb = rootView.findViewById(R.id.sport_cb);
-        final CheckBox foodCb = rootView.findViewById(R.id.food_cb);
-        final CheckBox cultureCb = rootView.findViewById(R.id.culture_cb);
-
-        sportCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String title = sportCb.getText().toString();
-                mSwipeAdapter.updateFilter(title,isChecked);
-                mSwipeAdapter.notifyDataSetChanged();
-            }
-        });
-
-        foodCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String title = foodCb.getText().toString();
-                mSwipeAdapter.updateFilter(title,isChecked);
-                mSwipeAdapter.notifyDataSetChanged();
-            }
-        });
-
-        cultureCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String title = cultureCb.getText().toString();
-                mSwipeAdapter.updateFilter(title,isChecked);
-                mSwipeAdapter.notifyDataSetChanged();
-            }
-        });
-*/
-
 
         return rootView;
     }
@@ -298,7 +233,6 @@ public class SwipeFragment extends Fragment {
             }
         });
 
-        //    mRecyclerView.setAdapter(mSwipeAdapter);
         mCardStackView.setAdapter(mSwipeAdapter);
         mLoadingAnimation.setVisibility(View.GONE);
         btnsLayout.setVisibility(View.VISIBLE);
@@ -306,71 +240,7 @@ public class SwipeFragment extends Fragment {
 
 
     private void setTouchHelper() {
-        /*ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.DOWN,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                final int position=viewHolder.getAdapterPosition();
-*//*                List<String> tstList = new ArrayList<>();
-                tstList.add("sport");
-                CompabilityCalculator compabilityCalculator = new CompabilityCalculator(tstList,mViewModel.getProfile().getQuestionResponds(),mSwipeAdapter.getmProfiles().get(position).getQuestionResponds());
-                Toast.makeText(getContext(), compabilityCalculator.getCompability()+"", Toast.LENGTH_SHORT).show();*//*
-                    if(direction==ItemTouchHelper.RIGHT)
-                    {
-                        Toast.makeText(getContext(), "gothere", Toast.LENGTH_SHORT).show();
-                        profileLiked(position);
-                    }
-                    else if(direction==ItemTouchHelper.LEFT){
-                        profileDisliked(position);
-                    }
 
-
-                }
-            };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);*/
-
- /*       SwipeableTouchHelperCallback swipeableTouchHelperCallback =
-                new SwipeableTouchHelperCallback(new OnItemSwiped() {
-                    @Override public void onItemSwiped() {
-                        mSwipeAdapter.removeTopItem();
-                    }
-
-                    @Override public void onItemSwipedLeft() {
-                        profileDisliked(0);
-                    }
-
-                    @Override public void onItemSwipedRight() {
-                        profileLiked(0);
-                    }
-
-                    @Override public void onItemSwipedUp() {
-                        Log.e("SWIPE", "UP");
-                    }
-
-                    @Override public void onItemSwipedDown() {
-                        Log.e("SWIPE", "DOWN");
-                    }
-                }) {
-                    @Override
-                    public int getAllowedSwipeDirectionsMovementFlags(RecyclerView.ViewHolder viewHolder) {
-                        return ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-                    }
-                };
-
-
-
-        final swipeable.com.layoutmanager.touchelper.ItemTouchHelper itemTouchHelper = new swipeable.com.layoutmanager.touchelper.ItemTouchHelper(swipeableTouchHelperCallback);
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);
-        SwipeableLayoutManager swipeableLayoutManager= new SwipeableLayoutManager();
-        mRecyclerView.setLayoutManager(swipeableLayoutManager.setAngle(10)
-                .setAnimationDuratuion(450)
-                .setMaxShowCount(100)
-                .setScaleGap(0.1f)
-                .setTransYGap(0));*/
         mCardStackLayoutManager = new CardStackLayoutManager(getContext(), new CardStackListener() {
             @Override
             public void onCardDragging(Direction direction, float ratio) {
@@ -385,14 +255,13 @@ public class SwipeFragment extends Fragment {
                         profileLiked(0);
                     }
 
-                    //rewindBtn.setVisibility(View.GONE);
                     Log.d("stack_swipe","swiped_right");
                 }
                 else if(direction ==Direction.Left){
                     if(!mViewModel.isLoginAsGuest()) {
                         profileDisliked(0);
                     }
-                    //rewindBtn.setVisibility(View.VISIBLE);
+
                     Log.d("stack_swipe","swiped_left");
                 }
                 mSwipeAdapter.removeTopItem();
@@ -428,7 +297,6 @@ public class SwipeFragment extends Fragment {
         mSettingLeft = new SwipeAnimationSetting.Builder().setDirection(Direction.Left)
                 .setDuration(Duration.Slow.duration)
                 .build();
-        //mCardStackLayoutManager.setSwipeAnimationSetting(mSetting);
 
         RewindAnimationSetting rewindSetting = new RewindAnimationSetting.Builder()
                 .setDirection(Direction.Bottom)
@@ -448,38 +316,21 @@ public class SwipeFragment extends Fragment {
     private void profileLiked(final int position){
         mViewModel.addLikedProfile(position);
 
-
         if(mViewModel.checkIfMatch(position)){
             FragmentManager fm = getActivity().getSupportFragmentManager();
             NewMatchDialogFragment alertDialog = NewMatchDialogFragment.newInstance(mSwipeAdapter.getmProfiles().get(position),mViewModel.getProfile());
             alertDialog.show(fm, "fragment_alert");
-
-  /*          mMatchAnimation.setVisibility(View.VISIBLE);
-            AnimationDrawable animationDrawable = (AnimationDrawable) mMatchAnimation.getDrawable();
-            animationDrawable.start();
-            MediaPlayer matchSound = MediaPlayer.create(getActivity(),R.raw.match);
-            matchSound.start();
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mMatchAnimation.setVisibility(View.GONE);
-                }
-            },3000);*/
             mViewModel.updateMatch(position);
-            //   mViewModel.writeOtherProfile(position);
         }
-
-        //    mViewModel.removeProfile(position);
-        //  mSwipeAdapter.notifyItemRemoved(position);
-        //   mViewModel.writeMyProfile();
-        //   mViewModel.updateProfile();
+    }
+    public void notifyDataSetChange() {
+        if(mSwipeAdapter!=null){
+            mSwipeAdapter.notifyDataSetChanged();
+        }
     }
 
     private  void profileDisliked(final int position){
         mViewModel.addDislikedProfile(position);
-        //  mViewModel.writeMyProfile();
-
     }
 
 
@@ -491,7 +342,7 @@ public class SwipeFragment extends Fragment {
     public void updateCategories(boolean[] checkeds)
     {
         List<String> categories = mSwipeAdapter.getmCategories();
-        String[] filterCategories = {"sport","food","culture","music"};
+        String[] filterCategories = {"sport","food","culture","music","religion","travel"};
         categories.clear();
         for(int i = 0; i < checkeds.length;i++)
         {
@@ -509,7 +360,7 @@ public class SwipeFragment extends Fragment {
     {
         if(!mViewModel.isLoginAsGuest()) {
             mNoPeopleMainLayout.setVisibility(View.VISIBLE);
-            Glide.with(getContext()).load(mViewModel.getProfile().getProfilePictureUri()).error(R.mipmap.ic_launcher).into(mNoPeopleLogo);
+            Glide.with(getContext()).load(mViewModel.getProfile().getProfilePictureUri()).error(R.drawable.ic_worlmate_logo).into(mNoPeopleLogo);
             Animation rangeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.range_animation);
             rangeAnimation.setRepeatMode(Animation.REVERSE);
             rangeIv.startAnimation(rangeAnimation);

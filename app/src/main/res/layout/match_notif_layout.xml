@@ -1,46 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layoutDirection="ltr"
     android:background="@color/colorPrimaryDark"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layoutDirection="ltr"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/profile_image_notif"
         android:id="@+id/title_layout">
 
-        <ImageView
-            android:id="@+id/profile_image_notif"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="5dp"
-            android:visibility="gone"
-            android:scaleType="fitXY" />
+
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="10dp"
-            android:paddingTop="10dp"
+            android:paddingTop="2dp"
             android:text="@string/match"
             android:textSize="20sp"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="start"
             android:id="@+id/title_tv"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:paddingBottom="10dp"
+            android:textDirection="ltr"
+            android:text="@string/you_got_a_new_match"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:gravity="start"
+            android:layout_below="@id/title_layout"
+            android:id="@+id/text_id"/>
+
 
     </LinearLayout>
 
+
+
+    <ImageView
+        android:id="@+id/profile_image_notif"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:padding="1dp"
+        android:src="@drawable/ic_worlmate_logo"
+        android:scaleType="fitXY"/>
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:paddingBottom="10dp"
-        android:text="@string/you_got_a_new_match"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:gravity="start"
-        android:layout_below="@id/title_layout"
-        android:id="@+id/text_id"/>
+        android:layout_toEndOf="@id/profile_image_notif"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="3dp"
+        android:text="@string/app_name"
+        android:id="@+id/app_name_notif"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="end"
+        android:layout_toEndOf="@id/app_name_notif"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="8dp"
+        android:id="@+id/date_tv"/>
 </RelativeLayout>

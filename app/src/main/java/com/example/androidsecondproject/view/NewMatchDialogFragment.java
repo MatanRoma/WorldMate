@@ -17,7 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -129,7 +129,6 @@ public class NewMatchDialogFragment extends DialogFragment {
             },2200);
             //mListener.onUpdateMatch(getArguments().getInt("position"));
             //mShow =myAlertDialog.show();
-        Toast.makeText(getContext(), getParentFragment()+"", Toast.LENGTH_SHORT).show();
         //((SwipeFragment)getParentFragment()).updateMatch(getArguments().getInt("position"));
 
         chatBtn.setOnClickListener(new View.OnClickListener() {

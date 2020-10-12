@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardUseCompatPadding="true"
-    app:cardBackgroundColor="@color/colorPrimaryDark"
+    app:cardBackgroundColor="@color/white"
+    android:layout_gravity="center"
     app:contentPadding="10dp"
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginVertical="5dp"
     android:id="@+id/card_view"
-    app:cardCornerRadius="25dp">
+    app:cardCornerRadius="10dp">
 
     <RelativeLayout
 
@@ -16,20 +20,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_marginTop="10dp"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_border_width="2dp"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"
             android:id="@+id/card_profile_iv" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:padding="20dp"
+            android:layout_marginHorizontal="10dp"
+            android:padding="10dp"
             android:layout_below="@+id/card_profile_iv"
             android:id="@+id/card_profile_info"
             android:layout_marginTop="30dp"
@@ -40,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/name_of_profile"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:id="@+id/card_name_tv"/>
 
@@ -48,9 +52,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/age_int"
-                android:textSize="25sp"
+                android:visibility="gone"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_marginStart="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:id="@+id/card_age_tv"/>
 
         </LinearLayout>
@@ -59,14 +64,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/card_profile_info"
-            android:layout_marginTop="5dp"
             android:text="@string/city_str"
             android:textColor="@color/Blue"
+            android:layout_marginTop="5dp"
             android:textSize="20sp"
             android:layout_centerHorizontal="true"
             android:id="@+id/location_tv"/>
 
-        <TextView
+        <!--<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/location_tv"
@@ -77,40 +82,10 @@
             android:visibility="gone"
             android:textStyle="bold"
             android:layout_centerHorizontal="true"
-            android:id="@+id/compability_tv"/>
+            android:id="@+id/compability_tv"/>-->
 
 
-        <FrameLayout
-            android:id="@+id/right_overlay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="left"
-                android:scaleType="fitCenter"
-                android:src="@drawable/like_icon" />
-            <!-- Set your left overlay -->
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/left_overlay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/dislike_icon"
-                android:layout_gravity="right"
-                android:scaleType="fitCenter"/>
-
-
-            <!-- Set your left overlay -->
-
-        </FrameLayout>
 
 
     </RelativeLayout>

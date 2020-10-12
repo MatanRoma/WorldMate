@@ -1,11 +1,14 @@
 package com.example.androidsecondproject.view;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,15 +36,17 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Observable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatFragment extends Fragment {
+
     private ChatAdapter mChatAdapter;
     private ChatViewModel mViewModel;
     private LinearLayoutManager mLinearLayoutManager;
     public static String chatId;
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
 
     public OnMoveToProfilePreviewFromChat onMoveToProfilePreviewFromChat;
 
@@ -66,10 +72,12 @@ public class ChatFragment extends Fragment {
         onMoveToProfilePreviewFromChat = (OnMoveToProfilePreviewFromChat)getActivity();
     }
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.chat_layout,container,false);
+
         mViewModel=new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Chat)).get(ChatViewModel.class);
 
         mRecyclerView=rootView.findViewById(R.id.messaging_recycler);
@@ -83,10 +91,10 @@ public class ChatFragment extends Fragment {
         final EditText chatEt=rootView.findViewById(R.id.text_chat_et);
         TextView nameTv=rootView.findViewById(R.id.profile_name_chat);
         CircleImageView profileImage=rootView.findViewById(R.id.profile_image_chat);
+        final TextView isOnlineTv = rootView.findViewById(R.id.is_online_tv);
 
         RelativeLayout chatHeader = rootView.findViewById(R.id.chat_rl_layout);
 
-        Log.d("other_match_uid",getArguments().getString("chat_id")+"");
         mViewModel.setChatId(getArguments().getString("chat_id"));
         mViewModel.setMyProfile((Profile)getArguments().getSerializable("profile"));
         mViewModel.setOtherProfile((Profile)getArguments().getSerializable("other_profile"));
@@ -108,17 +116,13 @@ public class ChatFragment extends Fragment {
             }
         });
 
-
-
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text=chatEt.getText().toString();
                 if(text.length()>0){
-
                     mViewModel.writeMessage(text);
                     chatEt.setText("");
-
                 }
             }
         });
@@ -126,7 +130,9 @@ public class ChatFragment extends Fragment {
         mChatAdapter=new ChatAdapter(recyclerOptions,mViewModel.getMyUid());
         mRecyclerView.setAdapter(mChatAdapter);
         mRecyclerView.scrollToPosition(mChatAdapter.getItemCount());
-
+        if(!checkDirection()){
+            sendButton.setRotation(180);
+        }
 
         mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -157,8 +163,16 @@ public class ChatFragment extends Fragment {
         nameTv.setText(otherProfile.getFirstName() + " " + otherProfile.getLastName());
         Glide.with(getContext()).load(otherProfile.getProfilePictureUri()).error(R.drawable.man_profile).into(profileImage);
 
+        Observer<Boolean> isOnlineObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                isOnlineTv.setVisibility(View.VISIBLE);
+                isOnlineTv.setText(aBoolean?getString(R.string.online_str):getString(R.string.offline_str));
+            }
+        };
+        mViewModel.getIsOnline().observe(this,isOnlineObserver);
 
-
+        mViewModel.readIsOnline();
         return rootView;
     }
 
@@ -174,6 +188,7 @@ public class ChatFragment extends Fragment {
         super.onStart();
         mChatAdapter.startListening();
         chatId=mViewModel.getChatId();
+     //   getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     public int checkComapability(Profile myProfile, Profile otherProfile)
@@ -183,71 +198,50 @@ public class ChatFragment extends Fragment {
             add("food");
             add("culture");
             add("music");
+            add("religion");
+            add("travel");
         }};
-        CompabilityCalculator compabilityCalculator = new CompabilityCalculator(categories,myProfile.getQuestionResponds(),otherProfile.getQuestionResponds());
-        return compabilityCalculator.getCompability();
+        return CompabilityCalculator.caculateCompability(categories,otherProfile.getQuestionResponds(),myProfile.getQuestionResponds());
     }
 
-    public void sendMessage(String text)  {
-       /* Profile otherProfile=(Profile) getArguments().get("other_profile");
-        Profile myProfile=(Profile) getArguments().get("profile");*/
-        /*{
-            "message":{
-            "token":"bk3RNwTe3H0:CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1...",
-                    "data":{
-                "Nick" : "Mario",
-                        "body" : "great match!",
-                        "Room" : "PortugalVSDenmark"
-            }
+    private boolean checkDirection() {
+        boolean isLtr;
+        Configuration config = getResources().getConfiguration();
+        if(config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            isLtr = false;
         }
-        }*/
-        /*JSONObject rootObject=new JSONObject();
-        JSONObject messageObject=new JSONObject();
-        JSONObject dataObject=new JSONObject();
-        try {
-            messageObject.put("token",otherProfile.getMessageToken());
-            dataObject.put("body",text);
-            dataObject.put("sender",myProfile.getUid());
-            messageObject.put("data",dataObject);
-            rootObject.put("message",messageObject);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+        else {
+            isLtr = true;
         }
-        final String url = "https://fcm.googleapis.com/fcm/send";
+        return  isLtr;
+    }
 
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        StringRequest request = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", "your app key");
-                return headers;
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return rootObject.toString().getBytes();
-            }
-        };
-        queue.add(request);
-        queue.start();
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }*/
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+   //     getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
     }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.removeItem(R.id.filter_id);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+       // getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+      //  getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+      //  getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
 }

@@ -55,10 +55,6 @@ public class MatchesFragment extends Fragment  {
         matchesFragment.setArguments(bundle);
         return matchesFragment;
     }
-  /*  public static MatchesFragment newInstance()
-    {
-        return new MatchesFragment();
-    }*/
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -93,20 +89,12 @@ public class MatchesFragment extends Fragment  {
 
         mViewModel =new ViewModelProvider(this,new ViewModelFactory(getActivity().getApplication(), eViewModels.Matches)).get(MatchesViewModel.class);
         mViewModel.setProfile((Profile)getArguments().getSerializable("my_profile"));
-        //  mViewModel.setProfile((Profile) getArguments().getSerializable("profile"));
-
 
         final RecyclerView matchesRecycler = rootView.findViewById(R.id.matches_recycler);
         matchesRecycler.setHasFixedSize(true);
         matchesRecycler.setLayoutManager(new GridLayoutManager(getContext(),1));
         setTouchHelper(matchesRecycler);
 
-    /*    Observer<Profile> myProfileSuccessObserver=new Observer<Profile>() {
-            @Override
-            public void onChanged(Profile profile) {
-                mViewModel.readMatches();
-            }
-        };*/
 
         Observer<List<Profile>> profileSuccessObserver =new Observer<List<Profile>>() {
             @Override

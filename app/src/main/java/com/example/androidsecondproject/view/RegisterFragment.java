@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,9 +39,6 @@ public class RegisterFragment extends Fragment {
     public static RegisterFragment newInstance()
     {
         RegisterFragment registerFragment = new RegisterFragment();
-            /*Bundle bundle = new Bundle();
-            bundle.putString("user_name",username);
-            loginFragment.setArguments(bundle);*/
         return registerFragment;
     }
 
@@ -79,6 +77,7 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.signup_fragment,container,false);
+    
 
         Button registerButton=rootView.findViewById(R.id.register_btn_signup);
         Button signInButton=rootView.findViewById(R.id.sign_in_button);
@@ -135,5 +134,19 @@ public class RegisterFragment extends Fragment {
 
         mViewModel.setEmail(email);
         mViewModel.setPassword(password);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

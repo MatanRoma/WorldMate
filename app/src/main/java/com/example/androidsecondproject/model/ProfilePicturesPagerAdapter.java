@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -68,7 +67,6 @@ public class ProfilePicturesPagerAdapter extends PagerAdapter {
         rightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "click right", Toast.LENGTH_SHORT).show();
                 profilePagerClick.onRightClickListener(position);
             }
         });

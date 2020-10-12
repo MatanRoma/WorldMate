@@ -2,7 +2,6 @@ package com.example.androidsecondproject.view;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +27,8 @@ import com.example.androidsecondproject.viewmodel.ViewModelFactory;
 
 public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
 
-    /*private int minAge;
-    private int maxAge;*/
     private PreferencesViewModel mViewModel;
     private TextView mWarningTv;
-
-
     private PreferencesFragmentInterface mListener;
 
     interface PreferencesFragmentInterface{
@@ -83,7 +78,6 @@ public class PreferencesFragment extends androidx.fragment.app.DialogFragment {
                 preferences.setMaxDistance(distanceSb.getSelectedMinValue().intValue());
                 profile.setPreferences(preferences);
                 profile.setDiscovery(discoveryCb.isChecked());
-                Log.d("prof","pref");
                 mViewModel.writeProfile(profile);
                 mListener.OnClickContinueToApp();
 

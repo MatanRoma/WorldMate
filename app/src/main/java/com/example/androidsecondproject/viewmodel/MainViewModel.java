@@ -33,7 +33,7 @@ public class MainViewModel extends AndroidViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
         mRepository=Repository.getInstance(application.getApplicationContext());
-        isCategoryChecked = new boolean[]{true,true,true,true};
+        isCategoryChecked = new boolean[]{true,true,true,true,true,true};
     }
     public MutableLiveData<Profile> getProfileResultSuccess(){
         if (mProfileSuccessLiveData == null) {
@@ -93,12 +93,6 @@ public class MainViewModel extends AndroidViewModel {
         mRepository.readProfile(mRepository.getCurrentUserId());
     }
 
-
-
-   /* public Profile getProfile(){
-        return mProfileSuccessLiveData.getValue();
-    }
-*/
     public void setProfile(Profile profile)
     {
         mProfileSuccessLiveData.setValue(profile);
@@ -125,7 +119,7 @@ public class MainViewModel extends AndroidViewModel {
         if(mMyProfile!=null){
             mMyProfile.setMessageToken(token);
             messageToken=null;
-            mRepository.writeMyProfile(mMyProfile);
+            mRepository.updateProfile(mMyProfile.getUid(),"messageToken",token);
         }
         else{
             messageToken=token;
@@ -230,9 +224,14 @@ public class MainViewModel extends AndroidViewModel {
         mMyProfile.setPictures(newProfile.getPictures());
         mMyProfile.setQuestionResponds(newProfile.getQuestionResponds());
         mMyProfile.setUid(newProfile.getUid());
+        mMyProfile.setOnline(newProfile.isOnline());
     }
 
     public void removeProfileListener() {
         mRepository.remveProfileListener(mMyProfile.getUid());
+    }
+
+    public void updateIsOnline(boolean isOnline) {
+        mRepository.updateProfile(mMyProfile.getUid(),"online",isOnline);
     }
 }

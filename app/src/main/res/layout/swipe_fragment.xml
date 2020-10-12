@@ -10,24 +10,6 @@
         android:orientation="horizontal"
         android:layout_marginHorizontal="30dp"
         android:id="@+id/filter_layout">
-<!--        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="sport"
-            android:checked="true"
-            android:id="@+id/sport_cb"/>
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="food"
-            android:checked="true"
-            android:id="@+id/food_cb"/>
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="culture"
-            android:checked="true"
-            android:id="@+id/culture_cb"/>-->
 
     </LinearLayout>
     <com.yuyakaido.android.cardstackview.CardStackView
@@ -47,11 +29,7 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-  <!--  <com.lorentzos.flingswipe.SwipeFlingAdapterView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/swipe_fling"
-        />-->
+
 
 
     <com.github.ybq.android.spinkit.SpinKitView
@@ -76,23 +54,7 @@
         android:background="@color/colorPrimaryDark"
         android:id="@+id/btns_layout">
 
-        <!--<de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/ic_thumb_down"
-            android:layout_marginEnd="30dp"
-            android:id="@+id/dislike_ib"
-            app:civ_border_color="#FF000000"
-            app:civ_border_width="2dp" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/ic_thumb_up"
-            android:layout_margin="5dp"
-            app:civ_border_color="#FF000000"
-            android:id="@+id/like_ib"
-            app:civ_border_width="2dp" />-->
 
         <ImageButton
             android:layout_width="90dp"
@@ -104,16 +66,7 @@
             android:background="@color/transparent"
             android:padding="5dp"/>
 
-<!--        <ImageButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/rewind_icon2"
-            android:scaleType="fitXY"
-            android:layout_marginEnd="10dp"
-            android:padding="10dp"
-            android:background="@drawable/like_dislike_shapes"
-            android:visibility="gone"
-            android:id="@+id/rewind_ib"/>-->
+
 
         <ImageButton
             android:layout_width="90dp"
@@ -147,7 +100,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerInParent="true"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_worlmate_logo"
             android:background="@color/transparent"
             android:id="@+id/no_people_logo"/>
         <TextView
@@ -174,7 +127,7 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="20dp"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_worlmate_logo"
             android:scaleType="fitXY"
             android:background="@color/transparent"
             android:id="@+id/no_people_guest_logo"/>
@@ -189,13 +142,13 @@
             android:gravity="center"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:text="In order to see more people please login or register"
+            android:text="@string/in_order_to_see_more_people_please_login_or_register"
             android:layout_below="@id/no_people_guest_logo"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAllCaps="false"
-            android:text="Login/Register"
+            android:text="@string/login_register"
             android:textColor="@color/white"
             android:background="@drawable/btn_shape_no_stroke"
             android:padding="10dp"

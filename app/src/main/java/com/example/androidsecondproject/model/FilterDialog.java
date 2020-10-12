@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +30,6 @@ public class FilterDialog extends DialogFragment {
         builder.setMultiChoiceItems(Items, CheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                Toast.makeText(getContext(), "clicked item", Toast.LENGTH_SHORT).show();
             }
         });
         // Create the AlertDialog object and return it

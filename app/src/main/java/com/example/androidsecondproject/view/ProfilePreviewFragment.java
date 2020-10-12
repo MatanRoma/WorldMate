@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -74,8 +73,8 @@ public class ProfilePreviewFragment extends Fragment {
         TextView myHobbiesDesTv = rootView.findViewById(R.id.my_hobbies_des_tv);
         TextView compabilityTv = rootView.findViewById(R.id.compability_tv);
 
-        nameTv.setText(mViewModel.getOtherProfile().getFirstName()+" "+mViewModel.getOtherProfile().getLastName());
-        ageTv.setText((int)mViewModel.getOtherProfile().calculateCurrentAge()+"");
+        nameTv.setText(mViewModel.getOtherProfile().getFirstName()+" "+mViewModel.getOtherProfile().getLastName()+", "+mViewModel.getOtherProfile().calculateCurrentAge());
+        //ageTv.setText((int)mViewModel.getOtherProfile().calculateCurrentAge()+"");
         if(TranslateString.checkMale(mViewModel.getOtherProfile().getGender()))
         {
             genderTv.setText(getString(R.string.men));
@@ -86,6 +85,7 @@ public class ProfilePreviewFragment extends Fragment {
         //genderTv.setText(mViewModel.getOtherProfile().getGender()+"");
         cityTv.setText(mViewModel.getOtherProfile().getCity()+"");
         int compability = getArguments().getInt("compability");
+
         if(compability !=0)
         {
             compabilityTv.setText(compability+"%");
@@ -179,10 +179,7 @@ public class ProfilePreviewFragment extends Fragment {
     {
         if(position != 0)
         {
-            Toast.makeText(getContext(), position+"", Toast.LENGTH_SHORT).show();
             mViewPager.setCurrentItem(position-1,true);
-/*            mViewModel.getmCirclesIv().get(position).setSelected(false);
-            mViewModel.getmCirclesIv().get(position-1).setSelected(true);*/
         }
     }
 
@@ -190,10 +187,7 @@ public class ProfilePreviewFragment extends Fragment {
     {
         if(position != mViewPagerAdapter.getCount()-1)
         {
-            Toast.makeText(getContext(), position+"", Toast.LENGTH_SHORT).show();
             mViewPager.setCurrentItem(position+1,true);
-/*            mViewModel.getmCirclesIv().get(position).setSelected(false);
-            mViewModel.getmCirclesIv().get(position+1).setSelected(true);*/
         }
     }
 

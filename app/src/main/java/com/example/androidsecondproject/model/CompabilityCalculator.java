@@ -4,90 +4,81 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompabilityCalculator {
-    private List<String> categories;
-    private List<QuestionRespond> myAnsweredQuestions;
-    private List<QuestionRespond> otherAnsweredQuestions;
-    private List<List<String>> categoriesList;
-    private List<QuestionRespond> filteredQuestions;
-    private int compability;
 
-    public CompabilityCalculator(List<String> categories, List<QuestionRespond> myQuestions, List<QuestionRespond> otherQuestions) {
-        this.categories = categories;
-        this.myAnsweredQuestions = myQuestions;
-        this.otherAnsweredQuestions = otherQuestions;
-        caculateCompability();
-    }
 
-    public List<String> getCategories() {
-        return categories;
-    }
+    private static List<QuestionRespond> createFilteredList(List<String> categories, List<QuestionRespond> myQuestions) {
 
-    public void setCategories(List<String> categories) {
-        this.categories = categories;
-    }
-
-    public List<QuestionRespond> getQuestions() {
-        return myAnsweredQuestions;
-    }
-
-    public void setQuestions(List<QuestionRespond> questions) {
-        this.myAnsweredQuestions = questions;
-    }
-
-    public int getCompability() {
-        return compability;
-    }
-
-    public List<List<String>> getCategoriesList() {
-        return categoriesList;
-    }
-
-    public void setCategoriesList(List<List<String>> categoriesList) {
-        this.categoriesList = categoriesList;
-    }
-
-    public void setCompability(int compability) {
-        this.compability = compability;
-    }
-
-    private void createFilteredList() {
-
-        filteredQuestions = new ArrayList<>();
-        for (QuestionRespond question : myAnsweredQuestions) {
+        List<QuestionRespond> filteredQuestions = new ArrayList<>();
+        for (QuestionRespond question : myQuestions) {
             if (categories.contains(question.getCategory())) {
                 filteredQuestions.add(question);
             }
         }
+        return  filteredQuestions;
     }
 
-    public int caculateCompability() {
+    public static int caculateCompability(List<String> categories,List<QuestionRespond> otherQuestions, List<QuestionRespond> myQuestions) {
+
         int matchedQuestions = 0;
         int matchedAnswer = 0;
-        createFilteredList();
+        final int POINTS_PER_QUESTION_LESS_ANSWERS=5;
+        final int POINTS_PER_QUESTION_MORE_ANSWERS=5;
+        List<QuestionRespond> filteredQuestions  = createFilteredList(categories, myQuestions);
 
         for (QuestionRespond myQuestion : filteredQuestions) {
-            for (QuestionRespond otherQuestion : otherAnsweredQuestions) {
+            for (QuestionRespond otherQuestion : otherQuestions) {
 
                 if (myQuestion.getId() == otherQuestion.getId()) {
-                    matchedQuestions++;
-                    {
-                        if(myQuestion.getAnswersNum() > 2 &&Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) <=1)
+                    switch (myQuestion.getAnswersNum()) {
+                        case 2:
+                            matchedQuestions += POINTS_PER_QUESTION_LESS_ANSWERS;
+                            if (myQuestion.getResponse() == otherQuestion.getResponse()) {
+                                matchedAnswer += POINTS_PER_QUESTION_LESS_ANSWERS;
+                            }
+                            break;
+                        case 3:
+                            matchedQuestions += POINTS_PER_QUESTION_LESS_ANSWERS;
+                            if (myQuestion.getResponse() == otherQuestion.getResponse()) {
+                                matchedAnswer += POINTS_PER_QUESTION_LESS_ANSWERS;
+                            } else if (Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) == 1) {
+                                matchedAnswer += 2;
+                            }
+                            break;
+                        case 4:
+                            matchedQuestions += POINTS_PER_QUESTION_MORE_ANSWERS;
+                            if (myQuestion.getResponse() == otherQuestion.getResponse()) {
+                                matchedAnswer += POINTS_PER_QUESTION_MORE_ANSWERS;
+                            } else if (Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) == 1) {
+                                matchedAnswer += 5;
+                            }
+                            break;
+                        case 5:
+                            matchedQuestions += POINTS_PER_QUESTION_MORE_ANSWERS;
+                            if (myQuestion.getResponse() == otherQuestion.getResponse()) {
+                                matchedAnswer += POINTS_PER_QUESTION_MORE_ANSWERS;
+                            } else if (Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) == 1) {
+                                matchedAnswer += 6;
+                            } else if (Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) == 2) {
+                                matchedAnswer += 3;
+                            }
+                            break;
+                    }
+                }
+
+            }
+        }
+        int compability = 0;
+        if(matchedQuestions != 0){
+            compability = matchedAnswer * 100/matchedQuestions;
+        }
+        return compability==100?99:compability;
+    }
+}
+ /*if(myQuestion.getAnswersNum() > 2 &&Math.abs(myQuestion.getResponse() - otherQuestion.getResponse()) <=1)
                         {
                             matchedAnswer++;
                         }
                         else if(myQuestion.getResponse() == otherQuestion.getResponse())
                         {
                             matchedAnswer++;
-                        }
-                    }
-                }
-            }
-
-        }
-
-        if(matchedQuestions != 0){
-            compability = matchedAnswer * 100/matchedQuestions;
-        }
-        return compability;
-    }
-}
+                        }*/

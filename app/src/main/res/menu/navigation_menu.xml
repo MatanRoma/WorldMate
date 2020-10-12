@@ -18,17 +18,19 @@
         <item
             android:id="@+id/matches_item"
             android:icon="@drawable/ic_your_matches"
-            android:title="@string/your_matches"/>
+            android:title="@string/matches_and_chat"/>
+
+        <item
+            android:id="@+id/messages_item"
+            android:icon="@drawable/ic_like_thumb_up"
+            android:title="@string/your_likes"/>
 
         <item
             android:id="@+id/questions_item"
             android:icon="@drawable/ic_information"
             android:title="@string/questions"/>
 
-        <!--<item
-            android:id="@+id/messages_item"
-            android:icon="@drawable/ic_messages_icon"
-            android:title="@string/messages"/>-->
+
 
         <item
             android:id="@+id/settings_item"

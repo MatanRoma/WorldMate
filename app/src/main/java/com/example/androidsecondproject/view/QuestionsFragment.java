@@ -21,6 +21,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidsecondproject.R;
+import com.example.androidsecondproject.model.Chat;
 import com.example.androidsecondproject.model.Profile;
 import com.example.androidsecondproject.model.Question;
 import com.example.androidsecondproject.model.QuestionRespond;
@@ -28,13 +29,16 @@ import com.example.androidsecondproject.model.TranslateString;
 import com.example.androidsecondproject.model.eViewModels;
 import com.example.androidsecondproject.viewmodel.QuestionsViewModel;
 import com.example.androidsecondproject.viewmodel.ViewModelFactory;
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionsFragment extends Fragment {
-private QuestionsViewModel mViewModel;
-private View mSportView;
+    private QuestionsViewModel mViewModel;
+    private View mSportView;
+    private QuestionsInterface questionsInterface;
+    private SpinKitView mLoadingAnimation;
     public static QuestionsFragment newInstance(Profile profile)
     {
         Bundle bundle=new Bundle();
@@ -43,16 +47,22 @@ private View mSportView;
         questionsFragment.setArguments(bundle);
         return questionsFragment;
     }
+    public interface  QuestionsInterface{
+        public void onNotifyPrecentChange();
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        questionsInterface=(QuestionsInterface)getActivity();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.questions_fragment,container,false);
+        mLoadingAnimation=rootView.findViewById(R.id.spin_kit_questions);
+        mLoadingAnimation.setVisibility(View.VISIBLE);
         final RelativeLayout relativeLayoutQuestions =rootView.findViewById(R.id.relative_questions);
 
 
@@ -62,6 +72,7 @@ private View mSportView;
         Observer<List<Question>> questionsObserverSuccess=new Observer<List<Question>>() {
             @Override
             public void onChanged(List<Question> questions) {
+                mLoadingAnimation.setVisibility(View.GONE);
                 relativeLayoutQuestions.setVisibility(View.VISIBLE);
             }
         };
@@ -73,6 +84,8 @@ private View mSportView;
         final CheckBox foodCb = rootView.findViewById(R.id.food_rb);
         final CheckBox cultureCb = rootView.findViewById(R.id.culture_rb);
         final CheckBox musicCb = rootView.findViewById(R.id.music_rb);
+        final CheckBox religionCb = rootView.findViewById(R.id.religion_rb);
+        final CheckBox travelCb = rootView.findViewById(R.id.travel_rb);
 
         final LinearLayout sportQuestionsLayout = rootView.findViewById(R.id.sport_questions_layout);
         final TextView sportTitleTv = rootView.findViewById(R.id.sport_title_tv);
@@ -85,6 +98,12 @@ private View mSportView;
 
         final LinearLayout musicQuestionsLayout = rootView.findViewById(R.id.music_questions_layout);
         final TextView musicTitleTv = rootView.findViewById(R.id.music_title_tv);
+
+        final LinearLayout religionQuestionsLayout = rootView.findViewById(R.id.religion_questions_layout);
+        final TextView religionTitleTv = rootView.findViewById(R.id.religion_title_tv);
+
+        final LinearLayout travelQuestionsLayout = rootView.findViewById(R.id.travel_questions_layout);
+        final TextView travelTitleTv = rootView.findViewById(R.id.travel_title_tv);
 
         sportCb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +137,20 @@ private View mSportView;
 
         });
 
+        religionCb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleQuestion(religionCb,religionQuestionsLayout,religionTitleTv,getString(R.string.religion));
+            }
+        });
+
+        travelCb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleQuestion(travelCb,travelQuestionsLayout,travelTitleTv,getString(R.string.travel));
+            }
+        });
+
 
 
 
@@ -128,6 +161,7 @@ private View mSportView;
     {
         if(checkBox.isChecked())
         {
+            questionsLayout.setVisibility(View.VISIBLE);
             titleTv.setVisibility(View.VISIBLE);
             questionsLayout.removeAllViews();
             questionsLayout.addView(titleTv);
@@ -143,10 +177,11 @@ private View mSportView;
                         @Override
                         public void onClick(View v) {
                             questionsLayout.removeView(child);
-                            checkBox.setChecked(false);
                             if(questionsLayout.getChildCount() == 1)
                             {
+                                checkBox.setChecked(false);
                                 titleTv.setVisibility(View.GONE);
+                                questionsLayout.setVisibility(View.GONE);
                             }
                         }
                     });
@@ -185,6 +220,7 @@ private View mSportView;
                                     }
                                     mViewModel.getProfile().getQuestionResponds().add(questionRespond);
                                     mViewModel.updateQuestion();
+                                    questionsInterface.onNotifyPrecentChange();
 
 
 
@@ -194,12 +230,6 @@ private View mSportView;
                         radioGroup.addView(radioButton);
                     }
 
-/*                    RadioButton option1Rb = child.findViewById(R.id.option1_rb);
-                    RadioButton option2Rb = child.findViewById(R.id.option2_rb);*/
-
-
- /*                   option1Rb.setText(question.getAnswers().get(0));
-                    option2Rb.setText(question.getAnswers().get(1));*/
                     List<QuestionRespond> responds = mViewModel.getProfile().getQuestionResponds();
                     for (int i = 0; i < responds.size(); i++)
                     {
@@ -216,63 +246,6 @@ private View mSportView;
                             }
                         }
                     }
-
-/*                    for (QuestionRespond response: mViewModel.getProfile().getQuestionResponds()) {
-                        if(response.getId() == question.getId())
-                        {
-
-         *//*                   if(response.getResponse()==0)
-                            {
-                                option1Rb.setChecked(true);
-                                option2Rb.setChecked(false);
-                            }
-                            else
-                            {
-                                option1Rb.setChecked(false);
-                                option2Rb.setChecked(true);
-                            }*//*
-                        }
-                    }*/
-                    /*final RadioGroup answersRadioGroup = child.findViewById(R.id.answers_radio_group);
-                    answersRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
-                            boolean isChecked = checkedRadioButton.isChecked();
-                            if(isChecked)
-                            {
-                                int index = answersRadioGroup.indexOfChild(checkedRadioButton);
-                                Toast.makeText(getContext(), question.getId()+"", Toast.LENGTH_SHORT).show();
-                                QuestionRespond questionRespond = new QuestionRespond(question.getId(),index,question.getCategory());
-                                List<QuestionRespond> questionResponds = mViewModel.getProfile().getQuestionResponds();
-                                boolean exist = false;
-                                int existIndex = -1;
-                                for (int i = 0; i < questionResponds.size(); i++) {
-                                    QuestionRespond respond = questionResponds.get(i);
-                                    if(respond.getId()==question.getId())
-                                    {
-                                        exist = true;
-                                        existIndex = questionResponds.indexOf(question);
-
-                                        boolean tst =questionResponds.remove(respond);
-                                        Toast.makeText(getContext(), tst+"", Toast.LENGTH_SHORT).show();
-                                        //questionResponds.add(existIndex,questionRespond);
-                                    }
-
-                                }
-                                mViewModel.getProfile().getQuestionResponds().add(questionRespond);
-                                mViewModel.updateQuestion();
-                                Toast.makeText(getContext(), "size is "+questionResponds.size(), Toast.LENGTH_SHORT).show();
-
-
-                            }
-                        }
-                    });*/
-                    //int index = answersRadioGroup.indexOfChild(child.findViewById(answersRadioGroup.getCheckedRadioButtonId()));
-
-
-
-
                     questionsLayout.addView(child);
                 }
 
@@ -280,6 +253,7 @@ private View mSportView;
         }
         else
         {
+            questionsLayout.setVisibility(View.GONE);
             titleTv.setVisibility(View.GONE);
             questionsLayout.removeAllViews();
         }

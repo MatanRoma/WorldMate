@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidSecondProject</string>
+    <string name="app_name">WorldMate</string>
     <string name="home">Home</string>
     <string name="my_profile">My Profile</string>
     <string name="your_matches">Your Matches</string>
@@ -120,7 +120,7 @@
     <string name="tap_to_change">Tap to change</string>
     <string name="max_distance_km">Max Distance (Km)</string>
     <string name="notification">Notification</string>
-    <string name="new_match_notif">New Match notification</string>
+    <string name="new_match_notif">New match notification</string>
     <string name="when_got_new_match">When you got a new match</string>
     <string name="new_message_notif">New message notification</string>
     <string name="when_got_new_message">When you got a new meesage</string>
@@ -137,6 +137,19 @@
     <string name="account_setup">Account Setup</string>
     <string name="unmatch_dialog">Are you sure you want to unmatch with</string>
     <string name="no_like">You have no people to show</string>
+    <string name="your_likes">Your Likes</string>
+    <string name="matches_and_chat">Matches &amp; Chats</string>
+    <string name="online_str">Online</string>
+    <string name="offline_str">Offline</string>
+    <string name="religion">religion</string>
+    <string name="travel">travel</string>
+    <string name="religion_cap">Religion</string>
+    <string name="travel_cap">Travel</string>
+    <string name="sent_you">sent you:</string>
+    <string name="chat">Chat</string>
+    <string name="in_order_to_see_more_people_please_login_or_register">In order to see more people please login or register</string>
+    <string name="login_register">Login/Register</string>
+    <string name="gender_dialog_error">You must choose at least one field</string>
 
 
 </resources>

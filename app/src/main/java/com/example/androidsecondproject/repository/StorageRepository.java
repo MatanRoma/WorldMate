@@ -2,7 +2,6 @@ package com.example.androidsecondproject.repository;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -54,8 +53,6 @@ public class StorageRepository {
                 imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Log.d("uri",uri+"");
-
                         if (isProfilePic)
                             mDownloadProfilePicListener.onSuccessDownloadProfilePic(uri);
                         else
@@ -95,7 +92,6 @@ public class StorageRepository {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 mUploadListener.onSuccessUploadPic(true);
-           //     Log.d("imgurl",taskSnapshot.+"");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -111,8 +107,6 @@ public class StorageRepository {
             @Override
             public void onSuccess(Uri uri) {
                 // Got the download URL for 'users/me/profile.png'
-
-                Log.d("uri",uri+"");
                 mDownloadProfilePicListener.onSuccessDownloadProfilePic(uri);
             }
         }).addOnFailureListener(new OnFailureListener() {

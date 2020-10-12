@@ -1,8 +1,6 @@
 package com.example.androidsecondproject.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -32,6 +30,7 @@ public class Profile implements Serializable {
     private LocationPoint location;
     private List<QuestionRespond> questionResponds;
     private List<String> pictures;
+    private boolean isOnline;
 
 
 
@@ -251,6 +250,14 @@ public class Profile implements Serializable {
 
     public void setPictures(List<String> pictures) {
         this.pictures = pictures;
+    }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean online) {
+        isOnline = online;
     }
 }
 

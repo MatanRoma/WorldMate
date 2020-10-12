@@ -12,7 +12,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/relative_questions">
             <TextView
                 android:layout_width="wrap_content"
@@ -72,7 +72,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="@string/sport"
+                            android:text="@string/sport_cap_lett"
                             android:id="@+id/sport_rb"/>
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -80,8 +80,16 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="@string/food"
+                            android:text="@string/food_cap_lett"
                             android:id="@+id/food_rb"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:buttonTint="@color/black"
+                            android:text="@string/religion_cap"
+                            android:id="@+id/religion_rb"/>
 
 
                     </LinearLayout>
@@ -95,8 +103,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="@string/culture"
-                            android:layout_below="@+id/filter_food_cb"
+                            android:text="@string/culture_cap_lett"
                             android:id="@+id/culture_rb"/>
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -104,9 +111,16 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:buttonTint="@color/black"
-                            android:text="@string/music"
-                            android:layout_below="@+id/filter_food_cb"
+                            android:text="@string/music_cap_lett"
                             android:id="@+id/music_rb"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:buttonTint="@color/black"
+                            android:text="@string/travel_cap"
+                            android:id="@+id/travel_rb"/>
 
 
                     </LinearLayout>
@@ -124,6 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:layout_marginBottom="30dp"
                 android:layout_below="@id/filter_card"
                 android:id="@+id/sport_questions_layout">
@@ -148,6 +163,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:layout_marginBottom="30dp"
                 android:layout_below="@id/sport_questions_layout"
                 android:id="@+id/food_questions_layout">
@@ -174,6 +190,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:layout_marginBottom="30dp"
                 android:layout_below="@id/food_questions_layout"
                 android:id="@+id/culture_questions_layout">
@@ -199,6 +216,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:layout_marginBottom="30dp"
                 android:layout_below="@id/culture_questions_layout"
                 android:id="@+id/music_questions_layout">
@@ -220,10 +238,71 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginBottom="30dp"
+                android:layout_below="@id/music_questions_layout"
+                android:id="@+id/religion_questions_layout">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:background="@drawable/title_shape"
+                    android:gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/religion_cap"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="30sp"
+                    android:visibility="gone"
+                    android:id="@+id/religion_title_tv"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginBottom="30dp"
+                android:layout_below="@id/religion_questions_layout"
+                android:id="@+id/travel_questions_layout">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:background="@drawable/title_shape"
+                    android:gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/travel_cap"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="30sp"
+                    android:visibility="gone"
+                    android:id="@+id/travel_title_tv"/>
+            </LinearLayout>
+
+
 
         </RelativeLayout>
 
+
     </ScrollView>
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/spin_kit_questions"
+        style="@style/SpinKitView.Large.WanderingCubes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        app:SpinKit_Color="@color/Blue" />
 
 
 

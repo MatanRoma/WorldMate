@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -118,8 +117,6 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
         final TextInputEditText descriptionAboutMe = rootView.findViewById(R.id.about_me_edit_profile_et);
         final TextInputEditText myHobbies = rootView.findViewById(R.id.hobbies_edit_profile_et);
         final TextInputEditText lookingFor = rootView.findViewById(R.id.looking_for_edit_profile_et);
-        //final RadioButton menRb = rootView.findViewById(R.id.men_rb);
-        //final RadioButton womenRb = rootView.findViewById(R.id.women_rb);
         final ImageButton galleryBtn=rootView.findViewById(R.id.gallery_btn);
         final ImageButton cameraBtn=rootView.findViewById(R.id.camera_btn);
 
@@ -143,21 +140,6 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
         pictureButtonListeners(cameraBtn,galleryBtn);
         closeButtonsListeners();
 
-
-
-
-
-
-
-
-    /*    final Observer<Boolean> uploadObserverSuccess = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if(file!=null)
-                    file.delete();
-                mViewModel.downloadPicture();
-            }
-        };*/
         final Observer<Uri> downloadObserverMainPicSuccess = new Observer<Uri>() {
             @Override
             public void onChanged(Uri uri) {
@@ -199,17 +181,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
         descriptionAboutMe.setText(mViewModel.getmProfile().getDescription());
         myHobbies.setText(mViewModel.getmProfile().getHobbies());
         lookingFor.setText(mViewModel.getmProfile().getLookingFor());
-        Toast.makeText(getContext(), mViewModel.getImageUri()+"", Toast.LENGTH_SHORT).show();
         Glide.with(this).load(mViewModel.getImageUri()).error(R.drawable.man_profile).into(profilePicture);
-        /*if(TranslateString.checkMale(mViewModel.getmProfile().getGender()))
-        {
-            menRb.setChecked(true);
-        }
-        else
-        {
-            womenRb.setChecked(true);
-        }*/
-
 
         changePicBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,15 +205,7 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
                 mViewModel.getmProfile().setHobbies(Objects.requireNonNull(myHobbies.getText()).toString());
                 mViewModel.getmProfile().setLookingFor(Objects.requireNonNull(lookingFor.getText()).toString());
                 mViewModel.getmProfile().setDescription(Objects.requireNonNull(descriptionAboutMe.getText()).toString());
-               /* if(menRb.isChecked()){
-                    mViewModel.getmProfile().setGender("male");
-                }
-                else if(womenRb.isChecked()){
-                    mViewModel.getmProfile().setGender("female");
-                }*/
                 mViewModel.writeProfile();
-                //mViewModel.readProfiles();
-            //    mUpdateDrawerListener.onUpdateProfile(mViewModel.getmProfile());
                 Objects.requireNonNull(getActivity()).onBackPressed();
             }
         });
@@ -297,17 +261,6 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
             Glide.with(getContext()).load(pictures.get(i)).into(mImageViews[i]);
             mImageCloseBtns[i].setVisibility(View.VISIBLE);
         }
-        /*Glide.with(getContext()).load(android.R.color.transparent).into(mImageViews[1]);
-        pictures.remove(1);
-        for(int i=0;i<mImageViews.length;i++){
-            if(i<pictures.size()){
-                Glide.with(getContext()).load(pictures.get(i)).into(mImageViews[i]);
-            }
-            else {
-                Glide.with(getContext()).load(android.R.color.transparent).into(mImageViews[i]);
-            }
-        }*/
-
     }
 
     public void changePicture(){
@@ -351,52 +304,16 @@ public class ProfileFragment extends androidx.fragment.app.DialogFragment implem
         });
         myAlertDialog.setView(alertView);
         show =myAlertDialog.show();
-       /* myAlertDialog.setTitle("Upload Pictures Option");
-        myAlertDialog.setMessage("How do you want to set your picture?");
-
-        myAlertDialog.setPositiveButton("Gallery",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        mIsfromProfile=true;
-                        startActivityForResult(intent, GALLERY_PICTURE);
-
-                    }
-                });
-
-        myAlertDialog.setNegativeButton("Camera",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-
-
-                        file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),    System.nanoTime()+"profile.jpg");
-
-                        imageUri = FileProvider.getUriForFile(
-                                getContext(),
-                                "com.example.androidsecondproject.provider", //(use your app signature + ".provider" )
-                                file);
-
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                        mIsfromProfile=true;
-                        startActivityForResult(intent, CAMERA_REQUEST);
-
-                    }
-                });*/
-
-
     }
 
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == getActivity().RESULT_OK) {
 
             if (requestCode == CAMERA_REQUEST) {
                 // mViewModel.uploadPicture(imageUri);
-
             }
             if (requestCode == GALLERY_PICTURE) {
                 imageUri = data.getData();

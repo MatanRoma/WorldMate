@@ -2,6 +2,7 @@ package com.example.androidsecondproject.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.CheckBoxPreference;
@@ -112,8 +114,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         minAgeSk = getPreferenceScreen().findPreference("min_age_pref1");
         maxAgeSk = getPreferenceScreen().findPreference("max_age_pref1");
 
-
-
     }
     @Override
     public void onResume() {
@@ -151,7 +151,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 Set<String> gender = sharedPreferences.getStringSet("looking_for_pref",null);
 
                 if (gender.isEmpty()){
-                    gender.add(MALE);
+                    if(mViewModel.getmProfile().getPreferences().isLookingForMen()) {
+                        gender.add(MALE);
+                    }
+                    if(mViewModel.getmProfile().getPreferences().isLookingForWomen()){
+                        gender.add(FEMALE);
+                    }
+                    showDialog();
                 }
                 mViewModel.updateLookingFor(gender);
                 lookingForMsl.setValues(gender);
@@ -193,5 +199,18 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         }
 
 
+    }
+    private void showDialog(){
+        final String dialogMessage=getString(R.string.gender_dialog_error);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(dialogMessage)
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //do things
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

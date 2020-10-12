@@ -43,10 +43,10 @@ public class SettingsViewModel extends AndroidViewModel {
     public Set<String> getLookingFor() {
         Set<String> lookingForSet=new HashSet<>();
         if(mProfile.getPreferences().isLookingForWomen()){
-            lookingForSet.add("male");
+            lookingForSet.add("female");
         }
         if(mProfile.getPreferences().isLookingForMen()){
-            lookingForSet.add("female");
+            lookingForSet.add("male");
         }
         return lookingForSet;
     }

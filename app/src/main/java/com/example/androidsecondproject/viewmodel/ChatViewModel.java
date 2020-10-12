@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.androidsecondproject.model.Message;
 import com.example.androidsecondproject.model.NotificationManager;
@@ -22,6 +23,7 @@ public class ChatViewModel extends AndroidViewModel {
     private Profile mMyProfile;
     private Profile mOtherProfile;
     private Context context;
+    private MutableLiveData<Boolean> mIsOnlineLiveData;
 
     public ChatViewModel(@NonNull Application application) {
         super(application);
@@ -62,36 +64,14 @@ public class ChatViewModel extends AndroidViewModel {
                     dataObject.put("text_message",message.getText());
                     dataObject.put("fullname", mMyProfile.getFirstName()+" "+ mMyProfile.getLastName());
                     dataObject.put("image", mMyProfile.getProfilePictureUri());
+                    dataObject.put("date",message.getFormattedDate());
+                    Log.d("date",message.getFormattedDate()+"");
                     rootObject.put("data",dataObject);
 
                     NotificationManager.sendNotification(context,rootObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-               /* String text=message.getText();
-                final JSONObject rootObject=new JSONObject();
-                JSONObject notificationObject=new JSONObject();
-                JSONObject dataObject=new JSONObject();
-
-                try {
-                    rootObject.put("to",otherProfile.getMessageToken());// for test
-                    Log.d("token",otherProfile.getMessageToken());
-                    notificationObject.put("title",myProfile.getFirstName()+" "+myProfile.getLastName());
-                    notificationObject.put("body",text);
-                    notificationObject.put("tag",myProfile.getEmail());
-
-                    //notificationObject.put("icon", R.drawable.ic_messages_icon);
-             //       notificationObject.put("icon", R.drawable.ic_messages_icon);
-                 //   notificationObject.put("image",myProfile.getProfilePictureUri());
-                    dataObject.put("chat_id",chatId);
-                    rootObject.put("notification",notificationObject);
-                    rootObject.put("data",dataObject);
-                    NotificationManager.sendNotification(context,rootObject);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
 
             }
         });
@@ -115,5 +95,28 @@ public class ChatViewModel extends AndroidViewModel {
 
     public void setOtherProfile(Profile otherProfile) {
         this.mOtherProfile = otherProfile;
+    }
+
+    public MutableLiveData<Boolean> getIsOnline()
+    {
+        if(mIsOnlineLiveData == null)
+        {
+            mIsOnlineLiveData = new MutableLiveData<>();
+            loadIsOnline();
+        }
+        return mIsOnlineLiveData;
+    }
+
+    private void loadIsOnline() {
+        mRepository.setOnlineListener(new Repository.OnlineListener() {
+            @Override
+            public void onOnlineChangeSuccess(boolean isOnline) {
+                mIsOnlineLiveData.setValue(isOnline);
+            }
+        });
+    }
+
+    public void readIsOnline(){
+        mRepository.readProfileIsOnline(getOtherProfile().getUid());
     }
 }
